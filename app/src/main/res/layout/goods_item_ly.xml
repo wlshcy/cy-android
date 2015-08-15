@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/px230"
+    android:background="@android:color/white">
+
+    <com.android.volley.toolbox.NetworkImageView
+        android:id="@+id/goods_img"
+        android:layout_width="@dimen/px170"
+        android:layout_height="@dimen/px170"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/px40"
+        android:src="@color/dark_green" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/px40"
+        android:layout_toRightOf="@+id/goods_img"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/goods_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="有机白菜"
+            android:textColor="@color/black_444444"
+            android:textSize="@dimen/font28" />
+
+        <TextView
+            android:id="@+id/goods_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/px40"
+            android:text="10元/份"
+            android:textColor="@color/black_444444"
+            android:textSize="@dimen/font28" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/px48"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/goods_sub"
+            android:layout_width="@dimen/px48"
+            android:layout_height="@dimen/px48"
+            android:visibility="gone"
+            android:src="@drawable/icon_sub" />
+
+        <TextView
+            android:id="@+id/goods_count"
+            android:layout_width="@dimen/px48"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="0"
+            android:visibility="gone"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/font28" />
+
+        <ImageView
+            android:id="@+id/goods_add"
+            android:layout_width="@dimen/px48"
+            android:layout_height="@dimen/px48"
+            android:src="@drawable/icon_add" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/common_bg_color"
+    android:orientation="vertical">
+
+    <include layout="@layout/common_title_ly" />
+
+    <LinearLayout
+        android:id="@+id/addressee_ly"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/px16"
+        android:layout_marginTop="@dimen/px16"
+        android:background="@android:color/white"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_ribbon" />
+
+        <TextView
+            android:id="@+id/addressee_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/px16"
+            android:paddingLeft="@dimen/px40" />
+
+        <TextView
+            android:id="@+id/address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/px16"
+            android:layout_marginTop="@dimen/px16"
+            android:paddingLeft="@dimen/px40" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/mLv"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.0"
+        android:background="@null"
+        android:divider="#e4e4e4"
+        android:dividerHeight="0.5dp" />
+
+    <TextView
+        android:id="@+id/re_choose_dishes"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px110"
+        android:background="@android:color/white"
+        android:gravity="center"
+        android:text="@string/re_choose_dishes"
+        android:textColor="@color/green_24c05d"
+        android:textSize="@dimen/px30" />
+
+</LinearLayout>

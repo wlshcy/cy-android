@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/common_bg_color"
+        android:scrollbars="none">
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include layout="@layout/common_title_ly" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/px110"
+                android:background="@android:color/white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/px20"
+                    android:text="@string/name"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/font28" />
+
+                <EditText
+                    android:id="@+id/name_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/px20"
+                    android:layout_marginRight="@dimen/px20"
+                    android:background="@null"
+                    android:hint="@string/required"
+                    android:textSize="@dimen/font28" />
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1.0dp"
+                android:background="#e4e4e4" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/px110"
+                android:background="@android:color/white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/px20"
+                    android:text="@string/mobile_phone"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/font28" />
+
+                <EditText
+                    android:id="@+id/mobile_phone_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/px20"
+                    android:layout_marginRight="@dimen/px20"
+                    android:background="@null"
+                    android:editable="false"
+                    android:hint="@string/required"
+                    android:textSize="@dimen/font28" />
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1.0dp"
+                android:background="#e4e4e4" />
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/px110"
+                android:background="@android:color/white">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/px20"
+                    android:text="@string/community"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/font28" />
+
+                <TextView
+                    android:id="@+id/community_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/px92"
+                    android:layout_gravity="right|center_vertical"
+                    android:layout_marginLeft="@dimen/px20"
+                    android:layout_marginRight="@dimen/px20"
+                    android:background="@drawable/list_item_selector"
+                    android:drawableRight="@drawable/icon_more"
+                    android:gravity="center_vertical"
+                    android:minWidth="@dimen/px180"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/font28" />
+
+            </FrameLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1.0dp"
+                android:background="#e4e4e4" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/px110"
+                android:background="@android:color/white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/px20"
+                    android:text="@string/building_number"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/font28" />
+
+                <EditText
+                    android:id="@+id/building_number_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/px20"
+                    android:layout_marginRight="@dimen/px20"
+                    android:background="@null"
+                    android:hint="@string/required"
+
+                    android:textSize="@dimen/font28" />
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1.0dp"
+                android:background="#e4e4e4" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/px110"
+                android:background="@android:color/white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/px20"
+                    android:text="@string/unit_number"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/font28" />
+
+                <EditText
+                    android:id="@+id/unit_number_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/px20"
+                    android:layout_marginRight="@dimen/px20"
+                    android:background="@null"
+                    android:hint="@string/required"
+
+                    android:textSize="@dimen/font28" />
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1.0dp"
+                android:background="#e4e4e4" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/px110"
+                android:background="@android:color/white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/px20"
+                    android:text="@string/house_number"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/font28" />
+
+                <EditText
+                    android:id="@+id/house_number_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/px20"
+                    android:layout_marginRight="@dimen/px20"
+                    android:background="@null"
+                    android:hint="@string/required"
+
+                    android:textSize="@dimen/font28" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</FrameLayout>

@@ -1,0 +1,33 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 22
+    buildToolsVersion "23.0.0 rc2"
+
+    defaultConfig {
+        applicationId "com.shequcun.farm"
+        minSdkVersion 14
+        targetSdkVersion 22
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    signingConfigs {
+        shequcunrelease {
+            storeFile file("/Developer/worksapce/SqcFarmApplication/app/sqc_farm_android.keystore")
+            storePassword "Ysyhl9t"
+            keyAlias "sqc_farm_android"
+            keyPassword "Ysyhl9t"
+        }
+    }
+}
+
+dependencies {
+    compile files('libs/SqcFarmSDK.jar')
+    compile 'com.android.support:appcompat-v7:22.2.0'
+}

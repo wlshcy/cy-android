@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/px250"
+    android:background="@drawable/list_item_selector">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/my_combo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/icon_my_combo"
+                android:gravity="center"
+                android:text="@string/my_combo"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:id="@+id/combo_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/px40"
+                android:drawableLeft="@drawable/icon_combo_green"
+                android:drawablePadding="@dimen/px20"
+                android:text="@string/abc_action_bar_home_description"
+                android:textColor="@color/black_303030"
+                android:textSize="@dimen/font36"
+                android:visibility="gone" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/px40"
+            android:layout_marginTop="@dimen/px30">
+
+            <TextView
+                android:id="@+id/dis_cycle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="每周配送一次"
+                android:textColor="@color/black_303030"
+                android:textSize="@dimen/font26" />
+
+            <TextView
+                android:id="@+id/per_weight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/px20"
+                android:text="每次6斤"
+                android:textColor="@color/black_303030"
+                android:textSize="@dimen/font26" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/px40"
+            android:layout_marginTop="@dimen/px16"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/times"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4次/月"
+                android:textColor="@color/black_303030"
+                android:textSize="@dimen/font26" />
+
+            <TextView
+                android:id="@+id/all_weight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/px84"
+                android:text="共60kg"
+                android:textColor="@color/black_303030"
+                android:textSize="@dimen/font26" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/combo_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/px40"
+            android:layout_marginTop="@dimen/px30"
+            android:text="￥3600"
+            android:textColor="@android:color/black" />
+    </LinearLayout>
+
+    <com.android.volley.toolbox.NetworkImageView
+        android:id="@+id/combo_img"
+        android:layout_width="@dimen/px350"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|center_vertical"
+        android:layout_marginRight="@dimen/px16" />
+
+</FrameLayout>

@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/common_title_ly" />
+
+        <FrameLayout
+            android:id="@+id/root_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical">
+
+            <LinearLayout
+                android:id="@+id/content_ll"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="top"
+                android:background="@color/common_bg_color"
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                android:paddingBottom="54dp">
+
+                <ListView
+                    android:id="@+id/mLv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/common_bg_color"
+                    android:divider="@color/divider_color"
+                    android:dividerHeight="0.5dp" />
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/empty_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/transparent_8000"
+                android:visibility="gone"></View>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:layout_gravity="bottom">
+
+                <LinearLayout
+                    android:id="@+id/foot_shop_cart_ll"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="bottom"
+                    android:background="@android:color/white"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:id="@+id/left_empty_view"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.5" />
+
+                    <TextView
+                        android:id="@+id/shop_cart_total_price_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="12dp"
+                        android:layout_weight="1"
+                        android:gravity="left"
+                        android:text="购物车是空的"
+                        android:textColor="@color/gray_a9a9a9"
+                        android:textSize="14sp" />
+
+                    <FrameLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="14dp"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:id="@+id/bug_order_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical|right"
+                            android:background="@drawable/shopping_cart_widget_selector_1"
+                            android:gravity="center"
+                            android:paddingBottom="@dimen/px24"
+                            android:paddingLeft="@dimen/px36"
+                            android:paddingRight="@dimen/px36"
+                            android:paddingTop="@dimen/px24"
+                            android:textColor="@color/gray_9a9a9a"
+                            android:textSize="14sp" />
+                    </FrameLayout>
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/common_line_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_gravity="top"
+                    android:background="#e4e4e4" />
+
+            </FrameLayout>
+
+            <LinearLayout
+                android:id="@+id/shop_cart_ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|bottom"
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:id="@+id/shop_cart_fl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RelativeLayout
+                        android:id="@+id/shop_cart_clear_container_rl"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:background="@color/common_bg_color"
+                        android:onClick="@null">
+
+                        <TextView
+                            android:id="@+id/shop_cart_clear_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:gravity="center"
+                            android:padding="12dp"
+                            android:text="@string/shop_cart_clear"
+                            android:textColor="@color/gray_575757"
+                            android:visibility="gone" />
+                    </RelativeLayout>
+
+                    <ImageView
+                        android:id="@+id/shop_cart_iv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="12dp"
+                        android:src="@drawable/btn_shop_cat" />
+                </FrameLayout>
+
+                <LinearLayout
+                    android:id="@+id/shop_cart_container_ll"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"></LinearLayout>
+            </LinearLayout>
+        </FrameLayout>
+    </LinearLayout>
+
+
+    <!--    <com.common.widget.PullToRefreshScrollView xmlns:ptr="http://schemas.android.com/apk/res-auto"
+          android:id="@+id/scroll_view"
+          android:layout_width="fill_parent"
+          android:layout_height="fill_parent"
+          ptr:ptrAnimationStyle="flip"
+          ptr:ptrMode="disabled">
+
+      </com.common.widget.PullToRefreshScrollView> -->
+
+    <!--  <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <include layout="@layout/common_title_ly"/>
+                <include layout="@layout/listview_ly"/>
+            </LinearLayout>-->
+</FrameLayout>

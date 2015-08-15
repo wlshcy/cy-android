@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="gray">#808080</color>
+    <color name="common_list_item_pressed_bg">#dedede</color>
+    <color name="light_gray_color">#fefefe</color>
+    <color name="common_bg_color">#ececec</color>
+    <color name="divider_color">#e4e4e4</color>
+    <color name="text_default_comment">#878787</color>
+    <color name="dark_green">#2DC36C</color>
+    <color name="common_tv_bg_pressed">#dedede</color>
+    <color name="light_green">#2bc36c</color>
+    <color name="black_444444">#444444</color>
+    <color name="black_5a5e5d">#5a5e5d</color>
+    <color name="gray_c7c7c7">#c7c7c7</color>
+    <color name="common_status_yellow">#ff9600</color>
+    <color name="orange_a45500">#a45500</color>
+    <color name="transparent_8000">#8000</color>
+    <color name="gray_3d3d3d">#3d3d3d</color>
+    <color name="green_446628">#446628</color>
+    <color name="gray_f4f4f4">#f4f4f4</color>
+    <color name="black_303030">#303030</color>
+    <color name="gray_a9a9a9">#a9a9a9</color>
+    <color name="gray_676767">#676767</color>
+    <color name="green_11C258">#11c258</color>
+    <color name="green_94d6c0">#94d6c0</color>
+    <color name="gray_f0f0f0">#f0f0f0</color>
+    <color name="green_24c05d">#24c05d</color>
+    <color name="orange_ff9000">#ff9000</color>
+    <color name="gray_575757">#575757</color>
+    <color name="white_f4f4f4">#f4f4f4</color>
+    <color name="white_fefefe">#fefefe</color>
+    <color name="gray_9a9a9a">#9a9a9a</color>
+    <color name="red_fe4d3d">#fe4d3d</color>
+    <color name="red_eb3f30">#eb3f30</color>
+    <!-- 红色 -->
+    <color name="black_242424">#242424</color>
+    <color name="orange_ffbd56">#FFBD56</color>
+    <color name="orange_ff9c48">#FF9C48</color>
+    <color name="green_1cc568">#1CC568</color>
+    <color name="gray_ebebeb">#ebebeb</color>
+    <color name="gray_f8f8f8">#f8f8f8</color>
+    <color name="gray_ececec">#ececec</color>
+</resources>

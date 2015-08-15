@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="my_array">
+        <item>我的订单</item>
+        <item>拨打客服电话</item>
+        <item>分享</item>
+    </string-array>
+
+</resources>

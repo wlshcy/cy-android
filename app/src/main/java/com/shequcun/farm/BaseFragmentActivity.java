@@ -1,0 +1,52 @@
+package com.shequcun.farm;
+
+import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+
+import com.bitmap.cache.ImageCacheManager;
+import com.shequcun.farm.ui.fragment.BaseFragment;
+import com.shequcun.farm.ui.fragment.FragmentMgrInterface;
+
+
+public abstract class BaseFragmentActivity extends FragmentActivity implements
+        FragmentMgrInterface {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        createImageCache();
+    }
+
+    @Override
+    public void setSelectedFragment(BaseFragment selectedFragment) {
+        this.fragement = selectedFragment;
+    }
+
+    /**
+     * Create the image cache. Uses Memory Cache by default. Change to Disk for
+     * a Disk based LRU implementation.
+     */
+    private void createImageCache() {
+        ImageCacheManager.getInstance().init(this, "cacheimg",
+                DISK_IMAGECACHE_SIZE, DISK_IMAGECACHE_COMPRESS_FORMAT,
+                DISK_IMAGECACHE_QUALITY);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (fragement == null || !fragement.onBackPressed()) {
+            if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+                super.onBackPressed();
+            } else {
+                getSupportFragmentManager().popBackStack();
+            }
+        }
+    }
+
+    private static int DISK_IMAGECACHE_SIZE = 1024 * 1024 * 30;
+    private static Bitmap.CompressFormat DISK_IMAGECACHE_COMPRESS_FORMAT = Bitmap.CompressFormat.JPEG;
+    private static int DISK_IMAGECACHE_QUALITY = 100; // PNG is lossless so
+    protected BaseFragment fragement;
+}

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/px20"
+        android:background="@drawable/gray_f4f4f4_bg"
+        android:padding="@dimen/px30">
+        <TextView
+            android:id="@+id/combo_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="您购买的套餐"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/font23" />
+
+        <TextView
+            android:id="@+id/combo_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/combo_tip"
+            android:layout_marginTop="@dimen/px30"
+            android:text="合家幸福套餐"
+            android:textColor="@color/black_303030"
+            android:textSize="@dimen/font36" />
+
+        <TextView
+            android:id="@+id/times"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/combo_name"
+            android:layout_marginTop="@dimen/px10"
+            android:text="4次/月"
+            android:textColor="@color/black_303030"
+            android:textSize="@dimen/font26" />
+
+        <TextView
+            android:id="@+id/all_weight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/combo_name"
+            android:layout_marginLeft="@dimen/px84"
+            android:layout_marginTop="@dimen/px10"
+            android:layout_toRightOf="@+id/times"
+            android:text="共300斤"
+            android:textColor="@color/black_303030"
+            android:textSize="@dimen/font26" />
+
+        <TextView
+            android:id="@+id/dis_cycle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/times"
+            android:layout_marginTop="@dimen/px10"
+            android:text="每周配送一次"
+            android:textColor="@color/black_303030"
+            android:textSize="@dimen/font26" />
+
+        <TextView
+            android:id="@+id/per_weight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/all_weight"
+            android:layout_marginLeft="@dimen/px20"
+            android:layout_marginTop="@dimen/px10"
+            android:layout_toRightOf="@+id/dis_cycle"
+            android:text="每次6斤"
+            android:textColor="@color/black_303030"
+            android:textSize="@dimen/font26" />
+
+        <TextView
+            android:id="@+id/combo_status"
+            android:layout_width="@dimen/px214"
+            android:layout_height="@dimen/px70"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:background="@drawable/gray_cec9c2_bg"
+            android:gravity="center"
+            android:text="您已选择本期产品"
+            android:textColor="@color/gray_a9a9a9"
+            android:textSize="@dimen/px23" />
+    </RelativeLayout>
+
+</RelativeLayout>

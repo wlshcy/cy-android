@@ -1,0 +1,12 @@
+################################Config################################
+base_url=https://api.shequcun.com/
+#alipay商户PID
+alipay_pid=2088911366083289
+#alipay 商户收款账号
+alipay_seller=liushouchang@shequcun.com
+#alipay 商户私钥
+alipay_rsa_private=MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAOMuW/J3Y7s/zUS2fPzJ9fj7mnEtKH5SVBY+u01Fmgwg538EKfY3zhI7fdQ0kp6Xx/uYA0ZLjWeZXXmNGFWPwi7AKlCxhvC6aWmIWWJvIAqiSJDZRA0OXDA/FNfAJ6EioVmgKi1QheJVcvRdtyClU6L2OdHLdc8YC0vacLeKh+SVAgMBAAECgYBoxu7dSzcSG4D+mfPXWwY5CUHXxO4SJMJnaBNWti0wPtTF/hOkXWSLgCiugHjG8FXpsdiAyUO0bkVwVCTPAXia3JKO+mZS8P0p/nWNb/uSK/hbtLNiirtiv/SmXTh4o/qUZIF+Gc4lVG2CEKlaXUDLgbE4fm37lo0OTH6VAZM4mQJBAPx4XX2wOKEl3tzSM4VhsZ5gTHiXUeCPB41XYVQbmHYF0dxwOjhnHasGA2CNr6sjlELop75d7GyEyiDW63i1vLsCQQDmW3rb+1R8Y+u76XbsyLaOf4kf0qFYig0BJ82kcm6CEC+9cWT7QQJnW1IQspI9j71fNV2d2bgL/OdP9how8/bvAkEAjnOTvMFbkoF9t/banx26THRlcX1f82aAil2NSxmu8pjiCpFAKGb2NHNWIHqRbezLUN1ZGG6CYdCjA9iAUEGq1QJANWJ18o0oYzt04jOU0AMj65o62RkjMzWrFd13lui+G35M0gZ5dJD4UaOkPSJlKccqB+qCK5bNRFnz8WADadzgGQJBALKpBl1NPQMue15t+Vhg5jKC1sYVhW9G/isL6hsdf7AiLmDyMMx05ti5k9e3Ct8smoSH2NVNGyNBihxsHynOgjs=
+#alipay 公共秘钥
+alipay_rsa_public=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCnxj/9qwVfgoUh/y2W89L6BkRAFljhNhgPdyPuBV64bfQNN1PjbCzkIM6qRdKBoLPXmKKMiFYnkd6rAoprih3/PrQEB/VsW8OoM8fxn67UDYuyBTqA23MML9q1+ilIZwBC2AQ2UBVOrFXfFl75p6/B5KsiNG9zpgmLCUYuLkxpLQIDAQAB
+
+umeng_appkey=55c870b067e58ec5440030b5

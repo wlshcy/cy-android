@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white_fefefe"
+    android:orientation="horizontal" >
+
+    <TextView
+        android:id="@+id/good_name_tv"
+        android:layout_width="0dp"
+        android:layout_weight="1.5"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:gravity="left"
+        android:paddingLeft="12dp"
+        android:paddingBottom="12dp"
+        android:paddingTop="12dp"
+        android:text="name"
+        android:textSize="16sp"
+        android:textColor="@color/gray_575757"/>
+
+    <RelativeLayout
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:layout_gravity="right|center_vertical" >
+
+        <ImageView
+            android:id="@+id/good_count_up_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="6dp"
+            android:src="@drawable/icon_add" />
+
+        <ImageView
+            android:id="@+id/good_count_down_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="30sp"
+            android:layout_toLeftOf="@id/good_count_up_iv"
+            android:src="@drawable/icon_sub"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/good_price_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="12dp"
+            android:layout_toLeftOf="@id/good_count_down_iv"
+            android:text="0"
+            android:gravity="center"
+            android:singleLine="true"
+            android:textColor="@color/red_fe4d3d"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/good_count_tv"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/good_count_up_iv"
+            android:gravity="center"
+            android:text="0"
+            android:textSize="15sp"
+            android:visibility="visible" />
+    </RelativeLayout>
+
+</LinearLayout>

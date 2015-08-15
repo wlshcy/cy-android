@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/common_bg_color"
+    android:orientation="vertical">
+
+    <include layout="@layout/common_title_ly" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px50"
+        android:background="@color/orange_ffbd56"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/px40"
+        android:text="该服务目前仅开通北京市,请谅解."
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/font28" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px120"
+        android:background="@drawable/list_item_selector"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/px40">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/community_name"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/font28" />
+
+        <EditText
+            android:id="@+id/community_name_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/px20"
+            android:layout_marginRight="@dimen/px20"
+            android:background="@null"
+            android:textSize="@dimen/font28" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1.0dp"
+        android:background="#e4e4e4" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px120"
+        android:background="@drawable/list_item_selector"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/px40">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/detail_address"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/font28" />
+
+        <EditText
+            android:id="@+id/address_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/px20"
+            android:layout_marginRight="@dimen/px20"
+            android:background="@null"
+            android:textSize="@dimen/font28" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1.0dp"
+        android:background="#e4e4e4" />
+
+</LinearLayout>
+

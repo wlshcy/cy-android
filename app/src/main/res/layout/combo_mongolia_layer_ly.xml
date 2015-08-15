@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/transparent_8000"
+    android:clickable="true">
+
+
+    <FrameLayout
+        android:id="@+id/combo_bg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/combo_introduction_bg">
+
+        <TextView
+            android:id="@+id/look_combo_detail_tv"
+            android:layout_width="@dimen/px272"
+            android:layout_height="@dimen/px84"
+            android:layout_gravity="bottom|center"
+            android:layout_marginBottom="@dimen/px80"
+            android:background="@drawable/orange_corner"
+            android:gravity="center"
+            android:text="@string/look_combo_detail"
+            android:textColor="@color/orange_a45500"
+            android:textSize="@dimen/font28" />
+
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/combo_bg"
+        android:layout_alignRight="@+id/combo_bg"
+        android:layout_marginRight="@dimen/px40"
+        android:src="@drawable/icon_close_combo" />
+
+
+</RelativeLayout>

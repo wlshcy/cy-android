@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/transparent_8000"
+    android:gravity="center"
+    android:orientation="vertical">
+    <!-- 推荐商品详情页-->
+    <LinearLayout
+        android:layout_width="@dimen/px644"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/px20"
+        android:background="@drawable/white_corner"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/px440">
+
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:src="@color/orange_a45500" />
+
+            <ImageView
+                android:id="@+id/close_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginRight="@dimen/px36"
+                android:layout_marginTop="@dimen/px36"
+                android:src="@drawable/icon_close_recomment_details" />
+        </FrameLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/px50"
+            android:layout_marginTop="@dimen/px70"
+            android:text="精品小磨香油"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/px36" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/px38"
+            android:layout_marginLeft="@dimen/px50"
+            android:layout_marginTop="@dimen/px22"
+            android:text="25/瓶"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/px36" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1.5dp"
+            android:layout_marginLeft="@dimen/px50"
+            android:layout_marginRight="@dimen/px50"
+            android:background="@color/divider_color" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/px38"
+            android:layout_marginLeft="@dimen/px50"
+            android:layout_marginRight="@dimen/px50"
+            android:layout_marginTop="@dimen/px38"
+            android:text="香油，北方多称为芝麻油，麻油 ，是从芝麻中提炼出来的，具有特别香味，故称为香油。 按榨取方法一般分为压榨法、压滤法和水代法，小磨香油为传统工艺水代法制作的香油。
+其中南阳香油香味地道，源于南阳盆地当地气候所生长的芝麻，南阳盆地位于河南省西南部,地处秦岭山脉与桐柏山脉之间,气候温和、环境宜人、土质肥沃,非常适宜芝麻的生长,被确立为中科院芝麻科技种植示范基地,芝麻香油谓南阳的地道名产。"
+            android:textColor="@color/gray_3d3d3d"
+            android:textSize="@dimen/px23" />
+
+
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/px210"
+    android:background="@drawable/list_item_selector">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/px40"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/distribution_number_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="选品次数"
+            android:textColor="@color/black_444444"
+            android:textSize="@dimen/font32" />
+
+
+        <TextView
+            android:id="@+id/distribution_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/px16"
+            android:text="配送状态"
+            android:textColor="@color/black_444444"
+            android:textSize="@dimen/font28" />
+
+        <TextView
+            android:id="@+id/distribution_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/px16"
+            android:background="@drawable/my_order_gray_corner"
+            android:gravity="center"
+            android:padding="@dimen/px10"
+            android:text="配送套餐名称"
+            android:textColor="@color/black_5a5e5d"
+            android:textSize="@dimen/font23" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/px26"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/order_status"
+            android:layout_width="@dimen/px120"
+            android:layout_height="@dimen/px50"
+            android:background="@drawable/green_94d6c0_corner_bg"
+            android:text="订单状态"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/font26" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/px26"
+            android:src="@drawable/icon_more" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>
