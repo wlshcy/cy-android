@@ -67,6 +67,15 @@ public class Order {
         }
         return numItem;
     }
+    public int getItemsWeight() {
+        int numItem = 0;
+        for (DishesItemEntry it : items) {
+            if (it.getCount() > 0) {
+                numItem += it.getCount()*it.packw;
+            }
+        }
+        return numItem;
+    }
 
     public void addItem(DishesItemEntry item) {
         if (items == null) {

@@ -12,7 +12,7 @@ import java.util.List;
 public class DisheDataCenter {
     public static DisheDataCenter instance;
     Order mOrder = new Order();
-    private float sendPrice = 1;
+    private int reqWeight = 6*500;
 
     public static DisheDataCenter getInstance() {
         synchronized (DisheDataCenter.class) {
@@ -32,6 +32,9 @@ public class DisheDataCenter {
 
     public int getItemsCount() {
         return mOrder.getItemsCount();
+    }
+    public int getItemsWeight() {
+        return mOrder.getItemsWeight();
     }
 
     public boolean isEmpty() {
@@ -53,7 +56,7 @@ public class DisheDataCenter {
 
     public boolean outOfSendPrice() {
 //        Log.e(TAG, "已经选上平总价格：" + mOrder.getItemsTotalPrice());
-        if (mOrder.getItemsTotalPrice() >= sendPrice) {
+        if (mOrder.getItemsWeight() >= reqWeight) {
             return true;
         }
         return false;
@@ -68,17 +71,21 @@ public class DisheDataCenter {
 //        }
     }
 
+    public int getReqWeight() {
+        return reqWeight;
+    }
+
     public float getTotalPrice() {
         return mOrder.getItemsTotalPrice();
     }
 
-    public void setSendPrice(float sendPrice) {
-        this.sendPrice = sendPrice;
-    }
+//    public void setSendPrice(float sendPrice) {
+//        this.sendPrice = sendPrice;
+//    }
 
-    public float getSendPrice() {
-        return sendPrice;
-    }
+//    public float getSendPrice() {
+//        return sendPrice;
+//    }
 
     /**
      * 释放对应的资源

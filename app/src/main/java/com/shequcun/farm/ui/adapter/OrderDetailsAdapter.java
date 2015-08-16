@@ -8,13 +8,17 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
+import com.bitmap.cache.ImageCacheManager;
 import com.shequcun.farm.R;
+import com.shequcun.farm.data.DishesItemEntry;
+
+import java.util.List;
 
 /**
  * 订单详情页
  * Created by apple on 15/8/10.
  */
-public class OrderDetailsAdapter extends ArrayAdapter<T> {
+public class OrderDetailsAdapter extends ArrayAdapter<DishesItemEntry> {
     Context mContext;
 
     public OrderDetailsAdapter(Context context) {
@@ -35,6 +39,12 @@ public class OrderDetailsAdapter extends ArrayAdapter<T> {
             v.setTag(vh);
         } else {
             vh = (ViewHolder) v.getTag();
+        }
+        DishesItemEntry entry = getItem(position);
+        if (entry!=null){
+            vh.goods_img.setImageUrl(entry.imgs[0], ImageCacheManager.getInstance().getImageLoader());
+            vh.goods_name.setText(entry.title);
+            vh.goods_count.setText("x"+entry.getCount());
         }
         return v;
     }

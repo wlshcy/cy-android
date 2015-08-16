@@ -62,11 +62,14 @@
     <string name="shop_cart">购物车</string>
     <string name="small_market_buy">选好了</string>
     <string name="small_market_buy_not">满A元起送</string>
-    <string name="small_market_buy_not_enough">还差A元</string>
+    <string name="small_market_buy_not_enough">还差Ag</string>
     <string name="small_market_shop_cart_price">共A元</string>
     <string name="small_market_shop_cart_null">购物车是空的</string>
     <string name="search_community_error_tip">搜索不到小区,填写我的小区</string>
     <string name="detail_address">详细地址</string>
     <string name="fill_in_address">填写地址</string>
     <string name="go_choose_dishes">去选菜</string>
+    <string name="pay_by_year">年付:</string>
+    <string name="now_pay">立即支付</string>
+    <string name="supported_pay_by_year">本套餐只支持年付</string>
 </resources>
