@@ -50,5 +50,5 @@ gen/
 #gradle
 *.clock
 *.bin
-.gradle
+.gradle/
 AndroidManifest.xml
