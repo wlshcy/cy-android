@@ -31,7 +31,6 @@ import com.shequcun.farm.data.DishesItemEntry;
 import com.shequcun.farm.data.goods.DishesListItemEntry;
 import com.shequcun.farm.datacenter.CacheManager;
 import com.shequcun.farm.datacenter.DisheDataCenter;
-import com.shequcun.farm.dlg.ConsultationDlg;
 import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.model.PhotoModel;
 import com.shequcun.farm.ui.adapter.ChooseDishesAdapter;
@@ -71,14 +70,14 @@ public class ChooseDishesFragment extends BaseFragment {
         ((TextView) v.findViewById(R.id.title_center_text)).setText(R.string.choose_dishes);
         back = v.findViewById(R.id.back);
         rightTv = (TextView) v.findViewById(R.id.title_right_text);
-        rightTv.setText(R.string.consultation);
+        rightTv.setText(R.string.combo_introduce);
         rootView = (FrameLayout) v.findViewById(R.id.root_view);
         footShopCartLl = (LinearLayout) v.findViewById(R.id.foot_shop_cart_ll);
         mShopCartClearTv = (TextView) v.findViewById(R.id.shop_cart_clear_tv);
         emptyView = v.findViewById(R.id.empty_view);
         mOrderController = DisheDataCenter.getInstance();
         mBuyOrderTv = (TextView) v.findViewById(R.id.bug_order_tv);
-        mBuyOrderTv.setText("选择"+mOrderController.getReqWeight()+"g菜");
+        mBuyOrderTv.setText("选择" + mOrderController.getReqWeight() + "g菜");
         mShopCartIv = (ImageView) v.findViewById(R.id.shop_cart_iv);
         mBadgeViewShopCart = new BadgeView(getActivity(), mShopCartIv);
         mBadgeViewShopCart.setWidth(ResUtil.dip2px(getActivity(), 20));
@@ -111,7 +110,8 @@ public class ChooseDishesFragment extends BaseFragment {
             if (v == back) {
                 popBackStack();
             } else if (v == rightTv) {
-                ConsultationDlg.showCallTelDlg(getActivity());
+//                ConsultationDlg.showCallTelDlg(getActivity());
+                gotoFragmentByAdd(R.id.mainpage_ly, new ComboIntroduceFragment(), ComboIntroduceFragment.class.getName());
             } else if (v == mShopCartClearTv) {//清空购物车
                 hideShopCart();
                 clearBadeView(mOrderController.getItemsCount());
@@ -126,7 +126,7 @@ public class ChooseDishesFragment extends BaseFragment {
             } else if (v == mBuyOrderTv) {//
                 gotoFragmentByAdd();
 //                gotoFragmentByAdd(R.id.mainpage_ly,new OrderDetailsFragment(),OrderDetailsFragment.class.getName());
-            }else if (v==emptyView){
+            } else if (v == emptyView) {
                 hideShopCart();
             }
         }
@@ -478,7 +478,7 @@ public class ChooseDishesFragment extends BaseFragment {
         }
     }
 
-    private boolean outOfRequiredWeight(){
+    private boolean outOfRequiredWeight() {
         return mOrderController.outOfSendPrice();
     }
 
@@ -519,7 +519,7 @@ public class ChooseDishesFragment extends BaseFragment {
 //            String txt = getResources().getString(
 //                    R.string.small_market_shop_cart_price);
 //            String p = txt.replaceAll("A", String.valueOf(totalPrice));
-            mShopCartPriceTv.setText("共"+mOrderController.getItemsCount()+"份");
+            mShopCartPriceTv.setText("共" + mOrderController.getItemsCount() + "份");
         } else {
             mShopCartPriceTv.setText(R.string.small_market_shop_cart_null);
         }
