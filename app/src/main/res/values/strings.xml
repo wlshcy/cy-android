@@ -94,4 +94,5 @@
     <string name="common_door_num">门牌号</string>
     <string name="common_required_input">必填</string>
     <string name="common_option_input">选填</string>
+    <string name="combo_introduce">套餐介绍</string>
 </resources>

@@ -27,7 +27,6 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.shequcun.farm.R;
 import com.shequcun.farm.anim.ArcTranslateAnimation;
-import com.shequcun.farm.data.ComboParam;
 import com.shequcun.farm.data.DishesItemEntry;
 import com.shequcun.farm.data.goods.DishesListItemEntry;
 import com.shequcun.farm.datacenter.CacheManager;
@@ -137,21 +136,11 @@ public class ChooseDishesFragment extends BaseFragment {
         }
     };
 
-    int buildRequestID() {
-        ComboParam param = getComboParam();
-        if (param == null) {
-            return -1;
-        }
-        mOrderController.setReqWeight(param.getWeights());
+    int buildRequestID() {//需要完善
+        mOrderController.setReqWeight(0);
         mBuyOrderTv.setText("选择" + mOrderController.getReqWeight() + "g菜");
-        return param.getId();
+        return 0;
     }
-
-    ComboParam getComboParam() {
-        Bundle bundle = getArguments();
-        return ((ComboParam) bundle.getSerializable("comboParam"));
-    }
-
 
     void requsetDishesList() {
         int id = buildRequestID();
@@ -212,7 +201,7 @@ public class ChooseDishesFragment extends BaseFragment {
             gotoFragmentByAdd(R.id.mainpage_ly, new LoginFragment(), LoginFragment.class.getName());
         } else {
             Bundle bundle = new Bundle();
-            bundle.putInt("comboIdx", getComboParam().getComboIdx());
+            bundle.putInt("comboIdx", 0);//需要完善
             gotoFragmentByAdd(R.id.mainpage_ly, new OrderDetailsFragment(), OrderDetailsFragment.class.getName());
         }
     }

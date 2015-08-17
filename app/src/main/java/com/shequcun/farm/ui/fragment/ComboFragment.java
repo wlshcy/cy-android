@@ -19,7 +19,6 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.ComboEntry;
 import com.shequcun.farm.data.ComboListEntry;
-import com.shequcun.farm.data.ComboParam;
 import com.shequcun.farm.data.SlidesEntry;
 import com.shequcun.farm.datacenter.CacheManager;
 import com.shequcun.farm.dlg.ProgressDlg;
@@ -125,38 +124,25 @@ public class ComboFragment extends BaseFragment {
             } else {
                 gotoFragmentByAdd(R.id.mainpage_ly, new LoginFragment(), LoginFragment.class.getName());
             }
-
-<<<<<<< HEAD
-            Bundle bundle = new Bundle();
-            if (buildIsMyComboClick(position)) {
-                bundle.putInt("id",entry.id);
-//                bundle.putInt("weight",entry.weights[]);
-                gotoFragmentByAdd(bundle, R.id.mainpage_ly, new ChooseDishesFragment(), ChooseDishesFragment.class.getName());
-            } else {
-                bundle.putSerializable("comboParams",parseEntryForParams(entry));
-                gotoFragmentByAdd(bundle, R.id.mainpage_ly, new ComboSecondFragment(), ComboSecondFragment.class.getName());
-            }
-=======
->>>>>>> master
         }
     };
 
-    ArrayList<ComboParam> parseEntryForParams(ComboEntry entry) {
-        ArrayList<ComboParam> params = new ArrayList<>();
-        for (int i = 0; i < entry.mprices.length; i++) {
-            ComboParam p = new ComboParam();
-            p.setId(entry.id);
-            p.setDuration(entry.duration);
-            p.setShipday(entry.shipday);
-            p.setTitle(entry.title);
-            p.setTotalPrices(entry.prices[i]);
-            p.setWimg(entry.wimgs[i]);
-            p.setWeights(entry.weights[i]);
-            p.setComboIdx(i);
-            params.add(p);
-        }
-        return params;
-    }
+//    ArrayList<ComboParam> parseEntryForParams(ComboEntry entry) {
+//        ArrayList<ComboParam> params = new ArrayList<>();
+//        for (int i = 0; i < entry.mprices.length; i++) {
+//            ComboParam p = new ComboParam();
+//            p.setId(entry.id);
+//            p.setDuration(entry.duration);
+//            p.setShipday(entry.shipday);
+//            p.setTitle(entry.title);
+//            p.setTotalPrices(entry.prices[i]);
+//            p.setWimg(entry.wimgs[i]);
+//            p.setWeights(entry.weights[i]);
+//            p.setComboIdx(i);
+//            params.add(p);
+//        }
+//        return params;
+//    }
 
 
     Bundle buildBundle(ComboEntry entry) {

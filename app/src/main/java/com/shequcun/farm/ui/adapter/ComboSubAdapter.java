@@ -1,6 +1,7 @@
 package com.shequcun.farm.ui.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,6 @@ import com.common.widget.CircleImageView;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.shequcun.farm.R;
-import com.shequcun.farm.data.ComboParam;
 import com.shequcun.farm.data.ComboEntry;
 import com.shequcun.farm.data.FixedComboEntry;
 import com.shequcun.farm.data.FixedListComboEntry;
@@ -25,7 +25,8 @@ import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.ResUtil;
 import com.shequcun.farm.util.Utils;
 
-import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.http.Header;
 
 /**
@@ -33,27 +34,17 @@ import org.apache.http.Header;
  * Created by apple on 15/8/13.
  */
 public class ComboSubAdapter extends BaseAdapter {
-
     private Context mContext;
-    //    private ComboEntry entry;
-    private ArrayList<ComboParam> dataList;
+    private ComboEntry entry;
 
-    //    public ComboSubAdapter(Context context, ComboEntry entry) {
-//        this.mContext = context;
-//        this.entry = entry;
-//    }
-    public ComboSubAdapter(Context context, ArrayList<ComboParam> params) {
+    public ComboSubAdapter(Context context, ComboEntry entry) {
         this.mContext = context;
-        this.dataList = params;
+        this.entry = entry;
     }
 
-    //    @Override
-//    public int getCount() {
-//        return entry == null || entry.weights == null ? 0 : entry.weights.length;
-//    }
     @Override
     public int getCount() {
-        return dataList.size();
+        return entry == null || entry.weights == null ? 0 : entry.weights.length;
     }
 
     AvoidDoubleClickListener chooseDishes;
@@ -62,13 +53,9 @@ public class ComboSubAdapter extends BaseAdapter {
         this.chooseDishes = onClick;
     }
 
-    //    @Override
-//    public ComboEntry getItem(int position) {
-//        return entry;
-//    }
     @Override
-    public ComboParam getItem(int position) {
-        return dataList.get(position);
+    public ComboEntry getItem(int position) {
+        return entry;
     }
 
     @Override
@@ -93,69 +80,37 @@ public class ComboSubAdapter extends BaseAdapter {
             vh = (ViewHolder) view.getTag();
         }
 
-        ComboParam data = getItem(position);
         if (vh != null) {
             if (vh.combo_img != null)
-                ImageCacheManager.getInstance().displayImage(vh.combo_img,data.getWimg());
+                ImageCacheManager.getInstance().displayImage(vh.combo_img, TextUtils.isEmpty(entry.wimgs[position]) ? entry.img : entry.wimgs[position]);
 
             if (vh.combo_name != null) {
-//                String splits[] = entry.title.split("套餐");
-                String title = data.getTitle().replace("套餐","");
-                vh.combo_name.setText(Utils.getSpanableSpan(title, data.getWeights()+"斤", "套餐", ResUtil.dipToPixel(mContext, 14), ResUtil.dipToPixel(mContext, 25)));
+                String splits[] = entry.title.split("套餐");
+                vh.combo_name.setText(Utils.getSpanableSpan(splits[0], Utils.unitConversion(entry.weights[position]), "套餐", ResUtil.dipToPixel(mContext, 14), ResUtil.dipToPixel(mContext, 25)));
             }
 
             if (vh.distribution_circle != null) {
-                vh.distribution_circle.setText("每周配送" + data.getShipday().length + "次");
+                vh.distribution_circle.setText("每周配送" + entry.shipday.length + "次");
             }
 
             if (vh.distribution_all_times != null) {
-                if (data.getDuration()>= 52)
-                    vh.distribution_all_times.setText(data.getDuration() * data.getShipday().length + "次/年");
+                if (entry.duration >= 52)
+                    vh.distribution_all_times.setText(entry.duration * entry.shipday.length + "次/年");
                 else
-                    vh.distribution_all_times.setText(data.getDuration() * data.getShipday().length + "次/月");
+                    vh.distribution_all_times.setText(entry.duration * entry.shipday.length + "次/月");
             }
 
 
             if (vh.total_price != null)
-                vh.total_price.setText("￥" + data.getTotalPrices() / 100);
+                vh.total_price.setText("￥" + (((double) entry.prices[position]) / 100));
 
             if (vh.choose_dishes != null) {
-                vh.choose_dishes.setTag(data);
+                vh.choose_dishes.setTag(entry);
                 vh.choose_dishes.setOnClickListener(chooseDishes);
             }
 
-            requestFixedCombo(data.getId(), vh.ll_container);
+            requestFixedCombo(entry.id, vh.ll_container);
         }
-
-//        if (vh != null) {
-//            if (vh.combo_img != null)
-//                ImageCacheManager.getInstance().displayImage(vh.combo_img, TextUtils.isEmpty(entry.wimgs[position]) ? entry.img : entry.wimgs[position]);
-//
-//            if (vh.combo_name != null) {
-//                String splits[] = entry.title.split("套餐");
-//                vh.combo_name.setText(Utils.getSpanableSpan(splits[0], entry.weights[position] + "", "套餐", ResUtil.dipToPixel(mContext, 14), ResUtil.dipToPixel(mContext, 25)));
-//            }
-//
-//            if (vh.distribution_circle != null) {
-//                vh.distribution_circle.setText("每周配送" + entry.shipday.length + "次");
-//            }
-//
-//            if (vh.distribution_all_times != null) {
-//                if (entry.duration >= 52)
-//                    vh.distribution_all_times.setText(entry.duration * entry.shipday.length + "次/年");
-//                else
-//                    vh.distribution_all_times.setText(entry.duration * entry.shipday.length + "次/月");
-//            }
-//
-//            if (vh.total_price != null)
-//                vh.total_price.setText("￥" + (((double) entry.prices[position]) / 100));
-//
-//            if (vh.choose_dishes != null) {
-//                entry.setPosition(position);
-//                vh.choose_dishes.setTag(entry);
-//                vh.choose_dishes.setOnClickListener(chooseDishes);
-//            }
-//        }
 
 
         return view;
@@ -234,7 +189,7 @@ public class ComboSubAdapter extends BaseAdapter {
          * 每周配送次数
          */
         TextView distribution_circle;
-        /**
+        /***
          * 52次/年
          */
         TextView distribution_all_times;
