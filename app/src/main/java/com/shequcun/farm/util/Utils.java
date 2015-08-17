@@ -66,13 +66,13 @@ public class Utils {
      */
     public static String unitConversion(int g) {
         String restDistanceStr;
-        if (g >= 1000) {
-            float fdis = (float) g / 1000;
-            fdis = (float) (Math.round(fdis * 10)) / 10;
-            restDistanceStr = fdis + "kg";
-        } else {
-            restDistanceStr = g + "g";
-        }
+//        if (g >= 1000) {
+//            float fdis = (float) g / 1000;
+//            fdis = (float) (Math.round(fdis * 10)) / 10;
+//            restDistanceStr = fdis + "kg";
+//        } else {
+        restDistanceStr = g + "g";
+//        }
         return restDistanceStr;
     }
 

@@ -11,11 +11,23 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bitmap.cache.ImageCacheManager;
+import com.common.widget.CircleImageView;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.ComboEntry;
+import com.shequcun.farm.data.FixedComboEntry;
+import com.shequcun.farm.data.FixedListComboEntry;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
+import com.shequcun.farm.util.HttpRequestUtil;
+import com.shequcun.farm.util.JsonUtilsParser;
+import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.ResUtil;
 import com.shequcun.farm.util.Utils;
+
+import org.apache.http.Header;
+
+import java.util.List;
 
 /**
  * 二级套餐适配器
@@ -89,6 +101,7 @@ public class ComboSubAdapter extends BaseAdapter {
                     vh.distribution_all_times.setText(entry.duration * entry.shipday.length + "次/月");
             }
 
+
             if (vh.total_price != null)
                 vh.total_price.setText("￥" + (((double) entry.prices[position]) / 100));
 
@@ -96,18 +109,75 @@ public class ComboSubAdapter extends BaseAdapter {
                 vh.choose_dishes.setTag(entry);
                 vh.choose_dishes.setOnClickListener(chooseDishes);
             }
+
+            requestFixedCombo(entry.id, vh.ll_container);
         }
 
 
         return view;
     }
 
+    /**
+     * 请求固定套餐
+     *
+     * @param ll_container
+     */
 
-    void addChildToContainer(LinearLayout ll_container) {
+    private void requestFixedCombo(int id, final LinearLayout ll_container) {
+        RequestParams params = new RequestParams();
+        params.add("id", "" + id);
+        HttpRequestUtil.httpGet(LocalParams.INSTANCE.getBaseUrl() + "cai/combodtl", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int sCode, Header[] h, byte[] data) {
+                if (data != null && data.length > 0) {
+                    FixedListComboEntry entry = JsonUtilsParser.fromJson(new String(data), FixedListComboEntry.class);
+                    if (entry != null) {
+                        if (TextUtils.isEmpty(entry.errmsg)) {
+                            if (entry.aList == null || entry.aList.size() <= 0)
+                                return;
+                            addChildToContainer(ll_container, entry.aList);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(int sCode, Header[] h, byte[] data, Throwable e) {
+
+            }
+        });
+    }
+
+    void addChildToContainer(LinearLayout ll_container, List<FixedComboEntry> aList) {
         if (ll_container == null)
             return;
-        View childView = LayoutInflater.from(mContext).inflate(R.layout.combo_sub_child_item_ly, null);
-        ll_container.addView(childView);
+        int size = aList.size();
+
+        for (int i = 0; i < size; i += 2) {
+            View childView = LayoutInflater.from(mContext).inflate(R.layout.combo_sub_child_item_ly, null);
+            CircleImageView additional_goods_img_1 = (CircleImageView) childView.findViewById(R.id.additional_goods_img_1);
+            additional_goods_img_1.setImageUrl(aList.get(i).img, ImageCacheManager.getInstance().getImageLoader());
+            TextView additional_goods_name_1 = (TextView) childView.findViewById(R.id.additional_goods_name_1);
+            additional_goods_name_1.setText(aList.get(i).title);
+            TextView additional_send_weight_1 = (TextView) childView.findViewById(R.id.additional_send_weight_1);
+            additional_send_weight_1.setText(aList.get(i).quantity + aList.get(i).unit + "/" + aList.get(i).freq + "周");
+
+
+            if (i + 1 < size) {
+                CircleImageView additional_goods_img_2 = (CircleImageView) childView.findViewById(R.id.additional_goods_img_2);
+                additional_goods_img_2.setImageUrl(aList.get(i + 1).img, ImageCacheManager.getInstance().getImageLoader());
+                TextView additional_goods_name_2 = (TextView) childView.findViewById(R.id.additional_goods_name_2);
+                additional_goods_name_2.setText(aList.get(i + 1).title);
+
+                TextView additional_send_weight_2 = (TextView) childView.findViewById(R.id.additional_send_weight_2);
+                additional_send_weight_2.setText(aList.get(i + 1).quantity + aList.get(i + 1).unit + "/" + aList.get(i + 1).freq + "周");
+            }
+            ll_container.addView(childView);
+        }
+
+
+//        View childViewex = LayoutInflater.from(mContext).inflate(R.layout.combo_sub_child_item_ly, null);
+//        ll_container.addView(childViewex);
     }
 
     class ViewHolder {
