@@ -54,7 +54,7 @@ public class OrderDetailsFragment extends BaseFragment {
         rightTv = (TextView) v.findViewById(R.id.title_right_text);
         rightTv.setText(R.string.consultation);
         re_choose_dishes = v.findViewById(R.id.re_choose_dishes);
-        commitOrderTv = (TextView)v.findViewById(R.id.bug_order_tv);
+        commitOrderTv = (TextView) v.findViewById(R.id.bug_order_tv);
         buildUserLoginEntry();
         v.findViewById(R.id.addressee_ly).setVisibility(uEntry == null ? View.GONE : View.VISIBLE);
     }
@@ -85,8 +85,8 @@ public class OrderDetailsFragment extends BaseFragment {
                 ConsultationDlg.showCallTelDlg(getActivity());
             else if (re_choose_dishes == v) {//重新选择菜品
 
-            }else if (v==commitOrderTv){
-                requestCaiOrder();
+            } else if (v == commitOrderTv) {
+                makeOrder();
             }
         }
     };
@@ -117,14 +117,28 @@ public class OrderDetailsFragment extends BaseFragment {
         adapter.notifyDataSetChanged();
     }
 
-    private void requestCaiOrder() {
+    int getComboIdxParams() {
+        Bundle bundle = getArguments();
+        if (bundle==null)return -1;
+        return bundle.getInt("comboIdx");
+    }
+
+    private void makeOrder() {
         int combo_id = mOrderController.getItems().get(0).combo_id;
         int type = 1;
-        int combo_idx = 6;
+        int combo_idx = getComboIdxParams();
         String items = mOrderController.getOrderItemsString();
         String name = uEntry.name;
         String mobile = uEntry.mobile;
         String address = uEntry.address;
+        if (TextUtils.isEmpty(name)) {
+            gotoAddressFragment();
+            return;
+        }
+        requestCaiOrder(combo_id, type, combo_idx, items, name, mobile, address);
+    }
+
+    private void requestCaiOrder(int combo_id, int type, int combo_idx, String items, String name, String mobile, String address) {
         RequestParams params = new RequestParams();
         params.add("combo_id", combo_id + "");
         params.add("type", type + "");
@@ -137,30 +151,34 @@ public class OrderDetailsFragment extends BaseFragment {
         HttpRequestUtil.getClient().post(LocalParams.INSTANCE.getBaseUrl() + "cai/order", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                if (statusCode == 200){
+                if (statusCode == 200) {
                     String result = new String(responseBody);
-                    OrderEntry entry = JsonUtilsParser.fromJson(result,OrderEntry.class);
-                    if (entry!=null){
-                        if (TextUtils.isEmpty(entry.errcode)){
+                    OrderEntry entry = JsonUtilsParser.fromJson(result, OrderEntry.class);
+                    if (entry != null) {
+                        if (TextUtils.isEmpty(entry.errcode)) {
                             gotoOrderSuccess();
-                        }else {
-                            ToastHelper.showShort(getFragmentActivity(),entry.errmsg);
+                        } else {
+                            ToastHelper.showShort(getFragmentActivity(), entry.errmsg);
                         }
                     }
-                }else {
-                    ToastHelper.showShort(getFragmentActivity(),"异常：状态"+statusCode);
+                } else {
+                    ToastHelper.showShort(getFragmentActivity(), "异常：状态" + statusCode);
                 }
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                ToastHelper.showShort(getFragmentActivity(),error.getMessage());
+                ToastHelper.showShort(getFragmentActivity(), error.getMessage());
             }
         });
     }
 
-    private void gotoOrderSuccess(){
-        gotoFragmentByAdd(R.id.mainpage_ly,new OrderSuccessFragment(),OrderSuccessFragment.class.getName());
+    private void gotoAddressFragment() {
+        gotoFragmentByAdd(R.id.mainpage_ly, new AddressFragment(), AddressFragment.class.getName());
+    }
+
+    private void gotoOrderSuccess() {
+        gotoFragmentByAdd(R.id.mainpage_ly, new OrderSuccessFragment(), OrderSuccessFragment.class.getName());
     }
 
     TextView titleTv;

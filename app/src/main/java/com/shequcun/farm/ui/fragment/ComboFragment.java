@@ -15,6 +15,7 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.ComboEntry;
 import com.shequcun.farm.data.ComboListEntry;
+import com.shequcun.farm.data.ComboParam;
 import com.shequcun.farm.data.SlidesEntry;
 import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.ui.adapter.CarouselAdapter;
@@ -110,12 +111,34 @@ public class ComboFragment extends BaseFragment {
             if (entry == null)
                 return;
 
+            Bundle bundle = new Bundle();
             if (buildIsMyComboClick(position)) {
-                gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new ChooseDishesFragment(), ChooseDishesFragment.class.getName());
-            } else
-                gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new ComboSecondFragment(), ComboSecondFragment.class.getName());
+                bundle.putInt("id",entry.id);
+//                bundle.putInt("weight",entry.weights[]);
+                gotoFragmentByAdd(bundle, R.id.mainpage_ly, new ChooseDishesFragment(), ChooseDishesFragment.class.getName());
+            } else {
+                bundle.putSerializable("comboParams",parseEntryForParams(entry));
+                gotoFragmentByAdd(bundle, R.id.mainpage_ly, new ComboSecondFragment(), ComboSecondFragment.class.getName());
+            }
         }
     };
+
+    ArrayList<ComboParam> parseEntryForParams(ComboEntry entry) {
+        ArrayList<ComboParam> params = new ArrayList<>();
+        for (int i = 0; i < entry.mprices.length; i++) {
+            ComboParam p = new ComboParam();
+            p.setId(entry.id);
+            p.setDuration(entry.duration);
+            p.setShipday(entry.shipday);
+            p.setTitle(entry.title);
+            p.setTotalPrices(entry.prices[i]);
+            p.setWimg(entry.wimgs[i]);
+            p.setWeights(entry.weights[i]);
+            p.setComboIdx(i);
+            params.add(p);
+        }
+        return params;
+    }
 
 
     Bundle buildBundle(ComboEntry entry) {

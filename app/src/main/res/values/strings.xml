@@ -18,6 +18,7 @@
     <string name="community">小区</string>
     <string name="nearby_community">附近的小区</string>
     <string name="commit">提交</string>
+    <string name="ok">好的</string>
     <string name="receiveing_address">收货地址</string>
     <string name="community_name">小区名称</string>
     <string name="search">搜索</string>
@@ -72,4 +73,8 @@
     <string name="pay_by_year">年付:</string>
     <string name="now_pay">立即支付</string>
     <string name="supported_pay_by_year">本套餐只支持年付</string>
+    <string name="out_of_required_weight">亲,您已选满A啦!^^</string>
+    <string name="out_of_maxpacks">亲,该菜品库存不足,请选其他菜品吧</string>
+    <string name="out_of_remains">亲,该菜品剩余不足,请选其他菜品吧</string>
+    <string name="out_of_required_weight1">亲,选该菜品会超过A的,\n换换其他的吧！^^</string>
 </resources>

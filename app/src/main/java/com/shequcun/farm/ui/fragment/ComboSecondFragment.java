@@ -10,8 +10,11 @@ import android.widget.TextView;
 
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.ComboEntry;
+import com.shequcun.farm.data.ComboParam;
 import com.shequcun.farm.ui.adapter.ComboSubAdapter;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
+
+import java.util.ArrayList;
 
 /**
  * 二级套餐页
@@ -32,10 +35,10 @@ public class ComboSecondFragment extends BaseFragment {
 
     @Override
     protected void initWidget(View v) {
-        buildComboEntry();
+        ArrayList<ComboParam> paramses = getParams();
         back = v.findViewById(R.id.back);
         mLv = (ListView) v.findViewById(R.id.mLv);
-        ((TextView) v.findViewById(R.id.title_center_text)).setText(entry.title + "详情");
+        ((TextView) v.findViewById(R.id.title_center_text)).setText(paramses.get(0).getTitle() + "详情");
     }
 
     @Override
@@ -54,24 +57,24 @@ public class ComboSecondFragment extends BaseFragment {
 
 
     void buildAdapter() {
-        buildComboEntry();
         if (adapter == null)
-            adapter = new ComboSubAdapter(getActivity(), entry);
+            adapter = new ComboSubAdapter(getActivity(), getParams());
         adapter.setChooseDishesLsn(chooseDishes);
         mLv.setAdapter(adapter);
     }
 
-    void buildComboEntry() {
-        if (entry != null)
-            return;
+    ArrayList<ComboParam> getParams() {
         Bundle bundle = getArguments();
-        entry = bundle != null ? (ComboEntry) bundle.getSerializable("ComboEntry") : null;
+//        entry = bundle != null ? (ComboEntry) bundle.getSerializable("ComboEntry") : null;
+        return  (ArrayList<ComboParam>) bundle.getSerializable("comboParams");
     }
 
     AvoidDoubleClickListener chooseDishes = new AvoidDoubleClickListener() {
         @Override
         public void onViewClick(View v) {
-            gotoFragmentByAdd(buildBundle((ComboEntry) v.getTag()), R.id.mainpage_ly, new ChooseDishesFragment(), ChooseDishesFragment.class.getName());
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("comboParam", (ComboParam)v.getTag());
+            gotoFragmentByAdd(bundle, R.id.mainpage_ly, new ChooseDishesFragment(), ChooseDishesFragment.class.getName());
         }
     };
 
