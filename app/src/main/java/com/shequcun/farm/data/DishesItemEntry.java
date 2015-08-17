@@ -30,15 +30,20 @@ public class DishesItemEntry extends BaseEntry {
 
     private int count;
 
+
     public void setCount(int count) {
         this.count = count;
     }
+
+//    public float getTotalPrice() {
+//        return count * price;
+//    }
 
     public int getCount() {
         return count;
     }
 
-    //    @SerializedName("weights")
+//    @SerializedName("weights")
 //    public int weights;
 //    @SerializedName("price")
 //    public int price;

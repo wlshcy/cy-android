@@ -78,6 +78,7 @@ public class ChooseDishesFragment extends BaseFragment {
         emptyView = v.findViewById(R.id.empty_view);
         mOrderController = DisheDataCenter.getInstance();
         mBuyOrderTv = (TextView) v.findViewById(R.id.bug_order_tv);
+        mBuyOrderTv.setText("选择"+mOrderController.getReqWeight()+"g菜");
         mShopCartIv = (ImageView) v.findViewById(R.id.shop_cart_iv);
         mBadgeViewShopCart = new BadgeView(getActivity(), mShopCartIv);
         mBadgeViewShopCart.setWidth(ResUtil.dip2px(getActivity(), 20));
@@ -100,6 +101,7 @@ public class ChooseDishesFragment extends BaseFragment {
         mShopCartClearTv.setOnClickListener(onClick);
         mShopCartIv.setOnClickListener(onClick);
         mBuyOrderTv.setOnClickListener(onClick);
+        emptyView.setOnClickListener(onClick);
         requsetDishesList();
     }
 
@@ -124,6 +126,8 @@ public class ChooseDishesFragment extends BaseFragment {
             } else if (v == mBuyOrderTv) {//
                 gotoFragmentByAdd();
 //                gotoFragmentByAdd(R.id.mainpage_ly,new OrderDetailsFragment(),OrderDetailsFragment.class.getName());
+            }else if (v==emptyView){
+                hideShopCart();
             }
         }
     };
@@ -289,6 +293,7 @@ public class ChooseDishesFragment extends BaseFragment {
             LinearLayout view = (LinearLayout) LayoutInflater
                     .from(getActivity()).inflate(R.layout.good_item_popup, null);
             TextView priceTv = (TextView) view.findViewById(R.id.good_price_tv);
+            priceTv.setVisibility(View.GONE);
 //            priceTv.setText(String.valueOf(it.getTotalPrice()));
             TextView countTv = (TextView) view.findViewById(R.id.good_count_tv);
             countTv.setText(String.valueOf(it.getCount()));
@@ -308,50 +313,6 @@ public class ChooseDishesFragment extends BaseFragment {
 //            containerLl.addView(lineView, lp2);
         }
     }
-
-
-    private View.OnClickListener mDownOnClickListenerInShopCart = new View.OnClickListener() {
-
-        @Override
-        public void onClick(View v) {
-            ViewGroup parentView0 = (ViewGroup) v.getParent();
-            ViewGroup parentView = (ViewGroup) parentView0.getParent();
-            TextView tvCount = (TextView) parentView
-                    .findViewById(R.id.good_count_tv);
-            if (tvCount.getVisibility() == View.GONE) {
-                tvCount.setVisibility(View.VISIBLE);
-            }
-            ImageView ivDown = (ImageView) parentView
-                    .findViewById(R.id.good_count_down_iv);
-            if (ivDown.getVisibility() == View.GONE) {
-                ivDown.setVisibility(View.VISIBLE);
-            }
-            String count = tvCount.getText().toString();
-            int intCount = Integer.parseInt(count);
-            intCount--;
-            int id = (int) (v.getTag());
-            DishesItemEntry item = mOrderController.getItemById(id);
-            if (item != null) {
-                if (intCount == 0) {
-                    ivDown.setVisibility(View.GONE);
-                    tvCount.setVisibility(View.GONE);
-                    mOrderController.removeItemById(id);
-                    containerLl.removeView(parentView);
-                } else if (intCount < 0) {
-                    intCount = 0;
-                }
-                item.setCount(intCount);
-                TextView priceTv = (TextView) parentView
-                        .findViewById(R.id.good_price_tv);
-//                priceTv.setText(String.valueOf(item.getTotalPrice()));
-            }
-            // 减单
-            tvCount.setText(String.valueOf(intCount));
-            setBadgeView(false);
-            updateShopCartDataToView();
-            updateBuyOrderStatus();
-        }
-    };
 
 
     private AvoidDoubleClickListener mUpOnClickListener = new AvoidDoubleClickListener() {
@@ -460,7 +421,6 @@ public class ChooseDishesFragment extends BaseFragment {
      * 根据购物车数据更新界面
      */
     public void updateShopCartDataToView() {
-
 //        for (List<Item> list : childList) {
 //            for (Item goodItem : list) {
 //                Item item = mOrderController.getItemById(goodItem.getId());
@@ -471,7 +431,7 @@ public class ChooseDishesFragment extends BaseFragment {
 //                }
 //            }
 //        }
-//        rightAdapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
         updateShopCartWidgetStatus();
     }
 
@@ -518,6 +478,10 @@ public class ChooseDishesFragment extends BaseFragment {
         }
     }
 
+    private boolean outOfRequiredWeight(){
+        return mOrderController.outOfSendPrice();
+    }
+
 
     /**
      * 转换下单按钮的可见性
@@ -529,20 +493,19 @@ public class ChooseDishesFragment extends BaseFragment {
             mBuyOrderTv.setText(R.string.small_market_buy);
             mBuyOrderTv.setTextColor(getResources().getColor(
                     R.color.white_fefefe));
-            mBuyOrderTv.setEnabled(true);
-            mBuyOrderTv.setEnabled(true);
+//            mBuyOrderTv.setEnabled(true);
         } else {
             mBuyOrderTv
                     .setBackgroundResource(R.drawable.shopping_cart_widget_selector_2);
             String txt = getResources().getString(
-                    R.string.small_market_buy_not);
+                    R.string.small_market_buy_not_enough);
             txt = txt.replaceAll(
                     "A",
-                    String.valueOf((int) (mOrderController.getSendPrice()
-                            - mOrderController.getTotalPrice())));
+                    String.valueOf((int) (mOrderController.getReqWeight()
+                            - mOrderController.getItemsWeight())));
             mBuyOrderTv.setText(txt);
             mBuyOrderTv.setTextColor(getResources().getColor(android.R.color.black));
-            mBuyOrderTv.setEnabled(false);
+//            mBuyOrderTv.setEnabled(false);
         }
     }
 
@@ -556,7 +519,7 @@ public class ChooseDishesFragment extends BaseFragment {
 //            String txt = getResources().getString(
 //                    R.string.small_market_shop_cart_price);
 //            String p = txt.replaceAll("A", String.valueOf(totalPrice));
-            mShopCartPriceTv.setText(String.valueOf(totalPrice));
+            mShopCartPriceTv.setText("共"+mOrderController.getItemsCount()+"份");
         } else {
             mShopCartPriceTv.setText(R.string.small_market_shop_cart_null);
         }
@@ -626,23 +589,64 @@ public class ChooseDishesFragment extends BaseFragment {
             if (ivDown.getVisibility() == View.GONE) {
                 ivDown.setVisibility(View.VISIBLE);
             }
-            String count = tvCount.getText().toString();
-            int intCount = Integer.parseInt(count) + 1;
-            if (intCount > 0) {
-                int id = 1;
-                DishesItemEntry item = mOrderController.getItemById(id);
-                if (item == null) {
+//            String count = tvCount.getText().toString();
+//            int intCount = Integer.parseInt(count);
+            int id = (int) (v.getTag());
+            DishesItemEntry item = mOrderController.getItemById(id);
+            if (item == null) {
 //                    logger.error("异常：item为空");
-                } else {
-                    item.setCount(intCount);
+            } else {
+                item.setCount(item.getCount() + 1);
+            }
+            TextView priceTv = (TextView) parentView
+                    .findViewById(R.id.good_price_tv);
+//            priceTv.setText(String.valueOf(item.get));
+
+            tvCount.setText(String.valueOf(item.getCount()));
+            setBadgeView(true);
+            updateShopCartDataToView();
+            updateBuyOrderStatus();
+        }
+    };
+
+    private View.OnClickListener mDownOnClickListenerInShopCart = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            ViewGroup parentView0 = (ViewGroup) v.getParent();
+            ViewGroup parentView = (ViewGroup) parentView0.getParent();
+            TextView tvCount = (TextView) parentView
+                    .findViewById(R.id.good_count_tv);
+            if (tvCount.getVisibility() == View.GONE) {
+                tvCount.setVisibility(View.VISIBLE);
+            }
+            ImageView ivDown = (ImageView) parentView
+                    .findViewById(R.id.good_count_down_iv);
+            if (ivDown.getVisibility() == View.GONE) {
+                ivDown.setVisibility(View.VISIBLE);
+            }
+            String count = tvCount.getText().toString();
+            int intCount = Integer.parseInt(count);
+            intCount--;
+            int id = (int) (v.getTag());
+            DishesItemEntry item = mOrderController.getItemById(id);
+            if (item != null) {
+                if (intCount == 0) {
+                    ivDown.setVisibility(View.GONE);
+                    tvCount.setVisibility(View.GONE);
+                    mOrderController.removeItemById(id);
+                    containerLl.removeView(parentView);
+                } else if (intCount < 0) {
+                    intCount = 0;
                 }
+                item.setCount(intCount);
                 TextView priceTv = (TextView) parentView
                         .findViewById(R.id.good_price_tv);
 //                priceTv.setText(String.valueOf(item.getTotalPrice()));
             }
-
+            // 减单
             tvCount.setText(String.valueOf(intCount));
-            setBadgeView(true);
+            setBadgeView(false);
             updateShopCartDataToView();
             updateBuyOrderStatus();
         }
@@ -690,7 +694,8 @@ public class ChooseDishesFragment extends BaseFragment {
 
             DishesItemEntry goodItem = adapter.getItem(position);
             goodItem.setCount(intCount);
-            mOrderController.addItem(goodItem);
+            if (!mOrderController.getItems().contains(goodItem))
+                mOrderController.addItem(goodItem);
 //        // logger.error("groupPos:"+groupPos+" childPos:"+childPos);
 ////        添加一项到控制器
 //        if (intCount > 0) {

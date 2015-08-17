@@ -55,14 +55,22 @@ public class ChooseDishesAdapter extends ArrayAdapter<DishesItemEntry> {
         vh.goods_img.setOnClickListener(onGoodsImgLsn);
         vh.goods_add.setTag(position);
         vh.goods_add.setOnClickListener(onAddGoodsLsn);
+        vh.goods_add.setContentDescription(String.valueOf(entry.id));
         vh.goods_sub.setTag(position);
         vh.goods_sub.setOnClickListener(onSubGoodsLsn);
+        vh.goods_sub.setContentDescription(String.valueOf(entry.id));
         if (entry != null) {
             vh.goods_img.setImageUrl(entry.imgs[0], ImageCacheManager.getInstance().getImageLoader());
             vh.goods_name.setText(entry.title);
             vh.goods_price.setText(Utils.unitConversion(entry.packw) + "/份");
         }
-
+        if (entry.getCount()>0){
+            vh.goods_count.setText(String.valueOf(entry.getCount()));
+            vh.goods_count.setVisibility(View.VISIBLE);
+        }else {
+            vh.goods_sub.setVisibility(View.GONE);
+            vh.goods_count.setVisibility(View.GONE);
+        }
         return v;
     }
 

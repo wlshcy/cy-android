@@ -1,9 +1,12 @@
 package com.shequcun.farm.ui.fragment;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.shequcun.farm.R;
@@ -13,6 +16,7 @@ import com.shequcun.farm.R;
  */
 public abstract class BaseFragment extends Fragment {
     protected FragmentMgrInterface fMgrInterface;
+    protected FragmentActivity mfragmentActivity;
 
     public abstract boolean onBackPressed();
 
@@ -27,13 +31,28 @@ public abstract class BaseFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         initWidget(view);
         setWidgetLsn();
+        view.setOnTouchListener(onRootViewTouchListener);
     }
+
+    protected View.OnTouchListener onRootViewTouchListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            return true;
+        }
+    };
 
     @Override
     public void onStart() {
         super.onStart();
         if (fMgrInterface != null)
             fMgrInterface.setSelectedFragment(this);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+//        防止activity被系统回收掉
+        mfragmentActivity = (FragmentActivity)activity;
     }
 
 
@@ -65,6 +84,15 @@ public abstract class BaseFragment extends Fragment {
                              String tag) {
         fragment.setArguments(bundle);
         gotoFragment(id, fragment, tag);
+    }
+
+    protected FragmentActivity getFragmentActivity() {
+        FragmentActivity baseFragmentActivity = (FragmentActivity) getActivity();
+        if (baseFragmentActivity == null) {
+//            activity被回收
+            return mfragmentActivity;
+        }
+        return baseFragmentActivity;
     }
 
     /**
