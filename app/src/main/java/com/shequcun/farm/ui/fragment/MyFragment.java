@@ -1,7 +1,9 @@
 package com.shequcun.farm.ui.fragment;
 
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -23,7 +25,6 @@ import com.shequcun.farm.dlg.ConsultationDlg;
 import com.shequcun.farm.ui.adapter.MyAdapter;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
 import com.shequcun.farm.util.JsonUtilsParser;
-import com.shequcun.farm.util.ToastHelper;
 
 /**
  * Created by apple on 15/8/3.
@@ -95,8 +96,27 @@ public class MyFragment extends BaseFragment {
         ((TextView) hView_1.findViewById(R.id.mobile_phone)).setText(uEntry != null ? uEntry.mobile : "");
         ((CircleImageView) hView_1.findViewById(R.id.my_head)).setImageUrl(uEntry != null ? uEntry.headimg : null, ImageCacheManager.getInstance().getImageLoader());
         mLv.addHeaderView(hView_1, null, false);
-        mLv.addHeaderView(hView_2 = buildHeadView(uEntry), null, false);
+//        mLv.addHeaderView(hView_2 = buildHeadView(uEntry), null, false);
     }
+
+//    void addHeader(ComboEntry entry) {
+//        if (mLv == null)
+//            return;
+//        if (hView_1 != null)
+//            mLv.removeHeaderView(hView_1);
+//        if (hView_2 != null)
+//            mLv.removeHeaderView(hView_2);
+//        byte[] data = new CacheManager(getActivity()).getUserLoginFromDisk();
+//        if (data != null && data.length > 0) {
+//            uEntry = JsonUtilsParser.fromJson(new String(data), UserLoginEntry.class);
+//        }
+//        hView_1 = LayoutInflater.from(getActivity()).inflate(R.layout.my_item_head_ly, null);
+//        hView_1.findViewById(R.id.set).setOnClickListener(onClick);
+//        ((TextView) hView_1.findViewById(R.id.mobile_phone)).setText(uEntry != null ? uEntry.mobile : "");
+//        ((CircleImageView) hView_1.findViewById(R.id.my_head)).setImageUrl(uEntry != null ? uEntry.headimg : null, ImageCacheManager.getInstance().getImageLoader());
+//        mLv.addHeaderView(hView_1, null, false);
+//        mLv.addHeaderView(hView_2 = buildHeaderView(uEntry, entry), null, false);
+//    }
 
     void buildAdapter() {
         addHeader();
@@ -105,28 +125,47 @@ public class MyFragment extends BaseFragment {
         mLv.setAdapter(adapter);
     }
 
-    View buildHeadView(UserLoginEntry uEntry) {
-        View hView = null;
-        if (uEntry == null) {
-            hView = LayoutInflater.from(getActivity()).inflate(R.layout.no_login_ly, null);
-            hView.findViewById(R.id.tv_status).setOnClickListener(onClick);
-        } else {
-            if (hasChosenCombo) {
-                hView = LayoutInflater.from(getActivity()).inflate(R.layout.have_chosen_ly, null);
-            } else {
-                hView = LayoutInflater.from(getActivity()).inflate(R.layout.no_login_ly, null);
-                ((TextView) hView.findViewById(R.id.tv_tip)).setText(R.string.no_combo_tip);
-                ((TextView) hView.findViewById(R.id.tv_status)).setText(R.string.choose_combo);
-                hView.findViewById(R.id.tv_status).setOnClickListener(onClick);
-            }
-        }
-        return hView;
-    }
+//    View buildHeadView(UserLoginEntry uEntry) {
+//        View hView = null;
+//        if (uEntry == null) {
+//            hView = LayoutInflater.from(getActivity()).inflate(R.layout.no_login_ly, null);
+//            hView.findViewById(R.id.tv_status).setOnClickListener(onClick);
+//        }
+//        else {
+//            if (hasChosenCombo) {
+//                hView = LayoutInflater.from(getActivity()).inflate(R.layout.have_chosen_ly, null);
+//            } else {
+//                hView = LayoutInflater.from(getActivity()).inflate(R.layout.no_login_ly, null);
+//                ((TextView) hView.findViewById(R.id.tv_tip)).setText(R.string.no_combo_tip);
+//                ((TextView) hView.findViewById(R.id.tv_status)).setText(R.string.choose_combo);
+//                hView.findViewById(R.id.tv_status).setOnClickListener(onClick);
+//            }
+//        }
+//        return hView;
+//    }
+
+//    View buildHeaderView(UserLoginEntry uEntry, ComboEntry entry) {
+//        View hView = null;
+//        if (uEntry == null) {
+//            hView = LayoutInflater.from(getActivity()).inflate(R.layout.no_login_ly, null);
+//            hView.findViewById(R.id.tv_status).setOnClickListener(onClick);
+//        } else {
+//            if (entry != null) {
+//                hView = LayoutInflater.from(getActivity()).inflate(R.layout.have_chosen_ly, null);
+//                ((TextView) hView.findViewById(R.id.combo_name)).setText(entry.title);
+//                ((TextView) hView.findViewById(R.id.dis_cycle)).setText("每周配送" + entry.shipday.length + "次");
+//                ((TextView) hView.findViewById(R.id.per_weight)).setText("每次配送" + Utils.unitConversion(entry.weights[entry.index]));
+//                ((TextView) hView.findViewById(R.id.times)).setText("配送" + entry.duration + "周");
+//                ((TextView) hView.findViewById(R.id.all_weight)).setText("共" + Utils.unitConversion(entry.duration * entry.weights[entry.index] * entry.shipday.length));
+//            }
+//        }
+//        return hView;
+//    }
 
     /**
      * 是否选择菜品
      */
-    boolean hasChosenCombo = false;
+//    boolean hasChosenCombo = false;
 
     private AdapterView.OnItemClickListener onItemClick = new AdapterView.OnItemClickListener() {
         @Override
@@ -134,7 +173,9 @@ public class MyFragment extends BaseFragment {
             if (adapter == null || mLv == null)
                 return;
             if (uEntry == null) {
-                ToastHelper.showShort(getActivity(), R.string.login_msg_tip);
+//                ToastHelper.showShort(getActivity(), R.string.login_msg_tip);
+                showLoginDlg();
+                return;
             }
             switch (position - mLv.getHeaderViewsCount()) {
                 case 0://我的订单
@@ -167,7 +208,12 @@ public class MyFragment extends BaseFragment {
             if (TextUtils.isEmpty(action)) {
                 return;
             }
-//            String subAction = intent.getStringExtra("UpdateAction");
+//            ComboEntry entry = (ComboEntry) intent.getSerializableExtra("ComboEntry");
+//            if (entry != null) {
+//                addHeader(entry);
+//                return;
+//            }
+
             if (action.equals("com.youcai.refresh")) {
                 addHeader();
             }
@@ -179,6 +225,22 @@ public class MyFragment extends BaseFragment {
             getActivity().unregisterReceiver(mUpdateReceiver);
             mIsBind = false;
         }
+    }
+
+
+    void showLoginDlg() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+//        builder.setIcon(android.R.drawable.ic_dialog_info);
+        builder.setTitle("提示");
+        builder.setMessage("亲,您还未登录哦!立刻登录?");
+        builder.setNegativeButton("登录", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                gotoFragment(R.id.mainpage_ly, new LoginFragment(), LoginFragment.class.getName());
+            }
+        });
+        builder.setNeutralButton("取消", null);
+        builder.create().show();
     }
 
     boolean mIsBind = false;

@@ -10,7 +10,7 @@
         android:layout_height="@dimen/px170"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/px40"
-        android:src="@color/dark_green" />
+        />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -24,7 +24,6 @@
             android:id="@+id/goods_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="有机白菜"
             android:textColor="@color/black_444444"
             android:textSize="@dimen/font28" />
 
@@ -33,7 +32,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/px40"
-            android:text="10元/份"
             android:textColor="@color/black_444444"
             android:textSize="@dimen/font28" />
     </LinearLayout>

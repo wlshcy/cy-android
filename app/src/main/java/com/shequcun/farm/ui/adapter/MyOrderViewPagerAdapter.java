@@ -7,8 +7,12 @@ import android.support.v4.view.PagerAdapter;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 
+import com.shequcun.farm.data.OrderEntry;
+import com.shequcun.farm.data.OrderListEntry;
 import com.shequcun.farm.ui.fragment.DishesFragment;
 import com.shequcun.farm.ui.fragment.ShoppingOrderFragment;
+
+import java.util.ArrayList;
 
 /**
  * Created by apple check_turn_on 15/7/21.
@@ -18,11 +22,6 @@ public class MyOrderViewPagerAdapter extends FragmentPagerAdapter {
     public MyOrderViewPagerAdapter(FragmentManager fm) {
         super(fm);
     }
-
-    private int mListType = 1;
-
-    // private Map<Integer, Fragment> mPageReferenceMap = new HashMap<Integer,
-    // Fragment>();
     SparseArray<Fragment> mPageReferenceMap = new SparseArray<Fragment>();
 
     public Fragment getOneFragment(int index) {
@@ -64,6 +63,34 @@ public class MyOrderViewPagerAdapter extends FragmentPagerAdapter {
         Fragment fragment = (Fragment) super.instantiateItem(container,
                 position);
         return fragment;
+    }
+
+
+
+    public void buildOrderListEntry(OrderListEntry oLentry) {
+        ArrayList<OrderEntry> dishesEntry = new ArrayList<OrderEntry>();
+        ArrayList<OrderEntry> shoppingEntry = new ArrayList<OrderEntry>();
+
+        if (oLentry != null && oLentry.aList != null) {
+            int size = oLentry.aList.size();
+            for (int i = 0; i < size; i++) {
+                OrderEntry tmpEntry = oLentry.aList.get(i);
+                if (tmpEntry.type == 1) {
+                    dishesEntry.add(tmpEntry);
+                } else {
+                    shoppingEntry.add(tmpEntry);
+                }
+            }
+        }
+
+        for (int i = 0; i < getCount(); ++i) {
+            Fragment fragment = getFragment(i);
+            if (fragment instanceof DishesFragment) {
+                ((DishesFragment) fragment).addDataToAdapter(dishesEntry);
+            } else if (fragment instanceof ShoppingOrderFragment) {
+                ((ShoppingOrderFragment) fragment).addDataToAdapter(shoppingEntry);
+            }
+        }
     }
 
     @Override
