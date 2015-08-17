@@ -12,12 +12,15 @@ import android.widget.TextView;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.shequcun.farm.R;
+import com.shequcun.farm.data.AddressEntry;
+import com.shequcun.farm.data.AddressListEntry;
 import com.shequcun.farm.data.OrderEntry;
 import com.shequcun.farm.data.UserLoginEntry;
 import com.shequcun.farm.datacenter.CacheManager;
 import com.shequcun.farm.datacenter.DisheDataCenter;
 import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.dlg.ConsultationDlg;
+import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.ui.adapter.OrderDetailsAdapter;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
 import com.shequcun.farm.util.HttpRequestUtil;
@@ -27,11 +30,13 @@ import com.shequcun.farm.util.ToastHelper;
 
 import org.apache.http.Header;
 
+import java.util.List;
+
 /**
  * 订单详情页
  * Created by apple on 15/8/10.
  */
-public class OrderDetailsFragment extends BaseFragment {
+public class OrderDetailsFragment extends BaseFragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -55,8 +60,19 @@ public class OrderDetailsFragment extends BaseFragment {
         rightTv.setText(R.string.consultation);
         re_choose_dishes = v.findViewById(R.id.re_choose_dishes);
         commitOrderTv = (TextView) v.findViewById(R.id.bug_order_tv);
+        addressLy = v.findViewById(R.id.addressee_ly);
         buildUserLoginEntry();
-        v.findViewById(R.id.addressee_ly).setVisibility(uEntry == null ? View.GONE : View.VISIBLE);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        requestUserAddress();
     }
 
     void buildUserLoginEntry() {
@@ -72,8 +88,8 @@ public class OrderDetailsFragment extends BaseFragment {
         rightTv.setOnClickListener(onClick);
         re_choose_dishes.setOnClickListener(onClick);
         commitOrderTv.setOnClickListener(onClick);
+        addressLy.setOnClickListener(onClick);
         buildAdapter();
-        setWidgetContent();
     }
 
     AvoidDoubleClickListener onClick = new AvoidDoubleClickListener() {
@@ -87,17 +103,11 @@ public class OrderDetailsFragment extends BaseFragment {
 
             } else if (v == commitOrderTv) {
                 makeOrder();
+            } else if (v == addressLy) {
+gotoAddressFragment();
             }
         }
     };
-
-    void setWidgetContent() {
-        if (uEntry == null)
-            return;
-        String addInfo = (uEntry.name == null ? "" : uEntry.name) + "   " + uEntry.mobile;
-        addressee_info.setText(addInfo);
-        address.setText("地址: " + uEntry.address);
-    }
 
     void addFooter() {
         View footerView = LayoutInflater.from(getActivity()).inflate(R.layout.order_details_footer_ly, null);
@@ -119,7 +129,7 @@ public class OrderDetailsFragment extends BaseFragment {
 
     int getComboIdxParams() {
         Bundle bundle = getArguments();
-        if (bundle==null)return -1;
+        if (bundle == null) return -1;
         return bundle.getInt("comboIdx");
     }
 
@@ -173,14 +183,69 @@ public class OrderDetailsFragment extends BaseFragment {
         });
     }
 
+    void requestUserAddress() {
+        final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
+        HttpRequestUtil.httpGet(LocalParams.INSTANCE.getBaseUrl() + "user/address", new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                super.onStart();
+                if (pDlg != null)
+                    pDlg.show();
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                if (pDlg != null)
+                    pDlg.dismiss();
+            }
+
+            @Override
+            public void onSuccess(int sCode, Header[] h, byte[] data) {
+                if (data != null && data.length > 0) {
+                    AddressListEntry entry = JsonUtilsParser.fromJson(new String(data), AddressListEntry.class);
+                    if (entry != null) {
+                        if (TextUtils.isEmpty(entry.errmsg)) {
+                            successUserAddress(entry.aList);
+                            return;
+                        } else {
+                            ToastHelper.showShort(getActivity(), entry.errmsg);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
+                if (sCode == 0) {
+                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
+                    return;
+                }
+                ToastHelper.showShort(getActivity(), "请求失败,错误码" + sCode);
+            }
+        });
+    }
+
+    private void successUserAddress(List<AddressEntry> list) {
+        for (AddressEntry entry : list) {
+            if (entry.isDefault) {
+                addressee_info.setText(entry.name+"  "+entry.mobile);
+                address.setText("地址: " + uEntry.address);
+                return;
+            }
+        }
+    }
+
     private void gotoAddressFragment() {
-        gotoFragmentByAdd(R.id.mainpage_ly, new AddressFragment(), AddressFragment.class.getName());
+        OrderAddressFragment fragment = new OrderAddressFragment();
+        gotoFragmentByAdd(R.id.mainpage_ly, fragment, fragment.getClass().getName());
     }
 
     private void gotoOrderSuccess() {
         gotoFragmentByAdd(R.id.mainpage_ly, new OrderSuccessFragment(), OrderSuccessFragment.class.getName());
     }
 
+    View addressLy;
     TextView titleTv;
     TextView commitOrderTv;
     UserLoginEntry uEntry;

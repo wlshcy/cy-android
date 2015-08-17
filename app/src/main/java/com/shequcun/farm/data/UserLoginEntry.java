@@ -24,4 +24,6 @@ public class UserLoginEntry extends BaseEntry implements Serializable {
     public String address;
     @SerializedName("id")
     public int id;
+    @SerializedName("zname")
+    public String zname;
 }
