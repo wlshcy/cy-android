@@ -1,5 +1,9 @@
 package com.shequcun.farm.ui.fragment;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -17,11 +21,13 @@ import com.shequcun.farm.data.ComboEntry;
 import com.shequcun.farm.data.ComboListEntry;
 import com.shequcun.farm.data.ComboParam;
 import com.shequcun.farm.data.SlidesEntry;
+import com.shequcun.farm.datacenter.CacheManager;
 import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.ui.adapter.CarouselAdapter;
 import com.shequcun.farm.ui.adapter.ComboAdapter;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
 import com.shequcun.farm.util.HttpRequestUtil;
+import com.shequcun.farm.util.IntentUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.ToastHelper;
@@ -61,6 +67,7 @@ public class ComboFragment extends BaseFragment {
         buildAdapter();
         buildCarouselAdapter();
         requestComboList();
+        doRegisterRefreshBrodcast();
     }
 
     AvoidDoubleClickListener onClick = new AvoidDoubleClickListener() {
@@ -78,10 +85,10 @@ public class ComboFragment extends BaseFragment {
     void buildCarouselAdapter() {
         if (cAdapter == null) {
             List<SlidesEntry> list = new ArrayList<SlidesEntry>();
-            for (int i = 0; i < 4; i++) {
-                SlidesEntry s = new SlidesEntry();
-                list.add(s);
-            }
+//            for (int i = 0; i < 4; i++) {
+            SlidesEntry s = new SlidesEntry();
+            list.add(s);
+//            }
             cAdapter = new CarouselAdapter(getActivity(), list);
         }
         cAdapter.buildOnClick(onClick);
@@ -110,7 +117,16 @@ public class ComboFragment extends BaseFragment {
             ComboEntry entry = adapter.getItem(position);
             if (entry == null)
                 return;
+            if (isLogin()) {
+                if (buildIsMyComboClick(position)) {
+                    gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new ChooseDishesFragment(), ChooseDishesFragment.class.getName());
+                } else
+                    gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new ComboSecondFragment(), ComboSecondFragment.class.getName());
+            } else {
+                gotoFragmentByAdd(R.id.mainpage_ly, new LoginFragment(), LoginFragment.class.getName());
+            }
 
+<<<<<<< HEAD
             Bundle bundle = new Bundle();
             if (buildIsMyComboClick(position)) {
                 bundle.putInt("id",entry.id);
@@ -120,6 +136,8 @@ public class ComboFragment extends BaseFragment {
                 bundle.putSerializable("comboParams",parseEntryForParams(entry));
                 gotoFragmentByAdd(bundle, R.id.mainpage_ly, new ComboSecondFragment(), ComboSecondFragment.class.getName());
             }
+=======
+>>>>>>> master
         }
     };
 
@@ -145,6 +163,21 @@ public class ComboFragment extends BaseFragment {
         Bundle bundle = new Bundle();
         bundle.putSerializable("ComboEntry", entry);
         return bundle;
+    }
+
+    /**
+     * 是否登录成功
+     *
+     * @return
+     */
+    boolean isLogin() {
+        return new CacheManager(getActivity()).getUserLoginFromDisk() != null;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        doUnRegisterReceiver();
     }
 
     /**
@@ -201,6 +234,7 @@ public class ComboFragment extends BaseFragment {
             Utils.setListViewHeightBasedOnChildren(mListView);
             adapter.addAll(aList);
             adapter.notifyDataSetChanged();
+            IntentUtil.sendUpdateMyInfoMsg(getActivity(), aList.get(0));
         }
     }
 
@@ -229,7 +263,38 @@ public class ComboFragment extends BaseFragment {
         return pView.findViewById(R.id.my_combo).getVisibility() == View.VISIBLE;
     }
 
+    void doRegisterRefreshBrodcast() {
+        if (!mIsBind) {
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(IntentUtil.UPDATE_COMBO_PAGE);
+            getActivity().registerReceiver(mUpdateReceiver, intentFilter);
+            mIsBind = true;
+        }
+    }
 
+    private BroadcastReceiver mUpdateReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (TextUtils.isEmpty(action)) {
+                return;
+            }
+            if (action.equals(IntentUtil.UPDATE_COMBO_PAGE)) {
+                if (adapter != null)
+                    adapter.clear();
+                requestComboList();
+            }
+        }
+    };
+
+    private void doUnRegisterReceiver() {
+        if (mIsBind) {
+            getActivity().unregisterReceiver(mUpdateReceiver);
+            mIsBind = false;
+        }
+    }
+
+    boolean mIsBind = false;
     ComboAdapter adapter;
     CarouselAdapter cAdapter;
     ListView mListView;

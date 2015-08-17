@@ -8,17 +8,17 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.shequcun.farm.R;
+import com.shequcun.farm.data.OrderEntry;
+import com.shequcun.farm.util.Utils;
 
 /**
  * Created by apple on 15/8/8.
  */
-public class MyOrderAdapter extends ArrayAdapter<T> {
-
-    private Context mContext;
+public class MyOrderAdapter extends ArrayAdapter<OrderEntry> {
+    OrderEntry entry;
 
     public MyOrderAdapter(Context context) {
         super(context, R.layout.my_order_item_ly);
-        this.mContext=context;
     }
 
     @Override
@@ -26,14 +26,34 @@ public class MyOrderAdapter extends ArrayAdapter<T> {
         ViewHolder vh = null;
         if (v == null) {
             vh = new ViewHolder();
-            v = LayoutInflater.from(mContext).inflate(R.layout.my_order_item_ly, null);
+            v = LayoutInflater.from(getContext()).inflate(R.layout.my_order_item_ly, null);
             vh.distribution_number_tv = (TextView) v.findViewById(R.id.distribution_number_tv);
             vh.distribution_date = (TextView) v.findViewById(R.id.distribution_date);
             vh.distribution_name = (TextView) v.findViewById(R.id.distribution_name);
             vh.order_status = (TextView) v.findViewById(R.id.order_status);
+            v.setTag(vh);
         } else {
             vh = (ViewHolder) v.getTag();
         }
+        entry = getItem(position);
+
+        if (entry != null) {
+            vh.distribution_number_tv.setText("第" + entry.times + "次配送");
+            if (entry.status == 3)
+                vh.distribution_date.setText("下单日期" + Utils.getTime(entry.modified));
+            else {
+                vh.distribution_date.setText("配送日期" + Utils.getTime(entry.modified));
+            }
+            vh.distribution_name.setText(entry.title);
+
+            if (entry.status == 3) {
+                vh.order_status.setText("已配送");
+            } else {
+                vh.order_status.setText("未配送");
+            }
+
+        }
+
 
 //        vh.order_status.setBackgroundResource(R.drawable.gray_f0f0f0_corner_bg);
 //        vh.order_status.setBackgroundResource(R.drawable.green_94d6c0_corner_bg);

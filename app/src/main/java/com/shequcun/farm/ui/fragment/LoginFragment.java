@@ -161,6 +161,7 @@ public class LoginFragment extends BaseFragment {
 //                                baseFragmentActivity.finish();
                                 new CacheManager(getActivity()).saveUserLoginToDisk(body);
                                 IntentUtil.sendUpdateMyInfoMsg(getActivity());
+                                IntentUtil.sendUpdateComboMsg(getActivity());
                                 popBackStack();
                                 return;
                             } else {

@@ -131,16 +131,16 @@ public class HttpRequestUtil {
      */
     public static AsyncHttpClient getHttpClient(Context mContext) {
         AsyncHttpClient hClient = new AsyncHttpClient();
-//        hClient.addHeader("Accept-Encoding", "gzip");
-//        hClient.addHeader("User-Agent", "youcai/" + DeviceInfo.getVersion(mContext)
-//                + " android/" + DeviceInfo.getReleseVersion() + " device/"
-//                + DeviceInfo.getModelName());
-//        SSLSocketFactory.getSocketFactory().setHostnameVerifier(
-//                new AllowAllHostnameVerifier());
-//        hClient.setTimeout(10000);
-//        PersistentCookieStore myCookieStore = new PersistentCookieStore(
-//                mContext);
-//        hClient.setCookieStore(myCookieStore);
+        hClient.addHeader("Accept-Encoding", "gzip");
+        hClient.addHeader("User-Agent", "youcai/" + DeviceInfo.getVersion(mContext)
+                + " android/" + DeviceInfo.getReleseVersion() + " device/"
+                + DeviceInfo.getModelName());
+        SSLSocketFactory.getSocketFactory().setHostnameVerifier(
+                new AllowAllHostnameVerifier());
+        hClient.setTimeout(10000);
+        PersistentCookieStore myCookieStore = new PersistentCookieStore(
+                mContext);
+        hClient.setCookieStore(myCookieStore);
         return hClient;
     }
 

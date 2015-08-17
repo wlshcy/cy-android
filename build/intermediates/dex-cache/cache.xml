@@ -2,39 +2,39 @@
 <items version="2" >
 
     <item
-        jar="/Users/cong/sqc/android/ycai/youcai-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.0/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.0 rc3"
-        sha1="73753982da6bde518f3a4c6b372749981d14d1a0">
-        <dex dex="/Users/cong/sqc/android/ycai/youcai-android/app/build/intermediates/pre-dexed/debug/classes-e08656e7fa0318cb607fdb2e9bb90b363adb9f12.jar" />
-    </item>
-    <item
-        jar="/Users/cong/sqc/android/ycai/youcai-android/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.0/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.0 rc3"
-        sha1="1ee588ff2c4daf7b97c1cbf922a6c7f027285c2f">
-        <dex dex="/Users/cong/sqc/android/ycai/youcai-android/app/build/intermediates/pre-dexed/debug/classes-efcee9908d1c331b4804dc9086773796f5cd7797.jar" />
-    </item>
-    <item
-        jar="/Users/cong/Desktop/adt/sdk/extras/android/m2repository/com/android/support/support-annotations/22.2.0/support-annotations-22.2.0.jar"
+        jar="/Users/apple/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/22.2.0/support-annotations-22.2.0.jar"
         jumboMode="false"
         revision="23.0.0 rc3"
         sha1="66b42a1f3eb7676070b7ef7f14b603483aecbee1">
-        <dex dex="/Users/cong/sqc/android/ycai/youcai-android/app/build/intermediates/pre-dexed/debug/support-annotations-22.2.0-4283de105fc4b9bf291542ccaef7ae6fe4a2c84b.jar" />
+        <dex dex="/Developer/worksapce/youcai-android/app/build/intermediates/pre-dexed/debug/support-annotations-22.2.0-5f9c2483e44ea9cc89b519b8360b13894b61229a.jar" />
     </item>
     <item
-        jar="/Users/cong/sqc/android/ycai/youcai-android/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.0/jars/libs/internal_impl-22.2.0.jar"
+        jar="/Developer/worksapce/youcai-android/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.0/jars/libs/internal_impl-22.2.0.jar"
         jumboMode="false"
         revision="23.0.0 rc3"
         sha1="57f2ab85c164ff1676ec64dee787981c046fab79">
-        <dex dex="/Users/cong/sqc/android/ycai/youcai-android/app/build/intermediates/pre-dexed/debug/internal_impl-22.2.0-e796c50edfecae166ae22796c79f7e8dacbf6ae1.jar" />
+        <dex dex="/Developer/worksapce/youcai-android/app/build/intermediates/pre-dexed/debug/internal_impl-22.2.0-97d88d4f04a9efa49cf29b2b073289187be4297c.jar" />
     </item>
     <item
-        jar="/Users/cong/sqc/android/ycai/youcai-android/app/libs/SqcFarmSDK.jar"
+        jar="/Developer/worksapce/youcai-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.0 rc3"
+        sha1="73753982da6bde518f3a4c6b372749981d14d1a0">
+        <dex dex="/Developer/worksapce/youcai-android/app/build/intermediates/pre-dexed/debug/classes-906b0a7508f610ff3c4ba2e9e4439bee1e917ad8.jar" />
+    </item>
+    <item
+        jar="/Developer/worksapce/youcai-android/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.0 rc3"
+        sha1="1ee588ff2c4daf7b97c1cbf922a6c7f027285c2f">
+        <dex dex="/Developer/worksapce/youcai-android/app/build/intermediates/pre-dexed/debug/classes-cc9c4b733ebb4254a04bacd1ec5d3464eea13ccf.jar" />
+    </item>
+    <item
+        jar="/Developer/worksapce/youcai-android/app/libs/SqcFarmSDK.jar"
         jumboMode="false"
         revision="23.0.0 rc3"
         sha1="5f886625e89a36d1455a5204c9305e56343d79aa">
-        <dex dex="/Users/cong/sqc/android/ycai/youcai-android/app/build/intermediates/pre-dexed/debug/SqcFarmSDK-c8370864b9f3a1cf9b7b06cc3ff88700f6be565d.jar" />
+        <dex dex="/Developer/worksapce/youcai-android/app/build/intermediates/pre-dexed/debug/SqcFarmSDK-2940392907a5dc53b3aeddef0f0c552cfcf7b6a2.jar" />
     </item>
 
 </items>

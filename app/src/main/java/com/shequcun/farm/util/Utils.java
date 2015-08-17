@@ -13,6 +13,9 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import java.util.Date;
+import java.util.GregorianCalendar;
+
 /**
  * Created by apple on 15/8/4.
  */
@@ -66,13 +69,13 @@ public class Utils {
      */
     public static String unitConversion(int g) {
         String restDistanceStr;
-        if (g >= 1000) {
-            float fdis = (float) g / 1000;
-            fdis = (float) (Math.round(fdis * 10)) / 10;
-            restDistanceStr = fdis + "kg";
-        } else {
-            restDistanceStr = g + "g";
-        }
+//        if (g >= 1000) {
+//            float fdis = (float) g / 1000;
+//            fdis = (float) (Math.round(fdis * 10)) / 10;
+//            restDistanceStr = fdis + "kg";
+//        } else {
+        restDistanceStr = g + "g";
+//        }
         return restDistanceStr;
     }
 
@@ -109,5 +112,15 @@ public class Utils {
         wordtoSpan.setSpan(new ForegroundColorSpan(0xFF1CC568), start, end,
                 flag);
         return wordtoSpan;
+    }
+
+    public static String getTime(long d) {
+        Date dat = new Date(d);
+        GregorianCalendar gc = new GregorianCalendar();
+        gc.setTime(dat);
+        java.text.SimpleDateFormat format = new java.text.SimpleDateFormat(
+                "yyyy-MM-dd");
+        String sb = format.format(gc.getTime());
+        return sb;
     }
 }

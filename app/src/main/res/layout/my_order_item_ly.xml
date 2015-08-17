@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/px16"
-            android:text="配送状态"
+            android:text="下单日期，配送日期"
             android:textColor="@color/black_444444"
             android:textSize="@dimen/font28" />
 
