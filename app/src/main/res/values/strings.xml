@@ -72,4 +72,5 @@
     <string name="pay_by_year">年付:</string>
     <string name="now_pay">立即支付</string>
     <string name="supported_pay_by_year">本套餐只支持年付</string>
+    <string name="combo_introduce">套餐介绍</string>
 </resources>
