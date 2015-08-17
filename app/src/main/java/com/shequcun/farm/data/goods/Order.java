@@ -20,7 +20,7 @@ public class Order {
     public DishesItemEntry getItemById(int id) {
 
         for (DishesItemEntry it : items) {
-            if (id==(it.id)) {
+            if (id == (it.id)) {
                 return it;
             }
         }
@@ -67,14 +67,36 @@ public class Order {
         }
         return numItem;
     }
+
     public int getItemsWeight() {
-        int numItem = 0;
+        int weight = 0;
         for (DishesItemEntry it : items) {
             if (it.getCount() > 0) {
-                numItem += it.getCount()*it.packw;
+                weight += (it.getCount() * it.packw);
             }
         }
-        return numItem;
+        return weight;
+    }
+
+    /*最大份数，0 ,表示不限制 表示该菜品最多可以选择几份*/
+    public int getMaxpacksById(int id) {
+        DishesItemEntry entry = getItemById(id);
+        if (entry==null)return 0;
+        return entry.maxpacks;
+    }
+
+    /*该菜品剩余克数*/
+    public int getRemainsById(int id) {
+        DishesItemEntry entry = getItemById(id);
+        if (entry==null)return 999999999;
+        return getItemById(id).remains;
+    }
+
+    /*指定菜品的当前份数*/
+    public int getCountById(int id) {
+        DishesItemEntry entry = getItemById(id);
+        if (entry==null)return 0;
+        return entry.getCount();
     }
 
     public void addItem(DishesItemEntry item) {

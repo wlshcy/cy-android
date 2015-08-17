@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/alert_dialog_shape_corner"
+    android:orientation="vertical"
+    android:padding="6dp" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical" >
+
+        <!--<RelativeLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_marginTop="@dimen/px100"-->
+            <!--android:gravity="center"-->
+            <!-->-->
+
+            <!--&lt;!&ndash;<ImageView&ndash;&gt;-->
+                <!--&lt;!&ndash;android:id="@+id/title_iv"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_width="@dimen/px78"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_height="@dimen/px78"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_gravity="center_vertical"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:src="@drawable/cancel_image_normal" />&ndash;&gt;-->
+
+            <!--&lt;!&ndash;<TextView&ndash;&gt;-->
+                <!--&lt;!&ndash;android:id="@+id/title_tv"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_gravity="center_vertical"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_toRightOf="@id/title_iv"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:text="@string/during_checking"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:textSize="22sp" >&ndash;&gt;-->
+            <!--</TextView>-->
+        <!--</RelativeLayout>-->
+
+        <TextView
+            android:id="@+id/content_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/px100"
+            android:layout_marginTop="@dimen/px60"
+            android:text=""
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginLeft="@dimen/px20"
+        android:layout_marginRight="@dimen/px20"
+        android:background="@color/divider_color" />
+
+    <Button
+        android:id="@+id/ok_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/common_alert_btn_shape"
+        android:paddingBottom="@dimen/px20"
+        android:paddingTop="@dimen/px20"
+        android:text="@string/ok"
+        android:textSize="14sp" />
+
+</LinearLayout>

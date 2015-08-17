@@ -2,7 +2,9 @@ package com.shequcun.farm.datacenter;
 
 import android.content.Context;
 
+import com.shequcun.farm.data.UserLoginEntry;
 import com.shequcun.farm.db.DBLite;
+import com.shequcun.farm.util.JsonUtilsParser;
 
 /**
  * Created by apple on 15/8/7.
@@ -78,6 +80,14 @@ public class CacheManager {
         } catch (Exception e) {
         }
         return null;
+    }
+
+    public UserLoginEntry getUserLoginEntry() {
+        byte[] data = getUserLoginFromDisk();
+        if (data == null || data.length <= 0)
+            return null;
+        UserLoginEntry uEntry = JsonUtilsParser.fromJson(new String(data), UserLoginEntry.class);
+        return uEntry;
     }
 
     final String KeyWord_UserZoneCacheTag = "UserZoneCacheTag";

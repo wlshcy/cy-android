@@ -10,6 +10,9 @@ import android.widget.Toast;
 
 import com.shequcun.farm.R;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class PhoneUtil {
     // 直接拨打电话
     public static void gotoCall(Context activity, String telNum) {
@@ -37,5 +40,14 @@ public class PhoneUtil {
         } else {
             return false;
         }
+    }
+
+    public static boolean isPhone(String str) {
+        // Pattern p =
+        // Pattern.compile("(\\d{11})|^((\\d{7,8})|(\\d{4}|\\d{3})-(\\d{7,8})|(\\d{4}|\\d{3})-(\\d{7,8})-(\\d{4}|\\d{3}|\\d{2}|\\d{1})|(\\d{7,8})-(\\d{4}|\\d{3}|\\d{2}|\\d{1}))$");
+        Pattern p = Pattern
+                .compile("^1(1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9]|6[0-9]|7[0-9]|8[0-9]|9[0-9])\\d{8}$");
+        Matcher m = p.matcher(str);
+        return m.matches();
     }
 }

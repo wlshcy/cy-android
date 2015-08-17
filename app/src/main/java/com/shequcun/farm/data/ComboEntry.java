@@ -42,7 +42,16 @@ public class ComboEntry extends BaseEntry {
     @SerializedName("wimgs")
     public String wimgs[];
 
-//    tiles	[string]	展示图列表		["http://f.hiphotos.baidu.com/image/pic/item/9213b07eca80653879a8611594dda144ad348272.jpg"]
+    private int position;
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
+    //    tiles	[string]	展示图列表		["http://f.hiphotos.baidu.com/image/pic/item/9213b07eca80653879a8611594dda144ad348272.jpg"]
 //    weights	[int]	重量	每次配送的重量，单位：克	[8000,10000]
 //    prices	[int]	价格	套餐价格，单位：分	[199900,239900]
 //    mprices	[int]	市场价格	单位：分	[219900,259900]

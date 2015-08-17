@@ -25,16 +25,15 @@ import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.ResUtil;
 import com.shequcun.farm.util.Utils;
 
-import org.apache.http.Header;
-
 import java.util.List;
+
+import org.apache.http.Header;
 
 /**
  * 二级套餐适配器
  * Created by apple on 15/8/13.
  */
 public class ComboSubAdapter extends BaseAdapter {
-
     private Context mContext;
     private ComboEntry entry;
 
