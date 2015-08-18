@@ -8,14 +8,14 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.shequcun.farm.R;
-import com.shequcun.farm.data.OrderEntry;
+import com.shequcun.farm.data.HistoryOrderEntry;
 import com.shequcun.farm.util.Utils;
 
 /**
  * Created by apple on 15/8/8.
  */
-public class MyOrderAdapter extends ArrayAdapter<OrderEntry> {
-    OrderEntry entry;
+public class MyOrderAdapter extends ArrayAdapter<HistoryOrderEntry> {
+    HistoryOrderEntry entry;
 
     public MyOrderAdapter(Context context) {
         super(context, R.layout.my_order_item_ly);
@@ -39,11 +39,25 @@ public class MyOrderAdapter extends ArrayAdapter<OrderEntry> {
 
         if (entry != null) {
             vh.distribution_number_tv.setText("第" + entry.times + "次配送");
-            if (entry.status == 3)
-                vh.distribution_date.setText("下单日期" + Utils.getTime(entry.modified));
-            else {
-                vh.distribution_date.setText("配送日期" + Utils.getTime(entry.modified));
+//            if (entry.status == 3){
+//
+//            }
+//                //vh.distribution_date.setText("下单日期" + Utils.getTime(entry.modified));
+//            else {
+//               // vh.distribution_date.setText("配送日期" + Utils.getTime(entry.modified));
+//            }
+
+            if (entry.status == 0) {
+//                vh.distribution_date.setText("下单日期" + Utils.getTime(entry.modified));
+                vh.distribution_date.setText("下单日期  " + Utils.getTime(entry.json.get(entry.status + "").getAsLong()));
+            } else if (entry.status == 1) {
+                vh.distribution_date.setText("支付日期  " + Utils.getTime(entry.json.get(entry.status + "").getAsLong()));
+            } else if (entry.status == 2) {
+                vh.distribution_date.setText("配送日期" + Utils.getTime(entry.json.get(entry.status + "").getAsLong()));
+            } else if (entry.status == 3) {
+                vh.distribution_date.setText("收货日期" + Utils.getTime(entry.json.get(entry.status + "").getAsLong()));
             }
+
             vh.distribution_name.setText(entry.title);
 
             if (entry.status == 3) {

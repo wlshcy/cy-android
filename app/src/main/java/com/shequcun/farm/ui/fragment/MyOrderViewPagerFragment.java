@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.shequcun.farm.R;
-import com.shequcun.farm.datacenter.MyOrderDataCenter;
 import com.shequcun.farm.ui.adapter.MyOrderViewPagerAdapter;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
 
@@ -33,7 +32,7 @@ public class MyOrderViewPagerFragment extends BaseFragment {
 
     @Override
     protected void initWidget(View v) {
-        mOrderDataCenter = new MyOrderDataCenter(getActivity());
+//        mOrderDataCenter = new MyOrderDataCenter(getActivity());
         orderPager = (ViewPager) v.findViewById(R.id.orderPager);
         back = v.findViewById(R.id.back);
         dishes_tv = (TextView) v.findViewById(R.id.dishes_tv);
@@ -65,7 +64,7 @@ public class MyOrderViewPagerFragment extends BaseFragment {
     void buildAdapter() {
         adpter = new MyOrderViewPagerAdapter(getChildFragmentManager());
         orderPager.setAdapter(adpter);
-        mOrderDataCenter.requestMyOrder(adpter, 0, 20);
+//        mOrderDataCenter.requestMyOrder(adpter, 0, 20);
     }
 
     ViewPager.OnPageChangeListener onPageChangeListener = new ViewPager.OnPageChangeListener() {
@@ -109,5 +108,5 @@ public class MyOrderViewPagerFragment extends BaseFragment {
     View back;
     ViewPager orderPager;
 
-    MyOrderDataCenter mOrderDataCenter;
+//    MyOrderDataCenter mOrderDataCenter;
 }

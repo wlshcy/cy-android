@@ -31,6 +31,10 @@ public class DisheDataCenter {
         return mOrder.getItems();
     }
 
+    public List<DishesItemEntry> buildItems(){
+        return mOrder.buildItems();
+    }
+
     public int getItemsCount() {
         return mOrder.getItemsCount();
     }
@@ -48,8 +52,8 @@ public class DisheDataCenter {
         return mOrder.getItemById(id);
     }
 
-    public boolean removeItemById(int id) {
-        return mOrder.removeItemById(id);
+    public void removeItemById(int id) {
+         mOrder.removeItemById(id);
     }
 
     public void addItem(DishesItemEntry item) {
@@ -57,7 +61,6 @@ public class DisheDataCenter {
     }
 
     public boolean reachReqWeight() {
-//        Log.e(TAG, "已经选上平总价格：" + mOrder.getItemsTotalPrice());
         int weight = mOrder.getItemsWeight();
         if (weight >= reqWeight) {
             return true;
@@ -111,9 +114,9 @@ public class DisheDataCenter {
         return reqWeight;
     }
 
-    public float getTotalPrice() {
-        return mOrder.getItemsTotalPrice();
-    }
+//    public float getTotalPrice() {
+//        return mOrder.getItemsTotalPrice();
+//    }
 
     public void setReqWeight(int reqWeight) {
         this.reqWeight = reqWeight * 500;
@@ -136,4 +139,6 @@ public class DisheDataCenter {
         mOrder = null;
         instance = null;
     }
+
+
 }

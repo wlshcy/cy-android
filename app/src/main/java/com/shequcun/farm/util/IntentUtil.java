@@ -12,7 +12,7 @@ import com.shequcun.farm.data.ZoneEntry;
 public class IntentUtil {
 
     public final static String UPDATE_COMBO_PAGE = "com.youcai.refresh。combo";
-    public final static String UPDATE_MINE_PAGE="com.youcai.refresh";
+    public final static String UPDATE_MINE_PAGE = "com.youcai.refresh";
 
     /**
      * @param mContext
@@ -56,6 +56,15 @@ public class IntentUtil {
 //        intent.putExtra("ZoneEntry",zEntry);
         intent.putExtra("community_name", community_name);
         intent.putExtra("details_address", details_address);
+        mContext.sendBroadcast(intent);
+    }
+
+    public static final String UPDATE_ORDER_DETAILS_MSG = "com.youcai.refresh.orderdetails.address";
+
+    public static void sendUpdateOrderDetailsAddressMsg(Context mContext) {
+        Intent intent = new Intent();
+        intent.setAction(UPDATE_ORDER_DETAILS_MSG);
+//        intent.putExtra("AddressEntry", entry);
         mContext.sendBroadcast(intent);
     }
 

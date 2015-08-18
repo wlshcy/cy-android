@@ -20,6 +20,8 @@ import com.shequcun.farm.R;
 import com.shequcun.farm.data.ComboEntry;
 import com.shequcun.farm.data.ComboListEntry;
 import com.shequcun.farm.data.SlidesEntry;
+import com.shequcun.farm.data.SlidesListEntry;
+import com.shequcun.farm.data.UserLoginEntry;
 import com.shequcun.farm.datacenter.CacheManager;
 import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.ui.adapter.CarouselAdapter;
@@ -64,8 +66,8 @@ public class ComboFragment extends BaseFragment {
     protected void setWidgetLsn() {
         mListView.setOnItemClickListener(onItemClick);
         buildAdapter();
-        buildCarouselAdapter();
         requestComboList();
+        requestSlideFromServer();
         doRegisterRefreshBrodcast();
     }
 
@@ -81,15 +83,13 @@ public class ComboFragment extends BaseFragment {
         }
     };
 
-    void buildCarouselAdapter() {
-        if (cAdapter == null) {
-            List<SlidesEntry> list = new ArrayList<SlidesEntry>();
-//            for (int i = 0; i < 4; i++) {
+    void buildCarouselAdapter(List<SlidesEntry> aList) {
+        if (aList == null || aList.size() <= 0) {
+            aList = new ArrayList<SlidesEntry>();
             SlidesEntry s = new SlidesEntry();
-            list.add(s);
-//            }
-            cAdapter = new CarouselAdapter(getActivity(), list);
+            aList.add(s);
         }
+        cAdapter = new CarouselAdapter(getActivity(), aList);
         cAdapter.buildOnClick(onClick);
         carousel_img.setAdapter(cAdapter, 0);
         carousel_img.setFlowIndicator(carousel_point);
@@ -112,7 +112,6 @@ public class ComboFragment extends BaseFragment {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             if (adapter == null)
                 return;
-
             ComboEntry entry = adapter.getItem(position);
             if (entry == null)
                 return;
@@ -127,26 +126,9 @@ public class ComboFragment extends BaseFragment {
         }
     };
 
-//    ArrayList<ComboParam> parseEntryForParams(ComboEntry entry) {
-//        ArrayList<ComboParam> params = new ArrayList<>();
-//        for (int i = 0; i < entry.mprices.length; i++) {
-//            ComboParam p = new ComboParam();
-//            p.setId(entry.id);
-//            p.setDuration(entry.duration);
-//            p.setShipday(entry.shipday);
-//            p.setTitle(entry.title);
-//            p.setTotalPrices(entry.prices[i]);
-//            p.setWimg(entry.wimgs[i]);
-//            p.setWeights(entry.weights[i]);
-//            p.setComboIdx(i);
-//            params.add(p);
-//        }
-//        return params;
-//    }
-
-
     Bundle buildBundle(ComboEntry entry) {
         Bundle bundle = new Bundle();
+        entry.setPosition(entry.index);
         bundle.putSerializable("ComboEntry", entry);
         return bundle;
     }
@@ -217,10 +199,22 @@ public class ComboFragment extends BaseFragment {
     void doAddMyComboDataToAdapter(List<ComboEntry> aList) {
         if (aList != null && aList.size() > 0) {
             adapter.setIsMyCombo(true);
-            Utils.setListViewHeightBasedOnChildren(mListView);
             adapter.addAll(aList);
             adapter.notifyDataSetChanged();
-            IntentUtil.sendUpdateMyInfoMsg(getActivity(), aList.get(0));
+            Utils.setListViewHeightBasedOnChildren(mListView);
+            byte[] data = new CacheManager(getActivity()).getUserLoginFromDisk();
+            if (data != null && data.length > 0) {
+                int size = aList.size();
+                UserLoginEntry entry = JsonUtilsParser.fromJson(new String(data), UserLoginEntry.class);
+                if (entry != null) {
+                    entry.mycomboids = new int[size];
+                    for (int i = 0; i < size; ++i) {
+                        entry.mycomboids[i] = aList.get(i).id;
+                    }
+                    new CacheManager(getActivity()).saveUserLoginToDisk(JsonUtilsParser.toJson(entry).getBytes());
+                }
+            }
+//            IntentUtil.sendUpdateMyInfoMsg(getActivity(), aList.get(0));
         }
     }
 
@@ -278,6 +272,32 @@ public class ComboFragment extends BaseFragment {
             getActivity().unregisterReceiver(mUpdateReceiver);
             mIsBind = false;
         }
+    }
+
+    /**
+     * 请求轮播图
+     */
+    void requestSlideFromServer() {
+        HttpRequestUtil.httpGet(LocalParams.INSTANCE.getBaseUrl() + "cai/slide", new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int sCode, Header[] h, byte[] data) {
+                if (data != null && data.length > 0) {
+                    SlidesListEntry entry = JsonUtilsParser.fromJson(new String(data), SlidesListEntry.class);
+                    if (entry != null) {
+                        buildCarouselAdapter(entry.aList);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
+                buildCarouselAdapter(null);
+            }
+        });
+    }
+
+    private void checkVersion(){
+
     }
 
     boolean mIsBind = false;

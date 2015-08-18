@@ -27,10 +27,10 @@ public class AlipayUtils {
 
 
     public void doAlipay() {
-        if (!isSupportAlipay()) {
-            ToastHelper.showShort(mAct, "您的设备暂时不支持支付宝支付");
-            return;
-        }
+//        if (!isSupportAlipay()) {
+//            ToastHelper.showShort(mAct, "您的设备暂时不支持支付宝支付");
+//            return;
+//        }
 
 
         // 订单

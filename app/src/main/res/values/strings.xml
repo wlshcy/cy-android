@@ -95,4 +95,17 @@
     <string name="common_required_input">必填</string>
     <string name="common_option_input">选填</string>
     <string name="combo_introduce">套餐介绍</string>
+    <string name="shopping_combo">购买套餐</string>
+    <string name="add_address">单击此处添加您的收货地址!</string>
+    <string name="submit_immediately">立即提交</string>
+    <string name="pay_immediately">立即支付</string>
+    <string name="pay_success">支付成功</string>
+    <string name="pay_fail">支付失败</string>
+    <string name="order_pay_success">订单支付成功</string>
+    <string name="pay_success_tip">我们会按时为您配送订单.</string>
+    <string name="buy">购买</string>
+    <string name="update">更新</string>
+    <string name="ignore">忽略</string>
+    <string name="exit">退出</string>
+    <string name="dishes_error">亲,您选择的菜品数量不足哦!</string>
 </resources>

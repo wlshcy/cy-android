@@ -54,6 +54,7 @@
             android:layout_marginRight="12dp"
             android:layout_toLeftOf="@id/good_count_down_iv"
             android:text="0"
+            android:visibility="gone"
             android:gravity="center"
             android:singleLine="true"
             android:textColor="@color/red_fe4d3d"

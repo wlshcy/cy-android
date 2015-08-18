@@ -71,7 +71,12 @@ public class ComboSecondFragment extends BaseFragment {
     AvoidDoubleClickListener chooseDishes = new AvoidDoubleClickListener() {
         @Override
         public void onViewClick(View v) {
-            gotoFragmentByAdd(buildBundle((ComboEntry) v.getTag()), R.id.mainpage_ly, new ChooseDishesFragment(), ChooseDishesFragment.class.getName());
+            int position = (int) v.getTag();
+            if (entry != null) {
+                entry.setPosition(position);
+                gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new ChooseDishesFragment(), ChooseDishesFragment.class.getName());
+            }
+
         }
     };
 

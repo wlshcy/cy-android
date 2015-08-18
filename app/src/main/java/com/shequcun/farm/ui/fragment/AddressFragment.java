@@ -25,6 +25,7 @@ import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
 import com.shequcun.farm.util.HttpRequestUtil;
+import com.shequcun.farm.util.IntentUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.ToastHelper;
@@ -145,8 +146,6 @@ public class AddressFragment extends BaseFragment {
         params.put("name", name);
         params.put("mobile", phone_number);
         params.put("city", entry == null ? "北京市" : entry.city);
-        params.put("region", entry == null ? "" : entry.region);
-        params.put("zid", entry == null ? "0" : "" + entry.zid);
         params.put("zname", community);
         params.put("building", building_NO);
         params.put("unit", union_NO);
@@ -154,6 +153,10 @@ public class AddressFragment extends BaseFragment {
         params.put("id", entry.id);
         if (!TextUtils.isEmpty(entry.street)) {
             params.put("street", entry.street);
+        } else {
+            params.put("street", "");
+            params.put("zid", entry == null ? "0" : "" + entry.zid);
+            params.put("region", entry == null ? "" : entry.region);
         }
         final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
         HttpRequestUtil.httpPost(LocalParams.INSTANCE.getBaseUrl() + "user/address", params, new AsyncHttpResponseHandler() {
@@ -208,9 +211,9 @@ public class AddressFragment extends BaseFragment {
         UserLoginEntry uEntry = JsonUtilsParser.fromJson(new String(data), UserLoginEntry.class);
         if (uEntry == null)
             return;
-        uEntry.name = name_edit.getText().toString();
         uEntry.address = address;
         new CacheManager(getActivity()).saveUserLoginToDisk(JsonUtilsParser.toJson(uEntry).getBytes());
+        IntentUtil.sendUpdateOrderDetailsAddressMsg(getActivity());
         popBackStack();
     }
 
@@ -263,8 +266,10 @@ public class AddressFragment extends BaseFragment {
      * @param aList
      */
     void buildDefaultAddress(List<AddressEntry> aList) {
-        if (aList == null || aList.size() <= 0)
+        if (aList == null || aList.size() <= 0) {
+            entry = new AddressEntry();
             return;
+        }
         int size = aList.size();
         for (int i = 0; i < size; i++) {
             AddressEntry tmpEntry = aList.get(i);
@@ -319,7 +324,7 @@ public class AddressFragment extends BaseFragment {
                     setWidgetContent(zEntry);
                 } else {
                     if (entry != null) {
-                        entry.name = intent.getStringExtra("community_name");
+                        entry.zname = intent.getStringExtra("community_name");
                         entry.street = intent.getStringExtra("details_address");
                         setWidgetContent(entry);
                     }
@@ -334,6 +339,7 @@ public class AddressFragment extends BaseFragment {
             entry.city = zEntry.city;
             entry.zname = zEntry.name;
             entry.zid = zEntry.id;
+            entry.street = "";
         }
         community_tv.setText(zEntry.name);
     }

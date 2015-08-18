@@ -67,7 +67,6 @@
                     android:layout_marginLeft="@dimen/px20"
                     android:layout_marginRight="@dimen/px20"
                     android:background="@null"
-                    android:editable="false"
                     android:hint="@string/required"
                     android:textSize="@dimen/font28" />
             </LinearLayout>

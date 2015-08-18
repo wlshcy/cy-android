@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.shequcun.farm.R;
+import com.shequcun.farm.data.ComboEntry;
 import com.shequcun.farm.util.AlipayUtils;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
 import com.shequcun.farm.util.Constrants;
@@ -37,7 +38,18 @@ public class PayFragment extends BaseFragment {
     protected void initWidget(View v) {
         back = v.findViewById(R.id.back);
         alipay_ly = v.findViewById(R.id.alipay_ly);
+        pay_money = (TextView) v.findViewById(R.id.pay_money);
         ((TextView) v.findViewById(R.id.title_center_text)).setText(R.string.pay);
+        pay_money.setText("￥" + getOrderMoney());
+    }
+
+    double getOrderMoney() {
+        Bundle bundle = getArguments();
+        ComboEntry entry = bundle != null ? ((ComboEntry) bundle.getSerializable("ComboEntry")) : null;
+        if (entry != null) {
+            return ((double) entry.prices[entry.getPosition()]) / 100;
+        }
+        return 0;
     }
 
     @Override
@@ -106,5 +118,5 @@ public class PayFragment extends BaseFragment {
 
     View alipay_ly;
     View back;
-
+    TextView pay_money;
 }

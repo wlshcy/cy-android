@@ -7,10 +7,6 @@
 
     <include layout="@layout/common_title_ly" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/common_bg_color" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -35,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/px30"
-        android:text="￥0.01"
+        android:text="￥"
         android:textColor="@color/orange_ff9000"
         android:textSize="@dimen/font40" />
 

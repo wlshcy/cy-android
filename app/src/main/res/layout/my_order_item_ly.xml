@@ -8,7 +8,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/px40"
+        android:layout_marginLeft="@dimen/px30"
+        android:padding="@dimen/px10"
         android:orientation="vertical">
 
         <TextView

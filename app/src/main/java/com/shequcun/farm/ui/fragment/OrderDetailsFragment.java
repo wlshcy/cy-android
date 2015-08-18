@@ -1,5 +1,9 @@
 package com.shequcun.farm.ui.fragment;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -14,16 +18,17 @@ import com.loopj.android.http.RequestParams;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.AddressEntry;
 import com.shequcun.farm.data.AddressListEntry;
+import com.shequcun.farm.data.ComboEntry;
 import com.shequcun.farm.data.OrderEntry;
 import com.shequcun.farm.data.UserLoginEntry;
 import com.shequcun.farm.datacenter.CacheManager;
 import com.shequcun.farm.datacenter.DisheDataCenter;
 import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.dlg.ConsultationDlg;
-import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.ui.adapter.OrderDetailsAdapter;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
 import com.shequcun.farm.util.HttpRequestUtil;
+import com.shequcun.farm.util.IntentUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.ToastHelper;
@@ -36,7 +41,7 @@ import java.util.List;
  * 订单详情页
  * Created by apple on 15/8/10.
  */
-public class OrderDetailsFragment extends BaseFragment{
+public class OrderDetailsFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -61,12 +66,9 @@ public class OrderDetailsFragment extends BaseFragment{
         re_choose_dishes = v.findViewById(R.id.re_choose_dishes);
         commitOrderTv = (TextView) v.findViewById(R.id.bug_order_tv);
         addressLy = v.findViewById(R.id.addressee_ly);
+        add_address_ly = v.findViewById(R.id.add_address_ly);
         buildUserLoginEntry();
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        showBottomWidget();
     }
 
     @Override
@@ -82,6 +84,25 @@ public class OrderDetailsFragment extends BaseFragment{
         }
     }
 
+    /**
+     * 显示底部对应的控件
+     */
+    void showBottomWidget() {
+        if (uEntry != null) {
+            if (uEntry.mycomboids != null) {
+                int curComboId = getComboId();
+                int length = uEntry.mycomboids.length;
+                for (int i = 0; i < length; i++) {
+                    if (curComboId == uEntry.mycomboids[i]) {
+                        commitOrderTv.setText(R.string.submit_immediately);
+                        return;
+                    }
+                }
+                commitOrderTv.setText(R.string.pay_immediately);
+            }
+        }
+    }
+
     @Override
     protected void setWidgetLsn() {
         back.setOnClickListener(onClick);
@@ -89,6 +110,7 @@ public class OrderDetailsFragment extends BaseFragment{
         re_choose_dishes.setOnClickListener(onClick);
         commitOrderTv.setOnClickListener(onClick);
         addressLy.setOnClickListener(onClick);
+        add_address_ly.setOnClickListener(onClick);
         buildAdapter();
     }
 
@@ -102,16 +124,18 @@ public class OrderDetailsFragment extends BaseFragment{
             else if (re_choose_dishes == v) {//重新选择菜品
 
             } else if (v == commitOrderTv) {
-                makeOrder();
-            } else if (v == addressLy) {
-gotoAddressFragment();
+//                makeOrder();
+
+                gotoFragmentByAdd(getArguments(), R.id.mainpage_ly, new PayFragment(), PayFragment.class.getName());
+            } else if (v == add_address_ly) {
+                gotoFragmentByAdd(R.id.mainpage_ly, new AddressFragment(), AddressFragment.class.getName());
             }
         }
     };
 
     void addFooter() {
         View footerView = LayoutInflater.from(getActivity()).inflate(R.layout.order_details_footer_ly, null);
-        ((TextView) footerView.findViewById(R.id.distribution_date)).setText("配送日期:");
+        ((TextView) footerView.findViewById(R.id.distribution_date)).setText("配送日期:本周周五");
         int part = mOrderController.getItemsCount();
         ((TextView) footerView.findViewById(R.id.number_copies)).setText("共" + part + "份");
         mLv.addFooterView(footerView, null, false);
@@ -123,28 +147,40 @@ gotoAddressFragment();
             adapter = new OrderDetailsAdapter(getActivity());
         }
         mLv.setAdapter(adapter);
-        adapter.addAll(mOrderController.getItems());
+        adapter.addAll(mOrderController.buildItems());
         adapter.notifyDataSetChanged();
     }
 
     int getComboIdxParams() {
         Bundle bundle = getArguments();
-        if (bundle == null) return -1;
-        return bundle.getInt("comboIdx");
+        if (bundle != null) {
+            ComboEntry entry = (ComboEntry) bundle.getSerializable("ComboEntry");
+            if (entry != null)
+                return entry.getPosition();
+        }
+        return -1;
+    }
+
+    /**
+     * 获取当前选择套餐的 ID
+     *
+     * @return
+     */
+    int getComboId() {
+        Bundle bundle = getArguments();
+        return bundle != null ? ((ComboEntry) bundle.getSerializable("ComboEntry")).id : -1;
     }
 
     private void makeOrder() {
+        if (addressEntry == null)
+            return;
         int combo_id = mOrderController.getItems().get(0).combo_id;
         int type = 1;
         int combo_idx = getComboIdxParams();
         String items = mOrderController.getOrderItemsString();
-        String name = uEntry.name;
-        String mobile = uEntry.mobile;
+        String name = addressEntry.name;
+        String mobile = addressEntry.mobile;
         String address = uEntry.address;
-        if (TextUtils.isEmpty(name)) {
-            gotoAddressFragment();
-            return;
-        }
         requestCaiOrder(combo_id, type, combo_idx, items, name, mobile, address);
     }
 
@@ -184,21 +220,7 @@ gotoAddressFragment();
     }
 
     void requestUserAddress() {
-        final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
         HttpRequestUtil.httpGet(LocalParams.INSTANCE.getBaseUrl() + "user/address", new AsyncHttpResponseHandler() {
-            @Override
-            public void onStart() {
-                super.onStart();
-                if (pDlg != null)
-                    pDlg.show();
-            }
-
-            @Override
-            public void onFinish() {
-                super.onFinish();
-                if (pDlg != null)
-                    pDlg.dismiss();
-            }
 
             @Override
             public void onSuccess(int sCode, Header[] h, byte[] data) {
@@ -227,23 +249,76 @@ gotoAddressFragment();
     }
 
     private void successUserAddress(List<AddressEntry> list) {
-        for (AddressEntry entry : list) {
+        if (list == null || list.size() <= 0) {
+            doRegisterRefreshBrodcast();
+            addressLy.setVisibility(View.GONE);
+            add_address_ly.setVisibility(View.VISIBLE);
+            return;
+        }
+        int size = list.size();
+        for (int i = 0; i < size; ++i) {
+            AddressEntry entry = list.get(i);
             if (entry.isDefault) {
-                addressee_info.setText(entry.name+"  "+entry.mobile);
-                address.setText("地址: " + uEntry.address);
+                if (!TextUtils.isEmpty(entry.name) && !TextUtils.isEmpty(uEntry.address)) {
+                    addressEntry = entry;
+                    addressLy.setVisibility(View.VISIBLE);
+                    add_address_ly.setVisibility(View.GONE);
+                    addressee_info.setText(entry.name + "  " + entry.mobile);
+                    address.setText("地址: " + uEntry.address);
+                } else {
+                    doRegisterRefreshBrodcast();
+                    addressLy.setVisibility(View.GONE);
+                    add_address_ly.setVisibility(View.VISIBLE);
+                }
                 return;
             }
         }
     }
 
-    private void gotoAddressFragment() {
-        OrderAddressFragment fragment = new OrderAddressFragment();
-        gotoFragmentByAdd(R.id.mainpage_ly, fragment, fragment.getClass().getName());
-    }
 
     private void gotoOrderSuccess() {
         gotoFragmentByAdd(R.id.mainpage_ly, new OrderSuccessFragment(), OrderSuccessFragment.class.getName());
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        doUnRegisterReceiver();
+    }
+
+    void doRegisterRefreshBrodcast() {
+        if (!mIsBind) {
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(IntentUtil.UPDATE_ORDER_DETAILS_MSG);
+            getActivity().registerReceiver(mUpdateReceiver, intentFilter);
+            mIsBind = true;
+        }
+    }
+
+    private void doUnRegisterReceiver() {
+        if (mIsBind) {
+            getActivity().unregisterReceiver(mUpdateReceiver);
+            mIsBind = false;
+        }
+    }
+
+    boolean mIsBind = false;
+
+    private BroadcastReceiver mUpdateReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (TextUtils.isEmpty(action)) {
+                return;
+            }
+            if (action.equals(IntentUtil.UPDATE_ORDER_DETAILS_MSG)) {
+                buildUserLoginEntry();
+                requestUserAddress();
+            }
+        }
+    };
+
+    AddressEntry addressEntry;
 
     View addressLy;
     TextView titleTv;
@@ -256,5 +331,6 @@ gotoAddressFragment();
     TextView address;
     TextView rightTv;
     View re_choose_dishes;
+    View add_address_ly;
     DisheDataCenter mOrderController = DisheDataCenter.getInstance();
 }

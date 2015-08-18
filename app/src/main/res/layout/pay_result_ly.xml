@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/common_bg_color"
+    android:orientation="vertical">
+
+    <include layout="@layout/common_title_ly" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/px40"
+            android:src="@drawable/icon_vip" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/px50"
+            android:text="@string/pay_success"
+            android:textColor="@color/gray_676767"
+            android:textSize="@dimen/px32" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/px40"
+            android:layout_marginTop="@dimen/px30"
+            android:text="@string/pay_success_tip"
+            android:textColor="@color/orange_ff9000"
+            android:textSize="@dimen/font40" />
+
+        <include layout="@layout/common_small_tip" />
+
+
+
+        <ListView
+            android:id="@+id/mLv"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="7dp"
+            android:layout_marginTop="5dp"
+            android:cacheColorHint="#00000000"
+            android:divider="@null"
+            android:dividerHeight="10dp"
+            android:fastScrollEnabled="true"
+            android:paddingLeft="7dp"
+            android:paddingRight="7dp" />
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

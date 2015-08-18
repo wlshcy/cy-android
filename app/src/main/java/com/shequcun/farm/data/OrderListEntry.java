@@ -9,5 +9,5 @@ import java.util.List;
  */
 public class OrderListEntry extends BaseEntry{
     @SerializedName("orders")
-    public List<OrderEntry> aList;
+    public List<HistoryOrderEntry> aList;
 }

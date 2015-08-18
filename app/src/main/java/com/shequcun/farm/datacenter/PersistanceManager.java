@@ -26,4 +26,17 @@ public enum PersistanceManager {
         return mContext.getSharedPreferences("Cookie", 0).getString(
                 "X-Xsrftoken", "");
     }
+
+    public boolean getIsCheckVersion() {
+        if (mContext == null) {
+            return false;
+        }
+        return mContext.getSharedPreferences("Cookie", 0).getBoolean("is_check_version", false);
+    }
+
+    public void saveIsCheckVersion(boolean isCheck) {
+        if (mContext == null) return;
+        mContext.getSharedPreferences("Cookie", 0).edit()
+                .putBoolean("is_check_version", isCheck).commit();
+    }
 }

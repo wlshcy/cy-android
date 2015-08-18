@@ -7,35 +7,55 @@
 
     <include layout="@layout/common_title_ly" />
 
-    <LinearLayout
-        android:id="@+id/addressee_ly"
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/px16"
-        android:layout_marginTop="@dimen/px16"
-        android:background="@android:color/white"
-        android:orientation="vertical">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/icon_ribbon" />
+        android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/addressee_info"
+            android:id="@+id/add_address_ly"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/px16"
-            android:paddingLeft="@dimen/px40" />
+            android:layout_height="@dimen/px74"
+            android:background="@color/transparent_8000"
+            android:drawableLeft="@drawable/icon_sigh"
+            android:gravity="center_vertical"
+            android:text="@string/add_address"
+            android:textColor="@android:color/white"
+            android:visibility="gone" />
 
-        <TextView
-            android:id="@+id/address"
+        <LinearLayout
+            android:id="@+id/addressee_ly"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/px16"
             android:layout_marginTop="@dimen/px16"
-            android:paddingLeft="@dimen/px40" />
-    </LinearLayout>
+            android:background="@android:color/white"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icon_ribbon" />
+
+            <TextView
+                android:id="@+id/addressee_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/px16"
+                android:paddingLeft="@dimen/px40" />
+
+            <TextView
+                android:id="@+id/address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/px16"
+                android:layout_marginTop="@dimen/px16"
+                android:paddingLeft="@dimen/px40" />
+        </LinearLayout>
+
+    </FrameLayout>
+
 
     <ListView
         android:id="@+id/mLv"
@@ -52,67 +72,55 @@
         android:layout_height="@dimen/px110"
         android:background="@android:color/white"
         android:gravity="center"
-        android:visibility="gone"
         android:text="@string/re_choose_dishes"
         android:textColor="@color/green_24c05d"
-        android:textSize="@dimen/px30" />
+        android:textSize="@dimen/px30"
+        android:visibility="gone" />
+
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/px100"
         android:layout_gravity="bottom"
-        android:background="@color/common_bg_color"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
-        <include layout="@layout/common_line"></include>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.0"
+            android:background="@android:color/white"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/shop_cart_total_price_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
                 android:layout_marginLeft="12dp"
-                android:gravity="left"
-                android:text="@string/pay_by_year"
                 android:textColor="@color/common_text"
-                android:textSize="16sp"/>
+                android:textSize="16sp"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/shop_cart_surpport_now_pay_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/shop_cart_total_price_tv"
-                android:layout_gravity="center_vertical"
                 android:layout_marginLeft="12dp"
-                android:gravity="left"
-                android:text="@string/supported_pay_by_year"
+                android:text="您已选好菜品啦!"
                 android:textColor="@color/common_text"
                 android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/bug_order_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:minHeight="50dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="14dp"
-                android:background="@drawable/pay_order_btn_shape_selector"
-                android:gravity="center"
-                android:paddingBottom="@dimen/px24"
-                android:paddingLeft="12dp"
-                android:paddingRight="12dp"
-                android:paddingTop="@dimen/px24"
-                android:text="@string/now_pay"
-                android:textColor="@color/white_f4f4f4"
-                android:textSize="14sp" />
-        </RelativeLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/bug_order_tv"
+            android:layout_width="@dimen/px180"
+            android:layout_height="@dimen/px100"
+            android:background="@color/green_11C258"
+            android:gravity="center"
+            android:text="@string/now_pay"
+            android:textColor="@color/white_f4f4f4"
+            android:textSize="14sp" />
     </LinearLayout>
 
 </LinearLayout>

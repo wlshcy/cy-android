@@ -67,4 +67,5 @@
     <dimen name="px68">34dp</dimen>
     <dimen name="px18">9dp</dimen>
     <dimen name="px220">110dp</dimen>
+    <dimen name="px74">37dp</dimen>
 </resources>

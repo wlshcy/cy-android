@@ -64,12 +64,13 @@ public class ChooseDishesAdapter extends ArrayAdapter<DishesItemEntry> {
             vh.goods_name.setText(entry.title);
             vh.goods_price.setText(Utils.unitConversion(entry.packw) + "/份");
         }
-        if (entry.getCount()>0){
+        if (entry.getCount() > 0) {
             vh.goods_count.setText(String.valueOf(entry.getCount()));
             vh.goods_count.setVisibility(View.VISIBLE);
             vh.goods_sub.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             vh.goods_sub.setVisibility(View.GONE);
+            vh.goods_count.setText("0");
             vh.goods_count.setVisibility(View.GONE);
         }
         return v;

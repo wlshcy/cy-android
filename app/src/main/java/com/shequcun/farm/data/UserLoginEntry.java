@@ -26,4 +26,6 @@ public class UserLoginEntry extends BaseEntry implements Serializable {
     public int id;
     @SerializedName("zname")
     public String zname;
+    @SerializedName("mycomboids")
+    public int mycomboids[];
 }

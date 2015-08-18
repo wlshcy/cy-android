@@ -25,9 +25,9 @@ import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.ResUtil;
 import com.shequcun.farm.util.Utils;
 
-import java.util.List;
-
 import org.apache.http.Header;
+
+import java.util.List;
 
 /**
  * 二级套餐适配器
@@ -67,8 +67,8 @@ public class ComboSubAdapter extends BaseAdapter {
     public View getView(int position, View view, ViewGroup parent) {
         ViewHolder vh;
         if (view == null) {
-            view = LayoutInflater.from(mContext).inflate(R.layout.combo_sub_item_ly, null);
             vh = new ViewHolder();
+            view = LayoutInflater.from(mContext).inflate(R.layout.combo_sub_item_ly, null);
             vh.combo_img = (ImageView) view.findViewById(R.id.combo_img);
             vh.combo_name = (TextView) view.findViewById(R.id.combo_name);
             vh.distribution_circle = (TextView) view.findViewById(R.id.distribution_circle);
@@ -76,6 +76,7 @@ public class ComboSubAdapter extends BaseAdapter {
             vh.total_price = (TextView) view.findViewById(R.id.total_price);
             vh.choose_dishes = view.findViewById(R.id.choose_dishes);
             vh.ll_container = (LinearLayout) view.findViewById(R.id.ll_container);
+            view.setTag(vh);
         } else {
             vh = (ViewHolder) view.getTag();
         }
@@ -105,7 +106,7 @@ public class ComboSubAdapter extends BaseAdapter {
                 vh.total_price.setText("￥" + (((double) entry.prices[position]) / 100));
 
             if (vh.choose_dishes != null) {
-                vh.choose_dishes.setTag(entry);
+                vh.choose_dishes.setTag(position);
                 vh.choose_dishes.setOnClickListener(chooseDishes);
             }
 
@@ -123,9 +124,11 @@ public class ComboSubAdapter extends BaseAdapter {
      */
 
     private void requestFixedCombo(int id, final LinearLayout ll_container) {
+        if (ll_container.getChildCount() > 0)
+            return;
         RequestParams params = new RequestParams();
         params.add("id", "" + id);
-        HttpRequestUtil.httpGet(LocalParams.INSTANCE.getBaseUrl() + "cai/combodtl", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.getHttpClient(mContext).get(LocalParams.INSTANCE.getBaseUrl() + "cai/combodtl", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int sCode, Header[] h, byte[] data) {
                 if (data != null && data.length > 0) {
@@ -150,6 +153,8 @@ public class ComboSubAdapter extends BaseAdapter {
     void addChildToContainer(LinearLayout ll_container, List<FixedComboEntry> aList) {
         if (ll_container == null)
             return;
+        ll_container.removeAllViews();
+
         int size = aList.size();
 
         for (int i = 0; i < size; i += 2) {
