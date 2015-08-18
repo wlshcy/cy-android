@@ -67,6 +67,7 @@ public class ChooseDishesAdapter extends ArrayAdapter<DishesItemEntry> {
         if (entry.getCount()>0){
             vh.goods_count.setText(String.valueOf(entry.getCount()));
             vh.goods_count.setVisibility(View.VISIBLE);
+            vh.goods_sub.setVisibility(View.VISIBLE);
         }else {
             vh.goods_sub.setVisibility(View.GONE);
             vh.goods_count.setVisibility(View.GONE);

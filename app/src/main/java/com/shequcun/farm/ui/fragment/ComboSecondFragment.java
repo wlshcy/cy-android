@@ -13,12 +13,12 @@ import com.shequcun.farm.data.ComboEntry;
 import com.shequcun.farm.ui.adapter.ComboSubAdapter;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
 
+
 /**
  * 二级套餐页
  * Created by apple on 15/8/15.
  */
 public class ComboSecondFragment extends BaseFragment {
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

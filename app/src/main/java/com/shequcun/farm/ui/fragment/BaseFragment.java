@@ -73,6 +73,14 @@ public abstract class BaseFragment extends Fragment {
         transaction.commitAllowingStateLoss();
     }
 
+    protected void gotoFragmentByAdd(BaseFragment baseFragment, Class cls) {
+        gotoFragmentByAdd(R.id.mainpage_ly, baseFragment, cls.getName());
+    }
+
+    protected void gotoFragmentByAdd(Bundle bundle, BaseFragment baseFragment, Class cls) {
+        gotoFragmentByAdd(bundle, R.id.mainpage_ly, baseFragment, cls.getName());
+    }
+
     public void gotoFragmentByAdd(Bundle bundle, int id, Fragment fragment,
                                   String tag) {
         fragment.setArguments(bundle);

@@ -27,7 +27,7 @@ public class DishesItemEntry extends BaseEntry {
     public int remains;//剩余
     @SerializedName("imgs")
     public String imgs[];
-
+    /*份数*/
     private int count;
 
 

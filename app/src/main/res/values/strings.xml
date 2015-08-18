@@ -18,6 +18,7 @@
     <string name="community">小区</string>
     <string name="nearby_community">附近的小区</string>
     <string name="commit">提交</string>
+    <string name="ok">好的</string>
     <string name="receiveing_address">收货地址</string>
     <string name="community_name">小区名称</string>
     <string name="search">搜索</string>
@@ -72,5 +73,26 @@
     <string name="pay_by_year">年付:</string>
     <string name="now_pay">立即支付</string>
     <string name="supported_pay_by_year">本套餐只支持年付</string>
+    <string name="out_of_required_weight">亲,您已选满A啦!^^</string>
+    <string name="out_of_maxpacks">亲,该菜品库存不足,请选其他菜品吧</string>
+    <string name="out_of_remains">亲,该菜品剩余不足,请选其他菜品吧</string>
+    <string name="out_of_required_weight1">亲,选该菜品会超过A的,\n换换其他的吧！^^</string>
+    <!-- 收货地址 -->
+    <string name="title_receive_address">收货地址</string>
+    <string name="address">地址</string>
+    <string name="title_edit_address">编辑收货地址</string>
+    <string name="common_required_buiding_num">请输入楼号</string>
+    <string name="common_required_door_num">请输入门牌号</string>
+    <string name="common_update_submit">请修改信息后再提交</string>
+    <string name="common_phone_format_error">请输入正确的手机格式</string>
+    <string name="common_phone_required">请输入手机号码</string>
+    <string name="common_zone">小区</string>
+    <string name="common_num_building">号楼</string>
+    <string name="common_unit">单元</string>
+    <string name="common_building_num">楼号</string>
+    <string name="common_unit_num">单元号</string>
+    <string name="common_door_num">门牌号</string>
+    <string name="common_required_input">必填</string>
+    <string name="common_option_input">选填</string>
     <string name="combo_introduce">套餐介绍</string>
 </resources>

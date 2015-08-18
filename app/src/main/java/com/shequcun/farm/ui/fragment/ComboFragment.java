@@ -124,9 +124,25 @@ public class ComboFragment extends BaseFragment {
             } else {
                 gotoFragmentByAdd(R.id.mainpage_ly, new LoginFragment(), LoginFragment.class.getName());
             }
-
         }
     };
+
+//    ArrayList<ComboParam> parseEntryForParams(ComboEntry entry) {
+//        ArrayList<ComboParam> params = new ArrayList<>();
+//        for (int i = 0; i < entry.mprices.length; i++) {
+//            ComboParam p = new ComboParam();
+//            p.setId(entry.id);
+//            p.setDuration(entry.duration);
+//            p.setShipday(entry.shipday);
+//            p.setTitle(entry.title);
+//            p.setTotalPrices(entry.prices[i]);
+//            p.setWimg(entry.wimgs[i]);
+//            p.setWeights(entry.weights[i]);
+//            p.setComboIdx(i);
+//            params.add(p);
+//        }
+//        return params;
+//    }
 
 
     Bundle buildBundle(ComboEntry entry) {
