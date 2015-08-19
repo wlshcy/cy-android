@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <ImageView
+        android:id="@+id/img"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center"
+        android:scaleType="fitCenter" />
+
+    <TextView
+        android:id="@+id/shopping_comobo"
+        android:layout_width="@dimen/px210"
+        android:layout_height="@dimen/px60"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="@dimen/px100"
+        android:background="@drawable/gray_cec9c2_bg"
+        android:gravity="center"
+        android:text="@string/shopping_combo"
+        android:textColor="@color/green_24c05d"
+        android:visibility="gone" />
+
+
+</FrameLayout>
