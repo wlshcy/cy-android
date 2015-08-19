@@ -193,9 +193,6 @@ public class OrderDetailsFragment extends BaseFragment {
         params.add("mobile", mobile);
         params.add("address", address);
         params.add("_xsrf", PersistanceManager.INSTANCE.getCookieValue());
-
-//        AsyncHttpClient hClient = new AsyncHttpClient();///HttpRequestUtil.httpPost
-
         HttpRequestUtil.httpPost(LocalParams.INSTANCE.getBaseUrl() + "cai/order", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -204,9 +201,8 @@ public class OrderDetailsFragment extends BaseFragment {
                     OrderEntry entry = JsonUtilsParser.fromJson(result, OrderEntry.class);
                     if (entry != null) {
                         if (TextUtils.isEmpty(entry.errcode)) {
-                            //gotoOrderSuccess();
 
-                            if(TextUtils.isEmpty(entry.alipay)){
+                            if (TextUtils.isEmpty(entry.alipay)) {
                                 gotoFragmentByAdd(buildBundle(entry.orderno, getOrderMoney(), entry.alipay), R.id.mainpage_ly, new PayResultFragment(), PayResultFragment.class.getName());
                                 return;
                             }

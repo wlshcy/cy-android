@@ -73,12 +73,11 @@ public class PayFragment extends BaseFragment {
             if (v == back)
                 clearStack();
             else if (v == alipay_ly) {
-//                AlipayUtils alipayUtils = new AlipayUtils();
-//                alipayUtils.setHandler(mHandler);
-//                alipayUtils.initAlipay(getActivity());
-//                alipayUtils.doAlipay(getAlipayInfo());
-
-                gotoFragmentByAdd(getArguments(), R.id.mainpage_ly, new PayResultFragment(), PayResultFragment.class.getName());
+                AlipayUtils alipayUtils = new AlipayUtils();
+                alipayUtils.setHandler(mHandler);
+                alipayUtils.initAlipay(getActivity());
+                alipayUtils.doAlipay(getAlipayInfo());
+//                gotoFragmentByAdd(getArguments(), R.id.mainpage_ly, new PayResultFragment(), PayResultFragment.class.getName());
             }
         }
     };
@@ -99,7 +98,6 @@ public class PayFragment extends BaseFragment {
 //                        Toast.makeText(PayDemoActivity.this, "支付成功",
 //                                Toast.LENGTH_SHORT).show();
                         ToastHelper.showShort(getActivity(), "支付成功");
-
                         gotoFragmentByAdd(getArguments(), R.id.mainpage_ly, new PayResultFragment(), PayResultFragment.class.getName());
                     } else {
                         // 判断resultStatus 为非“9000”则代表可能支付失败
