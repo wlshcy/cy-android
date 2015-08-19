@@ -43,6 +43,7 @@
 
     <FrameLayout
         android:id="@+id/alipay_ly"
+        android:background="@drawable/list_item_selector"
         android:layout_width="match_parent"
         android:layout_height="@dimen/px150">
 

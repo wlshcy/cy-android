@@ -87,7 +87,8 @@ public class ComboSubAdapter extends BaseAdapter {
 
             if (vh.combo_name != null) {
                 String splits[] = entry.title.split("套餐");
-                vh.combo_name.setText(Utils.getSpanableSpan(splits[0], Utils.unitConversion(entry.weights[position]), "套餐", ResUtil.dipToPixel(mContext, 14), ResUtil.dipToPixel(mContext, 25)));
+                String midStr = Utils.unitConversion(entry.weights[position]).replace("斤", "");
+                vh.combo_name.setText(Utils.getSpanableSpan(splits[0], midStr, "斤套餐", ResUtil.dipToPixel(mContext, 14), ResUtil.dipToPixel(mContext, 25)));
             }
 
             if (vh.distribution_circle != null) {

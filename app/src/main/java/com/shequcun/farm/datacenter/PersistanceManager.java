@@ -39,4 +39,16 @@ public enum PersistanceManager {
         mContext.getSharedPreferences("Cookie", 0).edit()
                 .putBoolean("is_check_version", isCheck).commit();
     }
+
+    public void saveIsShowLookupComboDetails(String key, boolean isShow) {
+        if (mContext == null) return;
+        mContext.getSharedPreferences("Cookie", 0).edit()
+                .putBoolean(key, isShow).commit();
+    }
+
+    public boolean getIsShowLookUpComboDetails(String key) {
+        if (mContext == null)
+            return true;
+        return mContext.getSharedPreferences("Cookie", 0).getBoolean(key, true);
+    }
 }

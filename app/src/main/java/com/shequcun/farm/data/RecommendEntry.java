@@ -36,5 +36,20 @@ public class RecommendEntry extends BaseEntry {
     public int amount;
     @SerializedName("remains")
     public int remains;
+    @SerializedName("descr")
+    public String descr;
+
+
+//    "iid": 17,
+//            "maxpacks": 5,
+//            "imgs": [
+//            "https://img.shequcun.com/1508/14161/6ef8074e298e4c45ba9cc7940149e91a.png"
+//            ],
+//            "packw": 1000,
+//            "title": "空心菜",
+//            "id": 1,
+//            "price": 10,
+//            "descr": "",
+//            "remains": 100000
 
 }

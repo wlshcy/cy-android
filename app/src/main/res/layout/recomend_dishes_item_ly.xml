@@ -9,8 +9,7 @@
         android:layout_width="@dimen/px170"
         android:layout_height="@dimen/px170"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/px40"
-        android:src="@color/dark_green" />
+        android:layout_marginLeft="@dimen/px40" />
 
     <LinearLayout
         android:layout_width="wrap_content"

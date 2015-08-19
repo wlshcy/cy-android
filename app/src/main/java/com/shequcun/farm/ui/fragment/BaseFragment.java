@@ -3,7 +3,6 @@ package com.shequcun.farm.ui.fragment;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.MotionEvent;
@@ -16,7 +15,7 @@ import com.shequcun.farm.R;
  */
 public abstract class BaseFragment extends Fragment {
     protected FragmentMgrInterface fMgrInterface;
-    protected FragmentActivity mfragmentActivity;
+//    protected FragmentActivity mfragmentActivity;
 
     public abstract boolean onBackPressed();
 
@@ -52,7 +51,7 @@ public abstract class BaseFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 //        防止activity被系统回收掉
-        mfragmentActivity = (FragmentActivity)activity;
+//        mfragmentActivity = (FragmentActivity)activity;
     }
 
 
@@ -66,7 +65,7 @@ public abstract class BaseFragment extends Fragment {
     }
 
     public void gotoFragmentByAdd(int id, Fragment fragment, String tag) {
-        FragmentManager fm = getFragmentManager();
+        FragmentManager fm = getActivity().getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.add(id, fragment);
         transaction.addToBackStack(tag);
@@ -94,14 +93,14 @@ public abstract class BaseFragment extends Fragment {
         gotoFragment(id, fragment, tag);
     }
 
-    protected FragmentActivity getFragmentActivity() {
-        FragmentActivity baseFragmentActivity = (FragmentActivity) getActivity();
-        if (baseFragmentActivity == null) {
-//            activity被回收
-            return mfragmentActivity;
-        }
-        return baseFragmentActivity;
-    }
+//    protected FragmentActivity getFragmentActivity() {
+//        FragmentActivity baseFragmentActivity = (FragmentActivity) getActivity();
+//        if (baseFragmentActivity == null) {
+////            activity被回收
+//            return mfragmentActivity;
+//        }
+//        return baseFragmentActivity;
+//    }
 
     /**
      * 出栈
@@ -114,13 +113,17 @@ public abstract class BaseFragment extends Fragment {
         getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 
-    public void gotoFragmentByAnimation(int id, Fragment fragment,
+
+    public void gotoFragmentByAnimation(Bundle bundle, int id, Fragment fragment,
                                         String tag) {
+        fragment.setArguments(bundle);
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.setCustomAnimations(R.anim.slide_in_from_bottom, R.anim.slide_out_to_top, R.anim.slide_out_to_bottom, R.anim.slide_out_to_bottom);
-        ft.replace(id, fragment);
+//        ft.replace(id, fragment);
+        ft.add(id, fragment);
         ft.addToBackStack(tag);
-        ft.commit();
+//        ft.commit();
+        ft.commitAllowingStateLoss();
     }
 
     /**

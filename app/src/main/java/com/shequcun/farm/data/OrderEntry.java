@@ -12,7 +12,7 @@ public class OrderEntry extends BaseEntry {
     @SerializedName("id")
     public int id;
     @SerializedName("orderno")
-    public int orderno;//订单号
+    public String orderno;//订单号
     @SerializedName("uid")
     public int uid;//用户ID
     @SerializedName("combo_id")

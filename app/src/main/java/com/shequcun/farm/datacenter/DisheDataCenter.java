@@ -31,7 +31,7 @@ public class DisheDataCenter {
         return mOrder.getItems();
     }
 
-    public List<DishesItemEntry> buildItems(){
+    public List<DishesItemEntry> buildItems() {
         return mOrder.buildItems();
     }
 
@@ -53,7 +53,7 @@ public class DisheDataCenter {
     }
 
     public void removeItemById(int id) {
-         mOrder.removeItemById(id);
+        mOrder.removeItemById(id);
     }
 
     public void addItem(DishesItemEntry item) {
@@ -119,7 +119,7 @@ public class DisheDataCenter {
 //    }
 
     public void setReqWeight(int reqWeight) {
-        this.reqWeight = reqWeight * 500;
+        this.reqWeight = reqWeight;
     }
 
     //    public void setSendPrice(float sendPrice) {

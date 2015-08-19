@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.shequcun.farm.R;
-import com.shequcun.farm.data.ComboEntry;
+import com.shequcun.farm.data.PayParams;
 import com.shequcun.farm.util.AlipayUtils;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
 import com.shequcun.farm.util.Constrants;
@@ -45,11 +45,20 @@ public class PayFragment extends BaseFragment {
 
     double getOrderMoney() {
         Bundle bundle = getArguments();
-        ComboEntry entry = bundle != null ? ((ComboEntry) bundle.getSerializable("ComboEntry")) : null;
+        PayParams entry = bundle != null ? ((PayParams) bundle.getSerializable("PayParams")) : null;
         if (entry != null) {
-            return ((double) entry.prices[entry.getPosition()]) / 100;
+            return entry.orderMoney;
         }
         return 0;
+    }
+
+    String getAlipayInfo() {
+        Bundle bundle = getArguments();
+        PayParams entry = bundle != null ? ((PayParams) bundle.getSerializable("PayParams")) : null;
+        if (entry != null) {
+            return entry.alipay;
+        }
+        return " ";
     }
 
     @Override
@@ -62,12 +71,14 @@ public class PayFragment extends BaseFragment {
         @Override
         public void onViewClick(View v) {
             if (v == back)
-                popBackStack();
+                clearStack();
             else if (v == alipay_ly) {
-                AlipayUtils alipayUtils = new AlipayUtils();
-                alipayUtils.setHandler(mHandler);
-                alipayUtils.initAlipay(getActivity());
-                alipayUtils.doAlipay();
+//                AlipayUtils alipayUtils = new AlipayUtils();
+//                alipayUtils.setHandler(mHandler);
+//                alipayUtils.initAlipay(getActivity());
+//                alipayUtils.doAlipay(getAlipayInfo());
+
+                gotoFragmentByAdd(getArguments(), R.id.mainpage_ly, new PayResultFragment(), PayResultFragment.class.getName());
             }
         }
     };
@@ -88,6 +99,8 @@ public class PayFragment extends BaseFragment {
 //                        Toast.makeText(PayDemoActivity.this, "支付成功",
 //                                Toast.LENGTH_SHORT).show();
                         ToastHelper.showShort(getActivity(), "支付成功");
+
+                        gotoFragmentByAdd(getArguments(), R.id.mainpage_ly, new PayResultFragment(), PayResultFragment.class.getName());
                     } else {
                         // 判断resultStatus 为非“9000”则代表可能支付失败
                         // “8000”代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认，最终交易是否成功以服务端异步通知为准（小概率状态）

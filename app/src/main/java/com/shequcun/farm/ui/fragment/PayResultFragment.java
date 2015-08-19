@@ -10,21 +10,18 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 import com.shequcun.farm.R;
+import com.shequcun.farm.data.PayParams;
 import com.shequcun.farm.data.RecommendEntry;
 import com.shequcun.farm.data.RecommentListEntry;
-import com.shequcun.farm.model.PhotoModel;
 import com.shequcun.farm.ui.adapter.RecommendAdapter;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
 import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
-import com.shequcun.farm.util.ToastHelper;
 
 import org.apache.http.Header;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -48,12 +45,27 @@ public class PayResultFragment extends BaseFragment {
     protected void initWidget(View v) {
         mLv = (ListView) v.findViewById(R.id.mLv);
         back = v.findViewById(R.id.back);
-        ((TextView) v.findViewById(R.id.common_small_tv)).setText("为您特别推荐");
+        ((TextView) v.findViewById(R.id.title_center_text)).setText(R.string.pay_success);
+        recoTv = (TextView) v.findViewById(R.id.common_small_tv);
+        recoTv.setVisibility(View.GONE);
     }
 
     @Override
     protected void setWidgetLsn() {
+        buildAdapter();
         back.setOnClickListener(onClick);
+//        if (isRecomDishes())
+        requestRecomendDishes();
+    }
+
+
+    boolean isRecomDishes() {
+        Bundle bundle = getArguments();
+        PayParams entry = bundle != null ? ((PayParams) bundle.getSerializable("PayParams")) : null;
+        if (entry != null) {
+            return entry.isRecoDishes;
+        }
+        return false;
     }
 
     AvoidDoubleClickListener onClick = new AvoidDoubleClickListener() {
@@ -77,8 +89,19 @@ public class PayResultFragment extends BaseFragment {
         @Override
         public void onViewClick(View v) {
             int position = (int) v.getTag();
+            if (adapter == null)
+                return;
+            RecommendEntry entry = adapter.getItem(position);
+            gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new SingleDishesFragment(), SingleDishesFragment.class.getName());
         }
     };
+
+
+    Bundle buildBundle(RecommendEntry entry) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("RecommendEntry", entry);
+        return bundle;
+    }
 
     AvoidDoubleClickListener onGoodsImgLsn = new AvoidDoubleClickListener() {
         @Override
@@ -86,21 +109,25 @@ public class PayResultFragment extends BaseFragment {
             if (adapter == null)
                 return;
             int position = (int) v.getTag();
-            ArrayList<PhotoModel> photos = new ArrayList<PhotoModel>();
-            for (int i = 0; i < adapter.getItem(position).imgs.length; ++i) {
-                photos.add(new PhotoModel(true, adapter.getItem(position).imgs[i]));
-            }
-
-            Bundle budle = new Bundle();
-            budle.putSerializable(BrowseImageFragment.KEY_PHOTOS, photos);
-            budle.putInt(BrowseImageFragment.KEY_INDEX, position);
-            gotoFragmentByAdd(budle, R.id.mainpage_ly, new BrowseImageFragment(), BrowseImageFragment.class.getName());
+            RecommendEntry entry = adapter.getItem(position);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("RecommendEntry", entry);
+            gotoFragmentByAnimation(bundle, R.id.mainpage_ly, new RecommendGoodsDetailsFragment(), RecommendGoodsDetailsFragment.class.getName());
+//            int position = (int) v.getTag();
+//            ArrayList<PhotoModel> photos = new ArrayList<PhotoModel>();
+//            for (int i = 0; i < adapter.getItem(position).imgs.length; ++i) {
+//                photos.add(new PhotoModel(true, adapter.getItem(position).imgs[i]));
+//            }
+//
+//            Bundle budle = new Bundle();
+//            budle.putSerializable(BrowseImageFragment.KEY_PHOTOS, photos);
+//            budle.putInt(BrowseImageFragment.KEY_INDEX, position);
+//            gotoFragmentByAdd(budle, R.id.mainpage_ly, new BrowseImageFragment(), BrowseImageFragment.class.getName());
         }
     };
 
-    void requestRecommendDishes() {
-        RequestParams params = new RequestParams();
-        HttpRequestUtil.httpGet(LocalParams.INSTANCE.getBaseUrl() + "reco/dishes", params, new AsyncHttpResponseHandler() {
+    void requestRecomendDishes() {
+        HttpRequestUtil.httpGet(LocalParams.INSTANCE.getBaseUrl() + "cai/itemlist", new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int sCode, Header[] h, byte[] data) {
                 if (data != null && data.length > 0) {
@@ -110,7 +137,6 @@ public class PayResultFragment extends BaseFragment {
                             addDataToAdapter(entry.aList);
                             return;
                         }
-                        ToastHelper.showShort(getActivity(), entry.errmsg);
                     }
                 }
             }
@@ -122,12 +148,16 @@ public class PayResultFragment extends BaseFragment {
     }
 
     void addDataToAdapter(List<RecommendEntry> aList) {
-        if(aList==null || aList.size()<=0)
-            return;
-        adapter.addAll(aList);
-        adapter.notifyDataSetChanged();
+        if (aList != null && aList.size() > 0) {
+            recoTv.setVisibility(View.VISIBLE);
+            recoTv.setText("为您特别推荐");
+            adapter.addAll(aList);
+            adapter.notifyDataSetChanged();
+        }
     }
 
+
+    TextView recoTv;
     ListView mLv;
     RecommendAdapter adapter;
     View back;

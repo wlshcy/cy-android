@@ -63,7 +63,7 @@
     <string name="shop_cart">购物车</string>
     <string name="small_market_buy">选好了</string>
     <string name="small_market_buy_not">满A元起送</string>
-    <string name="small_market_buy_not_enough">还差Ag</string>
+    <string name="small_market_buy_not_enough">还差A菜</string>
     <string name="small_market_shop_cart_price">共A元</string>
     <string name="small_market_shop_cart_null">购物车是空的</string>
     <string name="search_community_error_tip">搜索不到小区,填写我的小区</string>

@@ -31,6 +31,7 @@ import com.shequcun.farm.data.ComboEntry;
 import com.shequcun.farm.data.DishesItemEntry;
 import com.shequcun.farm.data.goods.DishesListItemEntry;
 import com.shequcun.farm.datacenter.DisheDataCenter;
+import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.model.PhotoModel;
 import com.shequcun.farm.ui.adapter.ChooseDishesAdapter;
@@ -111,7 +112,7 @@ public class ChooseDishesFragment extends BaseFragment {
             if (v == back) {
                 popBackStack();
             } else if (v == rightTv) {
-                gotoFragmentByAdd(R.id.mainpage_ly, new ComboIntroduceFragment(), ComboIntroduceFragment.class.getName());
+                gotoFragmentByAdd(getArguments(), R.id.mainpage_ly, new ComboIntroduceFragment(), ComboIntroduceFragment.class.getName());
             } else if (v == mShopCartClearTv) {//清空购物车
                 hideShopCart();
                 clearBadeView(mOrderController.getItemsCount());
@@ -139,7 +140,7 @@ public class ChooseDishesFragment extends BaseFragment {
             return 1;
         }
         mOrderController.setReqWeight(entry.weights[entry.getPosition()]);
-        mBuyOrderTv.setText("选择" + mOrderController.getReqWeight() + "g菜");
+        mBuyOrderTv.setText("选择" + Utils.unitConversion(mOrderController.getReqWeight()) + "菜");
         return entry.id;
     }
 
@@ -194,6 +195,20 @@ public class ChooseDishesFragment extends BaseFragment {
             adapter.notifyDataSetChanged();
         }
 
+        if (PersistanceManager.INSTANCE.getIsShowLookUpComboDetails(buildKey())) {
+            gotoFragmentByAnimation(getArguments(), R.id.mainpage_ly, new ComboMongoliaLayerFragment(), ComboMongoliaLayerFragment.class.getName());
+        }
+    }
+
+    private String buildKey() {
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            ComboEntry entry = (ComboEntry) bundle.getSerializable("ComboEntry");
+            if (entry != null) {
+                return entry.id + "" + entry.weights[entry.getPosition()];
+            }
+        }
+        return "";
     }
 
     void gotoFragmentByAdd() {
@@ -463,15 +478,15 @@ public class ChooseDishesFragment extends BaseFragment {
             int surplus = mOrderController.getReqWeight() - mOrderController.getItemsWeight();
 
             if (surplus == mOrderController.getReqWeight()) {
-                txt = "选择" + surplus + "g";
+                txt = "选择" + Utils.unitConversion(surplus) + "菜";
             } else {
-                txt = txt.replaceAll("A", String.valueOf((mOrderController.getReqWeight()
-                        - mOrderController.getItemsWeight())));
+                txt = txt.replaceAll("A", Utils.unitConversion(mOrderController.getReqWeight()
+                        - mOrderController.getItemsWeight()));
             }
 
             mBuyOrderTv.setText(txt);
             mBuyOrderTv.setTextColor(getResources().getColor(android.R.color.black));
-            String shopCartTip = mOrderController.getItemsWeight() == 0 ? getString(R.string.small_market_shop_cart_null) : "您已选择了" + Utils.unitConversion(mOrderController.getItemsWeight());
+            String shopCartTip = mOrderController.getItemsWeight() == 0 ? getString(R.string.small_market_shop_cart_null) : "您已选择了" + Utils.unitConversion(mOrderController.getItemsWeight()) + "菜";
             mShopCartPriceTv.setText(shopCartTip);
         }
     }
@@ -556,13 +571,13 @@ public class ChooseDishesFragment extends BaseFragment {
 
     private void alertOutOfReqWeight() {
         String content = getResources().getString(R.string.out_of_required_weight);
-        content = content.replace("A", mOrderController.getReqWeight() + "g");
+        content = content.replace("A",  Utils.unitConversion(mOrderController.getReqWeight()));
         alertDialog(content);
     }
 
     private void alertOutOfReqWeight1() {
         String content = getResources().getString(R.string.out_of_required_weight1);
-        content = content.replace("A", mOrderController.getReqWeight() + "g");
+        content = content.replace("A", Utils.unitConversion(mOrderController.getReqWeight()));
         alertDialog(content);
     }
 
@@ -578,7 +593,7 @@ public class ChooseDishesFragment extends BaseFragment {
     }
 
     private void alertDialog(String content) {
-        final AlertDialog alert = new AlertDialog.Builder(getFragmentActivity()).create();
+        final AlertDialog alert = new AlertDialog.Builder(getActivity()).create();
         alert.show();
         alert.setCancelable(false);
         alert.getWindow().setContentView(R.layout.alert_dialog);
@@ -588,7 +603,6 @@ public class ChooseDishesFragment extends BaseFragment {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        // TODO Auto-generated method stub
                         alert.dismiss();
                     }
                 });

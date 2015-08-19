@@ -15,8 +15,12 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.HistoryOrderEntry;
+import com.shequcun.farm.data.OrderEntry;
 import com.shequcun.farm.data.OrderListEntry;
+import com.shequcun.farm.data.PayParams;
+import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.ui.adapter.MyOrderAdapter;
+import com.shequcun.farm.util.AvoidDoubleClickListener;
 import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
@@ -75,6 +79,7 @@ public class DishesFragment extends BaseFragment {
         if (adapter == null) {
             adapter = new MyOrderAdapter(getActivity());
         }
+        adapter.buildPayOnClickLsn(lsn);
         mLv.setAdapter(adapter);
     }
 
@@ -87,6 +92,55 @@ public class DishesFragment extends BaseFragment {
         }
     }
 
+    AvoidDoubleClickListener lsn = new AvoidDoubleClickListener() {
+        @Override
+        public void onViewClick(View v) {
+            int position = (int) v.getTag();
+            if (adapter == null)
+                return;
+            HistoryOrderEntry entry = adapter.getItem(position);
+            requestAlipay(entry);
+        }
+    };
+
+    void requestAlipay(final HistoryOrderEntry entry) {
+        RequestParams params = new RequestParams();
+        params.add("orderno", entry.orderno);
+        params.add("_xsrf", PersistanceManager.INSTANCE.getCookieValue());
+        HttpRequestUtil.httpPost(LocalParams.INSTANCE.getBaseUrl() + "cai/payorder", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int sCode, Header[] h, byte[] data) {
+                if (data != null && data.length > 0) {
+                    OrderEntry oEntry = JsonUtilsParser.fromJson(new String(data), OrderEntry.class);
+                    if (oEntry != null) {
+                        if (TextUtils.isEmpty(oEntry.errmsg)) {
+                            gotoFragmentByAdd(buildBundle(entry.orderno, (double) entry.price / 100, oEntry.alipay), R.id.mainpage_ly, new PayFragment(), PayFragment.class.getName());
+                            return;
+                        }
+
+                        ToastHelper.showShort(getActivity(), oEntry.errmsg);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
+                ToastHelper.showShort(getActivity(), "获取支付内容失败");
+            }
+        });
+    }
+
+    Bundle buildBundle(String orderno, double orderMoney, String alipay) {
+        Bundle bundle = new Bundle();
+        PayParams payParams = new PayParams();
+        payParams.orderno = orderno;
+        payParams.alipay = alipay;
+        payParams.orderMoney = orderMoney;
+        payParams.isRecoDishes = false;
+        bundle.putSerializable("PayParams", payParams);
+        return bundle;
+    }
+
     public void requestOrderEntry() {
         RequestParams params = new RequestParams();
         if (adapter != null && adapter.getCount() >= 1) {
@@ -94,7 +148,7 @@ public class DishesFragment extends BaseFragment {
         }
         params.add("length", "20");
         params.add("type", "1");
-        HttpRequestUtil.httpGet(LocalParams.INSTANCE.getBaseUrl() + "cai/order", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.INSTANCE.getBaseUrl() + "cai/order", params, new AsyncHttpResponseHandler() {
             @Override
             public void onFinish() {
                 super.onFinish();

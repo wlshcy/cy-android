@@ -15,8 +15,12 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.HistoryOrderEntry;
+import com.shequcun.farm.data.OrderEntry;
 import com.shequcun.farm.data.OrderListEntry;
+import com.shequcun.farm.data.PayParams;
+import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.ui.adapter.MyOrderAdapter;
+import com.shequcun.farm.util.AvoidDoubleClickListener;
 import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
@@ -63,6 +67,7 @@ public class ShoppingOrderFragment extends BaseFragment {
         if (adapter == null) {
             adapter = new MyOrderAdapter(getActivity());
         }
+        adapter.buildPayOnClickLsn(lsn);
         mLv.setAdapter(adapter);
     }
 
@@ -93,49 +98,90 @@ public class ShoppingOrderFragment extends BaseFragment {
         }
         params.add("length", "20");
         params.add("type", "2");
-        HttpRequestUtil.httpGet(LocalParams.INSTANCE.getBaseUrl() + "cai/order", params, new AsyncHttpResponseHandler() {
-             @Override
-             public void onFinish() {
-                 super.onFinish();
-                 if (scroll_view != null)
-                     scroll_view.onRefreshComplete();
-             }
+        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.INSTANCE.getBaseUrl() + "cai/order", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                if (scroll_view != null)
+                    scroll_view.onRefreshComplete();
+            }
 
-             @Override
-             public void onSuccess(int sCode, Header[] h, byte[] data) {
-                 if (data != null && data.length > 0) {
-                     OrderListEntry entry = JsonUtilsParser.fromJson(new String(data), OrderListEntry.class);
-                     if (entry != null) {
-                         if (TextUtils.isEmpty(entry.errmsg)) {
-//                            ArrayList<OrderEntry> dishesEntry = new ArrayList<OrderEntry>();
+            @Override
+            public void onSuccess(int sCode, Header[] h, byte[] data) {
+                if (data != null && data.length > 0) {
+                    OrderListEntry entry = JsonUtilsParser.fromJson(new String(data), OrderListEntry.class);
+                    if (entry != null) {
+                        if (TextUtils.isEmpty(entry.errmsg)) {
+                            if (entry.aList != null) {
+                                addDataToAdapter(entry.aList);
+                            }
+                            return;
+                        }
 
-                             if (entry.aList != null) {
-//                                int size = entry.aList.size();
-//                                for (int i = 0; i < size; i++) {
-//                                    OrderEntry tmpEntry = entry.aList.get(i);
-//                                    if (tmpEntry.type != 1) {
-//                                        dishesEntry.add(tmpEntry);
-//                                    }
-//                                }
-                                 addDataToAdapter(entry.aList);
-                             }
-                             return;
-                         }
+                        ToastHelper.showShort(getActivity(), entry.errmsg);
+                    }
+                }
+            }
 
-                         ToastHelper.showShort(getActivity(), entry.errmsg);
-                     }
-                 }
-             }
+            @Override
+            public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
+                if (sCode == 0) {
+                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
+                    return;
+                }
+                ToastHelper.showShort(getActivity(), "错误码" + sCode);
+            }
+        });
+    }
 
-             @Override
-             public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
-                 if (sCode == 0) {
-                     ToastHelper.showShort(getActivity(), R.string.network_error_tip);
-                     return;
-                 }
-                 ToastHelper.showShort(getActivity(), "错误码" + sCode);
-             }
-         });
+
+    AvoidDoubleClickListener lsn = new AvoidDoubleClickListener() {
+        @Override
+        public void onViewClick(View v) {
+            int position = (int) v.getTag();
+            if (adapter == null)
+                return;
+            HistoryOrderEntry entry = adapter.getItem(position);
+            requestAlipay(entry);
+        }
+    };
+
+    void requestAlipay(final HistoryOrderEntry entry) {
+        RequestParams params = new RequestParams();
+        params.add("orderno", entry.orderno);
+        params.add("_xsrf", PersistanceManager.INSTANCE.getCookieValue());
+        HttpRequestUtil.httpPost(LocalParams.INSTANCE.getBaseUrl() + "cai/payorder", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int sCode, Header[] h, byte[] data) {
+                if (data != null && data.length > 0) {
+                    OrderEntry oEntry = JsonUtilsParser.fromJson(new String(data), OrderEntry.class);
+                    if (oEntry != null) {
+                        if (TextUtils.isEmpty(oEntry.errmsg)) {
+                            gotoFragmentByAdd(buildBundle(entry.orderno, (double) entry.price / 100, oEntry.alipay), R.id.mainpage_ly, new PayFragment(), PayFragment.class.getName());
+                            return;
+                        }
+
+                        ToastHelper.showShort(getActivity(), oEntry.errmsg);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
+                ToastHelper.showShort(getActivity(), "获取支付内容失败");
+            }
+        });
+    }
+
+    Bundle buildBundle(String orderno, double orderMoney, String alipay) {
+        Bundle bundle = new Bundle();
+        PayParams payParams = new PayParams();
+        payParams.orderno = orderno;
+        payParams.alipay = alipay;
+        payParams.orderMoney = orderMoney;
+        payParams.isRecoDishes = false;
+        bundle.putSerializable("PayParams", payParams);
+        return bundle;
     }
 
     ProgressBar pBar;

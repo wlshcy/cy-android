@@ -72,10 +72,20 @@ public class Utils {
 //        if (g >= 1000) {
 //            float fdis = (float) g / 1000;
 //            fdis = (float) (Math.round(fdis * 10)) / 10;
-//            restDistanceStr = fdis + "kg";
+////            restDistanceStr = fdis + "kg";
+//            restDistanceStr = fdis * 2 + "斤";
 //        } else {
-        restDistanceStr = g + "g";
+//            float fdis = ((float) g) / 500;
+//            fdis = (float) (Math.round(fdis * 10)) / 10;
+//            restDistanceStr = fdis + "斤";
 //        }
+        float fdis = ((float) g) / 500;
+        fdis = (float) (Math.round(fdis * 10)) / 10;
+        if (fdis * 10 % 10 == 0) {
+            restDistanceStr = (int) fdis + "斤";
+        } else {
+            restDistanceStr = fdis + "斤";
+        }
         return restDistanceStr;
     }
 

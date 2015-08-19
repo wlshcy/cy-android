@@ -27,23 +27,23 @@ public class HistoryOrderEntry {
 //            "price": 832000,
 //            "mobile": "14012345678",
     @SerializedName("status")
-    public int status;
+    public int status;//0.未付款, 1.待配送, 2.配送中, 3.配送完成, 4.取消订单
     @SerializedName("times")
     public int times;
-    @SerializedName("combo_idx")
-    public int combo_idx;
+//    @SerializedName("combo_idx")
+//    public String combo_idx;
     @SerializedName("id")
     public int id;
     @SerializedName("type")
     public int type;
     @SerializedName("year")
     public int year;
-    @SerializedName("uid")
-    public int uid;
-    @SerializedName("combo_id")
-    public int combo_id;
-    @SerializedName("cod")
-    public boolean cod;
+//    @SerializedName("uid")
+//    public int uid;
+//    @SerializedName("combo_id")
+//    public int combo_id;
+//    @SerializedName("cod")
+//    public boolean cod;
     @SerializedName("title")
     public String title;
     @SerializedName("address")
@@ -54,4 +54,6 @@ public class HistoryOrderEntry {
     public String name;
     @SerializedName("chgtime")
     public JsonObject json;
+    @SerializedName("price")
+    public int price;
 }

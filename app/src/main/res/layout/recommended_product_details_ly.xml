@@ -18,9 +18,9 @@
             android:layout_height="@dimen/px440">
 
             <ImageView
+                android:id="@+id/goods_img"
                 android:layout_width="fill_parent"
-                android:layout_height="match_parent"
-                android:src="@color/orange_a45500" />
+                android:layout_height="match_parent" />
 
             <ImageView
                 android:id="@+id/close_iv"
@@ -33,6 +33,7 @@
         </FrameLayout>
 
         <TextView
+            android:id="@+id/goods_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/px50"
@@ -42,6 +43,7 @@
             android:textSize="@dimen/px36" />
 
         <TextView
+            android:id="@+id/goods_prce"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/px38"
@@ -59,6 +61,7 @@
             android:background="@color/divider_color" />
 
         <TextView
+            android:id="@+id/goods_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/px38"
