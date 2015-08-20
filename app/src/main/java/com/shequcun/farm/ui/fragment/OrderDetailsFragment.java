@@ -232,7 +232,7 @@ public class OrderDetailsFragment extends BaseFragment {
             return;
         }
         int combo_id = mOrderController.getItems().get(0).combo_id;
-        int type = 1;
+        int type = 2;
         String combo_idx = getComboIdxParams();
         String items = mOrderController.getOrderItemsString();
         String name = addressEntry.name;
@@ -245,7 +245,7 @@ public class OrderDetailsFragment extends BaseFragment {
         RequestParams params = new RequestParams();
         params.add("combo_id", combo_id + "");
         params.add("type", type + "");
-        params.add("combo_idx", combo_idx);
+//        params.add("combo_idx", combo_idx);
         params.add("items", items);
         params.add("name", name);
         params.add("mobile", mobile);
@@ -258,7 +258,7 @@ public class OrderDetailsFragment extends BaseFragment {
                     String result = new String(responseBody);
                     OrderEntry entry = JsonUtilsParser.fromJson(result, OrderEntry.class);
                     if (entry != null) {
-                        if (TextUtils.isEmpty(entry.errcode)) {
+                        if (TextUtils.isEmpty(entry.errmsg)) {
 
                             if (TextUtils.isEmpty(entry.alipay)) {
                                 gotoFragmentByAdd(buildBundle(entry.orderno, getOrderMoney(), entry.alipay, true), R.id.mainpage_ly, new PayResultFragment(), PayResultFragment.class.getName());
