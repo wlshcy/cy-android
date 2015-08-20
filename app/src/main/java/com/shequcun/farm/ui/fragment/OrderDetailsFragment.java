@@ -261,11 +261,11 @@ public class OrderDetailsFragment extends BaseFragment {
                         if (TextUtils.isEmpty(entry.errcode)) {
 
                             if (TextUtils.isEmpty(entry.alipay)) {
-                                gotoFragmentByAdd(buildBundle(entry.orderno, getOrderMoney(), entry.alipay), R.id.mainpage_ly, new PayResultFragment(), PayResultFragment.class.getName());
+                                gotoFragmentByAdd(buildBundle(entry.orderno, getOrderMoney(), entry.alipay, true), R.id.mainpage_ly, new PayResultFragment(), PayResultFragment.class.getName());
                                 return;
                             }
 
-                            gotoFragmentByAdd(buildBundle(entry.orderno, getOrderMoney(), entry.alipay), R.id.mainpage_ly, new PayFragment(), PayFragment.class.getName());
+                            gotoFragmentByAdd(buildBundle(entry.orderno, getOrderMoney(), entry.alipay, false), R.id.mainpage_ly, new PayFragment(), PayFragment.class.getName());
 
                         } else {
                             ToastHelper.showShort(getActivity(), entry.errmsg);
@@ -387,7 +387,7 @@ public class OrderDetailsFragment extends BaseFragment {
         return 0;
     }
 
-    Bundle buildBundle(String orderno, double orderMoney, String alipay) {
+    Bundle buildBundle(String orderno, double orderMoney, String alipay, boolean isRecoDishes) {
         Bundle bundle = new Bundle();
         PayParams payParams = new PayParams();
         payParams.orderno = orderno;
