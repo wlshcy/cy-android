@@ -99,13 +99,14 @@ public class DishesFragment extends BaseFragment {
             HistoryOrderEntry entry = adapter.getItem(position);
 
             if (entry != null) {
-//                if (entry.status == 1) {
-//                    gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new LookUpOrderFragment(), LookUpOrderFragment.class.getName());
-//                } else if (entry.status == 0) {
-//                    requestAlipay(entry);
-//                }
+                if (entry.status == 1) {
+                    gotoFragment(buildBundle(entry), R.id.mainpage_ly, new ModifyOrderFragment(), ModifyOrderFragment.class.getName());
+                   // gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new LookUpOrderFragment(), LookUpOrderFragment.class.getName());
+                } else if (entry.status == 0) {
+                    requestAlipay(entry);
+                }
 
-                gotoFragment(buildBundle(entry), R.id.mainpage_ly, new ModifyOrderFragment(), ModifyOrderFragment.class.getName());
+
             }
         }
     };
