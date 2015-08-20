@@ -46,7 +46,7 @@ public class ComboMongoliaLayerFragment extends BaseFragment {
             PersistanceManager.INSTANCE.saveIsShowLookupComboDetails(buildKey(), false);
             if (look_combo_detail_tv == v) {
                 popBackStack();
-                gotoFragmentByAdd(getArguments(), R.id.mainpage_ly, new ComboIntroduceFragment(), ComboIntroduceFragment.class.getName());
+                gotoFragmentByAdd(getArguments(), R.id.mainpage_ly, new WebViewFragment(), WebViewFragment.class.getName());
             } else if (close == v) {
                 popBackStack();
             }

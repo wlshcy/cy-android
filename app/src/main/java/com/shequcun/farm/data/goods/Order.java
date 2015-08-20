@@ -30,9 +30,12 @@ public class Order {
     public String getItemsString() {
         String result = "";
         int i = 0;
-        for (DishesItemEntry item : items) {
+
+        List<DishesItemEntry> aList = buildItems();
+
+        for (DishesItemEntry item : aList) {
             i++;
-            if (i == items.size()) {
+            if (i == aList.size()) {
                 result += item.id + ":" + item.getCount();
                 break;
             }

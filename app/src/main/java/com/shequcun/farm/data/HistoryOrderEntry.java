@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * Created by apple on 15/8/18.
  */
-public class HistoryOrderEntry implements Serializable{
+public class HistoryOrderEntry implements Serializable {
 
 
     //    "status": 1,
@@ -32,19 +32,22 @@ public class HistoryOrderEntry implements Serializable{
     public int status;//0.未付款, 1.待配送, 2.配送中, 3.配送完成, 4.取消订单
     @SerializedName("times")
     public int times;
-//    @SerializedName("combo_idx")
-//    public String combo_idx;
+    @SerializedName("combo_idx")
+    public String combo_idx;
+
+    //  combo_id	int	套餐id		10
+    //   combo_idx	int	子套餐序号
     @SerializedName("id")
     public int id;
     @SerializedName("type")
     public int type;
     @SerializedName("year")
     public int year;
-//    @SerializedName("uid")
+    //    @SerializedName("uid")
 //    public int uid;
-//    @SerializedName("combo_id")
-//    public int combo_id;
-//    @SerializedName("cod")
+    @SerializedName("combo_id")
+    public int combo_id;
+    //    @SerializedName("cod")
 //    public boolean cod;
     @SerializedName("title")
     public String title;
@@ -58,4 +61,8 @@ public class HistoryOrderEntry implements Serializable{
     public JsonObject json;
     @SerializedName("price")
     public int price;
+    /**
+     * 本订单购买的总重量
+     */
+    public int allWeight;
 }

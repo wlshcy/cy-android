@@ -1,7 +1,6 @@
 package com.shequcun.farm.ui.adapter;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,21 +13,20 @@ import com.shequcun.farm.util.AvoidDoubleClickListener;
 import com.shequcun.farm.util.Utils;
 
 /**
- * Created by apple on 15/8/8.
+ * 购买订单
+ * Created by apple on 15/8/20.
  */
-public class MyOrderAdapter extends ArrayAdapter<HistoryOrderEntry> {
-    HistoryOrderEntry entry;
-
+public class ShoppingOrderAdapter extends ArrayAdapter<HistoryOrderEntry> {
     AvoidDoubleClickListener payOnClickLsn;
 
-
-    public MyOrderAdapter(Context context) {
+    public ShoppingOrderAdapter(Context context) {
         super(context, R.layout.my_order_item_ly);
     }
 
     public void buildPayOnClickLsn(AvoidDoubleClickListener payOnClickLsn) {
         this.payOnClickLsn = payOnClickLsn;
     }
+
 
     @Override
     public View getView(int position, View v, ViewGroup parent) {
@@ -45,10 +43,11 @@ public class MyOrderAdapter extends ArrayAdapter<HistoryOrderEntry> {
         } else {
             vh = (ViewHolder) v.getTag();
         }
-        entry = getItem(position);
+        HistoryOrderEntry entry = getItem(position);
 
         if (entry != null) {
-            vh.distribution_number_tv.setText("第" + entry.times + "次配送");
+//            vh.distribution_number_tv.setText("第" + entry.times + "次配送");
+            vh.distribution_number_tv.setText(entry.title);
             if (entry.status == 0) {
                 vh.distribution_date.setText("下单日期  " + Utils.getTime(entry.json.get(entry.status + "").getAsLong()));
             } else if (entry.status == 1) {
@@ -59,12 +58,14 @@ public class MyOrderAdapter extends ArrayAdapter<HistoryOrderEntry> {
                 vh.distribution_date.setText("收货日期" + Utils.getTime(entry.json.get(entry.status + "").getAsLong()));
             }
 
-            if (TextUtils.isEmpty(entry.title)) {
-                vh.distribution_name.setVisibility(View.GONE);
-            } else {
-                vh.distribution_name.setVisibility(View.VISIBLE);
-                vh.distribution_name.setText(entry.title);
-            }
+//            if (TextUtils.isEmpty(entry.title)) {
+//                vh.distribution_name.setVisibility(View.GONE);
+//            } else {
+//                vh.distribution_name.setVisibility(View.VISIBLE);
+//                vh.distribution_name.setText(entry.title);
+//            }
+
+            vh.distribution_name.setVisibility(View.GONE);
 
 
             if (entry.status == 3) {// 0.未付款, 1.待配送, 2.配送中, 3.配送完成,
@@ -79,7 +80,7 @@ public class MyOrderAdapter extends ArrayAdapter<HistoryOrderEntry> {
                 vh.order_status.setText("未配送");
             } else if (entry.status == 2) {
                 vh.order_status.setText("配送中");
-            }else if(entry.status==4){
+            } else if (entry.status == 4) {
                 vh.order_status.setText("订单取消");
             }
         }

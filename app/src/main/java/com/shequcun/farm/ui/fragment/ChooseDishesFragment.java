@@ -73,6 +73,7 @@ public class ChooseDishesFragment extends BaseFragment {
         back = v.findViewById(R.id.back);
         rightTv = (TextView) v.findViewById(R.id.title_right_text);
         rightTv.setText(R.string.combo_introduce);
+        rightTv.setVisibility(isShowComboIntroduce() ? View.VISIBLE : View.GONE);
         rootView = (FrameLayout) v.findViewById(R.id.root_view);
         footShopCartLl = (LinearLayout) v.findViewById(R.id.foot_shop_cart_ll);
         mShopCartClearTv = (TextView) v.findViewById(R.id.shop_cart_clear_tv);
@@ -94,6 +95,16 @@ public class ChooseDishesFragment extends BaseFragment {
         buildAdapter();
     }
 
+    boolean isShowComboIntroduce() {
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            ComboEntry entry = (ComboEntry) bundle.getSerializable("ComboEntry");
+            if (entry != null)
+                return entry.tiles != null && entry.tiles.length > 0;
+        }
+        return false;
+    }
+
     @Override
     protected void setWidgetLsn() {
         back.setOnClickListener(onClick);
@@ -112,7 +123,7 @@ public class ChooseDishesFragment extends BaseFragment {
             if (v == back) {
                 popBackStack();
             } else if (v == rightTv) {
-                gotoFragmentByAdd(getArguments(), R.id.mainpage_ly, new ComboIntroduceFragment(), ComboIntroduceFragment.class.getName());
+                gotoFragmentByAdd(getArguments(), R.id.mainpage_ly, new WebViewFragment(), WebViewFragment.class.getName());
             } else if (v == mShopCartClearTv) {//清空购物车
                 hideShopCart();
                 clearBadeView(mOrderController.getItemsCount());
@@ -133,7 +144,7 @@ public class ChooseDishesFragment extends BaseFragment {
         }
     };
 
-    int buildRequestID() {//需要完善
+    int buildRequestID() {
         Bundle bundle = getArguments();
         ComboEntry entry = (ComboEntry) bundle.getSerializable("ComboEntry");
         if (entry == null) {
@@ -571,7 +582,7 @@ public class ChooseDishesFragment extends BaseFragment {
 
     private void alertOutOfReqWeight() {
         String content = getResources().getString(R.string.out_of_required_weight);
-        content = content.replace("A",  Utils.unitConversion(mOrderController.getReqWeight()));
+        content = content.replace("A", Utils.unitConversion(mOrderController.getReqWeight()));
         alertDialog(content);
     }
 

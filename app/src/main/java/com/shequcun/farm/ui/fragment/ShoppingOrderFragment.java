@@ -19,7 +19,7 @@ import com.shequcun.farm.data.OrderEntry;
 import com.shequcun.farm.data.OrderListEntry;
 import com.shequcun.farm.data.PayParams;
 import com.shequcun.farm.datacenter.PersistanceManager;
-import com.shequcun.farm.ui.adapter.MyOrderAdapter;
+import com.shequcun.farm.ui.adapter.ShoppingOrderAdapter;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
 import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
@@ -65,8 +65,9 @@ public class ShoppingOrderFragment extends BaseFragment {
 
     void buildAdapter() {
         if (adapter == null) {
-            adapter = new MyOrderAdapter(getActivity());
+            adapter = new ShoppingOrderAdapter(getActivity());
         }
+        adapter.clear();
         adapter.buildPayOnClickLsn(lsn);
         mLv.setAdapter(adapter);
     }
@@ -104,6 +105,9 @@ public class ShoppingOrderFragment extends BaseFragment {
                 super.onFinish();
                 if (scroll_view != null)
                     scroll_view.onRefreshComplete();
+                if (pBar != null) {
+                    pBar.setVisibility(View.GONE);
+                }
             }
 
             @Override
@@ -142,10 +146,24 @@ public class ShoppingOrderFragment extends BaseFragment {
             if (adapter == null)
                 return;
             HistoryOrderEntry entry = adapter.getItem(position);
-            requestAlipay(entry);
+
+            if (entry != null) {
+//                if (entry.status == 1) {
+//                    gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new LookUpOrderFragment(), LookUpOrderFragment.class.getName());
+//                } else if (entry.status == 0) {
+//                    requestAlipay(entry);
+//                }
+
+                gotoFragment(buildBundle(entry), R.id.mainpage_ly, new ModifyOrderFragment(), ModifyOrderFragment.class.getName());
+            }
         }
     };
 
+    Bundle buildBundle(HistoryOrderEntry entry) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("HistoryOrderEntry", entry);
+        return bundle;
+    }
 
     void requestAlipay(final HistoryOrderEntry entry) {
         RequestParams params = new RequestParams();
@@ -185,7 +203,7 @@ public class ShoppingOrderFragment extends BaseFragment {
     }
 
     ProgressBar pBar;
-    MyOrderAdapter adapter;
+    ShoppingOrderAdapter adapter;
     ListView mLv;
     PullToRefreshScrollView scroll_view;
 }

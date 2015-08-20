@@ -79,6 +79,7 @@ public class DishesFragment extends BaseFragment {
         if (adapter == null) {
             adapter = new MyOrderAdapter(getActivity());
         }
+        adapter.clear();
         adapter.buildPayOnClickLsn(lsn);
         mLv.setAdapter(adapter);
     }
@@ -87,9 +88,6 @@ public class DishesFragment extends BaseFragment {
         adapter.addAll(aList);
         adapter.notifyDataSetChanged();
         Utils.setListViewHeightBasedOnChildren(mLv);
-        if (pBar != null) {
-            pBar.setVisibility(View.GONE);
-        }
     }
 
     AvoidDoubleClickListener lsn = new AvoidDoubleClickListener() {
@@ -101,13 +99,13 @@ public class DishesFragment extends BaseFragment {
             HistoryOrderEntry entry = adapter.getItem(position);
 
             if (entry != null) {
-                if (entry.status == 1) {
-                    gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new LookUpOrderFragment(), LookUpOrderFragment.class.getName());
-                } else if (entry.status == 0) {
-                    requestAlipay(entry);
-                }
+//                if (entry.status == 1) {
+//                    gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new LookUpOrderFragment(), LookUpOrderFragment.class.getName());
+//                } else if (entry.status == 0) {
+//                    requestAlipay(entry);
+//                }
 
-//                gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new LookUpOrderFragment(), LookUpOrderFragment.class.getName());
+                gotoFragment(buildBundle(entry), R.id.mainpage_ly, new ModifyOrderFragment(), ModifyOrderFragment.class.getName());
             }
         }
     };
@@ -167,6 +165,9 @@ public class DishesFragment extends BaseFragment {
             @Override
             public void onFinish() {
                 super.onFinish();
+                if (pBar != null) {
+                    pBar.setVisibility(View.GONE);
+                }
                 if (scroll_view != null)
                     scroll_view.onRefreshComplete();
             }

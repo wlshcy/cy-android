@@ -134,11 +134,37 @@ public class OrderDetailsFragment extends BaseFragment {
 
     void addFooter() {
         View footerView = LayoutInflater.from(getActivity()).inflate(R.layout.order_details_footer_ly, null);
-        ((TextView) footerView.findViewById(R.id.distribution_date)).setText("配送日期:本周周五");
+        String delievery = buildComboDeliveryDate();
+        if (TextUtils.isEmpty(delievery)) {
+            footerView.findViewById(R.id.distribution_date).setVisibility(View.GONE);
+        } else {
+            ((TextView) footerView.findViewById(R.id.distribution_date)).setText("配送日期:  本周" + delievery);
+        }
         int part = mOrderController.getItemsCount();
         ((TextView) footerView.findViewById(R.id.number_copies)).setText("共" + part + "份");
         mLv.addFooterView(footerView, null, false);
     }
+
+//    String buildWeek(int delievery) {
+//        switch (delievery) {
+//            case 5:
+//                return "五";
+//            case 6:
+//                return "六";
+//            case 7:
+//                return "七";
+//            case 4:
+//                return "四";
+//            case 3:
+//                return "三";
+//            case 2:
+//                return "二";
+//            case 1:
+//                return "一";
+//            default:
+//                return "抓紧拨打客服电话吧!";
+//        }
+//    }
 
     void buildAdapter() {
         addFooter();
@@ -150,14 +176,44 @@ public class OrderDetailsFragment extends BaseFragment {
         adapter.notifyDataSetChanged();
     }
 
-    int getComboIdxParams() {
+    String getComboIdxParams() {
         Bundle bundle = getArguments();
         if (bundle != null) {
             ComboEntry entry = (ComboEntry) bundle.getSerializable("ComboEntry");
-            if (entry != null)
-                return entry.getPosition();
+            if (entry != null) {
+                if (!TextUtils.isEmpty(entry.combo_idx))
+                    return entry.combo_idx;
+                return entry.getPosition() + "";
+            }
+            if (!TextUtils.isEmpty(entry.combo_idx))
+                return entry.combo_idx;
+            return entry.getPosition() + "";
         }
-        return -1;
+        return "";
+    }
+
+    /**
+     * 构建订单配送日期
+     *
+     * @return
+     */
+    String buildComboDeliveryDate() {
+        StringBuilder result = new StringBuilder();
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            ComboEntry entry = (ComboEntry) bundle.getSerializable("ComboEntry");
+            if (entry != null) {
+                int shipday[] = entry.shipday;
+                if (shipday != null && shipday.length > 0) {
+                    for (int i = 0; i < shipday.length; ++i) {
+                        if (result.length() > 0)
+                            result.append("、");
+                        result.append(shipday[i]);
+                    }
+                }
+            }
+        }
+        return result.toString();
     }
 
     /**
@@ -177,7 +233,7 @@ public class OrderDetailsFragment extends BaseFragment {
         }
         int combo_id = mOrderController.getItems().get(0).combo_id;
         int type = 1;
-        int combo_idx = getComboIdxParams();
+        String combo_idx = getComboIdxParams();
         String items = mOrderController.getOrderItemsString();
         String name = addressEntry.name;
         String mobile = addressEntry.mobile;
@@ -185,11 +241,11 @@ public class OrderDetailsFragment extends BaseFragment {
         requestCaiOrder(combo_id, type, combo_idx, items, name, mobile, address);
     }
 
-    private void requestCaiOrder(int combo_id, int type, int combo_idx, String items, String name, String mobile, String address) {
+    private void requestCaiOrder(int combo_id, int type, String combo_idx, String items, String name, String mobile, String address) {
         RequestParams params = new RequestParams();
         params.add("combo_id", combo_id + "");
         params.add("type", type + "");
-        params.add("combo_idx", combo_idx + "");
+        params.add("combo_idx", combo_idx);
         params.add("items", items);
         params.add("name", name);
         params.add("mobile", mobile);

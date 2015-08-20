@@ -66,11 +66,17 @@
         android:divider="#e4e4e4"
         android:dividerHeight="0.5dp" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/common_bg_color"
+        />
+
     <TextView
-        android:id="@+id/cancel_order"
+        android:id="@+id/order_btn"
         android:layout_width="match_parent"
         android:layout_height="@dimen/px110"
-        android:background="@android:color/white"
+        android:background="@drawable/list_item_selector"
         android:gravity="center"
         android:text="@string/cancel_order"
         android:textColor="@color/green_24c05d"

@@ -17,7 +17,7 @@ public class ComboEntry extends BaseEntry {
     public String descr;//介绍
     @SerializedName("img")
     public String img;//套餐图片
-    @SerializedName("titles")
+    @SerializedName("tiles")
     public String[] tiles;
     @SerializedName("weights")
     public int[] weights;//每次配送的重量，单位：克
@@ -43,6 +43,8 @@ public class ComboEntry extends BaseEntry {
     public String wimgs[];
 
     private int position;
+
+    public String combo_idx;
 
     public int getPosition() {
         return position;

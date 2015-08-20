@@ -56,8 +56,8 @@ public abstract class BaseFragment extends Fragment {
 
 
     public void gotoFragment(int id, Fragment fragment, String tag) {
-        FragmentManager fm = getFragmentManager();
-        //getActivity().getSupportFragmentManager();
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.replace(id, fragment);
         transaction.addToBackStack(tag);
