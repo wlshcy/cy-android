@@ -71,7 +71,7 @@ public class ComboAdapter extends ArrayAdapter<ComboEntry> {
 //                    result.append(entry.shipday[i]);
 //                }
 //                vh.dis_cycle.setText("每周" + result.toString() + "配送");
-                vh.dis_cycle.setText("每周配送" + entry.shipday.length + "次");
+                vh.dis_cycle.setText(entry.shipday.length + "次/周");//"每周配送" +
 //                perMonth=4*entry.shipday.length;
 
             }
@@ -84,11 +84,11 @@ public class ComboAdapter extends ArrayAdapter<ComboEntry> {
 //                    result.append(Utils.unitConversion(entry.weights[i]));
 //                }
 //                vh.per_weight.setText("每次配送" + result.toString());
-                vh.per_weight.setText("每次配送" + Utils.unitConversion(entry.weights[entry.index]));
+                vh.per_weight.setText(Utils.unitConversion(entry.weights[entry.index]) + "/次");//"每次配送" +
                 vh.all_weight.setText("共" + Utils.unitConversion(entry.duration * entry.weights[entry.index] * entry.shipday.length));
             }
 
-            vh.times.setText("配送" + entry.duration + "周");
+            vh.times.setText("送" + entry.duration + "周");
             vh.combo_price.setText("￥" + (((double) entry.prices[entry.index]) / 100));
         }
 

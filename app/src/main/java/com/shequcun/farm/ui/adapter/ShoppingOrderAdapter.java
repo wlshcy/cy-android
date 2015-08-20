@@ -46,7 +46,7 @@ public class ShoppingOrderAdapter extends ArrayAdapter<HistoryOrderEntry> {
         HistoryOrderEntry entry = getItem(position);
 
         if (entry != null) {
-//            vh.distribution_number_tv.setText("第" + entry.times + "次配送");
+            vh.distribution_date.setVisibility(View.VISIBLE);
             vh.distribution_number_tv.setText(entry.title);
             if (entry.status == 0) {
                 vh.distribution_date.setText("下单日期  " + Utils.getTime(entry.json.get(entry.status + "").getAsLong()));
@@ -56,17 +56,11 @@ public class ShoppingOrderAdapter extends ArrayAdapter<HistoryOrderEntry> {
                 vh.distribution_date.setText("配送日期" + Utils.getTime(entry.json.get(entry.status + "").getAsLong()));
             } else if (entry.status == 3) {
                 vh.distribution_date.setText("收货日期" + Utils.getTime(entry.json.get(entry.status + "").getAsLong()));
+            } else {
+                vh.distribution_date.setVisibility(View.GONE);
             }
 
-//            if (TextUtils.isEmpty(entry.title)) {
-//                vh.distribution_name.setVisibility(View.GONE);
-//            } else {
-//                vh.distribution_name.setVisibility(View.VISIBLE);
-//                vh.distribution_name.setText(entry.title);
-//            }
-
             vh.distribution_name.setVisibility(View.GONE);
-
 
             if (entry.status == 3) {// 0.未付款, 1.待配送, 2.配送中, 3.配送完成,
                 vh.order_status.setText("已配送");

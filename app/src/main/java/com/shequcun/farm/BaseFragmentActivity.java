@@ -45,8 +45,9 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements
         }
     }
 
-    private static int DISK_IMAGECACHE_SIZE = 1024 * 1024 * 30;
-    private static Bitmap.CompressFormat DISK_IMAGECACHE_COMPRESS_FORMAT = Bitmap.CompressFormat.JPEG;
-    private static int DISK_IMAGECACHE_QUALITY = 100; // PNG is lossless so
+    private int DISK_IMAGECACHE_SIZE = 1024 * 1024 * 30;
+    //    private static Bitmap.CompressFormat DISK_IMAGECACHE_COMPRESS_FORMAT = Bitmap.CompressFormat.JPEG;
+    private Bitmap.CompressFormat DISK_IMAGECACHE_COMPRESS_FORMAT = Bitmap.CompressFormat.PNG;
+    private int DISK_IMAGECACHE_QUALITY = 100; // PNG is lossless so
     protected BaseFragment fragement;
 }
