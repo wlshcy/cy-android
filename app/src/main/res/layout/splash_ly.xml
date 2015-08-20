@@ -2,6 +2,23 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/splash_bg">
+    >
 
+    <android.support.v4.view.ViewPager
+        android:id="@+id/welcome_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></android.support.v4.view.ViewPager>
+
+    <Button
+        android:id="@+id/welcome_btn"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px120"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="@dimen/px36"
+        android:layout_marginLeft="@dimen/px98"
+        android:layout_marginRight="@dimen/px98"
+        android:background="@drawable/alert_dialog_shape_corner"
+        android:gravity="center"
+        android:text="立即体验"
+        android:visibility="gone" />
 </FrameLayout>
