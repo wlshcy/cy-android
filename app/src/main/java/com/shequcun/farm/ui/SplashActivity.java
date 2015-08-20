@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.shequcun.farm.BaseFragmentActivity;
 import com.shequcun.farm.R;
@@ -33,7 +34,7 @@ public class SplashActivity extends BaseFragmentActivity {
     private int welcomeImg = R.drawable.splash_bg;
     private int[] pics = {R.drawable.guide1, R.drawable.guide2,
             R.drawable.guide3};
-    private Button mWelcomeBtn;
+    private TextView mWelcomeBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +61,7 @@ public class SplashActivity extends BaseFragmentActivity {
     }
 
     private void initViewPager() {
-        mWelcomeBtn = (Button) findViewById(R.id.welcome_btn);
+        mWelcomeBtn = (TextView) findViewById(R.id.welcome_btn);
         viewPager = (ViewPager) findViewById(R.id.welcome_viewpager);
         views = new ArrayList<View>();
 //        欢迎页面
@@ -98,8 +99,7 @@ public class SplashActivity extends BaseFragmentActivity {
     }
 
     private boolean isStartUped() {
-        UserLoginEntry userLoginEntry = new CacheManager(this).getUserLoginEntry();
-        return userLoginEntry!=null;
+        return PersistanceManager.INSTANCE.getOnce();
     }
 
     private void setOnclick() {
@@ -107,6 +107,7 @@ public class SplashActivity extends BaseFragmentActivity {
             @Override
             public void onClick(View v) {
                 gotoHome();
+                PersistanceManager.INSTANCE.saveOnce(true);
             }
         });
 

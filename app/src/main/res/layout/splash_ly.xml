@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"></android.support.v4.view.ViewPager>
 
-    <Button
+    <TextView
         android:id="@+id/welcome_btn"
         android:layout_width="match_parent"
         android:layout_height="@dimen/px120"
@@ -17,8 +17,9 @@
         android:layout_marginBottom="@dimen/px36"
         android:layout_marginLeft="@dimen/px98"
         android:layout_marginRight="@dimen/px98"
-        android:background="@drawable/alert_dialog_shape_corner"
         android:gravity="center"
         android:text="立即体验"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:textSize="18sp"
+        android:textColor="#2bc36c"/>
 </FrameLayout>

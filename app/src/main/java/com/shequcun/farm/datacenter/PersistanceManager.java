@@ -22,6 +22,18 @@ public enum PersistanceManager {
                 .putString("X-Xsrftoken", value).commit();
     }
 
+    /*启动过了*/
+    public void saveOnce(boolean value) {
+        mContext.getSharedPreferences("Cookie", 0).edit()
+                .putBoolean("installed", value).commit();
+    }
+
+    /*启动过了*/
+    public boolean getOnce() {
+        return mContext.getSharedPreferences("Cookie", 0).getBoolean(
+                "installed", false);
+    }
+
     public String getCookieValue() {
         return mContext.getSharedPreferences("Cookie", 0).getString(
                 "X-Xsrftoken", "");
