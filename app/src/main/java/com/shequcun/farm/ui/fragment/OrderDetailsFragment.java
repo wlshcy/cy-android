@@ -171,8 +171,10 @@ public class OrderDetailsFragment extends BaseFragment {
     }
 
     private void makeOrder() {
-        if (addressEntry == null)
+        if (addressEntry == null) {
+            ToastHelper.showShort(getActivity(), "请填写您的收货地址!");
             return;
+        }
         int combo_id = mOrderController.getItems().get(0).combo_id;
         int type = 1;
         int combo_idx = getComboIdxParams();

@@ -99,9 +99,24 @@ public class DishesFragment extends BaseFragment {
             if (adapter == null)
                 return;
             HistoryOrderEntry entry = adapter.getItem(position);
-            requestAlipay(entry);
+
+            if (entry != null) {
+                if (entry.status == 1) {
+                    gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new LookUpOrderFragment(), LookUpOrderFragment.class.getName());
+                } else if (entry.status == 0) {
+                    requestAlipay(entry);
+                }
+
+//                gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new LookUpOrderFragment(), LookUpOrderFragment.class.getName());
+            }
         }
     };
+
+    Bundle buildBundle(HistoryOrderEntry entry) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("HistoryOrderEntry", entry);
+        return bundle;
+    }
 
     void requestAlipay(final HistoryOrderEntry entry) {
         RequestParams params = new RequestParams();

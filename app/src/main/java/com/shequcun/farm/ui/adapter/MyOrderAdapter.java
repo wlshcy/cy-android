@@ -21,6 +21,8 @@ public class MyOrderAdapter extends ArrayAdapter<HistoryOrderEntry> {
 
     AvoidDoubleClickListener payOnClickLsn;
 
+    AvoidDoubleClickListener lookUpOrderDetails;
+
     public MyOrderAdapter(Context context) {
         super(context, R.layout.my_order_item_ly);
     }
@@ -73,6 +75,8 @@ public class MyOrderAdapter extends ArrayAdapter<HistoryOrderEntry> {
                 vh.order_status_ly.setOnClickListener(payOnClickLsn);
                 vh.order_status.setText("去付款");
             } else if (entry.status == 1) {
+                vh.order_status_ly.setTag(position);
+                vh.order_status_ly.setOnClickListener(payOnClickLsn);
                 vh.order_status.setText("未配送");
             } else if (entry.status == 2) {
                 vh.order_status.setText("配送中");

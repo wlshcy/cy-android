@@ -3,10 +3,12 @@ package com.shequcun.farm.data;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by apple on 15/8/18.
  */
-public class HistoryOrderEntry {
+public class HistoryOrderEntry implements Serializable{
 
 
     //    "status": 1,

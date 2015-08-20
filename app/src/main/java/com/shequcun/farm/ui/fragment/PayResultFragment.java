@@ -1,5 +1,6 @@
 package com.shequcun.farm.ui.fragment;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -91,11 +92,52 @@ public class PayResultFragment extends BaseFragment {
             int position = (int) v.getTag();
             if (adapter == null)
                 return;
+
             RecommendEntry entry = adapter.getItem(position);
+
+            if (entry.remains <= 0) {
+                alertOutOfRemains();
+                return;
+            }
+
             gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new SingleDishesFragment(), SingleDishesFragment.class.getName());
         }
     };
 
+    /**
+     * 剩余量不足
+     */
+    private void alertOutOfRemains() {
+        String content = getResources().getString(R.string.out_of_remains);
+        alertDialog(content);
+    }
+
+    /**
+     * 库存不足
+     *
+     * @param maxpacks
+     */
+    private void alertOutOfMaxpacks(int maxpacks) {
+        String content = getResources().getString(R.string.out_of_maxpacks);
+        content = content.replace("A", maxpacks + "");
+        alertDialog(content);
+    }
+
+    private void alertDialog(String content) {
+        final AlertDialog alert = new AlertDialog.Builder(getActivity()).create();
+        alert.show();
+        alert.setCancelable(false);
+        alert.getWindow().setContentView(R.layout.alert_dialog);
+        TextView tv = (TextView) alert.getWindow().findViewById(R.id.content_tv);
+        tv.setText(content);
+        alert.getWindow().findViewById(R.id.ok_btn)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alert.dismiss();
+                    }
+                });
+    }
 
     Bundle buildBundle(RecommendEntry entry) {
         Bundle bundle = new Bundle();
@@ -155,7 +197,6 @@ public class PayResultFragment extends BaseFragment {
             adapter.notifyDataSetChanged();
         }
     }
-
 
     TextView recoTv;
     ListView mLv;

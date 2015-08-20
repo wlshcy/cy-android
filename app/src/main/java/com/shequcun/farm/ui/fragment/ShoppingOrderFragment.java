@@ -146,6 +146,7 @@ public class ShoppingOrderFragment extends BaseFragment {
         }
     };
 
+
     void requestAlipay(final HistoryOrderEntry entry) {
         RequestParams params = new RequestParams();
         params.add("orderno", entry.orderno);
@@ -160,7 +161,6 @@ public class ShoppingOrderFragment extends BaseFragment {
                             gotoFragmentByAdd(buildBundle(entry.orderno, (double) entry.price / 100, oEntry.alipay), R.id.mainpage_ly, new PayFragment(), PayFragment.class.getName());
                             return;
                         }
-
                         ToastHelper.showShort(getActivity(), oEntry.errmsg);
                     }
                 }
