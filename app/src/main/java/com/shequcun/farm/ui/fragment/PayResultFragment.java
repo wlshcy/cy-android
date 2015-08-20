@@ -55,8 +55,8 @@ public class PayResultFragment extends BaseFragment {
     protected void setWidgetLsn() {
         buildAdapter();
         back.setOnClickListener(onClick);
-//        if (isRecomDishes())
-        requestRecomendDishes();
+        if (isRecomDishes())
+            requestRecomendDishes();
     }
 
 
