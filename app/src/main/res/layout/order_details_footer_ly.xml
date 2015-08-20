@@ -12,7 +12,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
        android:padding="@dimen/px30"
-        android:text="配送日期"
         android:textColor="@color/black_444444" />
 
     <TextView

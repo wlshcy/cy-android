@@ -198,7 +198,7 @@ public class ModifyOrderFragment extends BaseFragment {
 
     void addFooter(int part) {
         View footerView = LayoutInflater.from(getActivity()).inflate(R.layout.order_details_footer_ly, null);
-        ((TextView) footerView.findViewById(R.id.distribution_date)).setText("配送日期:本周周五");
+//        ((TextView) footerView.findViewById(R.id.distribution_date)).setText("配送日期:本周周五");
         ((TextView) footerView.findViewById(R.id.number_copies)).setText("共" + part + "份");
         mLv.addFooterView(footerView, null, false);
     }
