@@ -19,7 +19,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/px20"
-        android:text="农庄蔬菜6斤套餐"
         android:textColor="@color/green_1cc568"
         android:textSize="@dimen/font28" />
 
@@ -34,7 +33,6 @@
             android:id="@+id/distribution_circle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="每周配送1次"
             android:textColor="@color/black_242424"
             android:textSize="@dimen/px26" />
 
@@ -43,7 +41,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/px14"
-            android:text="52次/年"
             android:textColor="@color/black_242424"
             android:textSize="@dimen/px26" />
 
@@ -87,7 +84,6 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/px20"
             android:gravity="center_vertical"
-            android:text="6392元"
             android:textColor="@color/orange_ff9c48"
             android:textSize="@dimen/font34" />
 

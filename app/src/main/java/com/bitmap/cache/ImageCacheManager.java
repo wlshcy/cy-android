@@ -69,9 +69,9 @@ public class ImageCacheManager implements ImageCache {
     public Bitmap getBitmap(String url) {
         try {
             Bitmap bMap = bLruImgCache.getBitmap(url);
-//            if (bMap == null) {
-//                bMap = dLruImgCache.getBitmap(url);
-//            }
+            if (bMap == null) {
+                bMap = dLruImgCache.getBitmap(url);
+            }
             return bMap;
 
         } catch (NullPointerException e) {

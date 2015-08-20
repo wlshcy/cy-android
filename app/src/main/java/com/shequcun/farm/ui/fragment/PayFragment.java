@@ -73,11 +73,11 @@ public class PayFragment extends BaseFragment {
             if (v == back)
                 clearStack();
             else if (v == alipay_ly) {
-//                AlipayUtils alipayUtils = new AlipayUtils();
-//                alipayUtils.setHandler(mHandler);
-//                alipayUtils.initAlipay(getActivity());
-//                alipayUtils.doAlipay(getAlipayInfo());
-                gotoFragmentByAdd(getArguments(), R.id.mainpage_ly, new PayResultFragment(), PayResultFragment.class.getName());
+                AlipayUtils alipayUtils = new AlipayUtils();
+                alipayUtils.setHandler(mHandler);
+                alipayUtils.initAlipay(getActivity());
+                alipayUtils.doAlipay(getAlipayInfo());
+//                gotoFragmentByAdd(getArguments(), R.id.mainpage_ly, new PayResultFragment(), PayResultFragment.class.getName());
             }
         }
     };

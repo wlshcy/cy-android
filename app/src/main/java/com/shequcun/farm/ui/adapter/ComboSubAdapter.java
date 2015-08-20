@@ -92,7 +92,7 @@ public class ComboSubAdapter extends BaseAdapter {
             }
 
             if (vh.distribution_circle != null) {
-                vh.distribution_circle.setText("每周配送" + entry.shipday.length + "次");
+                vh.distribution_circle.setText(entry.shipday.length + "次/周");
             }
 
             if (vh.distribution_all_times != null) {

@@ -16,7 +16,6 @@
             android:id="@+id/distribution_number_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="选品次数"
             android:textColor="@color/black_444444"
             android:textSize="@dimen/font32" />
 
@@ -26,7 +25,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/px16"
-            android:text="下单日期，配送日期"
             android:textColor="@color/black_444444"
             android:textSize="@dimen/font28" />
 
@@ -38,7 +36,6 @@
             android:background="@drawable/my_order_gray_corner"
             android:gravity="center"
             android:padding="@dimen/px10"
-            android:text="配送套餐名称"
             android:textColor="@color/black_5a5e5d"
             android:textSize="@dimen/font23" />
 
@@ -59,7 +56,6 @@
             android:layout_height="@dimen/px50"
             android:background="@drawable/green_94d6c0_corner_bg"
             android:gravity="center"
-            android:text="订单状态"
             android:textColor="@android:color/white"
             android:textSize="@dimen/font26" />
 
