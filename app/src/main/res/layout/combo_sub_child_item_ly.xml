@@ -7,6 +7,7 @@
 
 
     <LinearLayout
+        android:id="@+id/fix_ly_1"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1.0"
@@ -41,6 +42,7 @@
 
 
     <LinearLayout
+        android:id="@+id/fix_ly_2"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_marginRight="@dimen/px18"

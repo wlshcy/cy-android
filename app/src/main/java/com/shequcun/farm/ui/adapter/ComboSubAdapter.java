@@ -167,8 +167,10 @@ public class ComboSubAdapter extends BaseAdapter {
             TextView additional_send_weight_1 = (TextView) childView.findViewById(R.id.additional_send_weight_1);
             additional_send_weight_1.setText(aList.get(i).quantity + aList.get(i).unit + "/" + aList.get(i).freq + "周");
 
+            childView.findViewById(R.id.fix_ly_2).setVisibility(View.GONE);
 
             if (i + 1 < size) {
+                childView.findViewById(R.id.fix_ly_2).setVisibility(View.VISIBLE);
                 CircleImageView additional_goods_img_2 = (CircleImageView) childView.findViewById(R.id.additional_goods_img_2);
                 additional_goods_img_2.setImageUrl(aList.get(i + 1).img, ImageCacheManager.getInstance().getImageLoader());
                 TextView additional_goods_name_2 = (TextView) childView.findViewById(R.id.additional_goods_name_2);

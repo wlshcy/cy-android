@@ -39,6 +39,7 @@ public class PayResultFragment extends BaseFragment {
 
     @Override
     public boolean onBackPressed() {
+        clearStack();
         return false;
     }
 

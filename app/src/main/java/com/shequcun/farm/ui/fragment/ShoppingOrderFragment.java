@@ -15,6 +15,7 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.HistoryOrderEntry;
+import com.shequcun.farm.data.ModifyOrderParams;
 import com.shequcun.farm.data.OrderEntry;
 import com.shequcun.farm.data.OrderListEntry;
 import com.shequcun.farm.data.PayParams;
@@ -149,7 +150,7 @@ public class ShoppingOrderFragment extends BaseFragment {
 
             if (entry != null) {
                 if (entry.status == 1) {
-                    gotoFragment(buildBundle(entry), R.id.mainpage_ly, new ModifyOrderFragment(), ModifyOrderFragment.class.getName());
+                    gotoFragment(buildBundle(buildOrderParams(entry)), R.id.mainpage_ly, new ModifyOrderFragment(), ModifyOrderFragment.class.getName());
                 } else if (entry.status == 0) {
                     requestAlipay(entry);
                 }
@@ -159,7 +160,13 @@ public class ShoppingOrderFragment extends BaseFragment {
         }
     };
 
-    Bundle buildBundle(HistoryOrderEntry entry) {
+    ModifyOrderParams buildOrderParams(HistoryOrderEntry entry){
+        ModifyOrderParams params=new ModifyOrderParams();
+        params.setParams(entry.id,entry.orderno,entry.type,entry.combo_id,entry.price,entry.combo_idx);
+        return params;
+    }
+
+    Bundle buildBundle(ModifyOrderParams entry) {
         Bundle bundle = new Bundle();
         bundle.putSerializable("HistoryOrderEntry", entry);
         return bundle;

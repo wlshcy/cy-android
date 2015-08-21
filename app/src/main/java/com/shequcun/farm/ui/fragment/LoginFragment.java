@@ -191,7 +191,7 @@ public class LoginFragment extends BaseFragment {
         Utils.hideVirtualKeyboard(getActivity(), sms_code_et);
         RequestParams params = new RequestParams();
         params.add("mobile", mobileNumber);
-        params.add("type", 1 + "");
+        params.add("type", 2 + "");
         params.add("_xsrf", PersistanceManager.INSTANCE.getCookieValue());
         HttpRequestUtil.httpPost(LocalParams.INSTANCE.getBaseUrl() + "util/smscode", params, new AsyncHttpResponseHandler() {
             @Override

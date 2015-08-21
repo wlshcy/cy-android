@@ -91,9 +91,10 @@
             android:id="@+id/choose_dishes"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginRight="@dimen/px40"
+            android:paddingRight="@dimen/px40"
             android:gravity="right|center_vertical"
             android:text="@string/go_choose_dishes"
+            android:background="@drawable/choose_dishes_selector"
             android:textColor="#1CC568"
             android:textSize="@dimen/font34" />
     </LinearLayout>

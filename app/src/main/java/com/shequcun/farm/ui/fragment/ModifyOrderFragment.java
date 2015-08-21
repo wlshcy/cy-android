@@ -16,7 +16,7 @@ import com.loopj.android.http.RequestParams;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.AlreadyPurchasedEntry;
 import com.shequcun.farm.data.AlreadyPurchasedListEntry;
-import com.shequcun.farm.data.HistoryOrderEntry;
+import com.shequcun.farm.data.ModifyOrderParams;
 import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.ui.adapter.AlreadyPurchasedAdapter;
@@ -85,7 +85,7 @@ public class ModifyOrderFragment extends BaseFragment {
     String getOrderNumber() {
         Bundle bundle = getArguments();
         if (bundle != null) {
-            hEntry = (HistoryOrderEntry) bundle.getSerializable("HistoryOrderEntry");
+            hEntry = (ModifyOrderParams) bundle.getSerializable("HistoryOrderEntry");
             if (hEntry != null)
                 return hEntry.orderno;
         }
@@ -147,7 +147,7 @@ public class ModifyOrderFragment extends BaseFragment {
     int getOrderType() {
         Bundle bundle = getArguments();
         if (bundle != null) {
-            hEntry = (HistoryOrderEntry) bundle.getSerializable("HistoryOrderEntry");
+            hEntry = (ModifyOrderParams) bundle.getSerializable("HistoryOrderEntry");
             if (hEntry != null)
                 return hEntry.type;
         }
@@ -254,7 +254,7 @@ public class ModifyOrderFragment extends BaseFragment {
         dialog.show();
     }
 
-    HistoryOrderEntry hEntry;
+    ModifyOrderParams hEntry;
     AlreadyPurchasedAdapter adapter;
     View back;
     TextView order_btn;

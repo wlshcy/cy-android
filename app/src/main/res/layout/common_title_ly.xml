@@ -11,6 +11,7 @@
         android:layout_gravity="center_vertical"
         android:paddingLeft="@dimen/px40"
         android:paddingRight="@dimen/px40"
+        android:background="@drawable/list_item_selector"
         android:src="@drawable/icon_back" />
 
     <TextView
@@ -30,6 +31,7 @@
         android:textColor="@android:color/black"
         android:textSize="@dimen/font28"
         android:text=""
+        android:background="@drawable/list_item_selector"
         android:paddingLeft="@dimen/px40"
         android:paddingRight="@dimen/px40"/>
 
