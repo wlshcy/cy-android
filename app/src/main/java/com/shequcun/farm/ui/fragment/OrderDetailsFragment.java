@@ -192,6 +192,20 @@ public class OrderDetailsFragment extends BaseFragment {
         return "";
     }
 
+    boolean isMyCombo(){
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            ComboEntry entry = (ComboEntry) bundle.getSerializable("ComboEntry");
+            if (entry != null) {
+                if (entry.isMine())
+                    return true;
+                else
+                    return false;
+            }
+        }
+        return false;
+    }
+
     /**
      * 构建订单配送日期
      *
@@ -232,7 +246,7 @@ public class OrderDetailsFragment extends BaseFragment {
             return;
         }
         int combo_id = mOrderController.getItems().get(0).combo_id;
-        int type = 2;
+        int type = isMyCombo()?2:1;
         String combo_idx = getComboIdxParams();
         String items = mOrderController.getOrderItemsString();
         String name = addressEntry.name;
