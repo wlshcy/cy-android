@@ -53,7 +53,7 @@ public class ComboAdapter extends ArrayAdapter<ComboEntry> {
         if (entry != null) {
             //每月配送几次
 //            int perMonth=0;
-            if (isMyCombo) {
+            if (entry.isMine()) {
                 vh.my_combo.setVisibility(View.VISIBLE);
                 vh.combo_name.setVisibility(View.GONE);
             } else {

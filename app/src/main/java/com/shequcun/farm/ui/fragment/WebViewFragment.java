@@ -65,7 +65,7 @@ public class WebViewFragment extends BaseFragment {
         }
     };
 
-    String buildUrl() {
+    String[] buildUrl() {
         Bundle bundle = getArguments();
         if (bundle == null)
             return null;
@@ -73,11 +73,37 @@ public class WebViewFragment extends BaseFragment {
         if (entry == null)
             return null;
         String tiles[] = entry.tiles;
+            return tiles;
+    }
 
-        if (tiles != null && tiles.length > 0) {
-            return tiles[0];
+    private String getHtml(String imgs[]){
+        if (imgs==null&&imgs.length<=0){
+            return null;
         }
-        return null;
+        StringBuffer s = new StringBuffer();
+        s.append("<!DOCTYPE html>\n" +
+                "<html lang=\"en\">\n" +
+                "<head>\n" +
+                "    <meta charset=\"UTF-8\">\n" +
+                "    <title>img列表页</title>\n" +
+                "    <style>\n" +
+                "        *{margin: 0;padding: 0;}\n" +
+                "        /*html { overflow-y: hidden; }*/\n" +
+                "        .container {width: 100%;}\n" +
+                "        .container img.lazy {display: block;width: 100%;}\n" +
+                "    </style>\n" +
+                "</head>\n" +
+                "<body>\n" +
+                "<div class=\"container\">\n");
+        for (String img:imgs){
+            s.append("<img v-repeat=\"imgs\" class=\"lazy img-responsive\" src=\"");
+            s.append(img);
+            s.append("\"alt=\"\"/>");
+        }
+        s.append("</div>\n" +
+                "</body>\n" +
+                "</html>");
+        return s.toString();
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -93,10 +119,11 @@ public class WebViewFragment extends BaseFragment {
         settings.setLoadWithOverviewMode(true);
         settings.setUseWideViewPort(true);
 
-//        String url = buildUrl();
-//        String imgSrcHtml = "<html><img src='" + url + "' /></html>";
-//        mWebView.loadData(imgSrcHtml, "text/html", "UTF-8");
-        mWebView.loadUrl(buildUrl());
+        String htmlUrl = getHtml(buildUrl());
+        if (htmlUrl==null)return;
+        mWebView.loadData(htmlUrl, "text/html", "UTF-8");
+
+//        mWebView.loadUrl(buildUrl());
         // 滚动条风格，为0指滚动条不占用空间，直接覆盖在网页上
         mWebView.setScrollBarStyle(0);
         mWebView.setWebViewClient(new WebViewClient() {

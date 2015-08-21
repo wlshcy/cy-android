@@ -42,9 +42,19 @@ public class ComboEntry extends BaseEntry {
     @SerializedName("wimgs")
     public String wimgs[];
 
+    private boolean mine;
+
     private int position;
 
     public String combo_idx;
+
+    public boolean isMine() {
+        return mine;
+    }
+
+    public void setMine(boolean mine) {
+        this.mine = mine;
+    }
 
     public int getPosition() {
         return position;

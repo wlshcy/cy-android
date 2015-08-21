@@ -198,6 +198,9 @@ public class ComboFragment extends BaseFragment {
 
     void doAddMyComboDataToAdapter(List<ComboEntry> aList) {
         if (aList != null && aList.size() > 0) {
+            for (ComboEntry comboEntry:aList){
+                comboEntry.setMine(true);
+            }
             adapter.setIsMyCombo(true);
             adapter.addAll(aList);
             adapter.notifyDataSetChanged();
