@@ -114,4 +114,13 @@
     <string name="choose_dishes_tip">是否拨打客服电话修改本期菜品?</string>
     <string name="confirm">确定</string>
     <string name="cancel">取消</string>
+    <string name="exit_login">退出登录</string>
+    <string name="set">设置</string>
+    <string name="hint_feedback">请描述你的意见和建议</string>
+    <string name="tks_feedback_tip">感谢您的反馈.</string>
+    <string name="submit">提交</string>
+    <string name="feedback">意见反馈</string>
+    <string name="feedback_error_tip">请输入您的反馈内容</string>
+    <string name="logout_success">退出成功</string>
+    <string name="logout_fail">退出失败</string>
 </resources>

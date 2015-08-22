@@ -26,14 +26,14 @@ public class CacheManager {
         }
     }
 
-//    public void delUserLoginToDisk() {
-//        try {
-//            DBLite dblite = new DBLite(mContext, null,
-//                    KeyWord_UserLoginCacheTag);
-//            dblite.deleteData();
-//        } catch (Exception e) {
-//        }
-//    }
+    public void delUserLoginToDisk() {
+        try {
+            DBLite dblite = new DBLite(mContext, null,
+                    KeyWord_UserLoginCacheTag);
+            dblite.deleteData();
+        } catch (Exception e) {
+        }
+    }
 
     public byte[] getUserLoginFromDisk() {
         try {

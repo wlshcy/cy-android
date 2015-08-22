@@ -18,13 +18,23 @@ import android.widget.TextView;
 
 import com.bitmap.cache.ImageCacheManager;
 import com.common.widget.CircleImageView;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.UserLoginEntry;
 import com.shequcun.farm.datacenter.CacheManager;
+import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.dlg.ConsultationDlg;
+import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.ui.adapter.MyAdapter;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
+import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
+import com.shequcun.farm.util.LocalParams;
+import com.shequcun.farm.util.ToastHelper;
+
+import org.apache.http.Header;
+import org.json.JSONObject;
 
 /**
  * Created by apple on 15/8/3.
@@ -121,7 +131,7 @@ public class MyFragment extends BaseFragment {
     void buildAdapter() {
         addHeader();
         if (adapter == null)
-            adapter = new MyAdapter(getActivity());
+            adapter = new MyAdapter(getActivity(), getResources().getStringArray(R.array.my_array));
         mLv.setAdapter(adapter);
     }
 
@@ -184,8 +194,8 @@ public class MyFragment extends BaseFragment {
                 case 1://拨打客服电话
                     ConsultationDlg.showCallTelDlg(getActivity());
                     break;
-                case 2://分享
-                    gotoFragmentByAdd(R.id.mainpage_ly, new AddressFragment(), AddressFragment.class.getName());
+                case 2://设置
+                    gotoFragmentByAdd(R.id.mainpage_ly, new SetFragment(), SetFragment.class.getName());
                     break;
             }
 
@@ -242,6 +252,10 @@ public class MyFragment extends BaseFragment {
         builder.setNeutralButton("取消", null);
         builder.create().show();
     }
+
+
+
+
 
     boolean mIsBind = false;
     ListView mLv;

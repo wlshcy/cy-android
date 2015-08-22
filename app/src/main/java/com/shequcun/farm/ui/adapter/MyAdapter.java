@@ -17,9 +17,9 @@ public class MyAdapter extends BaseAdapter {
     private Context mContext;
     private String myValues[];
 
-    public MyAdapter(Context mContext) {
+    public MyAdapter(Context mContext, String myValues[]) {
         this.mContext = mContext;
-        myValues = mContext.getResources().getStringArray(R.array.my_array);
+        this.myValues = myValues;
     }
 
     @Override
@@ -50,8 +50,13 @@ public class MyAdapter extends BaseAdapter {
         } else {
             vh = (ViewHolder) v.getTag();
         }
-        vh.my_title.setText(getItem(position));
-        vh.tel_tv.setText(position == 1 ? Constrants.Customer_Service_Phone : "");
+        String tip = getItem(position);
+        vh.my_title.setText(tip);
+        if (tip.equals("检查更新")) {
+            vh.tel_tv.setText("");
+        } else {
+            vh.tel_tv.setText(position == 1 ? Constrants.Customer_Service_Phone : "");
+        }
         return v;
     }
 

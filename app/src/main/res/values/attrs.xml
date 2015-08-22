@@ -4,6 +4,16 @@
     <string-array name="my_array">
         <item>我的订单</item>
         <item>拨打客服电话</item>
+        <item>设置</item>
+    </string-array>
+
+    <string-array name="set_array">
+
+        <item>关于有菜</item>
+        <item>检查更新</item>
+        <item>帮助</item>
+        <item>问题反馈</item>
+
     </string-array>
 
 </resources>
