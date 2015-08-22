@@ -123,4 +123,8 @@
     <string name="feedback_error_tip">请输入您的反馈内容</string>
     <string name="logout_success">退出成功</string>
     <string name="logout_fail">退出失败</string>
+
+    <string name="has_choosen_dishes_tip">您已选择本期菜品,如需修改,请单击此处.</string>
+    <string name="has_choosen_next_dishes_tip">您如需选择下期菜品,请单击此处.</string>
+    <string name="deliverying">您选择的菜品正在配送中,请耐心等待.</string>
 </resources>

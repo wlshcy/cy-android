@@ -16,16 +16,15 @@ import com.loopj.android.http.RequestParams;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.AlreadyPurchasedEntry;
 import com.shequcun.farm.data.AlreadyPurchasedListEntry;
+import com.shequcun.farm.data.ComboEntry;
 import com.shequcun.farm.data.ModifyOrderParams;
 import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.ui.adapter.AlreadyPurchasedAdapter;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
-import com.shequcun.farm.util.Constrants;
 import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
-import com.shequcun.farm.util.PhoneUtil;
 import com.shequcun.farm.util.ToastHelper;
 
 import org.apache.http.Header;
@@ -227,24 +226,25 @@ public class ModifyOrderFragment extends BaseFragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("提示");
-        builder.setMessage(R.string.choose_dishes_tip);
-//        builder.setMessage(R.string.re_choose_dishes_tip);
+//        builder.setMessage(R.string.choose_dishes_tip);
+        builder.setMessage(R.string.re_choose_dishes_tip);
         builder.setNegativeButton(R.string.confirm, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                PhoneUtil.gotoCall(getActivity(), Constrants.Customer_Service_Phone);
-//                ComboEntry entry = new ComboEntry();
-//                entry.id = hEntry.combo_id;
-//                entry.setPosition(0);
-//                entry.weights = new int[1];
-//                entry.weights[0] = hEntry.allWeight;
-//                entry.prices = new int[1];
-//                entry.prices[0] = hEntry.price;
-//                entry.combo_idx = hEntry.combo_idx;
-//                Bundle bundle = new Bundle();
-//                bundle.putSerializable("ComboEntry", entry);
-//                popBackStack();
-//                gotoFragment(bundle, R.id.mainpage_ly, new ChooseDishesFragment(), ChooseDishesFragment.class.getName());
+//                PhoneUtil.gotoCall(getActivity(), Constrants.Customer_Service_Phone);
+                ComboEntry entry = new ComboEntry();
+                entry.id = hEntry.combo_id;
+                entry.setPosition(0);
+                entry.weights = new int[1];
+                entry.weights[0] = hEntry.allWeight;
+                entry.prices = new int[1];
+                entry.prices[0] = hEntry.price;
+                entry.combo_idx = hEntry.combo_idx;
+                entry.orderno = hEntry.orderno;
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("ComboEntry", entry);
+                popBackStack();
+                gotoFragment(bundle, R.id.mainpage_ly, new ChooseDishesFragment(), ChooseDishesFragment.class.getName());
             }
         });
         builder.setNeutralButton(R.string.cancel, null);

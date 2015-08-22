@@ -31,8 +31,6 @@ public class ComboEntry extends BaseEntry {
     public int source;
     @SerializedName("sales")
     public int sales;//套餐销量
-    @SerializedName("status")
-    public int status;//套餐销量
     @SerializedName("issue_no")
     public int issue_no;
     @SerializedName("duration")
@@ -63,6 +61,7 @@ public class ComboEntry extends BaseEntry {
     public void setPosition(int position) {
         this.position = position;
     }
+
     //    tiles	[string]	展示图列表		["http://f.hiphotos.baidu.com/image/pic/item/9213b07eca80653879a8611594dda144ad348272.jpg"]
 //    weights	[int]	重量	每次配送的重量，单位：克	[8000,10000]
 //    prices	[int]	价格	套餐价格，单位：分	[199900,239900]
@@ -74,4 +73,14 @@ public class ComboEntry extends BaseEntry {
 //    created	int	添加时间	1970年1月1日至今的毫秒数	1423458933975
 //    modified	int	修改时间	1970年1月1日至今的毫秒数	1423458933975
 //    year
+    @SerializedName("choose")
+    public boolean choose;
+    //    choose：bool类型，是否可以选择下次菜品
+    @SerializedName("orderno")
+    public String orderno;
+    @SerializedName("status")
+    public int status;//0.未付款, 1.待配送, 2.配送中, 3.配送完成, 4.取消订单
+//    orderno：最近一次选菜订单号
+//    status：最近一次选菜订单状态
+//    chgtime:  最近一次选菜订单状态变更时间
 }

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
 
 
     <LinearLayout
@@ -10,6 +11,17 @@
         android:orientation="vertical">
 
         <include layout="@layout/common_title_ly" />
+
+        <TextView
+            android:id="@+id/choose_dishes_tip"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/px74"
+            android:background="@color/transparent_8000"
+            android:drawableLeft="@drawable/icon_sigh"
+            android:gravity="center_vertical"
+            android:text="@string/has_choosen_dishes_tip"
+            android:textColor="@android:color/white"
+            android:visibility="gone" />
 
         <FrameLayout
             android:id="@+id/root_view"
@@ -91,8 +103,7 @@
                             android:gravity="center"
                             android:singleLine="true"
                             android:textColor="@color/common_text"
-                            android:textSize="14sp"
-                            />
+                            android:textSize="14sp" />
                     </FrameLayout>
                 </LinearLayout>
 

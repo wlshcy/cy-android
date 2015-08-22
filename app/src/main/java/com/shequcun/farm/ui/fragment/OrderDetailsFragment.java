@@ -26,6 +26,7 @@ import com.shequcun.farm.datacenter.CacheManager;
 import com.shequcun.farm.datacenter.DisheDataCenter;
 import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.dlg.ConsultationDlg;
+import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.ui.adapter.OrderDetailsAdapter;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
 import com.shequcun.farm.util.HttpRequestUtil;
@@ -35,6 +36,7 @@ import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.ToastHelper;
 
 import org.apache.http.Header;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -125,7 +127,12 @@ public class OrderDetailsFragment extends BaseFragment {
             else if (re_choose_dishes == v) {//重新选择菜品
 
             } else if (v == commitOrderTv) {
-                makeOrder();
+                String orderno = buildOrederno();
+                if (TextUtils.isEmpty(orderno)) {
+                    makeOrder();
+                } else {
+                    modifyOrder(orderno);
+                }
             } else if (v == add_address_ly) {
                 gotoFragmentByAdd(R.id.mainpage_ly, new AddressFragment(), AddressFragment.class.getName());
             }
@@ -192,7 +199,7 @@ public class OrderDetailsFragment extends BaseFragment {
         return "";
     }
 
-    boolean isMyCombo(){
+    boolean isMyCombo() {
         Bundle bundle = getArguments();
         if (bundle != null) {
             ComboEntry entry = (ComboEntry) bundle.getSerializable("ComboEntry");
@@ -246,7 +253,7 @@ public class OrderDetailsFragment extends BaseFragment {
             return;
         }
         int combo_id = mOrderController.getItems().get(0).combo_id;
-        int type = isMyCombo()?2:1;
+        int type = isMyCombo() ? 2 : 1;
         String combo_idx = getComboIdxParams();
         String items = mOrderController.getOrderItemsString();
         String name = addressEntry.name;
@@ -410,6 +417,71 @@ public class OrderDetailsFragment extends BaseFragment {
         payParams.isRecoDishes = false;
         bundle.putSerializable("PayParams", payParams);
         return bundle;
+    }
+
+    void modifyOrder(final String orderno) {
+//        orderno - 订单号
+//        items - 菜品列表，格式为：菜品ID:菜品数量，菜品ID:菜品数量 ...
+        RequestParams params = new RequestParams();
+        params.add("orderno", orderno);
+        String items = mOrderController.getOrderItemsString();
+        params.add("items", items);
+        params.add("_xsrf", PersistanceManager.INSTANCE.getCookieValue());
+        final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
+        HttpRequestUtil.httpPost(LocalParams.INSTANCE.getBaseUrl() + "cai/altorder", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int sCode, Header[] h, byte[] data) {
+                try {
+                    if (data != null && data.length > 0) {
+                        String result = new String(data);
+                        JSONObject jObj = new JSONObject(result);
+                        if (jObj != null) {
+                            String errmsg = jObj.optString("errmsg");
+                            if (TextUtils.isEmpty(errmsg)) {
+                                gotoFragmentByAdd(buildBundle(orderno, getOrderMoney(), "", true), R.id.mainpage_ly, new PayResultFragment(), PayResultFragment.class.getName());
+                                return;
+                            }
+                            ToastHelper.showShort(getActivity(), errmsg);
+                        }
+                    }
+                } catch (Exception e) {
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
+                if (sCode == 0) {
+                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
+                    return;
+                }
+                ToastHelper.showShort(getActivity(), "修改订单失败,错误码" + sCode);
+            }
+
+            @Override
+            public void onStart() {
+                super.onStart();
+                pDlg.show();
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                pDlg.dismiss();
+            }
+        });
+    }
+
+    String buildOrederno() {
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            ComboEntry entry = (ComboEntry) bundle.getSerializable("ComboEntry");
+            if (entry != null) {
+                return entry.orderno;
+            }
+        }
+        return "";
     }
 
     AddressEntry addressEntry;

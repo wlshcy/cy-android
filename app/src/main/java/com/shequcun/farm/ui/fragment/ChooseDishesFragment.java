@@ -29,6 +29,7 @@ import com.shequcun.farm.R;
 import com.shequcun.farm.anim.ArcTranslateAnimation;
 import com.shequcun.farm.data.ComboEntry;
 import com.shequcun.farm.data.DishesItemEntry;
+import com.shequcun.farm.data.ModifyOrderParams;
 import com.shequcun.farm.data.goods.DishesListItemEntry;
 import com.shequcun.farm.datacenter.DisheDataCenter;
 import com.shequcun.farm.datacenter.PersistanceManager;
@@ -53,8 +54,6 @@ import java.util.List;
  * Created by apple on 15/8/10.
  */
 public class ChooseDishesFragment extends BaseFragment {
-    private int deviceWidth;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -92,17 +91,20 @@ public class ChooseDishesFragment extends BaseFragment {
         mBadgeViewShopCart.setBadgeMargin(ResUtil.dip2px(getActivity(), 0));
         mShopCartPriceTv = (TextView) v
                 .findViewById(R.id.shop_cart_total_price_tv);
+        entry = buildEntry();
         buildAdapter();
+        setChooseDishesContent(v);
     }
 
     boolean isShowComboIntroduce() {
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            ComboEntry entry = (ComboEntry) bundle.getSerializable("ComboEntry");
-            if (entry != null)
-                return entry.tiles != null && entry.tiles.length > 0;
-        }
+        if (entry != null)
+            return entry.tiles != null && entry.tiles.length > 0;
         return false;
+    }
+
+    ComboEntry buildEntry() {
+        Bundle bundle = getArguments();
+        return bundle != null ? (ComboEntry) bundle.getSerializable("ComboEntry") : null;
     }
 
     @Override
@@ -145,8 +147,6 @@ public class ChooseDishesFragment extends BaseFragment {
     };
 
     int buildRequestID() {
-        Bundle bundle = getArguments();
-        ComboEntry entry = (ComboEntry) bundle.getSerializable("ComboEntry");
         if (entry == null) {
             return 1;
         }
@@ -212,25 +212,15 @@ public class ChooseDishesFragment extends BaseFragment {
     }
 
     private String buildKey() {
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            ComboEntry entry = (ComboEntry) bundle.getSerializable("ComboEntry");
-            if (entry != null) {
-                return entry.id + "" + entry.weights[entry.getPosition()];
-            }
-        }
-        return "";
+        return entry != null ? (entry.id + "" + entry.weights[entry.getPosition()]) : null;
     }
 
     void gotoFragmentByAdd() {
-
         if (getString(R.string.small_market_buy).equals(mBuyOrderTv.getText().toString())) {
             gotoFragmentByAdd(getArguments(), R.id.mainpage_ly, new OrderDetailsFragment(), OrderDetailsFragment.class.getName());
         } else {
             alertDialog(getString(R.string.dishes_error));
-//            ToastHelper.showShort(getActivity(),R.string.);
         }
-
     }
 
 
@@ -251,7 +241,6 @@ public class ChooseDishesFragment extends BaseFragment {
             for (int i = 0; i < adapter.getItem(position).imgs.length; ++i) {
                 photos.add(new PhotoModel(true, adapter.getItem(position).imgs[i]));
             }
-
             Bundle budle = new Bundle();
             budle.putSerializable(BrowseImageFragment.KEY_PHOTOS, photos);
             budle.putInt(BrowseImageFragment.KEY_INDEX, position);
@@ -372,8 +361,6 @@ public class ChooseDishesFragment extends BaseFragment {
                 - sXY[0] + mShopCartIv.getWidth() / 2 + flyWidth / 2, 0,
                 rootView.getHeight() - sXY[1] + mShopCartIv.getHeight() / 2
                         + flyHeight / 2);
-        // logger.error("落点x:" + (sXY[0] - getDeviceWidth()));
-        // logger.error("落点y:" + (getDeviceHeight() - sXY[1]));
 //        贝赛尔曲线
         arcAnim.setControl(new PointF(0, ResUtil.dip2px(getActivity(), -200)));
         arcAnim.setDuration(700);
@@ -523,10 +510,6 @@ public class ChooseDishesFragment extends BaseFragment {
             String count = tvCount.getText().toString();
 //        数量加一
             int intCount = Integer.parseInt(count) + 1;
-//        获取标记
-//            String str[] = ((String) v.getTag()).split("/");
-//            int groupPos = Integer.valueOf(str[0]);
-//            int childPos = Integer.valueOf(str[1]);
             DishesItemEntry goodItem = adapter.getItem(position);
 //            if (!mOrderController.getItems().contains(goodItem)) {
             mOrderController.addItem(goodItem);
@@ -538,8 +521,7 @@ public class ChooseDishesFragment extends BaseFragment {
             setBadgeView(true);
 //        更新下单按钮状态
             updateBuyOrderStatus();
-//        更新总价格
-//            toggleTotalPrice();
+
         }
     }
 
@@ -655,12 +637,9 @@ public class ChooseDishesFragment extends BaseFragment {
                 }
                 tvCount.setText(String.valueOf(intCount));
             }
-
             setBadgeView(false);
-//        更新下单按钮状态
             updateBuyOrderStatus();
-//        更新总价格
-//            toggleTotalPrice();
+
         }
     };
 
@@ -690,17 +669,6 @@ public class ChooseDishesFragment extends BaseFragment {
             }
             item.setCount(item.getCount() + 1);
             mOrderController.addItem(item);
-//            String count = tvCount.getText().toString();
-//            int intCount = Integer.parseInt(count);
-//            if (item == null) {
-////                    logger.error("异常：item为空");
-//            } else {
-//                item.setCount(item.getCount() + 1);
-//            }
-//            TextView priceTv = (TextView) parentView
-//                    .findViewById(R.id.good_price_tv);
-//            priceTv.setText(String.valueOf(item.get));
-
             tvCount.setText(String.valueOf(item.getCount()));
             setBadgeView(true);
             updateShopCartDataToView();
@@ -771,6 +739,60 @@ public class ChooseDishesFragment extends BaseFragment {
         }
     }
 
+    void setChooseDishesContent(View v) {
+        final TextView choose_dishes_tip = (TextView) v.findViewById(R.id.choose_dishes_tip);
+        if (isChooseNextDishes()) {
+//            choose_dishes_tip.setVisibility(View.VISIBLE);
+//            choose_dishes_tip.setText(R.string.has_choosen_next_dishes_tip);
+//            choose_dishes_tip.setOnClickListener(new AvoidDoubleClickListener() {
+//                @Override
+//                public void onViewClick(View v) {
+//                    choose_dishes_tip.setVisibility(View.GONE);
+//                }
+//            });
+        } else {
+            int status = buildStatus();
+            if (status == 1) {
+                choose_dishes_tip.setVisibility(View.VISIBLE);
+                choose_dishes_tip.setText(R.string.has_choosen_dishes_tip);
+                choose_dishes_tip.setOnClickListener(new AvoidDoubleClickListener() {
+                    @Override
+                    public void onViewClick(View v) {
+                        gotoFragmentByAdd(buildBundle(buildOrderParams(entry)), R.id.mainpage_ly, new ModifyOrderFragment(), ModifyOrderFragment.class.getName());
+                    }
+                });
+            } else if (status == 3) {
+                choose_dishes_tip.setVisibility(View.VISIBLE);
+                choose_dishes_tip.setText(R.string.deliverying);
+            } else {
+                choose_dishes_tip.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    boolean isChooseNextDishes() {
+        return entry != null ? entry.choose : false;
+    }
+
+
+    int buildStatus() {
+        return entry != null ? entry.status : -1;
+    }
+
+    ModifyOrderParams buildOrderParams(ComboEntry entry) {
+        ModifyOrderParams params = new ModifyOrderParams();
+        params.setParams(entry.id, entry.orderno, 1, entry.id, entry.prices[entry.getPosition()], entry.combo_idx);
+        return params;
+    }
+
+    Bundle buildBundle(ModifyOrderParams entry) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("HistoryOrderEntry", entry);
+        return bundle;
+    }
+
+
+    ComboEntry entry;
     private TextView mBuyOrderTv;
     private TextView mShopCartPriceTv;
     private LinearLayout footShopCartLl;
