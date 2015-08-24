@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
@@ -21,7 +22,6 @@ import com.shequcun.farm.data.OrderListEntry;
 import com.shequcun.farm.data.PayParams;
 import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.ui.adapter.ShoppingOrderAdapter;
-import com.shequcun.farm.util.AvoidDoubleClickListener;
 import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
@@ -61,6 +61,7 @@ public class ShoppingOrderFragment extends BaseFragment {
         buildAdapter();
         scroll_view.setMode(PullToRefreshBase.Mode.PULL_FROM_END);
         scroll_view.setOnRefreshListener(onRefrshLsn);
+        mLv.setOnItemClickListener(onItemLsn);
         requestOrderEntry();
     }
 
@@ -69,7 +70,7 @@ public class ShoppingOrderFragment extends BaseFragment {
             adapter = new ShoppingOrderAdapter(getActivity());
         }
         adapter.clear();
-        adapter.buildPayOnClickLsn(lsn);
+//        adapter.buildPayOnClickLsn(lsn);
         mLv.setAdapter(adapter);
     }
 
@@ -140,29 +141,50 @@ public class ShoppingOrderFragment extends BaseFragment {
     }
 
 
-    AvoidDoubleClickListener lsn = new AvoidDoubleClickListener() {
-        @Override
-        public void onViewClick(View v) {
-            int position = (int) v.getTag();
-            if (adapter == null)
-                return;
-            HistoryOrderEntry entry = adapter.getItem(position);
+//    AvoidDoubleClickListener lsn = new AvoidDoubleClickListener() {
+//        @Override
+//        public void onViewClick(View v) {
+//            int position = (int) v.getTag();
+//            if (adapter == null)
+//                return;
+//            HistoryOrderEntry entry = adapter.getItem(position);
+//
+//            if (entry != null) {
+//                if (entry.status == 1 || entry.status == 3) {
+//                    gotoFragment(buildBundle(buildOrderParams(entry, entry.status == 1 ? true : false)), R.id.mainpage_ly, new ModifyOrderFragment(), ModifyOrderFragment.class.getName());
+//                } else if (entry.status == 0) {
+//                    requestAlipay(entry);
+//                }
+//
+////                gotoFragment(buildBundle(entry), R.id.mainpage_ly, new ModifyOrderFragment(), ModifyOrderFragment.class.getName());
+//            }
+//        }
+//    };
+AdapterView.OnItemClickListener onItemLsn = new AdapterView.OnItemClickListener() {
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+        if (adapter == null)
+            return;
+        HistoryOrderEntry entry = adapter.getItem(position);
 
-            if (entry != null) {
-                if (entry.status == 1) {
-                    gotoFragment(buildBundle(buildOrderParams(entry)), R.id.mainpage_ly, new ModifyOrderFragment(), ModifyOrderFragment.class.getName());
-                } else if (entry.status == 0) {
-                    requestAlipay(entry);
-                }
+        if (entry != null) {
 
-//                gotoFragment(buildBundle(entry), R.id.mainpage_ly, new ModifyOrderFragment(), ModifyOrderFragment.class.getName());
+            if (entry.status == 1 || entry.status == 3) {
+                gotoFragment(buildBundle(buildOrderParams(entry, entry.status == 1 ? true : false)), R.id.mainpage_ly, new ModifyOrderFragment(), ModifyOrderFragment.class.getName());
+            } else if (entry.status == 0) {
+                requestAlipay(entry);
+            } else if (entry.status == 2) {
+                ToastHelper.showShort(getActivity(), "您的订单正在配送中,请耐心等待!");
+            } else if (entry.status == 4) {
+                ToastHelper.showShort(getActivity(), "您的订单已取消!");
             }
         }
-    };
+    }
+};
 
-    ModifyOrderParams buildOrderParams(HistoryOrderEntry entry){
-        ModifyOrderParams params=new ModifyOrderParams();
-        params.setParams(entry.id,entry.orderno,entry.type,entry.combo_id,entry.price,entry.combo_idx);
+    ModifyOrderParams buildOrderParams(HistoryOrderEntry entry, boolean isShow) {
+        ModifyOrderParams params = new ModifyOrderParams();
+        params.setParams(entry.id, entry.orderno, entry.type, entry.combo_id, entry.price, entry.combo_idx, isShow,entry.date);
         return params;
     }
 

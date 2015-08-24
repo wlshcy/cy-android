@@ -26,6 +26,7 @@ import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.ui.adapter.MyAdapter;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
 import com.shequcun.farm.util.HttpRequestUtil;
+import com.shequcun.farm.util.IntentUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.ToastHelper;
@@ -241,10 +242,8 @@ public class SetFragment extends BaseFragment {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] data) {
-
                 try {
                     if (data != null && data.length > 0) {
-
                         String result = new String(data);
                         JSONObject jObj = new JSONObject(result);
                         if (jObj != null) {
@@ -252,6 +251,8 @@ public class SetFragment extends BaseFragment {
                             if (logout) {
                                 ToastHelper.showShort(getActivity(), R.string.logout_success);
                                 new CacheManager(getActivity()).delUserLoginToDisk();
+                                IntentUtil.sendUpdateMyInfoMsg(getActivity());
+                                IntentUtil.sendUpdateComboMsg(getActivity());
                                 popBackStack();
                             } else {
                                 ToastHelper.showShort(getActivity(), R.string.logout_fail);

@@ -298,11 +298,6 @@ public class ComboFragment extends BaseFragment {
             }
         });
     }
-
-    private void checkVersion(){
-
-    }
-
     boolean mIsBind = false;
     ComboAdapter adapter;
     CarouselAdapter cAdapter;

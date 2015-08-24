@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by apple on 15/8/21.
  */
-public class ModifyOrderParams implements Serializable{
+public class ModifyOrderParams implements Serializable {
 
     public int id;
     public String orderno;
@@ -14,14 +14,22 @@ public class ModifyOrderParams implements Serializable{
     public int price;
     public String combo_idx;
     public int allWeight;
+    /**
+     * 是否显示底部菜单（重新选品、取消订单）
+     */
+    public boolean isShowFooterBtn;
 
-    public void setParams(int id,String orderno,int type,int combo_id,int price,String combo_idx){
-        this.id=id;
-        this.orderno=orderno;
-        this.type=type;
-        this.combo_id=combo_id;
-        this.price=price;
-        this.combo_idx=combo_idx;
+    public String date;
+
+    public void setParams(int id, String orderno, int type, int combo_id, int price, String combo_idx, boolean isShowFooterBtn, String date) {
+        this.id = id;
+        this.orderno = orderno;
+        this.type = type;
+        this.combo_id = combo_id;
+        this.price = price;
+        this.combo_idx = combo_idx;
+        this.isShowFooterBtn = isShowFooterBtn;
+        this.date = date;
     }
 
 }

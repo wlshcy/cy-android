@@ -61,8 +61,6 @@ public class HistoryOrderEntry implements Serializable {
     public JsonObject json;
     @SerializedName("price")
     public int price;
-    /**
-     * 本订单购买的总重量
-     */
-    public int allWeight;
+
+    public String date;
 }

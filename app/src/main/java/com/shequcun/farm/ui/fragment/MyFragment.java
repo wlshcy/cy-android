@@ -18,23 +18,13 @@ import android.widget.TextView;
 
 import com.bitmap.cache.ImageCacheManager;
 import com.common.widget.CircleImageView;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.UserLoginEntry;
 import com.shequcun.farm.datacenter.CacheManager;
-import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.dlg.ConsultationDlg;
-import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.ui.adapter.MyAdapter;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
-import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
-import com.shequcun.farm.util.LocalParams;
-import com.shequcun.farm.util.ToastHelper;
-
-import org.apache.http.Header;
-import org.json.JSONObject;
 
 /**
  * Created by apple on 15/8/3.
@@ -100,11 +90,22 @@ public class MyFragment extends BaseFragment {
         byte[] data = new CacheManager(getActivity()).getUserLoginFromDisk();
         if (data != null && data.length > 0) {
             uEntry = JsonUtilsParser.fromJson(new String(data), UserLoginEntry.class);
+        } else {
+            uEntry = null;
         }
         hView_1 = LayoutInflater.from(getActivity()).inflate(R.layout.my_item_head_ly, null);
         hView_1.findViewById(R.id.set).setOnClickListener(onClick);
         ((TextView) hView_1.findViewById(R.id.mobile_phone)).setText(uEntry != null ? uEntry.mobile : "");
         ((CircleImageView) hView_1.findViewById(R.id.my_head)).setImageUrl(uEntry != null ? uEntry.headimg : null, ImageCacheManager.getInstance().getImageLoader());
+
+        hView_1.findViewById(R.id.my_head).setOnClickListener(new AvoidDoubleClickListener() {
+            @Override
+            public void onViewClick(View v) {
+                if (uEntry == null)
+                    gotoFragment(R.id.mainpage_ly, new LoginFragment(), LoginFragment.class.getName());
+            }
+        });
+
         mLv.addHeaderView(hView_1, null, false);
 //        mLv.addHeaderView(hView_2 = buildHeadView(uEntry), null, false);
     }
@@ -252,9 +253,6 @@ public class MyFragment extends BaseFragment {
         builder.setNeutralButton("取消", null);
         builder.create().show();
     }
-
-
-
 
 
     boolean mIsBind = false;

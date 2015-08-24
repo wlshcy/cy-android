@@ -53,7 +53,9 @@ public class ModifyOrderFragment extends BaseFragment {
         back = v.findViewById(R.id.back);
         order_btn = (TextView) v.findViewById(R.id.order_btn);
         mLv = (ListView) v.findViewById(R.id.mLv);
+        hEntry = buildModifyOrderObj();
         ((TextView) v.findViewById(R.id.title_center_text)).setText(R.string.order_details);
+        order_btn.setVisibility(isShowFooteWgt() ? View.VISIBLE : View.GONE);
         order_btn.setText(getOrderType() == 1 ? R.string.re_choose_dishes : R.string.cancel_order);
     }
 
@@ -62,6 +64,17 @@ public class ModifyOrderFragment extends BaseFragment {
         back.setOnClickListener(onClick);
         order_btn.setOnClickListener(onClick);
         requestOrderDetails();
+    }
+
+    private ModifyOrderParams buildModifyOrderObj() {
+        Bundle bundle = getArguments();
+        return bundle != null ? (ModifyOrderParams) bundle.getSerializable("HistoryOrderEntry") : null;
+    }
+
+    private boolean isShowFooteWgt() {
+        if (hEntry != null)
+            return hEntry.isShowFooterBtn;
+        return false;
     }
 
     AvoidDoubleClickListener onClick = new AvoidDoubleClickListener() {
@@ -82,12 +95,8 @@ public class ModifyOrderFragment extends BaseFragment {
     };
 
     String getOrderNumber() {
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            hEntry = (ModifyOrderParams) bundle.getSerializable("HistoryOrderEntry");
-            if (hEntry != null)
-                return hEntry.orderno;
-        }
+        if (hEntry != null)
+            return hEntry.orderno;
         return " ";
     }
 
@@ -144,12 +153,8 @@ public class ModifyOrderFragment extends BaseFragment {
     }
 
     int getOrderType() {
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            hEntry = (ModifyOrderParams) bundle.getSerializable("HistoryOrderEntry");
-            if (hEntry != null)
-                return hEntry.type;
-        }
+        if (hEntry != null)
+            return hEntry.type;
         return 0;
     }
 
@@ -198,7 +203,7 @@ public class ModifyOrderFragment extends BaseFragment {
 
     void addFooter(int part) {
         View footerView = LayoutInflater.from(getActivity()).inflate(R.layout.order_details_footer_ly, null);
-//        ((TextView) footerView.findViewById(R.id.distribution_date)).setText("配送日期:本周周五");
+        ((TextView) footerView.findViewById(R.id.distribution_date)).setText(hEntry.date);
         ((TextView) footerView.findViewById(R.id.number_copies)).setText("共" + part + "份");
         mLv.addFooterView(footerView, null, false);
     }
