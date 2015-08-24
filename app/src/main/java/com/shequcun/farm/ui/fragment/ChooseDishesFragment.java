@@ -764,8 +764,13 @@ public class ChooseDishesFragment extends BaseFragment {
                 });
             } else if (status == 3) {
                 choose_dishes_tip.setVisibility(View.VISIBLE);
+                choose_dishes_tip.setText(R.string.delievery_success);
+            } else if(status==2){
+                choose_dishes_tip.setVisibility(View.VISIBLE);
                 choose_dishes_tip.setText(R.string.deliverying);
-            } else {
+            }
+            else
+            {
                 choose_dishes_tip.setVisibility(View.GONE);
             }
         }

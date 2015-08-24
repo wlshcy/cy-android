@@ -126,5 +126,6 @@
 
     <string name="has_choosen_dishes_tip">您已选择本期菜品,如需修改,请单击此处.</string>
     <string name="has_choosen_next_dishes_tip">您如需选择下期菜品,请单击此处.</string>
-    <string name="deliverying">您选择的菜品正在配送中,请耐心等待.</string>
+    <string name="deliverying">您选择的套餐正在配送中,请耐心等待.</string>
+    <string name="delievery_success">您的上期菜品已经配送完成.</string>
 </resources>
