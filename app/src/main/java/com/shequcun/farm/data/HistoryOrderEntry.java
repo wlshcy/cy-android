@@ -24,7 +24,7 @@ public class HistoryOrderEntry implements Serializable {
 //            "combo_id": 1,
 //            "orderno": 1537749250347349,
 //            "uid": 3,
-//            "type": 1,
+//            "type": 1,  type	int	订单类型
 //            "name": "公公",
 //            "price": 832000,
 //            "mobile": "14012345678",
@@ -40,7 +40,7 @@ public class HistoryOrderEntry implements Serializable {
     @SerializedName("id")
     public int id;
     @SerializedName("type")
-    public int type;
+    public int type;//1.套餐订单 2.选菜订单, 3.单品订单, 4.自动选菜订单
     @SerializedName("year")
     public int year;
     //    @SerializedName("uid")

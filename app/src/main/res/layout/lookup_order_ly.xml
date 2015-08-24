@@ -7,54 +7,35 @@
 
     <include layout="@layout/common_title_ly" />
 
-
-    <FrameLayout
+    <LinearLayout
+        android:id="@+id/addressee_ly"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/px16"
+        android:background="@android:color/white"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_ribbon" />
 
         <TextView
-            android:id="@+id/add_address_ly"
+            android:id="@+id/addressee_info"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/px74"
-            android:background="@color/transparent_8000"
-            android:drawableLeft="@drawable/icon_sigh"
-            android:gravity="center_vertical"
-            android:text="@string/add_address"
-            android:textColor="@android:color/white"
-            android:visibility="gone" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/px16"
+            android:paddingLeft="@dimen/px40" />
 
-        <LinearLayout
-            android:id="@+id/addressee_ly"
+        <TextView
+            android:id="@+id/address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/px16"
             android:layout_marginTop="@dimen/px16"
-            android:background="@android:color/white"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/icon_ribbon" />
-
-            <TextView
-                android:id="@+id/addressee_info"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/px16"
-                android:paddingLeft="@dimen/px40" />
-
-            <TextView
-                android:id="@+id/address"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/px16"
-                android:layout_marginTop="@dimen/px16"
-                android:paddingLeft="@dimen/px40" />
-        </LinearLayout>
-
-    </FrameLayout>
+            android:paddingLeft="@dimen/px40" />
+    </LinearLayout>
 
 
     <ListView
@@ -69,8 +50,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/common_bg_color"
-        />
+        android:background="@color/common_bg_color" />
 
     <TextView
         android:id="@+id/order_btn"
@@ -80,10 +60,7 @@
         android:gravity="center"
         android:text="@string/cancel_order"
         android:textColor="@color/green_24c05d"
-        android:textSize="@dimen/px30"
-         />
-
-
+        android:textSize="@dimen/px30" />
 
 
 </LinearLayout>

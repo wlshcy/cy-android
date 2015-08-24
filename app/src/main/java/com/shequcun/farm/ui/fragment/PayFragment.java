@@ -65,7 +65,15 @@ public class PayFragment extends BaseFragment {
     @Override
     protected void setWidgetLsn() {
         back.setOnClickListener(onClick);
-        alipay_ly.setOnClickListener(onClick);
+        alipay_ly.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlipayUtils alipayUtils = new AlipayUtils();
+                alipayUtils.setHandler(mHandler);
+                alipayUtils.initAlipay(getActivity());
+                alipayUtils.doAlipay(getAlipayInfo());
+            }
+        });
     }
 
     AvoidDoubleClickListener onClick = new AvoidDoubleClickListener() {
@@ -73,13 +81,6 @@ public class PayFragment extends BaseFragment {
         public void onViewClick(View v) {
             if (v == back)
                 clearStack();
-            else if (v == alipay_ly) {
-                AlipayUtils alipayUtils = new AlipayUtils();
-                alipayUtils.setHandler(mHandler);
-                alipayUtils.initAlipay(getActivity());
-                alipayUtils.doAlipay(getAlipayInfo());
-//                gotoFragmentByAdd(getArguments(), R.id.mainpage_ly, new PayResultFragment(), PayResultFragment.class.getName());
-            }
         }
     };
 

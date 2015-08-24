@@ -17,10 +17,7 @@ import com.loopj.android.http.RequestParams;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.HistoryOrderEntry;
 import com.shequcun.farm.data.ModifyOrderParams;
-import com.shequcun.farm.data.OrderEntry;
 import com.shequcun.farm.data.OrderListEntry;
-import com.shequcun.farm.data.PayParams;
-import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.ui.adapter.ShoppingOrderAdapter;
 import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
@@ -70,7 +67,6 @@ public class ShoppingOrderFragment extends BaseFragment {
             adapter = new ShoppingOrderAdapter(getActivity());
         }
         adapter.clear();
-//        adapter.buildPayOnClickLsn(lsn);
         mLv.setAdapter(adapter);
     }
 
@@ -123,7 +119,6 @@ public class ShoppingOrderFragment extends BaseFragment {
                             }
                             return;
                         }
-
                         ToastHelper.showShort(getActivity(), entry.errmsg);
                     }
                 }
@@ -140,94 +135,32 @@ public class ShoppingOrderFragment extends BaseFragment {
         });
     }
 
+    AdapterView.OnItemClickListener onItemLsn = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+            if (adapter == null)
+                return;
+            HistoryOrderEntry entry = adapter.getItem(position);
 
-//    AvoidDoubleClickListener lsn = new AvoidDoubleClickListener() {
-//        @Override
-//        public void onViewClick(View v) {
-//            int position = (int) v.getTag();
-//            if (adapter == null)
-//                return;
-//            HistoryOrderEntry entry = adapter.getItem(position);
-//
-//            if (entry != null) {
-//                if (entry.status == 1 || entry.status == 3) {
-//                    gotoFragment(buildBundle(buildOrderParams(entry, entry.status == 1 ? true : false)), R.id.mainpage_ly, new ModifyOrderFragment(), ModifyOrderFragment.class.getName());
-//                } else if (entry.status == 0) {
-//                    requestAlipay(entry);
-//                }
-//
-////                gotoFragment(buildBundle(entry), R.id.mainpage_ly, new ModifyOrderFragment(), ModifyOrderFragment.class.getName());
-//            }
-//        }
-//    };
-AdapterView.OnItemClickListener onItemLsn = new AdapterView.OnItemClickListener() {
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-        if (adapter == null)
-            return;
-        HistoryOrderEntry entry = adapter.getItem(position);
-
-        if (entry != null) {
-
-            if (entry.status == 1 || entry.status == 3) {
-                gotoFragment(buildBundle(buildOrderParams(entry, entry.status == 1 ? true : false)), R.id.mainpage_ly, new ModifyOrderFragment(), ModifyOrderFragment.class.getName());
-            } else if (entry.status == 0) {
-                requestAlipay(entry);
-            } else if (entry.status == 2) {
-                ToastHelper.showShort(getActivity(), "您的订单正在配送中,请耐心等待!");
-            } else if (entry.status == 4) {
-                ToastHelper.showShort(getActivity(), "您的订单已取消!");
+            if (entry != null) {
+                if (entry.status == 1 || entry.status == 3 || entry.status == 0 || entry.status == 2) {
+                    gotoFragment(buildBundle(buildOrderParams(entry)), R.id.mainpage_ly, new ModifyOrderFragment(), ModifyOrderFragment.class.getName());
+                } else if (entry.status == 4) {
+                    ToastHelper.showShort(getActivity(), "您的订单已取消!");
+                }
             }
         }
-    }
-};
+    };
 
-    ModifyOrderParams buildOrderParams(HistoryOrderEntry entry, boolean isShow) {
+    ModifyOrderParams buildOrderParams(HistoryOrderEntry entry) {
         ModifyOrderParams params = new ModifyOrderParams();
-        params.setParams(entry.id, entry.orderno, entry.type, entry.combo_id, entry.price, entry.combo_idx, isShow,entry.date);
+        params.setParams(entry.id, entry.orderno, entry.type, entry.combo_id, entry.price, entry.combo_idx, entry.status, entry.date);
         return params;
     }
 
     Bundle buildBundle(ModifyOrderParams entry) {
         Bundle bundle = new Bundle();
         bundle.putSerializable("HistoryOrderEntry", entry);
-        return bundle;
-    }
-
-    void requestAlipay(final HistoryOrderEntry entry) {
-        RequestParams params = new RequestParams();
-        params.add("orderno", entry.orderno);
-        params.add("_xsrf", PersistanceManager.INSTANCE.getCookieValue());
-        HttpRequestUtil.httpPost(LocalParams.INSTANCE.getBaseUrl() + "cai/payorder", params, new AsyncHttpResponseHandler() {
-            @Override
-            public void onSuccess(int sCode, Header[] h, byte[] data) {
-                if (data != null && data.length > 0) {
-                    OrderEntry oEntry = JsonUtilsParser.fromJson(new String(data), OrderEntry.class);
-                    if (oEntry != null) {
-                        if (TextUtils.isEmpty(oEntry.errmsg)) {
-                            gotoFragmentByAdd(buildBundle(entry.orderno, (double) entry.price / 100, oEntry.alipay), R.id.mainpage_ly, new PayFragment(), PayFragment.class.getName());
-                            return;
-                        }
-                        ToastHelper.showShort(getActivity(), oEntry.errmsg);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
-                ToastHelper.showShort(getActivity(), "获取支付内容失败");
-            }
-        });
-    }
-
-    Bundle buildBundle(String orderno, double orderMoney, String alipay) {
-        Bundle bundle = new Bundle();
-        PayParams payParams = new PayParams();
-        payParams.orderno = orderno;
-        payParams.alipay = alipay;
-        payParams.orderMoney = orderMoney;
-        payParams.isRecoDishes = false;
-        bundle.putSerializable("PayParams", payParams);
         return bundle;
     }
 

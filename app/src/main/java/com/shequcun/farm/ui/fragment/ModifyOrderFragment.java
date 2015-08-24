@@ -14,10 +14,16 @@ import android.widget.TextView;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.shequcun.farm.R;
+import com.shequcun.farm.data.AddressEntry;
+import com.shequcun.farm.data.AddressListEntry;
 import com.shequcun.farm.data.AlreadyPurchasedEntry;
 import com.shequcun.farm.data.AlreadyPurchasedListEntry;
 import com.shequcun.farm.data.ComboEntry;
 import com.shequcun.farm.data.ModifyOrderParams;
+import com.shequcun.farm.data.OrderEntry;
+import com.shequcun.farm.data.PayParams;
+import com.shequcun.farm.data.UserLoginEntry;
+import com.shequcun.farm.datacenter.CacheManager;
 import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.ui.adapter.AlreadyPurchasedAdapter;
@@ -54,13 +60,27 @@ public class ModifyOrderFragment extends BaseFragment {
         order_btn = (TextView) v.findViewById(R.id.order_btn);
         mLv = (ListView) v.findViewById(R.id.mLv);
         hEntry = buildModifyOrderObj();
+        address = (TextView) v.findViewById(R.id.address);
+        addressee_info = (TextView) v.findViewById(R.id.addressee_info);
+        addressLy = v.findViewById(R.id.addressee_ly);
         ((TextView) v.findViewById(R.id.title_center_text)).setText(R.string.order_details);
-        order_btn.setVisibility(isShowFooteWgt() ? View.VISIBLE : View.GONE);
-        order_btn.setText(getOrderType() == 1 ? R.string.re_choose_dishes : R.string.cancel_order);
+//        order_btn.setVisibility(isShowFooteWgt() ? View.VISIBLE : View.GONE);
+        if (getOrderStatus() == 0) {//未付款
+            order_btn.setText(R.string.pay_immediately);
+        } else if (getOrderStatus() == 1) {//待配送
+            int orderType = getOrderType();
+            order_btn.setText(orderType == 1 || orderType == 2 ? R.string.re_choose_dishes : R.string.cancel_order);
+        } else if (getOrderStatus() == 2) {//订单配送中
+            order_btn.setEnabled(false);
+            order_btn.setText(hEntry == null ? "" : hEntry.date);
+        } else {
+            order_btn.setVisibility(View.GONE);
+        }
     }
 
     @Override
     protected void setWidgetLsn() {
+        requestUserAddress();
         back.setOnClickListener(onClick);
         order_btn.setOnClickListener(onClick);
         requestOrderDetails();
@@ -71,33 +91,29 @@ public class ModifyOrderFragment extends BaseFragment {
         return bundle != null ? (ModifyOrderParams) bundle.getSerializable("HistoryOrderEntry") : null;
     }
 
-    private boolean isShowFooteWgt() {
-        if (hEntry != null)
-            return hEntry.isShowFooterBtn;
-        return false;
-    }
-
     AvoidDoubleClickListener onClick = new AvoidDoubleClickListener() {
         @Override
         public void onViewClick(View v) {
             if (v == back)
                 popBackStack();
             else if (v == order_btn) {
-                if (getOrderType() == 1) {//重新选择菜品
-                    if (hEntry == null)
-                        return;
-                    showConfirmDlg();
-                } else {//取消订单
-                    cancelOrder();
+                int orderType = getOrderType();
+                if (getOrderStatus() == 1) {//待配送
+                    order_btn.setText(orderType == 1 || orderType == 2 ? R.string.re_choose_dishes : R.string.cancel_order);
+                    if (orderType == 1 || orderType == 2) {
+                        showConfirmDlg();
+                    } else if (getOrderType() == 0) {
+                        cancelOrder();
+                    }
+                } else if (getOrderStatus() == 0) {
+                    requestAlipay(hEntry);
                 }
             }
         }
     };
 
     String getOrderNumber() {
-        if (hEntry != null)
-            return hEntry.orderno;
-        return " ";
+        return hEntry != null ? hEntry.orderno : null;
     }
 
 
@@ -152,10 +168,22 @@ public class ModifyOrderFragment extends BaseFragment {
         });
     }
 
+    /**
+     * 订单类型
+     *
+     * @return int 1.套餐订单 2.选菜订单, 3.单品订单, 4.自动选菜订单
+     */
     int getOrderType() {
-        if (hEntry != null)
-            return hEntry.type;
-        return 0;
+        return hEntry != null ? hEntry.type : 0;
+    }
+
+    /**
+     * int	订单状态
+     *
+     * @return 0.未付款, 1.待配送, 2.配送中, 3.配送完成, 4.取消订单, 5.套餐配送完成
+     */
+    int getOrderStatus() {
+        return hEntry != null ? hEntry.status : 0;
     }
 
     void requestOrderDetails() {
@@ -227,6 +255,44 @@ public class ModifyOrderFragment extends BaseFragment {
         adapter.notifyDataSetChanged();
     }
 
+    void requestAlipay(final ModifyOrderParams entry) {
+        RequestParams params = new RequestParams();
+        params.add("orderno", entry.orderno);
+        params.add("_xsrf", PersistanceManager.INSTANCE.getCookieValue());
+        HttpRequestUtil.httpPost(LocalParams.INSTANCE.getBaseUrl() + "cai/payorder", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int sCode, Header[] h, byte[] data) {
+                if (data != null && data.length > 0) {
+                    OrderEntry oEntry = JsonUtilsParser.fromJson(new String(data), OrderEntry.class);
+                    if (oEntry != null) {
+                        if (TextUtils.isEmpty(oEntry.errmsg)) {
+                            gotoFragmentByAdd(buildBundle(entry.orderno, (double) entry.price / 100, oEntry.alipay), R.id.mainpage_ly, new PayFragment(), PayFragment.class.getName());
+                            return;
+                        }
+
+                        ToastHelper.showShort(getActivity(), oEntry.errmsg);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
+                ToastHelper.showShort(getActivity(), "获取支付内容失败");
+            }
+        });
+    }
+
+    Bundle buildBundle(String orderno, double orderMoney, String alipay) {
+        Bundle bundle = new Bundle();
+        PayParams payParams = new PayParams();
+        payParams.orderno = orderno;
+        payParams.alipay = alipay;
+        payParams.orderMoney = orderMoney;
+        payParams.isRecoDishes = false;
+        bundle.putSerializable("PayParams", payParams);
+        return bundle;
+    }
+
     private void showConfirmDlg() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -259,9 +325,60 @@ public class ModifyOrderFragment extends BaseFragment {
         dialog.show();
     }
 
+    void requestUserAddress() {
+        HttpRequestUtil.httpGet(LocalParams.INSTANCE.getBaseUrl() + "user/address", new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int sCode, Header[] h, byte[] data) {
+                if (data != null && data.length > 0) {
+                    AddressListEntry entry = JsonUtilsParser.fromJson(new String(data), AddressListEntry.class);
+                    if (entry != null) {
+                        if (TextUtils.isEmpty(entry.errmsg)) {
+                            successUserAddress(entry.aList);
+                            return;
+                        } else {
+                            ToastHelper.showShort(getActivity(), entry.errmsg);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
+                if (sCode == 0) {
+                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
+                    return;
+                }
+                ToastHelper.showShort(getActivity(), "请求失败,错误码" + sCode);
+            }
+        });
+    }
+
+    private void successUserAddress(List<AddressEntry> list) {
+        if (list == null || list.size() <= 0)
+            return;
+        UserLoginEntry uEntry = new CacheManager(getActivity()).getUserLoginEntry();
+        if (uEntry == null)
+            return;
+        int size = list.size();
+        for (int i = 0; i < size; ++i) {
+            AddressEntry entry = list.get(i);
+            if (entry.isDefault) {
+                if (!TextUtils.isEmpty(entry.name) && !TextUtils.isEmpty(uEntry.address)) {
+                    addressLy.setVisibility(View.VISIBLE);
+                    addressee_info.setText(entry.name + "  " + entry.mobile);
+                    address.setText("地址: " + uEntry.address);
+                }
+                return;
+            }
+        }
+    }
+
+    View addressLy;
     ModifyOrderParams hEntry;
     AlreadyPurchasedAdapter adapter;
     View back;
     TextView order_btn;
+    TextView addressee_info;
+    TextView address;
     ListView mLv;
 }

@@ -67,6 +67,7 @@ public class ChooseDishesFragment extends BaseFragment {
 
     @Override
     protected void initWidget(View v) {
+        entry = buildEntry();
         mLv = (ListView) v.findViewById(R.id.mLv);
         ((TextView) v.findViewById(R.id.title_center_text)).setText(R.string.choose_dishes);
         back = v.findViewById(R.id.back);
@@ -91,7 +92,6 @@ public class ChooseDishesFragment extends BaseFragment {
         mBadgeViewShopCart.setBadgeMargin(ResUtil.dip2px(getActivity(), 0));
         mShopCartPriceTv = (TextView) v
                 .findViewById(R.id.shop_cart_total_price_tv);
-        entry = buildEntry();
         buildAdapter();
         setChooseDishesContent(v);
     }
@@ -119,9 +119,9 @@ public class ChooseDishesFragment extends BaseFragment {
     }
 
 
-    AvoidDoubleClickListener onClick = new AvoidDoubleClickListener() {
+    View.OnClickListener onClick = new View.OnClickListener() {
         @Override
-        public void onViewClick(View v) {
+        public void onClick(View v) {
             if (v == back) {
                 popBackStack();
             } else if (v == rightTv) {
@@ -144,6 +144,7 @@ public class ChooseDishesFragment extends BaseFragment {
                 hideShopCart();
             }
         }
+
     };
 
     int buildRequestID() {
@@ -781,7 +782,7 @@ public class ChooseDishesFragment extends BaseFragment {
 
     ModifyOrderParams buildOrderParams(ComboEntry entry) {
         ModifyOrderParams params = new ModifyOrderParams();
-        params.setParams(entry.id, entry.orderno, 1, entry.id, entry.prices[entry.getPosition()], entry.combo_idx, true,null);
+        params.setParams(entry.id, entry.orderno, 1, entry.id, entry.prices[entry.getPosition()], entry.combo_idx, entry.status, null);
         return params;
     }
 

@@ -49,7 +49,8 @@ public class SqcFarmActivity extends BaseFragmentActivity {
     void setWidgetLsn() {
         radiogroup.setOnCheckedChangeListener(checkedChangeListener);
         // mHomeViewPager.clearAnimation();
-        hVpager.setOnPageChangeListener(pageChangeLsn);
+        hVpager.addOnPageChangeListener(pageChangeLsn);
+        hVpager.setOffscreenPageLimit(2);
         buildRadioButtonStatus(0);
     }
 
@@ -88,10 +89,12 @@ public class SqcFarmActivity extends BaseFragmentActivity {
         public void onCheckedChanged(RadioGroup group, int checkedId) {
             switch (checkedId) {
                 case R.id.combo_rb:// 套餐
-                    onPageChanged(0);
+//                    onPageChanged(0);
+                    hVpager.setCurrentItem(0);
                     break;
                 case R.id.mine_rb:// 我的
-                    onPageChanged(1);
+//                    onPageChanged(1);
+                    hVpager.setCurrentItem(1);
                     break;
                 default:
                     break;
@@ -177,9 +180,9 @@ public class SqcFarmActivity extends BaseFragmentActivity {
         dialog.show();
     }
 
-    public void onPageChanged(int pageIndex) {
-        hVpager.setCurrentItem(pageIndex);
-    }
+//    public void onPageChanged(int pageIndex) {
+//        hVpager.setCurrentItem(pageIndex);
+//    }
 
     HomeViewPager hVpager;
     HomeViewPagerAdapter hAdapter;

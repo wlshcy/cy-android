@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.shequcun.farm.R;
 import com.shequcun.farm.ui.adapter.MyOrderViewPagerAdapter;
-import com.shequcun.farm.util.AvoidDoubleClickListener;
 
 /**
  * 我的订单
@@ -45,19 +44,20 @@ public class MyOrderViewPagerFragment extends BaseFragment {
         back.setOnClickListener(onClick);
         shopping_tv.setOnClickListener(onClick);
         dishes_tv.setOnClickListener(onClick);
-        orderPager.setOnPageChangeListener(onPageChangeListener);
+        orderPager.addOnPageChangeListener(onPageChangeListener);
+        orderPager.setOffscreenPageLimit(1);
         buildAdapter();
     }
 
-    AvoidDoubleClickListener onClick = new AvoidDoubleClickListener() {
+    View.OnClickListener onClick = new View.OnClickListener() {
         @Override
-        public void onViewClick(View v) {
+        public void onClick(View v) {
             if (v == back)
                 popBackStack();
             else if (v == dishes_tv)
-                setCurrentItem(0);
+                orderPager.setCurrentItem(0);
             else if (v == shopping_tv)
-                setCurrentItem(1);
+                orderPager.setCurrentItem(1);
         }
     };
 
@@ -70,6 +70,7 @@ public class MyOrderViewPagerFragment extends BaseFragment {
     ViewPager.OnPageChangeListener onPageChangeListener = new ViewPager.OnPageChangeListener() {
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
         }
 
         @Override

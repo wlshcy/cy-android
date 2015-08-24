@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.HistoryOrderEntry;
-import com.shequcun.farm.util.AvoidDoubleClickListener;
 import com.shequcun.farm.util.Utils;
 
 /**
@@ -19,15 +18,8 @@ import com.shequcun.farm.util.Utils;
 public class MyOrderAdapter extends ArrayAdapter<HistoryOrderEntry> {
     HistoryOrderEntry entry;
 
-    AvoidDoubleClickListener payOnClickLsn;
-
-
     public MyOrderAdapter(Context context) {
         super(context, R.layout.my_order_item_ly);
-    }
-
-    public void buildPayOnClickLsn(AvoidDoubleClickListener payOnClickLsn) {
-        this.payOnClickLsn = payOnClickLsn;
     }
 
     @Override
@@ -60,16 +52,16 @@ public class MyOrderAdapter extends ArrayAdapter<HistoryOrderEntry> {
 //            }
 
             if (entry.status == 0) {
-                entry.date = "下单日期  " + Utils.getTime(entry.json.get(entry.status + "").getAsLong());
+                entry.date = "下单日期:" + Utils.getTime(entry.json.get(entry.status + "").getAsLong());
                 vh.distribution_date.setText(entry.date);
             } else if (entry.status == 1) {
-                entry.date = "支付日期  " + Utils.getTime(entry.json.get(entry.status + "").getAsLong());
+                entry.date = "支付日期:" + Utils.getTime(entry.json.get(entry.status + "").getAsLong());
                 vh.distribution_date.setText(entry.date);
             } else if (entry.status == 2) {
-                entry.date = "配送日期" + Utils.getTime(entry.json.get(entry.status + "").getAsLong());
+                entry.date = "配送日期:" + Utils.getTime(entry.json.get(entry.status + "").getAsLong());
                 vh.distribution_date.setText(entry.date);
             } else if (entry.status == 3) {
-                entry.date = "收货日期" + Utils.getTime(entry.json.get(entry.status + "").getAsLong());
+                entry.date = "收货日期:" + Utils.getTime(entry.json.get(entry.status + "").getAsLong());
                 vh.distribution_date.setText(entry.date);
             } else {
                 vh.distribution_date.setVisibility(View.GONE);

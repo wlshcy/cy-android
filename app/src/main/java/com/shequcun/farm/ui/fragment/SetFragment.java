@@ -24,7 +24,6 @@ import com.shequcun.farm.datacenter.CacheManager;
 import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.ui.adapter.MyAdapter;
-import com.shequcun.farm.util.AvoidDoubleClickListener;
 import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.IntentUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
@@ -98,14 +97,13 @@ public class SetFragment extends BaseFragment {
     };
 
 
-    AvoidDoubleClickListener onClick = new AvoidDoubleClickListener() {
+    View.OnClickListener onClick = new View.OnClickListener() {
         @Override
-        public void onViewClick(View v) {
+        public void onClick(View v) {
             if (v == back)
                 popBackStack();
-            else if (exit_login == v) {
+            else if (exit_login == v)
                 showExitDlg();
-            }
         }
     };
 

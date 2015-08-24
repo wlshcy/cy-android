@@ -8,6 +8,9 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="@color/gray_ececec"
+        android:descendantFocusability="beforeDescendants"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         ptr:ptrAnimationStyle="flip">
 
         <FrameLayout

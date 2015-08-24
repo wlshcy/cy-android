@@ -70,8 +70,14 @@ public class OrderDetailsFragment extends BaseFragment {
         commitOrderTv = (TextView) v.findViewById(R.id.bug_order_tv);
         addressLy = v.findViewById(R.id.addressee_ly);
         add_address_ly = v.findViewById(R.id.add_address_ly);
+        entry = buildEntry();
         buildUserLoginEntry();
         showBottomWidget();
+    }
+
+    ComboEntry buildEntry() {
+        Bundle bundle = getArguments();
+        return bundle != null ? (ComboEntry) bundle.getSerializable("ComboEntry") : null;
     }
 
     @Override
@@ -84,6 +90,8 @@ public class OrderDetailsFragment extends BaseFragment {
         byte[] data = new CacheManager(getActivity()).getUserLoginFromDisk();
         if (data != null && data.length > 0) {
             uEntry = JsonUtilsParser.fromJson(new String(data), UserLoginEntry.class);
+        } else {
+            uEntry = null;
         }
     }
 
@@ -127,11 +135,16 @@ public class OrderDetailsFragment extends BaseFragment {
             else if (re_choose_dishes == v) {//重新选择菜品
 
             } else if (v == commitOrderTv) {
-                String orderno = buildOrederno();
-                if (TextUtils.isEmpty(orderno)) {
+
+                if (commitOrderTv.getText().toString().equals(getResources().getString(R.string.pay_immediately))) {
+                    makeOrder();
+                    return;
+                }
+
+                if (isCreateOrder()) {
                     makeOrder();
                 } else {
-                    modifyOrder(orderno);
+                    modifyOrder(buildOrederno());
                 }
             } else if (v == add_address_ly) {
                 gotoFragmentByAdd(R.id.mainpage_ly, new AddressFragment(), AddressFragment.class.getName());
@@ -184,33 +197,18 @@ public class OrderDetailsFragment extends BaseFragment {
     }
 
     String getComboIdxParams() {
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            ComboEntry entry = (ComboEntry) bundle.getSerializable("ComboEntry");
-            if (entry != null) {
-                if (!TextUtils.isEmpty(entry.combo_idx))
-                    return entry.combo_idx;
-                return entry.getPosition() + "";
-            }
+        if (entry != null) {
             if (!TextUtils.isEmpty(entry.combo_idx))
                 return entry.combo_idx;
             return entry.getPosition() + "";
         }
-        return "";
+        if (!TextUtils.isEmpty(entry.combo_idx))
+            return entry.combo_idx;
+        return entry.getPosition() + "";
     }
 
     boolean isMyCombo() {
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            ComboEntry entry = (ComboEntry) bundle.getSerializable("ComboEntry");
-            if (entry != null) {
-                if (entry.isMine())
-                    return true;
-                else
-                    return false;
-            }
-        }
-        return false;
+        return (entry != null) ? entry.isMine() : false;
     }
 
     /**
@@ -220,17 +218,13 @@ public class OrderDetailsFragment extends BaseFragment {
      */
     String buildComboDeliveryDate() {
         StringBuilder result = new StringBuilder();
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            ComboEntry entry = (ComboEntry) bundle.getSerializable("ComboEntry");
-            if (entry != null) {
-                int shipday[] = entry.shipday;
-                if (shipday != null && shipday.length > 0) {
-                    for (int i = 0; i < shipday.length; ++i) {
-                        if (result.length() > 0)
-                            result.append("、");
-                        result.append(shipday[i]);
-                    }
+        if (entry != null) {
+            int shipday[] = entry.shipday;
+            if (shipday != null && shipday.length > 0) {
+                for (int i = 0; i < shipday.length; ++i) {
+                    if (result.length() > 0)
+                        result.append("、");
+                    result.append(shipday[i]);
                 }
             }
         }
@@ -243,8 +237,7 @@ public class OrderDetailsFragment extends BaseFragment {
      * @return
      */
     int getComboId() {
-        Bundle bundle = getArguments();
-        return bundle != null ? ((ComboEntry) bundle.getSerializable("ComboEntry")).id : -1;
+        return entry != null ? entry.id : -1;
     }
 
     private void makeOrder() {
@@ -280,14 +273,11 @@ public class OrderDetailsFragment extends BaseFragment {
                     OrderEntry entry = JsonUtilsParser.fromJson(result, OrderEntry.class);
                     if (entry != null) {
                         if (TextUtils.isEmpty(entry.errmsg)) {
-
                             if (TextUtils.isEmpty(entry.alipay)) {
                                 gotoFragmentByAdd(buildBundle(entry.orderno, getOrderMoney(), entry.alipay, true), R.id.mainpage_ly, new PayResultFragment(), PayResultFragment.class.getName());
                                 return;
                             }
-
                             gotoFragmentByAdd(buildBundle(entry.orderno, getOrderMoney(), entry.alipay, false), R.id.mainpage_ly, new PayFragment(), PayFragment.class.getName());
-
                         } else {
                             ToastHelper.showShort(getActivity(), entry.errmsg);
                         }
@@ -306,7 +296,6 @@ public class OrderDetailsFragment extends BaseFragment {
 
     void requestUserAddress() {
         HttpRequestUtil.httpGet(LocalParams.INSTANCE.getBaseUrl() + "user/address", new AsyncHttpResponseHandler() {
-
             @Override
             public void onSuccess(int sCode, Header[] h, byte[] data) {
                 if (data != null && data.length > 0) {
@@ -400,12 +389,8 @@ public class OrderDetailsFragment extends BaseFragment {
 
 
     double getOrderMoney() {
-        Bundle bundle = getArguments();
-        ComboEntry entry = bundle != null ? ((ComboEntry) bundle.getSerializable("ComboEntry")) : null;
-        if (entry != null) {
-            return ((double) entry.prices[entry.getPosition()]) / 100;
-        }
-        return 0;
+        return entry != null ?
+                ((double) entry.prices[entry.getPosition()]) / 100 : 0;
     }
 
     Bundle buildBundle(String orderno, double orderMoney, String alipay, boolean isRecoDishes) {
@@ -474,18 +459,15 @@ public class OrderDetailsFragment extends BaseFragment {
     }
 
     String buildOrederno() {
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            ComboEntry entry = (ComboEntry) bundle.getSerializable("ComboEntry");
-            if (entry != null) {
-                return entry.orderno;
-            }
-        }
-        return "";
+        return entry != null ? entry.orderno : null;
+    }
+
+    boolean isCreateOrder() {
+        return (entry != null) ? entry.choose : false;
     }
 
     AddressEntry addressEntry;
-
+    ComboEntry entry;
     View addressLy;
     TextView titleTv;
     TextView commitOrderTv;
