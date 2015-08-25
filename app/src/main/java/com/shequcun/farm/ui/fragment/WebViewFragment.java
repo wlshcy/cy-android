@@ -77,7 +77,7 @@ public class WebViewFragment extends BaseFragment {
     }
 
     private String getHtml(String imgs[]){
-        if (imgs==null&&imgs.length<=0){
+        if (imgs==null||imgs.length<=0){
             return null;
         }
         StringBuffer s = new StringBuffer();
