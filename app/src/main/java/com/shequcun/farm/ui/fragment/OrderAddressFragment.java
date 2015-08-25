@@ -97,7 +97,7 @@ public class OrderAddressFragment extends BaseFragment {
 
     private void requestAddress() {
         final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
-        HttpRequestUtil.httpGet(LocalParams.INSTANCE.getBaseUrl() + "user/address", new AsyncHttpResponseHandler() {
+        HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "user/address", new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {
                 super.onStart();

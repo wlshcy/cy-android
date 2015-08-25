@@ -18,9 +18,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/px20"
-            android:src="@drawable/icon_vip" />
+            android:src="@drawable/icon_pay_success" />
 
         <TextView
+            android:id="@+id/result_tip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -41,7 +42,6 @@
             android:textSize="@dimen/font40" />
 
         <include layout="@layout/common_small_tip" />
-
 
 
         <ListView

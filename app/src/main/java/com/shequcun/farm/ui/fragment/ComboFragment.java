@@ -153,7 +153,7 @@ public class ComboFragment extends BaseFragment {
      */
     void requestComboList() {
         final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
-        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.INSTANCE.getBaseUrl() + "cai/combo", new AsyncHttpResponseHandler() {
+        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "cai/combo", new AsyncHttpResponseHandler() {
 
             @Override
             public void onStart() {
@@ -281,7 +281,7 @@ public class ComboFragment extends BaseFragment {
      * 请求轮播图
      */
     void requestSlideFromServer() {
-        HttpRequestUtil.httpGet(LocalParams.INSTANCE.getBaseUrl() + "cai/slide", new AsyncHttpResponseHandler() {
+        HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "cai/slide", new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int sCode, Header[] h, byte[] data) {
                 if (data != null && data.length > 0) {

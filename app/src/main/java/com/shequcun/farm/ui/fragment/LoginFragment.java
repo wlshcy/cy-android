@@ -66,7 +66,7 @@ public class LoginFragment extends BaseFragment {
             return;
         }
         HttpRequestUtil.httpGet(
-                LocalParams.INSTANCE.getBaseUrl() + "auth/init",
+                LocalParams.getBaseUrl() + "auth/init",
                 new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int sCode, Header[] headers, byte[] data) {
@@ -130,7 +130,7 @@ public class LoginFragment extends BaseFragment {
         params.add("_xsrf", xXsrfToken);
         if (!TextUtils.isEmpty(xXsrfToken)) {
             final ProgressDlg pDlg = new ProgressDlg(getActivity(), "登录中...");
-            HttpRequestUtil.httpPost(LocalParams.INSTANCE.getBaseUrl()
+            HttpRequestUtil.httpPost(LocalParams.getBaseUrl()
                     + "auth/login", params, new AsyncHttpResponseHandler() {
                 @Override
                 public void onStart() {
@@ -193,7 +193,7 @@ public class LoginFragment extends BaseFragment {
         params.add("mobile", mobileNumber);
         params.add("type", 2 + "");
         params.add("_xsrf", PersistanceManager.INSTANCE.getCookieValue());
-        HttpRequestUtil.httpPost(LocalParams.INSTANCE.getBaseUrl() + "util/smscode", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.httpPost(LocalParams.getBaseUrl() + "util/smscode", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] h, byte[] data) {
                 if (data != null && data.length > 0) {

@@ -7,19 +7,15 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.shequcun.farm.BaseFragmentActivity;
 import com.shequcun.farm.R;
-import com.shequcun.farm.data.UserLoginEntry;
-import com.shequcun.farm.datacenter.CacheManager;
 import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.ui.adapter.ViewPagerAdapter;
 import com.shequcun.farm.util.HttpRequestUtil;
-import com.shequcun.farm.util.LocalParams;
 
 import java.util.ArrayList;
 
@@ -40,7 +36,7 @@ public class SplashActivity extends BaseFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_ly);
-        LocalParams.INSTANCE.initData(getApplicationContext());
+//        LocalParams.INSTANCE.initData(getApplicationContext());
         HttpRequestUtil.setContext(getApplicationContext());
         PersistanceManager.INSTANCE.initContext(getApplication());
         initViewPager();

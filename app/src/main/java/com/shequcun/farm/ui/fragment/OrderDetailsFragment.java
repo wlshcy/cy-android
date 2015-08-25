@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -34,6 +35,7 @@ import com.shequcun.farm.util.IntentUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.ToastHelper;
+import com.shequcun.farm.util.Utils;
 
 import org.apache.http.Header;
 import org.json.JSONObject;
@@ -70,6 +72,8 @@ public class OrderDetailsFragment extends BaseFragment {
         commitOrderTv = (TextView) v.findViewById(R.id.bug_order_tv);
         addressLy = v.findViewById(R.id.addressee_ly);
         add_address_ly = v.findViewById(R.id.add_address_ly);
+        shop_cart_total_price_tv = (TextView) v.findViewById(R.id.shop_cart_total_price_tv);
+        shop_cart_surpport_now_pay_tv = (TextView) v.findViewById(R.id.shop_cart_surpport_now_pay_tv);
         entry = buildEntry();
         buildUserLoginEntry();
         showBottomWidget();
@@ -99,20 +103,37 @@ public class OrderDetailsFragment extends BaseFragment {
      * 显示底部对应的控件
      */
     void showBottomWidget() {
+
         if (uEntry != null) {
             if (uEntry.mycomboids != null) {
                 int curComboId = getComboId();
                 int length = uEntry.mycomboids.length;
                 for (int i = 0; i < length; i++) {
                     if (curComboId == uEntry.mycomboids[i]) {
+                        shop_cart_total_price_tv.setVisibility(View.GONE);
                         commitOrderTv.setText(R.string.submit_immediately);
+                        shop_cart_surpport_now_pay_tv.setText("您已选好菜品了!");
                         return;
                     }
                 }
+
+                if (entry != null) {
+                    if (entry.prices != null && entry.prices.length > entry.getPosition()) {
+                        shop_cart_total_price_tv.setText("共:" + Utils.unitPeneyToYuanEx(entry.prices[entry.getPosition()]));
+                    }
+
+                    if (entry.duration >= 52) {
+                        shop_cart_surpport_now_pay_tv.setText("本套餐只支持年付!");
+                    } else {
+                        shop_cart_surpport_now_pay_tv.setText("您已选好菜品了!");
+                    }
+                }
+
                 commitOrderTv.setText(R.string.pay_immediately);
             }
         }
     }
+
 
     @Override
     protected void setWidgetLsn() {
@@ -158,33 +179,13 @@ public class OrderDetailsFragment extends BaseFragment {
         if (TextUtils.isEmpty(delievery)) {
             footerView.findViewById(R.id.distribution_date).setVisibility(View.GONE);
         } else {
-            ((TextView) footerView.findViewById(R.id.distribution_date)).setText("配送日期:  本周" + delievery);
+            ((TextView) footerView.findViewById(R.id.distribution_date)).setText("配送日期:  本周周" + delievery + "配送");
         }
         int part = mOrderController.getItemsCount();
         ((TextView) footerView.findViewById(R.id.number_copies)).setText("共" + part + "份");
         mLv.addFooterView(footerView, null, false);
     }
 
-//    String buildWeek(int delievery) {
-//        switch (delievery) {
-//            case 5:
-//                return "五";
-//            case 6:
-//                return "六";
-//            case 7:
-//                return "七";
-//            case 4:
-//                return "四";
-//            case 3:
-//                return "三";
-//            case 2:
-//                return "二";
-//            case 1:
-//                return "一";
-//            default:
-//                return "抓紧拨打客服电话吧!";
-//        }
-//    }
 
     void buildAdapter() {
         addFooter();
@@ -208,6 +209,17 @@ public class OrderDetailsFragment extends BaseFragment {
     }
 
     boolean isMyCombo() {
+        if (uEntry != null) {
+            if (uEntry.mycomboids != null) {
+                int curComboId = getComboId();
+                int length = uEntry.mycomboids.length;
+                for (int i = 0; i < length; i++) {
+                    if (curComboId == uEntry.mycomboids[i]) {
+                        return true;
+                    }
+                }
+            }
+        }
         return (entry != null) ? entry.isMine() : false;
     }
 
@@ -224,11 +236,32 @@ public class OrderDetailsFragment extends BaseFragment {
                 for (int i = 0; i < shipday.length; ++i) {
                     if (result.length() > 0)
                         result.append("、");
-                    result.append(shipday[i]);
+                    result.append(buildWeek(shipday[i]));
                 }
             }
         }
         return result.toString();
+    }
+
+    String buildWeek(int delievery) {
+        switch (delievery) {
+            case 5:
+                return "五";
+            case 6:
+                return "六";
+            case 7:
+                return "七";
+            case 4:
+                return "四";
+            case 3:
+                return "三";
+            case 2:
+                return "二";
+            case 1:
+                return "一";
+            default:
+                return "抓紧拨打客服电话吧!";
+        }
     }
 
     /**
@@ -245,6 +278,12 @@ public class OrderDetailsFragment extends BaseFragment {
             ToastHelper.showShort(getActivity(), "请填写您的收货地址!");
             return;
         }
+
+        if (!TextUtils.isEmpty(orderno) && !TextUtils.isEmpty(alipay)) {
+            gotoFragmentByAdd(buildBundle(orderno, getOrderMoney(), alipay, false, R.string.pay_success), R.id.mainpage_ly, new PayFragment(), PayFragment.class.getName());
+            return;
+        }
+
         int combo_id = mOrderController.getItems().get(0).combo_id;
         int type = isMyCombo() ? 2 : 1;
         String combo_idx = getComboIdxParams();
@@ -259,13 +298,13 @@ public class OrderDetailsFragment extends BaseFragment {
         RequestParams params = new RequestParams();
         params.add("combo_id", combo_id + "");
         params.add("type", type + "");
-//        params.add("combo_idx", combo_idx);
+        params.add("combo_idx", combo_idx);
         params.add("items", items);
         params.add("name", name);
         params.add("mobile", mobile);
         params.add("address", address);
         params.add("_xsrf", PersistanceManager.INSTANCE.getCookieValue());
-        HttpRequestUtil.httpPost(LocalParams.INSTANCE.getBaseUrl() + "cai/order", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.httpPost(LocalParams.getBaseUrl() + "cai/order", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 if (statusCode == 200) {
@@ -274,10 +313,11 @@ public class OrderDetailsFragment extends BaseFragment {
                     if (entry != null) {
                         if (TextUtils.isEmpty(entry.errmsg)) {
                             if (TextUtils.isEmpty(entry.alipay)) {
-                                gotoFragmentByAdd(buildBundle(entry.orderno, getOrderMoney(), entry.alipay, true), R.id.mainpage_ly, new PayResultFragment(), PayResultFragment.class.getName());
+                                gotoFragmentByAdd(buildBundle(entry.orderno, getOrderMoney(), entry.alipay, true, R.string.order_result), R.id.mainpage_ly, new PayResultFragment(), PayResultFragment.class.getName());
                                 return;
                             }
-                            gotoFragmentByAdd(buildBundle(entry.orderno, getOrderMoney(), entry.alipay, false), R.id.mainpage_ly, new PayFragment(), PayFragment.class.getName());
+                            gotoFragmentByAdd(buildBundle(orderno = entry.orderno, getOrderMoney(), alipay = entry.alipay, false, R.string.pay_success), R.id.mainpage_ly, new PayFragment(), PayFragment.class.getName());
+                            mHandler.sendEmptyMessageDelayed(0, 30 * 60 * 1000);
                         } else {
                             ToastHelper.showShort(getActivity(), entry.errmsg);
                         }
@@ -295,7 +335,7 @@ public class OrderDetailsFragment extends BaseFragment {
     }
 
     void requestUserAddress() {
-        HttpRequestUtil.httpGet(LocalParams.INSTANCE.getBaseUrl() + "user/address", new AsyncHttpResponseHandler() {
+        HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "user/address", new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int sCode, Header[] h, byte[] data) {
                 if (data != null && data.length > 0) {
@@ -353,6 +393,7 @@ public class OrderDetailsFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         doUnRegisterReceiver();
+        mHandler.removeCallbacksAndMessages(null);
     }
 
     void doRegisterRefreshBrodcast() {
@@ -388,18 +429,14 @@ public class OrderDetailsFragment extends BaseFragment {
     };
 
 
-    double getOrderMoney() {
-        return entry != null ?
-                ((double) entry.prices[entry.getPosition()]) / 100 : 0;
+    int getOrderMoney() {
+        return entry != null ? entry.prices[entry.getPosition()] : 0;
     }
 
-    Bundle buildBundle(String orderno, double orderMoney, String alipay, boolean isRecoDishes) {
+    Bundle buildBundle(String orderno, int orderMoney, String alipay, boolean isRecoDishes, int titleId) {
         Bundle bundle = new Bundle();
         PayParams payParams = new PayParams();
-        payParams.orderno = orderno;
-        payParams.alipay = alipay;
-        payParams.orderMoney = orderMoney;
-        payParams.isRecoDishes = false;
+        payParams.setParams(orderno, orderMoney, alipay, isRecoDishes, titleId);
         bundle.putSerializable("PayParams", payParams);
         return bundle;
     }
@@ -413,7 +450,7 @@ public class OrderDetailsFragment extends BaseFragment {
         params.add("items", items);
         params.add("_xsrf", PersistanceManager.INSTANCE.getCookieValue());
         final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
-        HttpRequestUtil.httpPost(LocalParams.INSTANCE.getBaseUrl() + "cai/altorder", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.httpPost(LocalParams.getBaseUrl() + "cai/altorder", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int sCode, Header[] h, byte[] data) {
                 try {
@@ -423,7 +460,7 @@ public class OrderDetailsFragment extends BaseFragment {
                         if (jObj != null) {
                             String errmsg = jObj.optString("errmsg");
                             if (TextUtils.isEmpty(errmsg)) {
-                                gotoFragmentByAdd(buildBundle(orderno, getOrderMoney(), "", true), R.id.mainpage_ly, new PayResultFragment(), PayResultFragment.class.getName());
+                                gotoFragmentByAdd(buildBundle(orderno, getOrderMoney(), "", true, R.string.order_result), R.id.mainpage_ly, new PayResultFragment(), PayResultFragment.class.getName());
                                 return;
                             }
                             ToastHelper.showShort(getActivity(), errmsg);
@@ -466,6 +503,20 @@ public class OrderDetailsFragment extends BaseFragment {
         return (entry != null) ? entry.choose : false;
     }
 
+
+    private android.os.Handler mHandler = new android.os.Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 0:
+                    alipay = null;
+                    orderno = null;
+                    break;
+            }
+        }
+    };
+
     AddressEntry addressEntry;
     ComboEntry entry;
     View addressLy;
@@ -479,6 +530,13 @@ public class OrderDetailsFragment extends BaseFragment {
     TextView address;
     TextView rightTv;
     View re_choose_dishes;
+    /**
+     * 价格
+     */
+    TextView shop_cart_total_price_tv;
+    TextView shop_cart_surpport_now_pay_tv;
     View add_address_ly;
     DisheDataCenter mOrderController = DisheDataCenter.getInstance();
+    String alipay;
+    String orderno;
 }

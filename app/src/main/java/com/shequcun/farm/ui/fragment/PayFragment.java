@@ -16,6 +16,7 @@ import com.shequcun.farm.util.AlipayUtils;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
 import com.shequcun.farm.util.Constrants;
 import com.shequcun.farm.util.ToastHelper;
+import com.shequcun.farm.util.Utils;
 
 /**
  * 支付界面
@@ -31,7 +32,6 @@ public class PayFragment extends BaseFragment {
 
     @Override
     public boolean onBackPressed() {
-        clearStack();
         return false;
     }
 
@@ -41,10 +41,10 @@ public class PayFragment extends BaseFragment {
         alipay_ly = v.findViewById(R.id.alipay_ly);
         pay_money = (TextView) v.findViewById(R.id.pay_money);
         ((TextView) v.findViewById(R.id.title_center_text)).setText(R.string.pay);
-        pay_money.setText("￥" + getOrderMoney());
+        pay_money.setText(Utils.unitPeneyToYuan(getOrderMoney()));
     }
 
-    double getOrderMoney() {
+    int getOrderMoney() {
         Bundle bundle = getArguments();
         PayParams entry = bundle != null ? ((PayParams) bundle.getSerializable("PayParams")) : null;
         if (entry != null) {
@@ -64,14 +64,15 @@ public class PayFragment extends BaseFragment {
 
     @Override
     protected void setWidgetLsn() {
+        aUtils = new AlipayUtils();
+        aUtils.setHandler(mHandler);
+        aUtils.initAlipay(getActivity());
+
         back.setOnClickListener(onClick);
         alipay_ly.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlipayUtils alipayUtils = new AlipayUtils();
-                alipayUtils.setHandler(mHandler);
-                alipayUtils.initAlipay(getActivity());
-                alipayUtils.doAlipay(getAlipayInfo());
+                aUtils.doAlipay(getAlipayInfo());
             }
         });
     }
@@ -80,7 +81,8 @@ public class PayFragment extends BaseFragment {
         @Override
         public void onViewClick(View v) {
             if (v == back)
-                clearStack();
+                popBackStack();
+//                clearStack();
         }
     };
 
@@ -128,4 +130,6 @@ public class PayFragment extends BaseFragment {
     View alipay_ly;
     View back;
     TextView pay_money;
+
+    AlipayUtils aUtils;
 }

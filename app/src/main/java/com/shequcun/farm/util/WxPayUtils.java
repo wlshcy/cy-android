@@ -51,7 +51,7 @@ public class WxPayUtils {
      */
     public void initWxAPI(Context mContext) {
         this.mContext = mContext;
-        app_id = LocalParams.INSTANCE.getWxAppId();
+        app_id = LocalParams.getBaseUrl();
         iwxapi = WXAPIFactory.createWXAPI(mContext, app_id);
     }
 

@@ -22,7 +22,7 @@ public class WXPayEntryActivity extends BaseFragmentActivity implements IWXAPIEv
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String wx_app_id = LocalParams.INSTANCE.getWxAppId();
+        String wx_app_id = LocalParams.getBaseUrl();
         api = WXAPIFactory.createWXAPI(this, wx_app_id);
         api.handleIntent(getIntent(), this);
     }

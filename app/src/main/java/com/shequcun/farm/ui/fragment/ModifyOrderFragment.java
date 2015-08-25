@@ -122,7 +122,7 @@ public class ModifyOrderFragment extends BaseFragment {
         RequestParams params = new RequestParams();
         params.add("id", hEntry.id + "");
         params.add("_xsrf", PersistanceManager.INSTANCE.getCookieValue());
-        HttpRequestUtil.httpPost(LocalParams.INSTANCE.getBaseUrl() + "cai/delorder", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.httpPost(LocalParams.getBaseUrl() + "cai/delorder", params, new AsyncHttpResponseHandler() {
 
             @Override
             public void onStart() {
@@ -190,7 +190,7 @@ public class ModifyOrderFragment extends BaseFragment {
         final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
         RequestParams params = new RequestParams();
         params.add("orderno", getOrderNumber());
-        HttpRequestUtil.httpGet(LocalParams.INSTANCE.getBaseUrl() + "cai/orderdtl", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "cai/orderdtl", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] h, byte[] data) {
                 if (data != null && data.length > 0) {
@@ -259,14 +259,14 @@ public class ModifyOrderFragment extends BaseFragment {
         RequestParams params = new RequestParams();
         params.add("orderno", entry.orderno);
         params.add("_xsrf", PersistanceManager.INSTANCE.getCookieValue());
-        HttpRequestUtil.httpPost(LocalParams.INSTANCE.getBaseUrl() + "cai/payorder", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.httpPost(LocalParams.getBaseUrl() + "cai/payorder", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int sCode, Header[] h, byte[] data) {
                 if (data != null && data.length > 0) {
                     OrderEntry oEntry = JsonUtilsParser.fromJson(new String(data), OrderEntry.class);
                     if (oEntry != null) {
                         if (TextUtils.isEmpty(oEntry.errmsg)) {
-                            gotoFragmentByAdd(buildBundle(entry.orderno, (double) entry.price / 100, oEntry.alipay), R.id.mainpage_ly, new PayFragment(), PayFragment.class.getName());
+                            gotoFragmentByAdd(buildBundle(entry.orderno, entry.price, oEntry.alipay, R.string.pay_success), R.id.mainpage_ly, new PayFragment(), PayFragment.class.getName());
                             return;
                         }
 
@@ -282,13 +282,10 @@ public class ModifyOrderFragment extends BaseFragment {
         });
     }
 
-    Bundle buildBundle(String orderno, double orderMoney, String alipay) {
+    Bundle buildBundle(String orderno, int orderMoney, String alipay, int titleId) {
         Bundle bundle = new Bundle();
         PayParams payParams = new PayParams();
-        payParams.orderno = orderno;
-        payParams.alipay = alipay;
-        payParams.orderMoney = orderMoney;
-        payParams.isRecoDishes = false;
+        payParams.setParams(orderno, orderMoney, alipay, false, titleId);
         bundle.putSerializable("PayParams", payParams);
         return bundle;
     }
@@ -326,7 +323,7 @@ public class ModifyOrderFragment extends BaseFragment {
     }
 
     void requestUserAddress() {
-        HttpRequestUtil.httpGet(LocalParams.INSTANCE.getBaseUrl() + "user/address", new AsyncHttpResponseHandler() {
+        HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "user/address", new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int sCode, Header[] h, byte[] data) {
                 if (data != null && data.length > 0) {

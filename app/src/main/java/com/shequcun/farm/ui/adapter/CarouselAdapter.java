@@ -16,6 +16,7 @@ import com.shequcun.farm.util.AvoidDoubleClickListener;
 import java.util.List;
 
 /**
+ * 轮播图Adapter
  * Created by apple on 15/8/4.
  */
 public class CarouselAdapter extends BaseAdapter {

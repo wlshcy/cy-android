@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,26 +18,29 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.shequcun.farm.R;
-import com.shequcun.farm.util.AvoidDoubleClickListener;
 
 /**
- * 广告页
- * Created by apple check_turn_on 15/7/24.
+ * Created by apple on 15/8/25.
  */
-public class AdFragment extends BaseFragment {
+public class SetWebViewFragment extends BaseFragment {
+
+    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.webview_ly, container, false);
     }
 
+    @Override
+    public boolean onBackPressed() {
+        return false;
+    }
 
     @Override
     protected void initWidget(View v) {
         mWebView = (WebView) v.findViewById(R.id.mWebView);
-        back = v.findViewById(R.id.back);
-        ((TextView) v.findViewById(R.id.title_center_text)).setText(R.string.app_name);
         mProgressBar = (SeekBar) v.findViewById(R.id.seekbar);
+        back = v.findViewById(R.id.back);
+        ((TextView) v.findViewById(R.id.title_center_text)).setText(buildTitleId());
     }
 
     @Override
@@ -45,22 +49,25 @@ public class AdFragment extends BaseFragment {
         setWebViewValue();
     }
 
-
-    AvoidDoubleClickListener onClick = new AvoidDoubleClickListener() {
+    View.OnClickListener onClick = new View.OnClickListener() {
         @Override
-        public void onViewClick(View v) {
-            if (v == back) {
+        public void onClick(View v) {
+            if (v == back)
                 popBackStack();
-            }
         }
     };
 
-    View back;
 
-    @Override
-    public boolean onBackPressed() {
-        return false;
+    String buildUrl() {
+        Bundle bundle = getArguments();
+        return bundle != null ? bundle.getString("Url") : null;
     }
+
+    int buildTitleId() {
+        Bundle bundle = getArguments();
+        return bundle != null ? bundle.getInt("TitleId") : R.string.about;
+    }
+
 
     @SuppressLint("SetJavaScriptEnabled")
     void setWebViewValue() {
@@ -68,19 +75,21 @@ public class AdFragment extends BaseFragment {
         // 如果访问的页面中有Javascript，则webview必须设置支持Javascript
         settings.setJavaScriptEnabled(true);
         settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
-        mWebView.loadUrl(buildAdUrl());
-        // 滚动条风格，为0指滚动条不占用空间，直接覆盖在网页上
-//        mWebView.setScrollBarStyle(0);
-        mWebView.setScrollBarStyle(0);
-
+//        settings.setBuiltInZoomControls(true);
+        settings.setLoadsImagesAutomatically(true);
         settings.setLoadWithOverviewMode(true);
         settings.setUseWideViewPort(true);
+        String htmlUrl = buildUrl();
+        if (htmlUrl == null) return;
+        mWebView.loadData(htmlUrl, "text/html", "UTF-8");
 
+//        mWebView.loadUrl(buildUrl());
+        // 滚动条风格，为0指滚动条不占用空间，直接覆盖在网页上
+        mWebView.setScrollBarStyle(0);
         mWebView.setWebViewClient(new WebViewClient() {
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                // TODO Auto-generated method stub
                 return super.shouldOverrideUrlLoading(view, url);
             }
 
@@ -93,7 +102,6 @@ public class AdFragment extends BaseFragment {
 
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                // TODO Auto-generated method stub
                 super.onPageStarted(view, url, favicon);
                 mProgressBar.setVisibility(View.VISIBLE);
             }
@@ -116,8 +124,6 @@ public class AdFragment extends BaseFragment {
         });
     }
 
-    private static final int PROGRESS_LOADING = 1;
-    private static final int PROGRESS_SUCCESS = 2;
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
 
@@ -130,17 +136,17 @@ public class AdFragment extends BaseFragment {
                 case PROGRESS_SUCCESS:
                     mProgressBar.setVisibility(View.GONE);
                     break;
+
                 default:
                     break;
             }
         }
     };
 
-    String buildAdUrl() {
-        Bundle bundle = getArguments();
-        return bundle != null ? bundle.getString("AdUrl") : null;
-    }
 
     WebView mWebView;
+    final int PROGRESS_LOADING = 1;
+    final int PROGRESS_SUCCESS = 2;
     SeekBar mProgressBar;
+    View back;
 }

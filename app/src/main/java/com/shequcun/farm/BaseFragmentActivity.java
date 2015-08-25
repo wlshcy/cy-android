@@ -1,5 +1,6 @@
 package com.shequcun.farm;
 
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -7,6 +8,7 @@ import android.support.v4.app.FragmentActivity;
 import com.bitmap.cache.ImageCacheManager;
 import com.shequcun.farm.ui.fragment.BaseFragment;
 import com.shequcun.farm.ui.fragment.FragmentMgrInterface;
+import com.shequcun.farm.util.HttpRequestUtil;
 
 
 public abstract class BaseFragmentActivity extends FragmentActivity implements
@@ -15,6 +17,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
         createImageCache();
     }
@@ -38,6 +41,8 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements
     public void onBackPressed() {
         if (fragement == null || !fragement.onBackPressed()) {
             if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+                ImageCacheManager.getInstance().release();
+                HttpRequestUtil.release();
                 super.onBackPressed();
             } else {
                 getSupportFragmentManager().popBackStack();

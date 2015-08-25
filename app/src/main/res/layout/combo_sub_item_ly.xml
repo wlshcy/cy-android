@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
+    android:background="@drawable/list_item_selector"
     android:orientation="vertical">
 
 
@@ -18,7 +18,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/px20"
+        android:layout_marginTop="@dimen/px10"
         android:textColor="@color/green_1cc568"
         android:textSize="@dimen/font28" />
 
@@ -26,7 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/px20"
+        android:layout_marginTop="@dimen/px10"
         android:orientation="horizontal">
 
         <TextView
@@ -46,6 +46,13 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/ll_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/px10"
+        android:orientation="vertical"></LinearLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
@@ -53,50 +60,39 @@
         android:background="@color/gray_ebebeb" />
 
     <LinearLayout
-        android:id="@+id/ll_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"></LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/gray_ebebeb" />
-
-    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/px98"
-        android:background="@color/gray_f8f8f8"
-        android:orientation="horizontal"
-        android:paddingLeft="@dimen/px56">
+        android:gravity="center"
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
-            android:text="合计"
-            android:textColor="@color/orange_ff9c48"
+            android:text="@string/discount_price"
+            android:textColor="@color/red_fc3d2e"
             android:textSize="@dimen/font34" />
 
         <TextView
             android:id="@+id/total_price"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/px20"
+            android:layout_marginLeft="@dimen/px10"
             android:gravity="center_vertical"
-            android:textColor="@color/orange_ff9c48"
+            android:textColor="@color/red_fc3d2e"
             android:textSize="@dimen/font34" />
 
         <TextView
             android:id="@+id/choose_dishes"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingRight="@dimen/px40"
-            android:gravity="right|center_vertical"
-            android:text="@string/go_choose_dishes"
             android:background="@drawable/choose_dishes_selector"
+            android:gravity="right|center_vertical"
+            android:paddingRight="@dimen/px40"
+            android:text="@string/go_choose_dishes"
             android:textColor="#1CC568"
-            android:textSize="@dimen/font34" />
+            android:textSize="@dimen/font34"
+            android:visibility="gone" />
     </LinearLayout>
 
 

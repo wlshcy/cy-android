@@ -88,7 +88,7 @@ public class CityFragment extends BaseFragment {
         RequestParams params = new RequestParams();
         params.add("type", "2");
         params.add("group", "1");
-        HttpRequestUtil.httpGet(LocalParams.INSTANCE.getBaseUrl() + "util/region", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "util/region", params, new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {
                 super.onStart();

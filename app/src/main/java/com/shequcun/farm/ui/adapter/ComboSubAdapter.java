@@ -11,14 +11,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bitmap.cache.ImageCacheManager;
-import com.common.widget.CircleImageView;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.ComboEntry;
 import com.shequcun.farm.data.FixedComboEntry;
 import com.shequcun.farm.data.FixedListComboEntry;
-import com.shequcun.farm.util.AvoidDoubleClickListener;
 import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
@@ -45,12 +43,6 @@ public class ComboSubAdapter extends BaseAdapter {
     @Override
     public int getCount() {
         return entry == null || entry.weights == null ? 0 : entry.weights.length;
-    }
-
-    AvoidDoubleClickListener chooseDishes;
-
-    public void setChooseDishesLsn(AvoidDoubleClickListener onClick) {
-        this.chooseDishes = onClick;
     }
 
     @Override
@@ -88,7 +80,7 @@ public class ComboSubAdapter extends BaseAdapter {
             if (vh.combo_name != null) {
                 String splits[] = entry.title.split("套餐");
                 String midStr = Utils.unitConversion(entry.weights[position]).replace("斤", "");
-                vh.combo_name.setText(Utils.getSpanableSpan(splits[0], midStr, "斤套餐", ResUtil.dipToPixel(mContext, 14), ResUtil.dipToPixel(mContext, 25)));
+                vh.combo_name.setText(Utils.getSpanableSpan(splits[0] + " ", midStr, " 斤套餐", ResUtil.dipToPixel(mContext, 14), ResUtil.dipToPixel(mContext, 35)));
             }
 
             if (vh.distribution_circle != null) {
@@ -104,12 +96,12 @@ public class ComboSubAdapter extends BaseAdapter {
 
 
             if (vh.total_price != null)
-                vh.total_price.setText("￥" + (((double) entry.prices[position]) / 100));
+                vh.total_price.setText(Utils.unitPeneyToYuan(entry.prices[position]));//entry.mprices[position] -
 
-            if (vh.choose_dishes != null) {
-                vh.choose_dishes.setTag(position);
-                vh.choose_dishes.setOnClickListener(chooseDishes);
-            }
+//            if (vh.choose_dishes != null) {
+//                vh.choose_dishes.setTag(position);
+//                vh.choose_dishes.setOnClickListener(chooseDishes);
+//            }
 
             requestFixedCombo(entry.id, vh.ll_container);
         }
@@ -129,7 +121,7 @@ public class ComboSubAdapter extends BaseAdapter {
             return;
         RequestParams params = new RequestParams();
         params.add("id", "" + id);
-        HttpRequestUtil.getHttpClient(mContext).get(LocalParams.INSTANCE.getBaseUrl() + "cai/combodtl", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.getHttpClient(mContext).get(LocalParams.getBaseUrl() + "cai/combodtl", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int sCode, Header[] h, byte[] data) {
                 if (data != null && data.length > 0) {
@@ -160,8 +152,8 @@ public class ComboSubAdapter extends BaseAdapter {
 
         for (int i = 0; i < size; i += 2) {
             View childView = LayoutInflater.from(mContext).inflate(R.layout.combo_sub_child_item_ly, null);
-            CircleImageView additional_goods_img_1 = (CircleImageView) childView.findViewById(R.id.additional_goods_img_1);
-            additional_goods_img_1.setImageUrl(aList.get(i).img, ImageCacheManager.getInstance().getImageLoader());
+//            CircleImageView additional_goods_img_1 = (CircleImageView) childView.findViewById(R.id.additional_goods_img_1);
+//            additional_goods_img_1.setImageUrl(aList.get(i).img, ImageCacheManager.getInstance().getImageLoader());
             TextView additional_goods_name_1 = (TextView) childView.findViewById(R.id.additional_goods_name_1);
             additional_goods_name_1.setText(aList.get(i).title);
             TextView additional_send_weight_1 = (TextView) childView.findViewById(R.id.additional_send_weight_1);
@@ -171,8 +163,8 @@ public class ComboSubAdapter extends BaseAdapter {
 
             if (i + 1 < size) {
                 childView.findViewById(R.id.fix_ly_2).setVisibility(View.VISIBLE);
-                CircleImageView additional_goods_img_2 = (CircleImageView) childView.findViewById(R.id.additional_goods_img_2);
-                additional_goods_img_2.setImageUrl(aList.get(i + 1).img, ImageCacheManager.getInstance().getImageLoader());
+//                CircleImageView additional_goods_img_2 = (CircleImageView) childView.findViewById(R.id.additional_goods_img_2);
+//                additional_goods_img_2.setImageUrl(aList.get(i + 1).img, ImageCacheManager.getInstance().getImageLoader());
                 TextView additional_goods_name_2 = (TextView) childView.findViewById(R.id.additional_goods_name_2);
                 additional_goods_name_2.setText(aList.get(i + 1).title);
 
@@ -197,7 +189,7 @@ public class ComboSubAdapter extends BaseAdapter {
          * 每周配送次数
          */
         TextView distribution_circle;
-        /***
+        /**
          * 52次/年
          */
         TextView distribution_all_times;

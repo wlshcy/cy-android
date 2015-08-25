@@ -13,6 +13,7 @@
     <color name="black_444444">#444444</color>
     <color name="black_5a5e5d">#5a5e5d</color>
     <color name="gray_c7c7c7">#c7c7c7</color>
+    <color name="gray_999999">#999999</color>
     <color name="common_status_yellow">#ff9600</color>
     <color name="orange_a45500">#a45500</color>
     <color name="transparent_8000">#8000</color>
@@ -33,6 +34,7 @@
     <color name="gray_9a9a9a">#9a9a9a</color>
     <color name="red_fe4d3d">#fe4d3d</color>
     <color name="red_eb3f30">#eb3f30</color>
+    <color name="red_fc3d2e">#FC3D2E</color>
     <!-- 红色 -->
     <color name="black_242424">#242424</color>
     <color name="orange_ffbd56">#FFBD56</color>

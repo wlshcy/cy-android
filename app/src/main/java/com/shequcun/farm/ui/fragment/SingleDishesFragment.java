@@ -1,6 +1,7 @@
 package com.shequcun.farm.ui.fragment;
 
 import android.os.Bundle;
+import android.os.Message;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -128,7 +129,7 @@ public class SingleDishesFragment extends BaseFragment {
     }
 
     void requestUserAddress() {
-        HttpRequestUtil.httpGet(LocalParams.INSTANCE.getBaseUrl() + "user/address", new AsyncHttpResponseHandler() {
+        HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "user/address", new AsyncHttpResponseHandler() {
 
             @Override
             public void onSuccess(int sCode, Header[] h, byte[] data) {
@@ -182,6 +183,11 @@ public class SingleDishesFragment extends BaseFragment {
         }
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mHandler.removeCallbacksAndMessages(null);
+    }
 
     /**
      * 创建单品订单
@@ -192,11 +198,19 @@ public class SingleDishesFragment extends BaseFragment {
             return;
         }
 
+
         String address = null;
         byte data[] = new CacheManager(getActivity()).getUserLoginFromDisk();
         if (data != null && data.length > 0) {
             UserLoginEntry uEntry = JsonUtilsParser.fromJson(new String(data), UserLoginEntry.class);
             address = uEntry.address;
+        }
+
+
+        final RecommendEntry rEntry = buildRecommendEntry();
+        if (!TextUtils.isEmpty(alipay) && !TextUtils.isEmpty(orderno)) {
+            gotoFragmentByAdd(buildBundle(orderno, rEntry.price, alipay, R.string.pay_success), R.id.mainpage_ly, new PayFragment(), PayFragment.class.getName());
+            return;
         }
 
         RequestParams params = new RequestParams();
@@ -207,8 +221,9 @@ public class SingleDishesFragment extends BaseFragment {
         params.add("extras", getExtras());
         params.add("_xsrf", PersistanceManager.INSTANCE.getCookieValue());
 
+
         final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
-        HttpRequestUtil.httpPost(LocalParams.INSTANCE.getBaseUrl() + "cai/order", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.httpPost(LocalParams.getBaseUrl() + "cai/order", params, new AsyncHttpResponseHandler() {
 
             @Override
             public void onStart() {
@@ -228,10 +243,9 @@ public class SingleDishesFragment extends BaseFragment {
                     OrderEntry entry = JsonUtilsParser.fromJson(new String(data), OrderEntry.class);
                     if (entry != null) {
                         if (TextUtils.isEmpty(entry.errmsg)) {
-
-                            RecommendEntry rEntry = buildRecommendEntry();
                             if (rEntry != null) {
-                                gotoFragmentByAdd(buildBundle(entry.orderno, ((double) rEntry.price) / 100, entry.alipay), R.id.mainpage_ly, new PayFragment(), PayFragment.class.getName());
+                                gotoFragmentByAdd(buildBundle(orderno = entry.orderno, rEntry.price, alipay = entry.alipay, R.string.pay_success), R.id.mainpage_ly, new PayFragment(), PayFragment.class.getName());
+                                mHandler.sendEmptyMessageDelayed(0, 30 * 60 * 1000);
                             }
                             return;
                         }
@@ -251,13 +265,10 @@ public class SingleDishesFragment extends BaseFragment {
         });
     }
 
-    Bundle buildBundle(String orderno, double orderMoney, String alipay) {
+    Bundle buildBundle(String orderno, int orderMoney, String alipay, int titleId) {
         Bundle bundle = new Bundle();
         PayParams payParams = new PayParams();
-        payParams.orderno = orderno;
-        payParams.alipay = alipay;
-        payParams.orderMoney = orderMoney;
-        payParams.isRecoDishes = false;
+        payParams.setParams(orderno, orderMoney, alipay, false, titleId);
         bundle.putSerializable("PayParams", payParams);
         return bundle;
     }
@@ -268,10 +279,24 @@ public class SingleDishesFragment extends BaseFragment {
         if (entry != null) {
             result += entry.id + ":" + 1;
         }
-
         return result;
     }
 
+    private android.os.Handler mHandler = new android.os.Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 0:
+                    alipay = null;
+                    orderno = null;
+                    break;
+            }
+        }
+    };
+
+    String alipay;
+    String orderno;
     AddressEntry addressEntry;
     View addressLy;
     TextView titleTv;

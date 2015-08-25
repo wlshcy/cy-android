@@ -5,9 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.volley.toolbox.NetworkImageView;
 import com.bitmap.cache.ImageCacheManager;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.ComboEntry;
@@ -44,7 +44,7 @@ public class ComboAdapter extends ArrayAdapter<ComboEntry> {
             vh.dis_cycle = (TextView) view.findViewById(R.id.dis_cycle);
             vh.all_weight = (TextView) view.findViewById(R.id.all_weight);
             vh.combo_price = (TextView) view.findViewById(R.id.combo_price);
-            vh.combo_img = (NetworkImageView) view.findViewById(R.id.combo_img);
+            vh.combo_img = (ImageView) view.findViewById(R.id.combo_img);
             view.setTag(vh);
         } else {
             vh = (ViewHolder) view.getTag();
@@ -62,7 +62,8 @@ public class ComboAdapter extends ArrayAdapter<ComboEntry> {
             }
 
             vh.combo_name.setText(entry.title);
-            vh.combo_img.setImageUrl(entry.img, ImageCacheManager.getInstance().getImageLoader());
+            ImageCacheManager.getInstance().displayImage(vh.combo_img,entry.img);
+//            vh.combo_img.setImageUrl(entry.img, ImageCacheManager.getInstance().getImageLoader());
             if (entry.shipday != null) {
 //                StringBuilder result = new StringBuilder();
 //                for (int i = 0; i < entry.shipday.length; i++) {
@@ -89,7 +90,7 @@ public class ComboAdapter extends ArrayAdapter<ComboEntry> {
             }
 
             vh.times.setText("送" + entry.duration + "周");
-            vh.combo_price.setText("￥" + (((double) entry.prices[entry.index]) / 100));
+            vh.combo_price.setText( Utils.unitPeneyToYuan(entry.prices[entry.index]));
         }
 
         return view;
@@ -127,6 +128,6 @@ public class ComboAdapter extends ArrayAdapter<ComboEntry> {
         /**
          * 套餐图片
          */
-        NetworkImageView combo_img;
+        ImageView combo_img;
     }
 }

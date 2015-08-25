@@ -80,13 +80,14 @@ public class SetFragment extends BaseFragment {
 
             switch (position - mLv.getHeaderViewsCount()) {
                 case 0://關於有菜
-                    ToastHelper.showShort(getActivity(), "坐等关于有菜的内容");
+                    gotoFragmentByAdd(buildBundle("http://192.168.1.100/ui/youcai-design", R.string.about), R.id.mainpage_ly, new SetWebViewFragment(), SetWebViewFragment.class.getName());
                     break;
                 case 1://檢查更新
                     checkVersion();
                     break;
                 case 2://幫助
-                    ToastHelper.showShort(getActivity(), "坐等关于有菜帮助的内容");
+                    gotoFragmentByAdd(buildBundle("http://192.168.1.100/ui/youcai-design", R.string.help), R.id.mainpage_ly, new SetWebViewFragment(), SetWebViewFragment.class.getName());
+//                    ToastHelper.showShort(getActivity(), "坐等关于有菜帮助的内容");
                     break;
                 case 3://問題反饋
                     gotoFragmentByAdd(R.id.mainpage_ly, new FeedbackFragment(), FeedbackFragment.class.getName());
@@ -95,6 +96,14 @@ public class SetFragment extends BaseFragment {
 
         }
     };
+
+
+    Bundle buildBundle(String url, int tId) {
+        Bundle bundle = new Bundle();
+        bundle.putString("Url", url);
+        bundle.putInt("TitleId", tId);
+        return bundle;
+    }
 
 
     View.OnClickListener onClick = new View.OnClickListener() {
@@ -113,7 +122,7 @@ public class SetFragment extends BaseFragment {
         RequestParams params = new RequestParams();
         params.add("apptype", "5");
         params.add("platform", "2");
-        HttpRequestUtil.httpGet(LocalParams.INSTANCE.getBaseUrl() + "app/version", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "app/version", params, new AsyncHttpResponseHandler() {
             public void onSuccess(int sCode, Header[] h, byte[] data) {
                 if (data != null && data.length > 0) {
                     VersionEntry vEntry = JsonUtilsParser.fromJson(new String(data), VersionEntry.class);
@@ -224,7 +233,7 @@ public class SetFragment extends BaseFragment {
         params.add("_xsrf", PersistanceManager.INSTANCE.getCookieValue());
 
         final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
-        HttpRequestUtil.httpPost(LocalParams.INSTANCE.getBaseUrl() + "auth/logout", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.httpPost(LocalParams.getBaseUrl() + "auth/logout", params, new AsyncHttpResponseHandler() {
 
             @Override
             public void onStart() {

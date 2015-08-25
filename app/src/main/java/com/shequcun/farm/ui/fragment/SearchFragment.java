@@ -151,7 +151,7 @@ public class SearchFragment extends BaseFragment {
         params.add("cid", buildCityId());
         params.add("kw", keyword);
 
-        HttpRequestUtil.httpGet(LocalParams.INSTANCE.getBaseUrl() + "zone/search", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "zone/search", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] data) {
                 if (data != null && data.length > 0) {

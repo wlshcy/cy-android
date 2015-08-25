@@ -100,8 +100,10 @@
     <string name="submit_immediately">立即提交</string>
     <string name="pay_immediately">立即支付</string>
     <string name="pay_success">支付成功</string>
+    <string name="order_result">订单结果</string>
     <string name="pay_fail">支付失败</string>
     <string name="order_pay_success">订单支付成功</string>
+    <string name="order_submit_success">订单提交成功</string>
     <string name="pay_success_tip">我们会按时为您配送订单.</string>
     <string name="buy">购买</string>
     <string name="update">更新</string>
@@ -128,4 +130,9 @@
     <string name="has_choosen_next_dishes_tip">您如需选择下期菜品,请单击此处.</string>
     <string name="deliverying">您选择的套餐正在配送中,请耐心等待.</string>
     <string name="delievery_success">您的上期菜品已经配送完成.</string>
+    <string name="discount_price">优惠价</string>
+    <string name="about">关于有菜</string>
+    <string name="company_name">北京爱乐守一网络科技有限公司</string>
+    <string name="copyright">有菜版权所有</string>
+    <string name="help">帮助</string>
 </resources>

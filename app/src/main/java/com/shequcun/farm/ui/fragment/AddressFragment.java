@@ -159,7 +159,7 @@ public class AddressFragment extends BaseFragment {
             params.put("region", entry == null ? "" : entry.region);
         }
         final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
-        HttpRequestUtil.httpPost(LocalParams.INSTANCE.getBaseUrl() + "user/address", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.httpPost(LocalParams.getBaseUrl() + "user/address", params, new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {
                 super.onStart();
@@ -219,7 +219,7 @@ public class AddressFragment extends BaseFragment {
 
     void requestUserAddress() {
         final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
-        HttpRequestUtil.httpGet(LocalParams.INSTANCE.getBaseUrl() + "user/address", new AsyncHttpResponseHandler() {
+        HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "user/address", new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {
                 super.onStart();

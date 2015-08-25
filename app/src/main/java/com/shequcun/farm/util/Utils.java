@@ -13,6 +13,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -37,6 +38,24 @@ public class Utils {
             imm.hideSoftInputFromWindow(layout.getWindowToken(),
                     InputMethodManager.HIDE_NOT_ALWAYS);
         }
+    }
+
+    /**
+     * 分转换为圆（保留两位小数）
+     *
+     * @param peney
+     * @return
+     */
+    public static String unitPeneyToYuan(int peney) {
+        double yuan = (double) peney / 100;
+        DecimalFormat df = new DecimalFormat("###.00");
+        return "￥" + df.format(yuan);
+    }
+
+    public static String unitPeneyToYuanEx(int peney) {
+        double yuan = (double) peney / 100;
+        DecimalFormat df = new DecimalFormat("###.00");
+        return df.format(yuan) + "元";
     }
 
     public static void setListViewHeightBasedOnChildren(ListView listView) {
@@ -102,14 +121,14 @@ public class Utils {
         int start = 0;
         int end = strFrom1.length();
         wordtoSpan.setSpan(new AbsoluteSizeSpan(size1), start, end, flag);
-        wordtoSpan.setSpan(new ForegroundColorSpan(0xFF1CC568), start, end,
+        wordtoSpan.setSpan(new ForegroundColorSpan(0xFF444444), start, end,
                 flag);
 
 
         start = end;
         end += strTo1.length();
         wordtoSpan.setSpan(new AbsoluteSizeSpan(size2), start, end, flag);
-        wordtoSpan.setSpan(new ForegroundColorSpan(0xFF1CC568), start, end,
+        wordtoSpan.setSpan(new ForegroundColorSpan(0xFFFC3F30), start, end,
                 flag);
 
         wordtoSpan.setSpan(new StyleSpan(android.graphics.Typeface.BOLD),
@@ -119,7 +138,7 @@ public class Utils {
         end += strFrom2.length();
 
         wordtoSpan.setSpan(new AbsoluteSizeSpan(size1), start, end, flag);
-        wordtoSpan.setSpan(new ForegroundColorSpan(0xFF1CC568), start, end,
+        wordtoSpan.setSpan(new ForegroundColorSpan(0xFF444444), start, end,
                 flag);
         return wordtoSpan;
     }

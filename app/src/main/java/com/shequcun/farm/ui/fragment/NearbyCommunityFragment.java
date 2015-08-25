@@ -164,7 +164,7 @@ public class NearbyCommunityFragment extends BaseFragment implements AMapLocatio
         RequestParams params = new RequestParams();
         params.add("lng", "" + lon);
         params.add("lat", "" + lat);
-        HttpRequestUtil.httpGet(LocalParams.INSTANCE.getBaseUrl()
+        HttpRequestUtil.httpGet(LocalParams.getBaseUrl()
                 + "zone/v2/list", params, new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/px88"
-    android:background="@android:color/white"
+    android:layout_height="@dimen/px100"
+    android:background="@drawable/list_item_selector"
     android:orientation="horizontal">
 
 
@@ -11,22 +11,22 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1.0"
-        android:gravity="center_vertical"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <com.common.widget.CircleImageView
             android:id="@+id/additional_goods_img_1"
             android:layout_width="@dimen/px68"
             android:layout_height="@dimen/px68"
-            android:layout_marginLeft="@dimen/px18" />
+            android:layout_marginLeft="@dimen/px18"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/additional_goods_name_1"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/px10"
             android:gravity="center_vertical"
-            android:textColor="@color/gray_c7c7c7"
+            android:textColor="@color/gray_999999"
             android:textSize="@dimen/font28" />
 
         <TextView
@@ -35,7 +35,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/px10"
             android:gravity="center_vertical"
-            android:textColor="@color/gray_c7c7c7"
+            android:textColor="@color/gray_999999"
             android:textSize="@dimen/font28" />
 
     </LinearLayout>
@@ -45,16 +45,17 @@
         android:id="@+id/fix_ly_2"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_marginRight="@dimen/px18"
         android:layout_weight="1.0"
-        android:gravity="right|center_vertical"
+        android:gravity="center"
+        android:visibility="gone"
         android:orientation="horizontal">
 
         <com.common.widget.CircleImageView
             android:id="@+id/additional_goods_img_2"
             android:layout_width="@dimen/px68"
             android:layout_height="@dimen/px68"
-            android:layout_marginLeft="@dimen/px18" />
+            android:layout_marginLeft="@dimen/px18"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/additional_goods_name_2"
@@ -62,7 +63,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/px10"
             android:gravity="center_vertical"
-            android:textColor="@color/gray_c7c7c7"
+            android:textColor="@color/gray_999999"
             android:textSize="@dimen/font28" />
 
         <TextView
@@ -71,7 +72,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/px10"
             android:gravity="center_vertical"
-            android:textColor="@color/gray_c7c7c7"
+            android:textColor="@color/gray_999999"
             android:textSize="@dimen/font28" />
 
     </LinearLayout>

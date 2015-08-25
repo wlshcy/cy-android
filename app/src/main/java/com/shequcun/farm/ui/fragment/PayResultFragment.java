@@ -47,9 +47,12 @@ public class PayResultFragment extends BaseFragment {
     protected void initWidget(View v) {
         mLv = (ListView) v.findViewById(R.id.mLv);
         back = v.findViewById(R.id.back);
-        ((TextView) v.findViewById(R.id.title_center_text)).setText(R.string.pay_success);
+        int titleId = getTitleId();
+        ((TextView) v.findViewById(R.id.title_center_text)).setText(R.string.order_result);
         recoTv = (TextView) v.findViewById(R.id.common_small_tv);
         recoTv.setVisibility(View.GONE);
+        result_tip = (TextView) v.findViewById(R.id.result_tip);
+        result_tip.setText(titleId == R.string.pay_success ? R.string.order_pay_success : R.string.order_submit_success);
     }
 
     @Override
@@ -156,21 +159,11 @@ public class PayResultFragment extends BaseFragment {
             Bundle bundle = new Bundle();
             bundle.putSerializable("RecommendEntry", entry);
             gotoFragmentByAnimation(bundle, R.id.mainpage_ly, new RecommendGoodsDetailsFragment(), RecommendGoodsDetailsFragment.class.getName());
-//            int position = (int) v.getTag();
-//            ArrayList<PhotoModel> photos = new ArrayList<PhotoModel>();
-//            for (int i = 0; i < adapter.getItem(position).imgs.length; ++i) {
-//                photos.add(new PhotoModel(true, adapter.getItem(position).imgs[i]));
-//            }
-//
-//            Bundle budle = new Bundle();
-//            budle.putSerializable(BrowseImageFragment.KEY_PHOTOS, photos);
-//            budle.putInt(BrowseImageFragment.KEY_INDEX, position);
-//            gotoFragmentByAdd(budle, R.id.mainpage_ly, new BrowseImageFragment(), BrowseImageFragment.class.getName());
         }
     };
 
     void requestRecomendDishes() {
-        HttpRequestUtil.httpGet(LocalParams.INSTANCE.getBaseUrl() + "cai/itemlist", new AsyncHttpResponseHandler() {
+        HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "cai/itemlist", new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int sCode, Header[] h, byte[] data) {
                 if (data != null && data.length > 0) {
@@ -199,8 +192,18 @@ public class PayResultFragment extends BaseFragment {
         }
     }
 
+    private int getTitleId() {
+        Bundle bundle = getArguments();
+        PayParams entry = bundle != null ? ((PayParams) bundle.getSerializable("PayParams")) : null;
+        if (entry != null)
+            return entry.titleId;
+
+        return R.string.pay_success;
+    }
+
     TextView recoTv;
     ListView mLv;
     RecommendAdapter adapter;
     View back;
+    TextView result_tip;
 }

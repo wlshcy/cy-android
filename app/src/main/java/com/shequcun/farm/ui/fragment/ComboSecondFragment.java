@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -41,6 +42,8 @@ public class ComboSecondFragment extends BaseFragment {
     @Override
     protected void setWidgetLsn() {
         back.setOnClickListener(onClick);
+
+        mLv.setOnItemClickListener(onItemLsn);
         buildAdapter();
     }
 
@@ -53,11 +56,21 @@ public class ComboSecondFragment extends BaseFragment {
     };
 
 
+    AdapterView.OnItemClickListener onItemLsn = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+            if (entry != null) {
+                entry.setPosition(position);
+                gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new ChooseDishesFragment(), ChooseDishesFragment.class.getName());
+            }
+        }
+    };
+
+
     void buildAdapter() {
         buildComboEntry();
         if (adapter == null)
             adapter = new ComboSubAdapter(getActivity(), entry);
-        adapter.setChooseDishesLsn(chooseDishes);
         mLv.setAdapter(adapter);
     }
 
@@ -68,17 +81,6 @@ public class ComboSecondFragment extends BaseFragment {
         entry = bundle != null ? (ComboEntry) bundle.getSerializable("ComboEntry") : null;
     }
 
-    AvoidDoubleClickListener chooseDishes = new AvoidDoubleClickListener() {
-        @Override
-        public void onViewClick(View v) {
-            int position = (int) v.getTag();
-            if (entry != null) {
-                entry.setPosition(position);
-                gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new ChooseDishesFragment(), ChooseDishesFragment.class.getName());
-            }
-
-        }
-    };
 
     Bundle buildBundle(ComboEntry entry) {
         Bundle bundle = new Bundle();

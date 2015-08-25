@@ -109,7 +109,7 @@ public class SqcFarmActivity extends BaseFragmentActivity {
         RequestParams params = new RequestParams();
         params.add("apptype", "5");
         params.add("platform", "2");
-        HttpRequestUtil.httpGet(LocalParams.INSTANCE.getBaseUrl() + "app/version", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "app/version", params, new AsyncHttpResponseHandler() {
             public void onSuccess(int sCode, Header[] h, byte[] data) {
                 if (data != null && data.length > 0) {
                     VersionEntry vEntry = JsonUtilsParser.fromJson(new String(data), VersionEntry.class);
