@@ -75,12 +75,13 @@
                     android:textSize="@dimen/font26" />
 
                 <TextView
-                    android:id="@+id/combo_mprice"
+                    android:id="@+id/combo_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/px20"
                     android:text="￥3600.00"
-                    android:textColor="@color/gray_9a9a9a" />
+                    android:textColor="@android:color/black" />
+
 
             </LinearLayout>
 
@@ -107,14 +108,14 @@
                     android:textColor="@color/black_303030"
                     android:textSize="@dimen/font26" />
 
+
                 <TextView
-                    android:id="@+id/combo_price"
+                    android:id="@+id/combo_mprice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/px20"
                     android:text="￥3600.00"
-                    android:textColor="@android:color/black" />
-
+                    android:textColor="@color/gray_9a9a9a" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

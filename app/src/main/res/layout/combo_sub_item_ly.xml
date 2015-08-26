@@ -66,21 +66,23 @@
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:text="@string/discount_price"
-            android:textColor="@color/red_fc3d2e"
-            android:textSize="@dimen/font32" />
-
-        <TextView
             android:id="@+id/total_price"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/px10"
             android:gravity="center_vertical"
             android:textColor="@color/red_fc3d2e"
             android:textSize="@dimen/font32" />
+
+
+        <TextView
+            android:id="@+id/market_price_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/px16"
+            android:gravity="center_vertical"
+            android:textColor="@color/gray_999999"
+            android:textSize="@dimen/font32" />
+
 
         <TextView
             android:id="@+id/choose_dishes"

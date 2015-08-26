@@ -1,6 +1,7 @@
 package com.shequcun.farm.ui.adapter;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,6 +69,7 @@ public class ComboSubAdapter extends BaseAdapter {
             vh.total_price = (TextView) view.findViewById(R.id.total_price);
             vh.choose_dishes = view.findViewById(R.id.choose_dishes);
             vh.ll_container = (LinearLayout) view.findViewById(R.id.ll_container);
+            vh.market_price_tv = (TextView) view.findViewById(R.id.market_price_tv);
             view.setTag(vh);
         } else {
             vh = (ViewHolder) view.getTag();
@@ -97,6 +99,14 @@ public class ComboSubAdapter extends BaseAdapter {
 
             if (vh.total_price != null)
                 vh.total_price.setText(Utils.unitPeneyToYuan(entry.prices[position]));//entry.mprices[position] -
+
+            if (vh.market_price_tv != null) {
+                Paint paint = vh.market_price_tv.getPaint();
+                paint.setAntiAlias(true);//抗锯齿
+                paint.setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);  // 设置中划线并加清晰
+                vh.market_price_tv.setText(Utils.unitPeneyToYuan(entry.mprices[position]));
+            }
+
 
 //            if (vh.choose_dishes != null) {
 //                vh.choose_dishes.setTag(position);
@@ -201,6 +211,8 @@ public class ComboSubAdapter extends BaseAdapter {
          * 去选菜
          */
         View choose_dishes;
+
+        TextView market_price_tv;
 
         LinearLayout ll_container;
 

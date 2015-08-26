@@ -76,14 +76,14 @@ public class SetWebViewFragment extends BaseFragment {
         settings.setJavaScriptEnabled(true);
         settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
 //        settings.setBuiltInZoomControls(true);
-        settings.setLoadsImagesAutomatically(true);
-        settings.setLoadWithOverviewMode(true);
-        settings.setUseWideViewPort(true);
+//        settings.setLoadsImagesAutomatically(true);
+//        settings.setLoadWithOverviewMode(true);
+//        settings.setUseWideViewPort(true);
         String htmlUrl = buildUrl();
         if (htmlUrl == null) return;
-        mWebView.loadData(htmlUrl, "text/html", "UTF-8");
+//        mWebView.loadData(htmlUrl, "text/html", "UTF-8");
 
-//        mWebView.loadUrl(buildUrl());
+        mWebView.loadUrl(htmlUrl);
         // 滚动条风格，为0指滚动条不占用空间，直接覆盖在网页上
         mWebView.setScrollBarStyle(0);
         mWebView.setWebViewClient(new WebViewClient() {
