@@ -124,6 +124,10 @@ public class OrderDetailsFragment extends BaseFragment {
 
                     if (entry.duration >= 52) {
                         shop_cart_surpport_now_pay_tv.setText("本套餐只支持年付!");
+                    } else if (entry.duration >= 12) {
+                        shop_cart_surpport_now_pay_tv.setText("本套餐只支持季付!");
+                    } else if (entry.duration >= 4) {
+                        shop_cart_surpport_now_pay_tv.setText("本套餐只支持月付!");
                     } else {
                         shop_cart_surpport_now_pay_tv.setText("您已选好菜品了!");
                     }
@@ -177,7 +181,8 @@ public class OrderDetailsFragment extends BaseFragment {
         View footerView = LayoutInflater.from(getActivity()).inflate(R.layout.order_details_footer_ly, null);
         String delievery = buildComboDeliveryDate();
         if (TextUtils.isEmpty(delievery)) {
-            footerView.findViewById(R.id.distribution_date).setVisibility(View.GONE);
+            ((TextView) footerView.findViewById(R.id.distribution_date)).setText("配送日期:  本周五配送");
+//            footerView.findViewById(R.id.distribution_date).setVisibility(View.GONE);
         } else {
             ((TextView) footerView.findViewById(R.id.distribution_date)).setText("配送日期:  本周" + delievery + "配送");
         }

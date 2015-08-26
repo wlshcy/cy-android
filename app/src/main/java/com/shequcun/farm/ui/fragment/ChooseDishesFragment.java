@@ -164,7 +164,7 @@ public class ChooseDishesFragment extends BaseFragment {
         RequestParams params = new RequestParams();
         params.add("combo_id", id + "");
         final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
-        HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "cai/itemlist", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "cai/itemlist", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] data) {
                 if (data != null && data.length > 0) {
