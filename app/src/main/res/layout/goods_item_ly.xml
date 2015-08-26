@@ -67,7 +67,7 @@
             android:layout_width="@dimen/px80"
             android:layout_height="@dimen/px80"
             android:scaleType="centerInside"
-            android:src="@drawable/icon_add" />
+            android:src="@drawable/add_dishes_selector" />
 
     </LinearLayout>
 

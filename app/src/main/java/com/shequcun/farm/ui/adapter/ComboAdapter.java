@@ -1,6 +1,7 @@
 package com.shequcun.farm.ui.adapter;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,27 +33,26 @@ public class ComboAdapter extends ArrayAdapter<ComboEntry> {
     }
 
     @Override
-    public View getView(int position, View view, ViewGroup parent) {
+    public View getView(int position, View v, ViewGroup parent) {
         ViewHolder vh;
-        if (view == null) {
+        if (v == null) {
             vh = new ViewHolder();
-            view = LayoutInflater.from(getContext()).inflate(R.layout.combo_item_ly, null);
-            vh.my_combo = (TextView) view.findViewById(R.id.my_combo);
-            vh.combo_name = (TextView) view.findViewById(R.id.combo_name);
-            vh.per_weight = (TextView) view.findViewById(R.id.per_weight);
-            vh.times = (TextView) view.findViewById(R.id.times);
-            vh.dis_cycle = (TextView) view.findViewById(R.id.dis_cycle);
-            vh.all_weight = (TextView) view.findViewById(R.id.all_weight);
-            vh.combo_price = (TextView) view.findViewById(R.id.combo_price);
-            vh.combo_img = (ImageView) view.findViewById(R.id.combo_img);
-            view.setTag(vh);
+            v = LayoutInflater.from(getContext()).inflate(R.layout.combo_item_ly, null);
+            vh.my_combo = (TextView) v.findViewById(R.id.my_combo);
+            vh.combo_name = (TextView) v.findViewById(R.id.combo_name);
+            vh.per_weight = (TextView) v.findViewById(R.id.per_weight);
+            vh.times = (TextView) v.findViewById(R.id.times);
+            vh.dis_cycle = (TextView) v.findViewById(R.id.dis_cycle);
+            vh.all_weight = (TextView) v.findViewById(R.id.all_weight);
+            vh.combo_price = (TextView) v.findViewById(R.id.combo_price);
+            vh.combo_img = (ImageView) v.findViewById(R.id.combo_img);
+            vh.combo_mprice = (TextView) v.findViewById(R.id.combo_mprice);
+            v.setTag(vh);
         } else {
-            vh = (ViewHolder) view.getTag();
+            vh = (ViewHolder) v.getTag();
         }
         entry = getItem(position);
         if (entry != null) {
-            //每月配送几次
-//            int perMonth=0;
             if (entry.isMine()) {
                 vh.my_combo.setVisibility(View.VISIBLE);
                 vh.combo_name.setVisibility(View.GONE);
@@ -62,38 +62,26 @@ public class ComboAdapter extends ArrayAdapter<ComboEntry> {
             }
 
             vh.combo_name.setText(entry.title);
-            ImageCacheManager.getInstance().displayImage(vh.combo_img,entry.img);
-//            vh.combo_img.setImageUrl(entry.img, ImageCacheManager.getInstance().getImageLoader());
-            if (entry.shipday != null) {
-//                StringBuilder result = new StringBuilder();
-//                for (int i = 0; i < entry.shipday.length; i++) {
-//                    if (result.length() > 0)
-//                        result.append("、");
-//                    result.append(entry.shipday[i]);
-//                }
-//                vh.dis_cycle.setText("每周" + result.toString() + "配送");
-                vh.dis_cycle.setText(entry.shipday.length + "次/周");//"每周配送" +
-//                perMonth=4*entry.shipday.length;
+            ImageCacheManager.getInstance().displayImage(vh.combo_img, entry.img);
 
+            if (entry.shipday != null) {
+                vh.dis_cycle.setText(entry.shipday.length + "次/周");//"每周配送" +
             }
 
             if (entry.weights != null) {
-//                StringBuilder result = new StringBuilder();
-//                for (int i = 0; i < entry.weights.length; i++) {
-//                    if (result.length() > 0)
-//                        result.append("、");
-//                    result.append(Utils.unitConversion(entry.weights[i]));
-//                }
-//                vh.per_weight.setText("每次配送" + result.toString());
                 vh.per_weight.setText(Utils.unitConversion(entry.weights[entry.index]) + "/次");//"每次配送" +
                 vh.all_weight.setText("共" + Utils.unitConversion(entry.duration * entry.weights[entry.index] * entry.shipday.length));
             }
 
+            Paint paint = vh.combo_mprice.getPaint();
+            paint.setAntiAlias(true);//抗锯齿
+            paint.setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);  // 设置中划线并加清晰
+            vh.combo_mprice.setText(Utils.unitPeneyToYuan(entry.mprices[entry.index]));
             vh.times.setText("送" + entry.duration + "周");
-            vh.combo_price.setText( Utils.unitPeneyToYuan(entry.prices[entry.index]));
+            vh.combo_price.setText(Utils.unitPeneyToYuan(entry.prices[entry.index]));
         }
 
-        return view;
+        return v;
     }
 
     class ViewHolder {
@@ -125,6 +113,8 @@ public class ComboAdapter extends ArrayAdapter<ComboEntry> {
          * 套餐价格
          */
         TextView combo_price;
+
+        TextView combo_mprice;
         /**
          * 套餐图片
          */

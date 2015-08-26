@@ -5,60 +5,48 @@ import android.content.Context;
 /**
  * Created by apple on 15/8/6.
  */
-public enum PersistanceManager {
-    INSTANCE;
-    private Context mContext;
+public class PersistanceManager {
 
-    public void initContext(Context context) {
-        mContext = context;
-    }
-
-    public boolean isInit() {
-        return mContext != null;
-    }
-
-    public void saveCookieValue(String value) {
+    public static void saveCookieValue(Context mContext,String value) {
         mContext.getSharedPreferences("Cookie", 0).edit()
                 .putString("X-Xsrftoken", value).commit();
     }
 
     /*启动过了*/
-    public void saveOnce(boolean value) {
+    public static void saveOnce(Context mContext,boolean value) {
         mContext.getSharedPreferences("Cookie", 0).edit()
                 .putBoolean("installed", value).commit();
     }
 
     /*启动过了*/
-    public boolean getOnce() {
+    public static boolean getOnce(Context mContext) {
         return mContext.getSharedPreferences("Cookie", 0).getBoolean(
                 "installed", false);
     }
 
-    public String getCookieValue() {
+    public static String getCookieValue(Context mContext) {
         return mContext.getSharedPreferences("Cookie", 0).getString(
                 "X-Xsrftoken", "");
     }
 
-    public boolean getIsCheckVersion() {
-        if (mContext == null) {
-            return false;
-        }
+    public static boolean getIsCheckVersion(Context mContext) {
+
         return mContext.getSharedPreferences("Cookie", 0).getBoolean("is_check_version", false);
     }
 
-    public void saveIsCheckVersion(boolean isCheck) {
+    public static void saveIsCheckVersion(Context mContext,boolean isCheck) {
         if (mContext == null) return;
         mContext.getSharedPreferences("Cookie", 0).edit()
                 .putBoolean("is_check_version", isCheck).commit();
     }
 
-    public void saveIsShowLookupComboDetails(String key, boolean isShow) {
+    public static void saveIsShowLookupComboDetails(Context mContext,String key, boolean isShow) {
         if (mContext == null) return;
         mContext.getSharedPreferences("Cookie", 0).edit()
                 .putBoolean(key, isShow).commit();
     }
 
-    public boolean getIsShowLookUpComboDetails(String key) {
+    public static boolean getIsShowLookUpComboDetails(Context mContext,String key) {
         if (mContext == null)
             return true;
         return mContext.getSharedPreferences("Cookie", 0).getBoolean(key, true);

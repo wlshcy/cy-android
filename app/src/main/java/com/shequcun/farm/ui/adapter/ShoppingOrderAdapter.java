@@ -59,7 +59,7 @@ public class ShoppingOrderAdapter extends ArrayAdapter<HistoryOrderEntry> {
             } else if (entry.status == 0) {
 //                vh.order_status_ly.setTag(position);
 //                vh.order_status_ly.setOnClickListener(payOnClickLsn);
-                vh.order_status.setText("去付款");
+                vh.order_status.setText(R.string.unpaid);
             } else if (entry.status == 1) {
 //                vh.order_status_ly.setTag(position);
 //                vh.order_status_ly.setOnClickListener(payOnClickLsn);

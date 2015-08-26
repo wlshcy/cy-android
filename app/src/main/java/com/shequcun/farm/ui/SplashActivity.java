@@ -38,7 +38,6 @@ public class SplashActivity extends BaseFragmentActivity {
         setContentView(R.layout.splash_ly);
 //        LocalParams.INSTANCE.initData(getApplicationContext());
         HttpRequestUtil.setContext(getApplicationContext());
-        PersistanceManager.INSTANCE.initContext(getApplication());
         initViewPager();
         setOnclick();
     }
@@ -95,7 +94,7 @@ public class SplashActivity extends BaseFragmentActivity {
     }
 
     private boolean isStartUped() {
-        return PersistanceManager.INSTANCE.getOnce();
+        return PersistanceManager.getOnce(getApplicationContext());
     }
 
     private void setOnclick() {
@@ -103,7 +102,7 @@ public class SplashActivity extends BaseFragmentActivity {
             @Override
             public void onClick(View v) {
                 gotoHome();
-                PersistanceManager.INSTANCE.saveOnce(true);
+                PersistanceManager.saveOnce(getApplicationContext(),true);
             }
         });
 

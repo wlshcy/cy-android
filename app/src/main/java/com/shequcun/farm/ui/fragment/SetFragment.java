@@ -69,6 +69,7 @@ public class SetFragment extends BaseFragment {
     void buildAdapter() {
         if (adapter == null)
             adapter = new MyAdapter(getActivity(), getResources().getStringArray(R.array.set_array));
+        adapter.setVerName("V " + getVersionName());
         mLv.setAdapter(adapter);
     }
 
@@ -80,13 +81,13 @@ public class SetFragment extends BaseFragment {
 
             switch (position - mLv.getHeaderViewsCount()) {
                 case 0://關於有菜
-                    gotoFragmentByAdd(buildBundle("http://192.168.1.100/ui/youcai-design", R.string.about), R.id.mainpage_ly, new SetWebViewFragment(), SetWebViewFragment.class.getName());
+                    gotoFragmentByAdd(buildBundle("https://store.shequcun.com/about/ycabout", R.string.about), R.id.mainpage_ly, new SetWebViewFragment(), SetWebViewFragment.class.getName());
                     break;
                 case 1://檢查更新
                     checkVersion();
                     break;
                 case 2://幫助
-                    gotoFragmentByAdd(buildBundle("http://192.168.1.100/ui/youcai-design", R.string.help), R.id.mainpage_ly, new SetWebViewFragment(), SetWebViewFragment.class.getName());
+                    gotoFragmentByAdd(buildBundle("https://store.shequcun.com/help/ychelp", R.string.help), R.id.mainpage_ly, new SetWebViewFragment(), SetWebViewFragment.class.getName());
 //                    ToastHelper.showShort(getActivity(), "坐等关于有菜帮助的内容");
                     break;
                 case 3://問題反饋
@@ -148,7 +149,6 @@ public class SetFragment extends BaseFragment {
                     return;
                 }
                 ToastHelper.showShort(getActivity(), "更新失敗,錯誤碼" + sCode);
-
             }
 
             @Override
@@ -230,7 +230,7 @@ public class SetFragment extends BaseFragment {
      */
     private void doLogout() {
         RequestParams params = new RequestParams();
-        params.add("_xsrf", PersistanceManager.INSTANCE.getCookieValue());
+        params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
 
         final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
         HttpRequestUtil.httpPost(LocalParams.getBaseUrl() + "auth/logout", params, new AsyncHttpResponseHandler() {

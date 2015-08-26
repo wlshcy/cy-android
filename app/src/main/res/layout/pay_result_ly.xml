@@ -38,8 +38,8 @@
             android:layout_marginBottom="@dimen/px40"
             android:layout_marginTop="@dimen/px30"
             android:text="@string/pay_success_tip"
-            android:textColor="@color/orange_ff9000"
-            android:textSize="@dimen/font40" />
+            android:textColor="@color/gray_676767"
+            android:textSize="@dimen/font32" />
 
         <include layout="@layout/common_small_tip" />
 

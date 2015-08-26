@@ -53,7 +53,7 @@
     <string name="consultation">咨询</string>
     <string name="call_message_unknow">您的设备不支持拨打电话的功能</string>
     <string name="tel_message_absent">请插入SIM卡</string>
-    <string name="re_choose_dishes">重新选择菜品</string>
+    <string name="re_choose_dishes">我要重新选择菜品</string>
     <string name="order_details">订单详情</string>
     <string name="my_combo">我的套餐</string>
     <string name="pay">支付</string>
@@ -63,7 +63,7 @@
     <string name="shop_cart">购物车</string>
     <string name="small_market_buy">选好了</string>
     <string name="small_market_buy_not">满A元起送</string>
-    <string name="small_market_buy_not_enough">还差A菜</string>
+    <string name="small_market_buy_not_enough">还差A</string>
     <string name="small_market_shop_cart_price">共A元</string>
     <string name="small_market_shop_cart_null">购物车是空的</string>
     <string name="search_community_error_tip">搜索不到小区,填写我的小区</string>
@@ -113,20 +113,19 @@
     <string name="cancel_order">取消订单</string>
     <string name="cancel_order_success">订单取消成功</string>
     <string name="re_choose_dishes_tip">重新选择菜品会删除现有订单,确定删除吗?</string>
-    <string name="choose_dishes_tip">是否拨打客服电话修改本期菜品?</string>
+
     <string name="confirm">确定</string>
     <string name="cancel">取消</string>
     <string name="exit_login">退出登录</string>
     <string name="set">设置</string>
-    <string name="hint_feedback">请描述你的意见和建议</string>
+    <string name="hint_feedback">您的建议是我们前进的动力!</string>
     <string name="tks_feedback_tip">感谢您的反馈.</string>
     <string name="submit">提交</string>
-    <string name="feedback">意见反馈</string>
+    <string name="feedback">问题反馈</string>
     <string name="feedback_error_tip">请输入您的反馈内容</string>
     <string name="logout_success">退出成功</string>
     <string name="logout_fail">退出失败</string>
-
-    <string name="has_choosen_dishes_tip">您已选择本期菜品,如需修改,请单击此处.</string>
+    <string name="has_choosen_dishes_tip">您已选过本期菜品,如需更改请点击.</string>
     <string name="has_choosen_next_dishes_tip">您如需选择下期菜品,请单击此处.</string>
     <string name="deliverying">您选择的套餐正在配送中,请耐心等待.</string>
     <string name="delievery_success">您的上期菜品已经配送完成.</string>
@@ -135,4 +134,9 @@
     <string name="company_name">北京爱乐守一网络科技有限公司</string>
     <string name="copyright">有菜版权所有</string>
     <string name="help">帮助</string>
+    <string name="unpaid">未付款</string>
+    <string name="nodelivery">待配送</string>
+    <string name="choose_dishes_successful">您已选好菜品啦!</string>
+    <string name="choose_dishes_tip">抱歉本期选菜时间已过。请于两天后开始选菜!</string>
+    <string name="has_chosen_dishes">本期菜品已选</string>
 </resources>

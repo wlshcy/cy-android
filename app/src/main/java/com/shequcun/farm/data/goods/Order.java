@@ -1,7 +1,5 @@
 package com.shequcun.farm.data.goods;
 
-import android.util.Log;
-
 import com.google.gson.annotations.SerializedName;
 import com.shequcun.farm.data.DishesItemEntry;
 
@@ -45,9 +43,7 @@ public class Order {
     }
 
     public void removeItemById(int id) {
-        Log.e(TAG, "id:" + id);
         for (DishesItemEntry it : items) {
-            Log.e(TAG, "it's id:" + it.id);
             if (id == it.id) {
                 items.remove(it);
                 break;
@@ -56,6 +52,11 @@ public class Order {
     }
 
     public void clear() {
+
+        for (DishesItemEntry it : items) {
+            it.setCount(0);
+        }
+
         items.clear();
     }
 

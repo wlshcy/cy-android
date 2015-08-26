@@ -6,7 +6,6 @@ import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
-import android.text.style.StyleSpan;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -88,16 +87,6 @@ public class Utils {
      */
     public static String unitConversion(int g) {
         String restDistanceStr;
-//        if (g >= 1000) {
-//            float fdis = (float) g / 1000;
-//            fdis = (float) (Math.round(fdis * 10)) / 10;
-////            restDistanceStr = fdis + "kg";
-//            restDistanceStr = fdis * 2 + "斤";
-//        } else {
-//            float fdis = ((float) g) / 500;
-//            fdis = (float) (Math.round(fdis * 10)) / 10;
-//            restDistanceStr = fdis + "斤";
-//        }
         float fdis = ((float) g) / 500;
         fdis = (float) (Math.round(fdis * 10)) / 10;
         if (fdis * 10 % 10 == 0) {
@@ -105,6 +94,7 @@ public class Utils {
         } else {
             restDistanceStr = fdis + "斤";
         }
+//        restDistanceStr = fdis + "斤";
         return restDistanceStr;
     }
 
@@ -131,8 +121,8 @@ public class Utils {
         wordtoSpan.setSpan(new ForegroundColorSpan(0xFFFC3F30), start, end,
                 flag);
 
-        wordtoSpan.setSpan(new StyleSpan(android.graphics.Typeface.BOLD),
-                start, end, flag); // 粗体
+//        wordtoSpan.setSpan(new StyleSpan(android.graphics.Typeface.BOLD),
+//                start, end, flag); // 粗体
 
         start = end;
         end += strFrom2.length();

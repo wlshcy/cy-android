@@ -15,8 +15,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginTop="@dimen/px20"
         android:layout_marginBottom="@dimen/px20"
+        android:layout_marginTop="@dimen/px20"
         android:orientation="vertical">
 
         <FrameLayout
@@ -41,7 +41,6 @@
                 android:drawablePadding="@dimen/px20"
                 android:text="@string/abc_action_bar_home_description"
                 android:textColor="@color/black_303030"
-                android:textSize="@dimen/font36"
                 android:visibility="gone" />
         </FrameLayout>
 
@@ -49,61 +48,75 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/px40"
-            android:layout_marginTop="@dimen/px20">
-
-            <TextView
-                android:id="@+id/dis_cycle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="1次/周"
-                android:textColor="@color/black_303030"
-                android:textSize="@dimen/font26" />
-
-            <TextView
-                android:id="@+id/per_weight"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/px70"
-                android:text="6斤/次"
-                android:textColor="@color/black_303030"
-                android:textSize="@dimen/font26" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/px40"
-            android:layout_marginTop="@dimen/px16"
+            android:layout_marginTop="@dimen/px20"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/times"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="4次/月"
-                android:textColor="@color/black_303030"
-                android:textSize="@dimen/font26" />
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/all_weight"
+                <TextView
+                    android:id="@+id/dis_cycle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1次/周"
+                    android:textColor="@color/black_303030"
+                    android:textSize="@dimen/font26" />
+
+
+                <TextView
+                    android:id="@+id/times"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/px16"
+                    android:text="4次/月"
+                    android:textColor="@color/black_303030"
+                    android:textSize="@dimen/font26" />
+
+                <TextView
+                    android:id="@+id/combo_mprice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/px20"
+                    android:text="￥3600.00"
+                    android:textColor="@color/gray_9a9a9a" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/px70"
-                android:text="共60kg"
-                android:textColor="@color/black_303030"
-                android:textSize="@dimen/font26" />
+                android:orientation="vertical">
 
+                <TextView
+                    android:id="@+id/per_weight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="6斤/次"
+                    android:textColor="@color/black_303030"
+                    android:textSize="@dimen/font26" />
+
+                <TextView
+                    android:id="@+id/all_weight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/px16"
+                    android:text="共60kg"
+                    android:textColor="@color/black_303030"
+                    android:textSize="@dimen/font26" />
+
+                <TextView
+                    android:id="@+id/combo_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/px20"
+                    android:text="￥3600.00"
+                    android:textColor="@android:color/black" />
+
+            </LinearLayout>
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/combo_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/px40"
-            android:layout_marginTop="@dimen/px20"
-            android:text="￥3600"
-            android:textColor="@android:color/black" />
     </LinearLayout>
-
 
 </FrameLayout>

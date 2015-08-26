@@ -104,7 +104,7 @@ public class SqcFarmActivity extends BaseFragmentActivity {
     };
 
     void checkVersion() {
-        if (PersistanceManager.INSTANCE.getIsCheckVersion())
+        if (PersistanceManager.getIsCheckVersion(getApplicationContext()))
             return;
         RequestParams params = new RequestParams();
         params.add("apptype", "5");
@@ -170,7 +170,7 @@ public class SqcFarmActivity extends BaseFragmentActivity {
                     finish();
                 } else if (vEntry.status == 1) {
                     dialog.dismiss();
-                    PersistanceManager.INSTANCE.saveIsCheckVersion(true);
+                    PersistanceManager.saveIsCheckVersion(getApplicationContext(),true);
                 }
             }
         });

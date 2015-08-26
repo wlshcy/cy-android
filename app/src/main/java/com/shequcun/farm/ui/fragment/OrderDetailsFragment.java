@@ -179,7 +179,7 @@ public class OrderDetailsFragment extends BaseFragment {
         if (TextUtils.isEmpty(delievery)) {
             footerView.findViewById(R.id.distribution_date).setVisibility(View.GONE);
         } else {
-            ((TextView) footerView.findViewById(R.id.distribution_date)).setText("配送日期:  本周周" + delievery + "配送");
+            ((TextView) footerView.findViewById(R.id.distribution_date)).setText("配送日期:  本周" + delievery + "配送");
         }
         int part = mOrderController.getItemsCount();
         ((TextView) footerView.findViewById(R.id.number_copies)).setText("共" + part + "份");
@@ -303,7 +303,7 @@ public class OrderDetailsFragment extends BaseFragment {
         params.add("name", name);
         params.add("mobile", mobile);
         params.add("address", address);
-        params.add("_xsrf", PersistanceManager.INSTANCE.getCookieValue());
+        params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
         HttpRequestUtil.httpPost(LocalParams.getBaseUrl() + "cai/order", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -442,13 +442,11 @@ public class OrderDetailsFragment extends BaseFragment {
     }
 
     void modifyOrder(final String orderno) {
-//        orderno - 订单号
-//        items - 菜品列表，格式为：菜品ID:菜品数量，菜品ID:菜品数量 ...
         RequestParams params = new RequestParams();
         params.add("orderno", orderno);
         String items = mOrderController.getOrderItemsString();
         params.add("items", items);
-        params.add("_xsrf", PersistanceManager.INSTANCE.getCookieValue());
+        params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
         final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
         HttpRequestUtil.httpPost(LocalParams.getBaseUrl() + "cai/altorder", params, new AsyncHttpResponseHandler() {
             @Override

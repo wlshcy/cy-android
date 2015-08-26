@@ -97,7 +97,7 @@ public class MyFragment extends BaseFragment {
         hView_1.findViewById(R.id.set).setOnClickListener(onClick);
         ((TextView) hView_1.findViewById(R.id.mobile_phone)).setText(uEntry != null ? uEntry.mobile : "");
         ((CircleImageView) hView_1.findViewById(R.id.my_head)).setImageUrl(uEntry != null ? uEntry.headimg : null, ImageCacheManager.getInstance().getImageLoader());
-
+        ((TextView) hView_1.findViewById(R.id.address_tv)).setText(uEntry != null ? uEntry.address : "");
         hView_1.findViewById(R.id.my_head).setOnClickListener(new AvoidDoubleClickListener() {
             @Override
             public void onViewClick(View v) {

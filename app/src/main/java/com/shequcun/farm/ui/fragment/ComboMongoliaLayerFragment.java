@@ -43,7 +43,7 @@ public class ComboMongoliaLayerFragment extends BaseFragment {
     AvoidDoubleClickListener onClick = new AvoidDoubleClickListener() {
         @Override
         public void onViewClick(View v) {
-            PersistanceManager.INSTANCE.saveIsShowLookupComboDetails(buildKey(), false);
+            PersistanceManager.saveIsShowLookupComboDetails(getActivity(),buildKey(), false);
             if (look_combo_detail_tv == v) {
                 popBackStack();
                 gotoFragmentByAdd(getArguments(), R.id.mainpage_ly, new WebViewFragment(), WebViewFragment.class.getName());

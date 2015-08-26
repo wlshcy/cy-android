@@ -16,10 +16,16 @@ import com.shequcun.farm.util.Constrants;
 public class MyAdapter extends BaseAdapter {
     private Context mContext;
     private String myValues[];
+    private String verName;
 
     public MyAdapter(Context mContext, String myValues[]) {
         this.mContext = mContext;
         this.myValues = myValues;
+    }
+
+
+    public void setVerName(String verName) {
+        this.verName = verName;
     }
 
     @Override
@@ -53,7 +59,7 @@ public class MyAdapter extends BaseAdapter {
         String tip = getItem(position);
         vh.my_title.setText(tip);
         if (tip.equals("检查更新")) {
-            vh.tel_tv.setText("");
+            vh.tel_tv.setText(verName);
         } else {
             vh.tel_tv.setText(position == 1 ? Constrants.Customer_Service_Phone : "");
         }

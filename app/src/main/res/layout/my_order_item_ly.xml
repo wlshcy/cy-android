@@ -11,7 +11,7 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/px30"
         android:orientation="vertical"
-        android:padding="@dimen/px10">
+        android:padding="@dimen/px20">
 
         <TextView
             android:id="@+id/distribution_number_tv"

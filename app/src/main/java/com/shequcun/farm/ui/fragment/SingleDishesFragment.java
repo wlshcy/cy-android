@@ -219,7 +219,7 @@ public class SingleDishesFragment extends BaseFragment {
         params.add("mobile", entry.mobile);
         params.add("address", address);
         params.add("extras", getExtras());
-        params.add("_xsrf", PersistanceManager.INSTANCE.getCookieValue());
+        params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
 
 
         final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");

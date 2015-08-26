@@ -14,12 +14,6 @@
         android:gravity="center"
         android:orientation="horizontal">
 
-        <com.common.widget.CircleImageView
-            android:id="@+id/additional_goods_img_1"
-            android:layout_width="@dimen/px68"
-            android:layout_height="@dimen/px68"
-            android:layout_marginLeft="@dimen/px18"
-            android:visibility="gone" />
 
         <TextView
             android:id="@+id/additional_goods_name_1"
@@ -27,7 +21,7 @@
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:textColor="@color/gray_999999"
-            android:textSize="@dimen/font28" />
+            android:textSize="@dimen/font26" />
 
         <TextView
             android:id="@+id/additional_send_weight_1"
@@ -36,7 +30,7 @@
             android:layout_marginLeft="@dimen/px10"
             android:gravity="center_vertical"
             android:textColor="@color/gray_999999"
-            android:textSize="@dimen/font28" />
+            android:textSize="@dimen/font26" />
 
     </LinearLayout>
 
@@ -50,13 +44,6 @@
         android:visibility="gone"
         android:orientation="horizontal">
 
-        <com.common.widget.CircleImageView
-            android:id="@+id/additional_goods_img_2"
-            android:layout_width="@dimen/px68"
-            android:layout_height="@dimen/px68"
-            android:layout_marginLeft="@dimen/px18"
-            android:visibility="gone" />
-
         <TextView
             android:id="@+id/additional_goods_name_2"
             android:layout_width="wrap_content"
@@ -64,7 +51,7 @@
             android:layout_marginLeft="@dimen/px10"
             android:gravity="center_vertical"
             android:textColor="@color/gray_999999"
-            android:textSize="@dimen/font28" />
+            android:textSize="@dimen/font26" />
 
         <TextView
             android:id="@+id/additional_send_weight_2"
@@ -73,7 +60,7 @@
             android:layout_marginLeft="@dimen/px10"
             android:gravity="center_vertical"
             android:textColor="@color/gray_999999"
-            android:textSize="@dimen/font28" />
+            android:textSize="@dimen/font26" />
 
     </LinearLayout>
 

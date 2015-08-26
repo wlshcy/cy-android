@@ -121,7 +121,7 @@ public class ModifyOrderFragment extends BaseFragment {
         final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
         RequestParams params = new RequestParams();
         params.add("id", hEntry.id + "");
-        params.add("_xsrf", PersistanceManager.INSTANCE.getCookieValue());
+        params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
         HttpRequestUtil.httpPost(LocalParams.getBaseUrl() + "cai/delorder", params, new AsyncHttpResponseHandler() {
 
             @Override
@@ -229,9 +229,15 @@ public class ModifyOrderFragment extends BaseFragment {
         });
     }
 
+    void addHeaderView() {
+        View headView = LayoutInflater.from(getActivity()).inflate(R.layout.order_details_footer_ly, null);
+        ((TextView) headView.findViewById(R.id.distribution_date)).setText(hEntry.date);
+        mLv.addHeaderView(headView, null, false);
+    }
+
     void addFooter(int part) {
         View footerView = LayoutInflater.from(getActivity()).inflate(R.layout.order_details_footer_ly, null);
-        ((TextView) footerView.findViewById(R.id.distribution_date)).setText(hEntry.date);
+        ((TextView) footerView.findViewById(R.id.distribution_date)).setText("配送日期:本周五配送");
         ((TextView) footerView.findViewById(R.id.number_copies)).setText("共" + part + "份");
         mLv.addFooterView(footerView, null, false);
     }
@@ -247,6 +253,7 @@ public class ModifyOrderFragment extends BaseFragment {
         }
         hEntry.allWeight = allWeight;
         addFooter(part);
+        addHeaderView();
         if (adapter == null) {
             adapter = new AlreadyPurchasedAdapter(getActivity());
         }
@@ -258,7 +265,7 @@ public class ModifyOrderFragment extends BaseFragment {
     void requestAlipay(final ModifyOrderParams entry) {
         RequestParams params = new RequestParams();
         params.add("orderno", entry.orderno);
-        params.add("_xsrf", PersistanceManager.INSTANCE.getCookieValue());
+        params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
         HttpRequestUtil.httpPost(LocalParams.getBaseUrl() + "cai/payorder", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int sCode, Header[] h, byte[] data) {

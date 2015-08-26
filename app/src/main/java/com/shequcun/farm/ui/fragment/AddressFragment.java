@@ -142,7 +142,7 @@ public class AddressFragment extends BaseFragment {
         }
 
         final RequestParams params = new RequestParams();
-        params.add("_xsrf", PersistanceManager.INSTANCE.getCookieValue());
+        params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
         params.put("name", name);
         params.put("mobile", phone_number);
         params.put("city", entry == null ? "北京市" : entry.city);

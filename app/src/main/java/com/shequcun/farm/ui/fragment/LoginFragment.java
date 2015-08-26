@@ -60,7 +60,7 @@ public class LoginFragment extends BaseFragment {
      * 鉴权
      */
     private void doAuthInit() {
-        String cookieValue = PersistanceManager.INSTANCE.getCookieValue();
+        String cookieValue = PersistanceManager.getCookieValue(getActivity());
         if (!TextUtils.isEmpty(cookieValue)) {
             doGetSnsCode();
             return;
@@ -72,7 +72,7 @@ public class LoginFragment extends BaseFragment {
                     public void onSuccess(int sCode, Header[] headers, byte[] data) {
                         for (Header h : headers) {
                             if (h.getName().equals("X-Xsrftoken")) {
-                                PersistanceManager.INSTANCE.saveCookieValue(h.getValue());
+                                PersistanceManager.saveCookieValue(getActivity(),h.getValue());
                                 doGetSnsCode();
                                 break;
                             }
@@ -123,7 +123,7 @@ public class LoginFragment extends BaseFragment {
             return;
         }
         Utils.hideVirtualKeyboard(getActivity(), login);
-        String xXsrfToken = PersistanceManager.INSTANCE.getCookieValue();
+        String xXsrfToken = PersistanceManager.getCookieValue(getActivity());
         RequestParams params = new RequestParams();
         params.add("mobile", mobileNumber);
         params.add("smscode", smsCode);
@@ -192,7 +192,7 @@ public class LoginFragment extends BaseFragment {
         RequestParams params = new RequestParams();
         params.add("mobile", mobileNumber);
         params.add("type", 2 + "");
-        params.add("_xsrf", PersistanceManager.INSTANCE.getCookieValue());
+        params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
         HttpRequestUtil.httpPost(LocalParams.getBaseUrl() + "util/smscode", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] h, byte[] data) {

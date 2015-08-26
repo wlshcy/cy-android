@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/px16"
-            android:layout_marginTop="@dimen/px16"
+            android:layout_marginTop="@dimen/px10"
             android:paddingLeft="@dimen/px40" />
     </LinearLayout>
 

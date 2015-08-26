@@ -92,8 +92,10 @@ public class ChooseDishesFragment extends BaseFragment {
         mBadgeViewShopCart.setBadgeMargin(ResUtil.dip2px(getActivity(), 0));
         mShopCartPriceTv = (TextView) v
                 .findViewById(R.id.shop_cart_total_price_tv);
-        buildAdapter();
-        setChooseDishesContent(v);
+        enabled = setChooseDishesContent(v);
+        buildAdapter(enabled);
+        if (!enabled)
+            setWidgetEnableStatus();
     }
 
     boolean isShowComboIntroduce() {
@@ -139,7 +141,6 @@ public class ChooseDishesFragment extends BaseFragment {
                 }
             } else if (v == mBuyOrderTv) {//
                 gotoFragmentByAdd();
-//                gotoFragmentByAdd(R.id.mainpage_ly,new OrderDetailsFragment(),OrderDetailsFragment.class.getName());
             } else if (v == emptyView) {
                 hideShopCart();
             }
@@ -151,8 +152,10 @@ public class ChooseDishesFragment extends BaseFragment {
         if (entry == null) {
             return 1;
         }
-        mOrderController.setReqWeight(entry.weights[entry.getPosition()]);
-        mBuyOrderTv.setText("选择" + Utils.unitConversion(mOrderController.getReqWeight()) + "菜");
+        if (enabled) {
+            mOrderController.setReqWeight(entry.weights[entry.getPosition()]);
+            mBuyOrderTv.setText("选择" + Utils.unitConversion(mOrderController.getReqWeight()));
+        }
         return entry.id;
     }
 
@@ -207,7 +210,7 @@ public class ChooseDishesFragment extends BaseFragment {
             adapter.notifyDataSetChanged();
         }
 
-        if (PersistanceManager.INSTANCE.getIsShowLookUpComboDetails(buildKey())) {
+        if (PersistanceManager.getIsShowLookUpComboDetails(getActivity(), buildKey())) {
             gotoFragmentByAnimation(getArguments(), R.id.mainpage_ly, new ComboMongoliaLayerFragment(), ComboMongoliaLayerFragment.class.getName());
         }
     }
@@ -225,10 +228,10 @@ public class ChooseDishesFragment extends BaseFragment {
     }
 
 
-    void buildAdapter() {
+    void buildAdapter(boolean enabled) {
         if (adapter == null)
             adapter = new ChooseDishesAdapter(getActivity());
-        adapter.buildOnClickLsn(onGoodsImgLsn, mUpOnClickListener, mDownOnClickListener);
+        adapter.buildOnClickLsn(enabled, onGoodsImgLsn, mUpOnClickListener, mDownOnClickListener);
         mLv.setAdapter(adapter);
     }
 
@@ -468,7 +471,8 @@ public class ChooseDishesFragment extends BaseFragment {
             mBuyOrderTv.setText(R.string.small_market_buy);
             mBuyOrderTv.setTextColor(getResources().getColor(
                     R.color.white_fefefe));
-            mShopCartPriceTv.setText("您已选择了" + Utils.unitConversion(mOrderController.getItemsWeight()));
+            mShopCartPriceTv.setText(R.string.choose_dishes_successful);
+//            mShopCartPriceTv.setText("您已选择了" + Utils.unitConversion(mOrderController.getItemsWeight()));
         } else {
             mBuyOrderTv
                     .setBackgroundResource(R.drawable.shopping_cart_widget_selector_2);
@@ -477,7 +481,7 @@ public class ChooseDishesFragment extends BaseFragment {
             int surplus = mOrderController.getReqWeight() - mOrderController.getItemsWeight();
 
             if (surplus == mOrderController.getReqWeight()) {
-                txt = "选择" + Utils.unitConversion(surplus) + "菜";
+                txt = "选择" + Utils.unitConversion(surplus);
             } else {
                 txt = txt.replaceAll("A", Utils.unitConversion(mOrderController.getReqWeight()
                         - mOrderController.getItemsWeight()));
@@ -485,7 +489,7 @@ public class ChooseDishesFragment extends BaseFragment {
 
             mBuyOrderTv.setText(txt);
             mBuyOrderTv.setTextColor(getResources().getColor(android.R.color.black));
-            String shopCartTip = mOrderController.getItemsWeight() == 0 ? getString(R.string.small_market_shop_cart_null) : "您已选择了" + Utils.unitConversion(mOrderController.getItemsWeight()) + "菜";
+            String shopCartTip = mOrderController.getItemsWeight() == 0 ? getString(R.string.small_market_shop_cart_null) : "您已选了" + Utils.unitConversion(mOrderController.getItemsWeight());
             mShopCartPriceTv.setText(shopCartTip);
         }
     }
@@ -740,18 +744,9 @@ public class ChooseDishesFragment extends BaseFragment {
         }
     }
 
-    void setChooseDishesContent(View v) {
+    boolean setChooseDishesContent(View v) {
         final TextView choose_dishes_tip = (TextView) v.findViewById(R.id.choose_dishes_tip);
-        if (isChooseNextDishes()) {
-//            choose_dishes_tip.setVisibility(View.VISIBLE);
-//            choose_dishes_tip.setText(R.string.has_choosen_next_dishes_tip);
-//            choose_dishes_tip.setOnClickListener(new AvoidDoubleClickListener() {
-//                @Override
-//                public void onViewClick(View v) {
-//                    choose_dishes_tip.setVisibility(View.GONE);
-//                }
-//            });
-        } else {
+        if (!isChooseNextDishes()) {
             int status = buildStatus();
             if (status == 1) {
                 choose_dishes_tip.setVisibility(View.VISIBLE);
@@ -762,16 +757,21 @@ public class ChooseDishesFragment extends BaseFragment {
                         gotoFragmentByAdd(buildBundle(buildOrderParams(entry)), R.id.mainpage_ly, new ModifyOrderFragment(), ModifyOrderFragment.class.getName());
                     }
                 });
+//                return false;
             } else if (status == 3) {
                 choose_dishes_tip.setVisibility(View.VISIBLE);
                 choose_dishes_tip.setText(R.string.delievery_success);
-            } else if(status==2){
+//                choose_dishes_tip.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+            } else if (status == 2) {
                 choose_dishes_tip.setVisibility(View.VISIBLE);
-                choose_dishes_tip.setText(R.string.deliverying);
+                choose_dishes_tip.setText(R.string.choose_dishes_tip);
+//                choose_dishes_tip.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+                return false;
             } else {
                 choose_dishes_tip.setVisibility(View.GONE);
             }
         }
+        return true;
     }
 
     boolean isChooseNextDishes() {
@@ -795,7 +795,16 @@ public class ChooseDishesFragment extends BaseFragment {
         return bundle;
     }
 
+    private void setWidgetEnableStatus() {
+        mShopCartIv.setEnabled(false);
+        mShopCartPriceTv.setText(null);
+        mBuyOrderTv.setTextColor(
+                getActivity().getResources().getColorStateList(R.color.gray_d8d8d8));
+        mBuyOrderTv.setText(R.string.has_chosen_dishes);
+        mBuyOrderTv.setEnabled(false);
+    }
 
+    boolean enabled;
     ComboEntry entry;
     private TextView mBuyOrderTv;
     private TextView mShopCartPriceTv;

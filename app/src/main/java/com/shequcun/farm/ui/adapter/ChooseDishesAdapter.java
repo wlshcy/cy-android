@@ -22,12 +22,14 @@ import com.shequcun.farm.util.Utils;
 public class ChooseDishesAdapter extends ArrayAdapter<DishesItemEntry> {
 
     DishesItemEntry entry;
+    boolean enabled;
 
     public ChooseDishesAdapter(Context context) {
         super(context, R.layout.goods_item_ly);
     }
 
-    public void buildOnClickLsn(AvoidDoubleClickListener onGoodsImgLsn, AvoidDoubleClickListener onAddGoodsLsn, AvoidDoubleClickListener onSubGoodsLsn) {
+    public void buildOnClickLsn(boolean enabled, AvoidDoubleClickListener onGoodsImgLsn, AvoidDoubleClickListener onAddGoodsLsn, AvoidDoubleClickListener onSubGoodsLsn) {
+        this.enabled = enabled;
         this.onGoodsImgLsn = onGoodsImgLsn;
         this.onAddGoodsLsn = onAddGoodsLsn;
         this.onSubGoodsLsn = onSubGoodsLsn;
@@ -53,6 +55,7 @@ public class ChooseDishesAdapter extends ArrayAdapter<DishesItemEntry> {
         entry = getItem(position);
         vh.goods_img.setTag(position);
         vh.goods_img.setOnClickListener(onGoodsImgLsn);
+        vh.goods_add.setEnabled(enabled);
         vh.goods_add.setTag(position);
         vh.goods_add.setOnClickListener(onAddGoodsLsn);
         vh.goods_add.setContentDescription(String.valueOf(entry.id));

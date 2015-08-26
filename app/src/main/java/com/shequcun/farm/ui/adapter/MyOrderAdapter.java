@@ -40,7 +40,7 @@ public class MyOrderAdapter extends ArrayAdapter<HistoryOrderEntry> {
         entry = getItem(position);
 
         if (entry != null) {
-            vh.distribution_number_tv.setText("第" + entry.times + "次配送");
+            vh.distribution_number_tv.setText("第" + entry.times + "次选品");
 //            if (entry.status == 0) {
 //                vh.distribution_date.setText("下单日期  " + Utils.getTime(entry.json.get(entry.status + "").getAsLong()));
 //            } else if (entry.status == 1) {
@@ -82,7 +82,7 @@ public class MyOrderAdapter extends ArrayAdapter<HistoryOrderEntry> {
             } else if (entry.status == 0) {
 //                vh.order_status_ly.setTag(position);
 //                vh.order_status_ly.setOnClickListener(payOnClickLsn);
-                vh.order_status.setText("去付款");
+                vh.order_status.setText(R.string.unpaid);
             } else if (entry.status == 1) {
 //                vh.order_status_ly.setTag(position);
 //                vh.order_status_ly.setOnClickListener(payOnClickLsn);

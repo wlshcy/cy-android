@@ -79,7 +79,7 @@ public class FeedbackFragment extends BaseFragment {
         RequestParams params = new RequestParams();
         params.add("type", "5");
         params.add("content", feedback);
-        params.add("_xsrf", PersistanceManager.INSTANCE.getCookieValue());
+        params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
         HttpRequestUtil.httpPost(LocalParams.getBaseUrl() + "app/feedback", params, new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {

@@ -71,7 +71,7 @@
             android:gravity="center_vertical"
             android:text="@string/discount_price"
             android:textColor="@color/red_fc3d2e"
-            android:textSize="@dimen/font34" />
+            android:textSize="@dimen/font32" />
 
         <TextView
             android:id="@+id/total_price"
@@ -80,7 +80,7 @@
             android:layout_marginLeft="@dimen/px10"
             android:gravity="center_vertical"
             android:textColor="@color/red_fc3d2e"
-            android:textSize="@dimen/font34" />
+            android:textSize="@dimen/font32" />
 
         <TextView
             android:id="@+id/choose_dishes"
