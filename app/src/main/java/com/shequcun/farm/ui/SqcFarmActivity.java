@@ -50,7 +50,7 @@ public class SqcFarmActivity extends BaseFragmentActivity {
         radiogroup.setOnCheckedChangeListener(checkedChangeListener);
         // mHomeViewPager.clearAnimation();
         hVpager.addOnPageChangeListener(pageChangeLsn);
-        hVpager.setOffscreenPageLimit(2);
+        hVpager.setOffscreenPageLimit(3);
         buildRadioButtonStatus(0);
     }
 
@@ -94,6 +94,9 @@ public class SqcFarmActivity extends BaseFragmentActivity {
                     break;
                 case R.id.mine_rb:// 我的
 //                    onPageChanged(1);
+                    hVpager.setCurrentItem(2);
+                    break;
+                case R.id.discount_rb://特惠
                     hVpager.setCurrentItem(1);
                     break;
                 default:
@@ -170,7 +173,7 @@ public class SqcFarmActivity extends BaseFragmentActivity {
                     finish();
                 } else if (vEntry.status == 1) {
                     dialog.dismiss();
-                    PersistanceManager.saveIsCheckVersion(getApplicationContext(),true);
+                    PersistanceManager.saveIsCheckVersion(getApplicationContext(), true);
                 }
             }
         });

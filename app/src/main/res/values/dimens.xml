@@ -57,6 +57,7 @@
     <dimen name="px56">28dp</dimen>
     <dimen name="px150">75dp</dimen>
     <dimen name="font40">20sp</dimen>
+    <dimen name="font48">24sp</dimen>
     <dimen name="px24">12dp</dimen>
     <dimen name="px374">187dp</dimen>
     <dimen name="px208">104dp</dimen>
@@ -68,4 +69,5 @@
     <dimen name="px18">9dp</dimen>
     <dimen name="px220">110dp</dimen>
     <dimen name="px74">37dp</dimen>
+    <dimen name="px200">100dp</dimen>
 </resources>

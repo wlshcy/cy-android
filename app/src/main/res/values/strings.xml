@@ -110,6 +110,7 @@
     <string name="ignore">忽略</string>
     <string name="exit">退出</string>
     <string name="dishes_error">亲,您选择的菜品数量不足哦!</string>
+    <string name="dishes_error_much">亲,您选择的菜品数量超了哦!</string>
     <string name="cancel_order">取消订单</string>
     <string name="cancel_order_success">订单取消成功</string>
     <string name="re_choose_dishes_tip">重新选择菜品会删除现有订单,确定删除吗?</string>
@@ -130,6 +131,7 @@
     <string name="deliverying">您选择的套餐正在配送中,请耐心等待.</string>
     <string name="delievery_success">您的上期菜品已经配送完成.</string>
     <string name="discount_price">优惠价</string>
+    <string name="discount_limit_time">限时特惠</string>
     <string name="about">关于有菜</string>
     <string name="company_name">北京爱乐守一网络科技有限公司</string>
     <string name="copyright">有菜版权所有</string>
@@ -140,4 +142,5 @@
     <string name="choose_dishes_tip">抱歉本期选菜时间已过。请于两天后开始选菜!</string>
     <string name="has_chosen_dishes">本期菜品已选</string>
     <string name="market_price">市场价</string>
+    <string name="specialty">特产</string>
 </resources>

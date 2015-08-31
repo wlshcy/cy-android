@@ -18,6 +18,7 @@ import com.shequcun.farm.data.RecommentListEntry;
 import com.shequcun.farm.ui.adapter.RecommendAdapter;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
 import com.shequcun.farm.util.HttpRequestUtil;
+import com.shequcun.farm.util.IntentUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
 
@@ -59,8 +60,9 @@ public class PayResultFragment extends BaseFragment {
     protected void setWidgetLsn() {
         buildAdapter();
         back.setOnClickListener(onClick);
-        if (isRecomDishes())
-            requestRecomendDishes();
+        IntentUtil.sendUpdateComboMsg(getActivity());
+//        if (isRecomDishes())
+//            requestRecomendDishes();
     }
 
 
@@ -163,9 +165,9 @@ public class PayResultFragment extends BaseFragment {
     };
 
     void requestRecomendDishes() {
-        HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "cai/itemlist", new AsyncHttpResponseHandler() {
+        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "cai/itemlist", new AsyncHttpResponseHandler() {
             @Override
-            public void onSuccess(int sCode, Header[] h, byte[] data) {
+            public void onSuccess(int statusCode, Header[] headers, byte[] data) {
                 if (data != null && data.length > 0) {
                     RecommentListEntry entry = JsonUtilsParser.fromJson(new String(data), RecommentListEntry.class);
                     if (entry != null) {
@@ -178,9 +180,28 @@ public class PayResultFragment extends BaseFragment {
             }
 
             @Override
-            public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
             }
         });
+//        HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "cai/itemlist", new AsyncHttpResponseHandler() {
+//            @Override
+//            public void onSuccess(int sCode, Header[] h, byte[] data) {
+//                if (data != null && data.length > 0) {
+//                    RecommentListEntry entry = JsonUtilsParser.fromJson(new String(data), RecommentListEntry.class);
+//                    if (entry != null) {
+//                        if (TextUtils.isEmpty(entry.errmsg)) {
+//                            addDataToAdapter(entry.aList);
+//                            return;
+//                        }
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
+//            }
+//        });
     }
 
     void addDataToAdapter(List<RecommendEntry> aList) {

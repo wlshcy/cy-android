@@ -38,8 +38,9 @@ public class RecommendEntry extends BaseEntry {
     public int remains;
     @SerializedName("descr")
     public String descr;
-
-
+    @SerializedName("type")
+    public int type;// 1.普通菜品，2.秒杀菜品
+//    "type": 2,
 //    "iid": 17,
 //            "maxpacks": 5,
 //            "imgs": [
@@ -51,5 +52,4 @@ public class RecommendEntry extends BaseEntry {
 //            "price": 10,
 //            "descr": "",
 //            "remains": 100000
-
 }

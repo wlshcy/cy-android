@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/pView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/transparent_8000"
     android:gravity="center"
     android:orientation="vertical">
+
     <!-- 推荐商品详情页-->
     <LinearLayout
         android:layout_width="@dimen/px644"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/px20"
         android:background="@drawable/white_corner"
+        android:clickable="true"
         android:orientation="vertical">
 
         <FrameLayout
@@ -55,7 +58,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1.5dp"
+            android:layout_height="1dp"
             android:layout_marginLeft="@dimen/px50"
             android:layout_marginRight="@dimen/px50"
             android:background="@color/divider_color" />

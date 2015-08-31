@@ -241,7 +241,6 @@ public class MyFragment extends BaseFragment {
 
     void showLoginDlg() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-//        builder.setIcon(android.R.drawable.ic_dialog_info);
         builder.setTitle("提示");
         builder.setMessage("亲,您还未登录哦!立刻登录?");
         builder.setNegativeButton("登录", new DialogInterface.OnClickListener() {

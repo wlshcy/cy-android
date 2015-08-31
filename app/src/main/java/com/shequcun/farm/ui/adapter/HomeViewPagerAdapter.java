@@ -8,6 +8,7 @@ import android.util.SparseArray;
 import android.view.ViewGroup;
 
 import com.shequcun.farm.ui.fragment.ComboFragment;
+import com.shequcun.farm.ui.fragment.SpecialtyFragment;
 import com.shequcun.farm.ui.fragment.MyFragment;
 
 /**
@@ -32,9 +33,11 @@ public class HomeViewPagerAdapter extends FragmentPagerAdapter {
         if (position == 0) {
             f = new ComboFragment();
 //            f = new AddressFragment();
-        } else if (position == 1) {
+        } else if (position == 2) {
             f = new MyFragment();
 //            f = new LoginFragment();
+        }else if(position==1){
+            f=new SpecialtyFragment();
         }
         mPageReferenceMap.put(position, f);
         return f;
@@ -46,7 +49,7 @@ public class HomeViewPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 2;
+        return 3;
     }
 
     @Override

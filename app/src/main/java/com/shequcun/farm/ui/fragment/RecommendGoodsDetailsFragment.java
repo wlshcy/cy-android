@@ -35,11 +35,18 @@ public class RecommendGoodsDetailsFragment extends BaseFragment {
         goods_name = (TextView) v.findViewById(R.id.goods_name);
         goods_prce = (TextView) v.findViewById(R.id.goods_prce);
         goods_desc = (TextView) v.findViewById(R.id.goods_desc);
+        pView = v.findViewById(R.id.pView);
     }
 
     @Override
     protected void setWidgetLsn() {
         close_iv.setOnClickListener(onClk);
+        pView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                popBackStack();
+            }
+        });
         setWidgetContent();
     }
 
@@ -71,4 +78,5 @@ public class RecommendGoodsDetailsFragment extends BaseFragment {
     TextView goods_name;
     TextView goods_prce;
     TextView goods_desc;
+    View pView;
 }

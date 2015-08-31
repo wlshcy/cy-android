@@ -221,6 +221,12 @@ public class ChooseDishesFragment extends BaseFragment {
 
     void gotoFragmentByAdd() {
         if (getString(R.string.small_market_buy).equals(mBuyOrderTv.getText().toString())) {
+
+            if (mOrderController.getItemsWeight() > entry.weights[entry.getPosition()]) {
+                alertDialog(getString(R.string.dishes_error_much));
+                return;
+            }
+
             gotoFragmentByAdd(getArguments(), R.id.mainpage_ly, new OrderDetailsFragment(), OrderDetailsFragment.class.getName());
         } else {
             alertDialog(getString(R.string.dishes_error));
@@ -466,6 +472,7 @@ public class ChooseDishesFragment extends BaseFragment {
      */
     private void toggleBuyOrder(boolean buy) {
         if (buy) {
+
             mBuyOrderTv
                     .setBackgroundResource(R.drawable.shopping_cart_widget_selector_1);
             mBuyOrderTv.setText(R.string.small_market_buy);

@@ -92,6 +92,8 @@ public class ComboSubAdapter extends BaseAdapter {
             if (vh.distribution_all_times != null) {
                 if (entry.duration >= 52)
                     vh.distribution_all_times.setText(entry.duration * entry.shipday.length + "次/年");
+                else if (entry.duration >= 12)
+                    vh.distribution_all_times.setText(entry.duration * entry.shipday.length + "次/季");
                 else
                     vh.distribution_all_times.setText(entry.duration * entry.shipday.length + "次/月");
             }
