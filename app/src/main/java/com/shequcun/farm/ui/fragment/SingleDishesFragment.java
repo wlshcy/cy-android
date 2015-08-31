@@ -28,6 +28,7 @@ import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.ToastHelper;
+import com.shequcun.farm.util.Utils;
 
 import org.apache.http.Header;
 
@@ -63,8 +64,18 @@ public class SingleDishesFragment extends BaseFragment {
         commitOrderTv = (TextView) v.findViewById(R.id.bug_order_tv);
         addressLy = v.findViewById(R.id.addressee_ly);
         add_address_ly = v.findViewById(R.id.add_address_ly);
+        shop_cart_total_price_tv = (TextView) v.findViewById(R.id.shop_cart_total_price_tv);
+
+        shop_cart_surpport_now_pay_tv = (TextView) v.findViewById(R.id.shop_cart_surpport_now_pay_tv);
 
         buildUserLoginEntry();
+    }
+
+
+    void setWidgetContent() {
+        RecommendEntry entry = buildRecommendEntry();
+        shop_cart_total_price_tv.setText("共付:" + Utils.unitPeneyToYuan(entry.price));
+        shop_cart_surpport_now_pay_tv.setText("您已选好菜品了!");
     }
 
     void buildUserLoginEntry() {
@@ -72,6 +83,7 @@ public class SingleDishesFragment extends BaseFragment {
         if (data != null && data.length > 0) {
             uEntry = JsonUtilsParser.fromJson(new String(data), UserLoginEntry.class);
         }
+        setWidgetContent();
     }
 
     @Override
@@ -310,4 +322,6 @@ public class SingleDishesFragment extends BaseFragment {
     TextView rightTv;
     View re_choose_dishes;
     View add_address_ly;
+    TextView shop_cart_total_price_tv;
+    TextView shop_cart_surpport_now_pay_tv;
 }

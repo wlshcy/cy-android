@@ -65,9 +65,10 @@ public class MyFragment extends BaseFragment {
         doUnRegisterReceiver();
     }
 
-    AvoidDoubleClickListener onClick = new AvoidDoubleClickListener() {
+    View.OnClickListener onClick = new View.OnClickListener() {
+
         @Override
-        public void onViewClick(View v) {
+        public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.set://设置
                     break;

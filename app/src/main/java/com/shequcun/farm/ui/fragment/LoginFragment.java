@@ -72,7 +72,7 @@ public class LoginFragment extends BaseFragment {
                     public void onSuccess(int sCode, Header[] headers, byte[] data) {
                         for (Header h : headers) {
                             if (h.getName().equals("X-Xsrftoken")) {
-                                PersistanceManager.saveCookieValue(getActivity(),h.getValue());
+                                PersistanceManager.saveCookieValue(getActivity(), h.getValue());
                                 doGetSnsCode();
                                 break;
                             }
@@ -102,9 +102,10 @@ public class LoginFragment extends BaseFragment {
     AvoidDoubleClickListener onClick = new AvoidDoubleClickListener() {
         @Override
         public void onViewClick(View v) {
-            if (v == back)
+            if (v == back) {
+                Utils.hideVirtualKeyboard(getActivity(), v);
                 popBackStack();
-            else if (v == obtain_verification_code)
+            } else if (v == obtain_verification_code)
                 doAuthInit();
             else if (v == login)
                 doLogin();

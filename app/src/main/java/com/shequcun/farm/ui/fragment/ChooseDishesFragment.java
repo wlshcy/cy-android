@@ -761,10 +761,10 @@ public class ChooseDishesFragment extends BaseFragment {
                 choose_dishes_tip.setOnClickListener(new AvoidDoubleClickListener() {
                     @Override
                     public void onViewClick(View v) {
-                        gotoFragmentByAdd(buildBundle(buildOrderParams(entry)), R.id.mainpage_ly, new ModifyOrderFragment(), ModifyOrderFragment.class.getName());
+                        gotoFragment(buildBundle(buildOrderParams(entry)), R.id.mainpage_ly, new ModifyOrderFragment(), ModifyOrderFragment.class.getName());
                     }
                 });
-//                return false;
+                return false;
             } else if (status == 3) {
                 choose_dishes_tip.setVisibility(View.VISIBLE);
                 choose_dishes_tip.setText(R.string.delievery_success);

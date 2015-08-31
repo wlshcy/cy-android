@@ -18,22 +18,25 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/goods_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="1.00"
-            android:textColor="@color/red_fe0c0c"
-            android:textSize="@dimen/font34" />
 
         <TextView
             android:id="@+id/goods_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/px10"
+
             android:text="Title"
             android:textColor="@color/black_1e1e1e"
             android:textSize="@dimen/font30" />
+
+        <TextView
+            android:id="@+id/goods_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/px10"
+            android:text="1.00"
+            android:textColor="@color/red_fe0c0c"
+            android:textSize="@dimen/font34" />
+
 
     </LinearLayout>
 

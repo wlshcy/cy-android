@@ -134,6 +134,8 @@ public class OrderDetailsFragment extends BaseFragment {
                 }
 
                 commitOrderTv.setText(R.string.pay_immediately);
+            }else{
+                shop_cart_surpport_now_pay_tv.setText("您已选好菜品了!");
             }
         }
     }
