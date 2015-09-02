@@ -2,39 +2,39 @@
 <items version="2" >
 
     <item
-        jar="/Developer/worksapce/youcai-android/app/libs/SqcFarmSDK.jar"
+        jar="/Users/mac/Developer/workspace/youcai-android-20150902/app/libs/SqcFarmSDK.jar"
         jumboMode="false"
         revision="23.0.0"
         sha1="5f886625e89a36d1455a5204c9305e56343d79aa">
-        <dex dex="/Developer/worksapce/youcai-android/app/build/intermediates/pre-dexed/debug/SqcFarmSDK-2940392907a5dc53b3aeddef0f0c552cfcf7b6a2.jar" />
+        <dex dex="/Users/mac/Developer/workspace/youcai-android-20150902/app/build/intermediates/pre-dexed/debug/SqcFarmSDK-36a3e01a504f1120730b446528c843626a0a2ccd.jar" />
     </item>
     <item
-        jar="/Developer/Android/android-sdk-macosx/extras/android/m2repository/com/android/support/support-annotations/22.2.0/support-annotations-22.2.0.jar"
-        jumboMode="false"
-        revision="23.0.0"
-        sha1="66b42a1f3eb7676070b7ef7f14b603483aecbee1">
-        <dex dex="/Developer/worksapce/youcai-android/app/build/intermediates/pre-dexed/debug/support-annotations-22.2.0-eb48e75fec564358a085e74cf12e7f9bfa8ab4a1.jar" />
-    </item>
-    <item
-        jar="/Developer/worksapce/youcai-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.0/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.0"
-        sha1="73753982da6bde518f3a4c6b372749981d14d1a0">
-        <dex dex="/Developer/worksapce/youcai-android/app/build/intermediates/pre-dexed/debug/classes-906b0a7508f610ff3c4ba2e9e4439bee1e917ad8.jar" />
-    </item>
-    <item
-        jar="/Developer/worksapce/youcai-android/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.0/jars/libs/internal_impl-22.2.0.jar"
-        jumboMode="false"
-        revision="23.0.0"
-        sha1="57f2ab85c164ff1676ec64dee787981c046fab79">
-        <dex dex="/Developer/worksapce/youcai-android/app/build/intermediates/pre-dexed/debug/internal_impl-22.2.0-97d88d4f04a9efa49cf29b2b073289187be4297c.jar" />
-    </item>
-    <item
-        jar="/Developer/worksapce/youcai-android/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.0/jars/classes.jar"
+        jar="/Users/mac/Developer/workspace/youcai-android-20150902/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.0/jars/classes.jar"
         jumboMode="false"
         revision="23.0.0"
         sha1="1ee588ff2c4daf7b97c1cbf922a6c7f027285c2f">
-        <dex dex="/Developer/worksapce/youcai-android/app/build/intermediates/pre-dexed/debug/classes-cc9c4b733ebb4254a04bacd1ec5d3464eea13ccf.jar" />
+        <dex dex="/Users/mac/Developer/workspace/youcai-android-20150902/app/build/intermediates/pre-dexed/debug/classes-24c8cbcb9abe13ab8a722af371e502b5d5f9f0d5.jar" />
+    </item>
+    <item
+        jar="/Users/mac/Developer/workspace/youcai-android-20150902/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.0/jars/libs/internal_impl-22.2.0.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="57f2ab85c164ff1676ec64dee787981c046fab79">
+        <dex dex="/Users/mac/Developer/workspace/youcai-android-20150902/app/build/intermediates/pre-dexed/debug/internal_impl-22.2.0-576de55d22ea1eb85f8b3d6d61bc4183e0970fa1.jar" />
+    </item>
+    <item
+        jar="/Users/mac/Developer/android-sdk-macosx/extras/android/m2repository/com/android/support/support-annotations/22.2.0/support-annotations-22.2.0.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="66b42a1f3eb7676070b7ef7f14b603483aecbee1">
+        <dex dex="/Users/mac/Developer/workspace/youcai-android-20150902/app/build/intermediates/pre-dexed/debug/support-annotations-22.2.0-f8f7dbcdb1ff385a286515560769e5e818d1a7dd.jar" />
+    </item>
+    <item
+        jar="/Users/mac/Developer/workspace/youcai-android-20150902/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="73753982da6bde518f3a4c6b372749981d14d1a0">
+        <dex dex="/Users/mac/Developer/workspace/youcai-android-20150902/app/build/intermediates/pre-dexed/debug/classes-9f3e90c103320abb2926108fdfded1dcc18db202.jar" />
     </item>
 
 </items>
