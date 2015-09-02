@@ -22,7 +22,7 @@ android {
     }
     signingConfigs {
         shequcunrelease {
-            storeFile file("/Developer/worksapce/SqcFarmApplication/app/sqc_farm_android.keystore")
+            storeFile file("/Users/mac/Developer/workspace/youcai-android-20150902/app/sqc_farm_android.keystore")
             keyAlias "sqc_farm_android"
         }
     }
