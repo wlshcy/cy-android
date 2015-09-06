@@ -313,18 +313,27 @@ public class ChooseDishesFragment extends BaseFragment {
     }
 
 
-    private AvoidDoubleClickListener mUpOnClickListener = new AvoidDoubleClickListener() {
+    private boolean goNext = true;
+    private View.OnClickListener mUpOnClickListener = new View.OnClickListener() {
         @Override
-        public void onViewClick(View v) {
+        public void onClick(View v) {
+            if (!goNext){
+                return;
+            }
             if (v.getTag() instanceof Integer) {
+                goNext = false;
                 int position = (int) v.getTag();
                 DishesItemEntry goodItem = adapter.getItem(position);
                 if (checkReqWeight(goodItem.packw)) {
+                    goNext = true;
                     return;
                 }
                 if (checkMaxpacks(goodItem.id)) {
+                    goNext = true;
                     return;
                 }
+                goNext = true;
+                shopChartIconScaleAnimation(v);
             }
             animationFly(v);
         }
@@ -392,7 +401,7 @@ public class ChooseDishesFragment extends BaseFragment {
                 // TODO Auto-generated method stub
 //                移除飞红球
                 rootView.removeView(flyTv);
-                shopChartIconScaleAnimation(v);
+
             }
         });
         flyTv.startAnimation(arcAnim);
@@ -543,7 +552,8 @@ public class ChooseDishesFragment extends BaseFragment {
         if (i > 0) {
             /*异常不会出现的情况*/
             if (i > lastWeight) {
-                return false;
+                alertOutOfReqWeight();
+                return true;
                 /*举例：选了10，要求10，再选*/
             } else if (i == lastWeight) {
                 alertOutOfReqWeight();

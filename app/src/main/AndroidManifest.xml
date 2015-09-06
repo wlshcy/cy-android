@@ -64,6 +64,15 @@
             android:theme="@android:style/Theme.Translucent" />
         <!--wx sdk end-->
 
+        <!-- umeng-->
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="55c870b067e58ec5440030b5"></meta-data>
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:exported="true"
+            android:theme="@android:style/Theme.Translucent"></activity>
+
     </application>
 
 </manifest>
