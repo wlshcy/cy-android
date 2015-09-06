@@ -50,12 +50,12 @@ public class MyOrderAdapter extends ArrayAdapter<HistoryOrderEntry> {
 //            } else if (entry.status == 3) {
 //                vh.distribution_date.setText("收货日期" + Utils.getTime(entry.json.get(entry.status + "").getAsLong()));
 //            }
-
+//            public int status;//0.未付款, 1.待配送, 2.配送中, 3.配送完成, 4.取消订单
             if (entry.status == 0) {
                 entry.date = "下单日期:" + Utils.getTime(entry.json.get(entry.status + "").getAsLong());
                 vh.distribution_date.setText(entry.date);
             } else if (entry.status == 1) {
-                entry.date = "支付日期:" + Utils.getTime(entry.json.get(entry.status + "").getAsLong());
+                entry.date = "下单日期:" + Utils.getTime(entry.json.get(entry.status + "").getAsLong());
                 vh.distribution_date.setText(entry.date);
             } else if (entry.status == 2) {
                 entry.date = "配送日期:" + Utils.getTime(entry.json.get(entry.status + "").getAsLong());

@@ -134,7 +134,7 @@ public class OrderDetailsFragment extends BaseFragment {
                 }
 
                 commitOrderTv.setText(R.string.pay_immediately);
-            }else{
+            } else {
                 shop_cart_surpport_now_pay_tv.setText("您已选好菜品了!");
             }
         }
@@ -173,7 +173,7 @@ public class OrderDetailsFragment extends BaseFragment {
                 } else {
                     modifyOrder(buildOrederno());
                 }
-            } else if (v == add_address_ly) {
+            } else if (v == add_address_ly || v == addressLy) {
                 gotoFragmentByAdd(R.id.mainpage_ly, new AddressFragment(), AddressFragment.class.getName());
             }
         }
@@ -370,8 +370,8 @@ public class OrderDetailsFragment extends BaseFragment {
     }
 
     private void successUserAddress(List<AddressEntry> list) {
+        doRegisterRefreshBrodcast();
         if (list == null || list.size() <= 0) {
-            doRegisterRefreshBrodcast();
             addressLy.setVisibility(View.GONE);
             add_address_ly.setVisibility(View.VISIBLE);
             return;
@@ -387,7 +387,6 @@ public class OrderDetailsFragment extends BaseFragment {
                     addressee_info.setText(entry.name + "  " + entry.mobile);
                     address.setText("地址: " + uEntry.address);
                 } else {
-                    doRegisterRefreshBrodcast();
                     addressLy.setVisibility(View.GONE);
                     add_address_ly.setVisibility(View.VISIBLE);
                 }

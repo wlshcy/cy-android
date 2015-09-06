@@ -145,18 +145,24 @@ public class AddressFragment extends BaseFragment {
         params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
         params.put("name", name);
         params.put("mobile", phone_number);
-        params.put("city", entry == null ? "北京市" : entry.city);
-        params.put("zname", community);
-        params.put("building", building_NO);
-        params.put("unit", union_NO);
-        params.put("room", house_NO);
         params.put("id", entry.id);
         if (!TextUtils.isEmpty(entry.street)) {
             params.put("street", entry.street);
+            params.put("region", "");
+            params.put("city", "");
+            params.put("zname", "");
+            params.put("building", "");
+            params.put("unit", "");
+            params.put("room", "");
         } else {
             params.put("street", "");
             params.put("zid", entry == null ? "0" : "" + entry.zid);
             params.put("region", entry == null ? "" : entry.region);
+            params.put("city", entry == null ? "北京市" : entry.city);
+            params.put("zname", community);
+            params.put("building", building_NO);
+            params.put("unit", union_NO);
+            params.put("room", house_NO);
         }
         final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
         HttpRequestUtil.httpPost(LocalParams.getBaseUrl() + "user/address", params, new AsyncHttpResponseHandler() {
@@ -287,12 +293,18 @@ public class AddressFragment extends BaseFragment {
 
 
     void setWidgetContent(AddressEntry entry) {
-        name_edit.setText(entry.name);
-        mobile_phone_edit.setText(entry.mobile);
-        community_tv.setText(entry.zname);
-        building_number_edit.setText(entry.building);
-        unit_number_edit.setText(entry.unit);
-        house_number_edit.setText(entry.room);
+        if (!TextUtils.isEmpty(entry.name))
+            name_edit.setText(entry.name);
+        if (!TextUtils.isEmpty(entry.mobile))
+            mobile_phone_edit.setText(entry.mobile);
+        if (!TextUtils.isEmpty(entry.zname))
+            community_tv.setText(entry.zname);
+        if (!TextUtils.isEmpty(entry.building))
+            building_number_edit.setText(entry.building);
+        if (!TextUtils.isEmpty(entry.unit))
+            unit_number_edit.setText(entry.unit);
+        if (!TextUtils.isEmpty(entry.room))
+            house_number_edit.setText(entry.room);
     }
 
     void doRegisterRefreshBrodcast() {

@@ -38,6 +38,7 @@ public class SpecialtyAdapter extends ArrayAdapter<RecommendEntry> {
             vh.goods_name = (TextView) v.findViewById(R.id.goods_name);
             vh.goods_price = (TextView) v.findViewById(R.id.goods_price);
             vh.buy_tv = v.findViewById(R.id.buy_tv);
+            vh.buy_textview = (TextView) v.findViewById(R.id.buy_textview);
             v.setTag(vh);
         } else {
             vh = (ViewHolder) v.getTag();
@@ -46,8 +47,17 @@ public class SpecialtyAdapter extends ArrayAdapter<RecommendEntry> {
         if (entry != null) {
             vh.goods_img.setTag(position);
             vh.goods_img.setOnClickListener(onGoodsImgLsn);
-            vh.buy_tv.setTag(position);
-            vh.buy_tv.setOnClickListener(onBuyLsn);
+
+            if (entry.type == 2 && entry.bought) {
+                vh.buy_tv.setEnabled(false);
+                vh.buy_textview.setEnabled(false);
+            } else {
+                vh.buy_tv.setEnabled(true);
+                vh.buy_textview.setEnabled(true);
+                vh.buy_tv.setTag(position);
+                vh.buy_tv.setOnClickListener(onBuyLsn);
+            }
+
             vh.goods_img.setImageUrl(entry.imgs[0], ImageCacheManager.getInstance().getImageLoader());
             vh.goods_name.setText(entry.title);
             vh.goods_price.setText(Utils.unitPeneyToYuan(entry.price));
@@ -61,6 +71,7 @@ public class SpecialtyAdapter extends ArrayAdapter<RecommendEntry> {
         public TextView goods_name;
         public TextView goods_price;
         public View buy_tv;
+        public TextView buy_textview;
     }
 
     View.OnClickListener onGoodsImgLsn;

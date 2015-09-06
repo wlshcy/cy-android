@@ -60,11 +60,11 @@ public class LoginFragment extends BaseFragment {
      * 鉴权
      */
     private void doAuthInit() {
-        String cookieValue = PersistanceManager.getCookieValue(getActivity());
-        if (!TextUtils.isEmpty(cookieValue)) {
-            doGetSnsCode();
-            return;
-        }
+//        String cookieValue = PersistanceManager.getCookieValue(getActivity());
+//        if (!TextUtils.isEmpty(cookieValue)) {
+//            doGetSnsCode();
+//            return;
+//        }
         HttpRequestUtil.httpGet(
                 LocalParams.getBaseUrl() + "auth/init",
                 new AsyncHttpResponseHandler() {
@@ -185,7 +185,7 @@ public class LoginFragment extends BaseFragment {
      */
     void doGetSnsCode() {
         final String mobileNumber = input_mobile_tel.getText().toString();
-        if (TextUtils.isEmpty(mobileNumber) || mobileNumber.length() != 11) {
+        if (TextUtils.isEmpty(mobileNumber) || mobileNumber.length() > 11 || mobileNumber.length() < 11) {
             ToastHelper.showShort(getActivity(), R.string.mobile_phone_error);
             return;
         }

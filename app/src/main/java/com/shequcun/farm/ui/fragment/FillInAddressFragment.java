@@ -42,9 +42,9 @@ public class FillInAddressFragment extends BaseFragment {
         back.setOnClickListener(onClick);
     }
 
-    AvoidDoubleClickListener onClick = new AvoidDoubleClickListener() {
+    View.OnClickListener onClick = new  View.OnClickListener() {
         @Override
-        public void onViewClick(View v) {
+        public void onClick(View v) {
             if (v == back) {
                 Utils.hideVirtualKeyboard(getActivity(), v);
                 String comName = community_name_edit.getText().toString();

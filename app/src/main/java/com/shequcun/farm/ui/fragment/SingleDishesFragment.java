@@ -1,5 +1,9 @@
 package com.shequcun.farm.ui.fragment;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Message;
 import android.text.TextUtils;
@@ -25,6 +29,7 @@ import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.ui.adapter.SingleDishesAdapter;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
 import com.shequcun.farm.util.HttpRequestUtil;
+import com.shequcun.farm.util.IntentUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.ToastHelper;
@@ -65,25 +70,28 @@ public class SingleDishesFragment extends BaseFragment {
         addressLy = v.findViewById(R.id.addressee_ly);
         add_address_ly = v.findViewById(R.id.add_address_ly);
         shop_cart_total_price_tv = (TextView) v.findViewById(R.id.shop_cart_total_price_tv);
-
         shop_cart_surpport_now_pay_tv = (TextView) v.findViewById(R.id.shop_cart_surpport_now_pay_tv);
-
         buildUserLoginEntry();
+        setWidgetContent();
     }
 
 
     void setWidgetContent() {
         RecommendEntry entry = buildRecommendEntry();
-        shop_cart_total_price_tv.setText("共付:" + Utils.unitPeneyToYuan(entry.price));
-        shop_cart_surpport_now_pay_tv.setText("您已选好菜品了!");
+        if (entry != null) {
+            shop_cart_total_price_tv.setText("共付:" + Utils.unitPeneyToYuan(entry.price));
+            shop_cart_surpport_now_pay_tv.setText("您已选好菜品了!");
+        }
     }
 
     void buildUserLoginEntry() {
         byte[] data = new CacheManager(getActivity()).getUserLoginFromDisk();
         if (data != null && data.length > 0) {
             uEntry = JsonUtilsParser.fromJson(new String(data), UserLoginEntry.class);
+        } else {
+            uEntry = null;
         }
-        setWidgetContent();
+
     }
 
     @Override
@@ -173,6 +181,7 @@ public class SingleDishesFragment extends BaseFragment {
         if (list == null || list.size() <= 0) {
             addressLy.setVisibility(View.GONE);
             add_address_ly.setVisibility(View.VISIBLE);
+            doRegisterRefreshBrodcast();
             return;
         }
         int size = list.size();
@@ -186,7 +195,7 @@ public class SingleDishesFragment extends BaseFragment {
                     addressee_info.setText(entry.name + "  " + entry.mobile);
                     address.setText("地址: " + uEntry.address);
                 } else {
-//                    doRegisterRefreshBrodcast();
+                    doRegisterRefreshBrodcast();
                     addressLy.setVisibility(View.GONE);
                     add_address_ly.setVisibility(View.VISIBLE);
                 }
@@ -198,8 +207,42 @@ public class SingleDishesFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        doUnRegisterReceiver();
         mHandler.removeCallbacksAndMessages(null);
     }
+
+
+    void doRegisterRefreshBrodcast() {
+        if (!mIsBind) {
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(IntentUtil.UPDATE_ORDER_DETAILS_MSG);
+            getActivity().registerReceiver(mUpdateReceiver, intentFilter);
+            mIsBind = true;
+        }
+    }
+
+    private void doUnRegisterReceiver() {
+        if (mIsBind) {
+            getActivity().unregisterReceiver(mUpdateReceiver);
+            mIsBind = false;
+        }
+    }
+
+    boolean mIsBind = false;
+
+    private BroadcastReceiver mUpdateReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (TextUtils.isEmpty(action)) {
+                return;
+            }
+            if (action.equals(IntentUtil.UPDATE_ORDER_DETAILS_MSG)) {
+                buildUserLoginEntry();
+                requestUserAddress();
+            }
+        }
+    };
 
     /**
      * 创建单品订单
@@ -209,16 +252,10 @@ public class SingleDishesFragment extends BaseFragment {
             ToastHelper.showShort(getActivity(), "地址获取失败,请稍后重试...");
             return;
         }
-
-
         String address = null;
-        byte data[] = new CacheManager(getActivity()).getUserLoginFromDisk();
-        if (data != null && data.length > 0) {
-            UserLoginEntry uEntry = JsonUtilsParser.fromJson(new String(data), UserLoginEntry.class);
+        if (uEntry != null && !TextUtils.isEmpty(uEntry.address)) {
             address = uEntry.address;
         }
-
-
         final RecommendEntry rEntry = buildRecommendEntry();
         if (!TextUtils.isEmpty(alipay) && !TextUtils.isEmpty(orderno)) {
             gotoFragmentByAdd(buildBundle(orderno, rEntry.price, alipay, R.string.pay_success), R.id.mainpage_ly, new PayFragment(), PayFragment.class.getName());

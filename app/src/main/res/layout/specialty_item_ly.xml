@@ -49,6 +49,7 @@
         android:gravity="center">
 
         <TextView
+            android:id="@+id/buy_textview"
             android:layout_width="@dimen/px120"
             android:layout_height="@dimen/px56"
             android:background="@drawable/shopping_cart_widget_selector_1"

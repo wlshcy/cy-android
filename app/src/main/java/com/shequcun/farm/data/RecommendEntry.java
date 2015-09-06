@@ -40,6 +40,8 @@ public class RecommendEntry extends BaseEntry {
     public String descr;
     @SerializedName("type")
     public int type;// 1.普通菜品，2.秒杀菜品
+    @SerializedName("bought")//true表示已购买，不需要下单时再判断了
+    public boolean bought;
 //    "type": 2,
 //    "iid": 17,
 //            "maxpacks": 5,

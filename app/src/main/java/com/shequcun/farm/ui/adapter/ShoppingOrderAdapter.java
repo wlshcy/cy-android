@@ -74,7 +74,7 @@ public class ShoppingOrderAdapter extends ArrayAdapter<HistoryOrderEntry> {
                 entry.date = "下单日期:" + Utils.getTime(entry.json.get(entry.status + "").getAsLong());
                 vh.distribution_date.setText(entry.date);
             } else if (entry.status == 1) {
-                entry.date = "支付日期:" + Utils.getTime(entry.json.get(entry.status + "").getAsLong());
+                entry.date = "付款日期:" + Utils.getTime(entry.json.get(entry.status + "").getAsLong());
                 vh.distribution_date.setText(entry.date);
             } else if (entry.status == 2) {
                 entry.date = "配送日期:" + Utils.getTime(entry.json.get(entry.status + "").getAsLong());
