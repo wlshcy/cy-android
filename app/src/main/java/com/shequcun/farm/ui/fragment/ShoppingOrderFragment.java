@@ -50,7 +50,7 @@ public class ShoppingOrderFragment extends BaseFragment {
     protected void initWidget(View v) {
         mLv = (ListView) v.findViewById(R.id.mLv);
         pBar = (ProgressBar) v.findViewById(R.id.progress_bar);
-        scroll_view = (PullToRefreshScrollView) v.findViewById(R.id.scroll_view);
+        scroll_view = (PullToRefreshScrollView) v.findViewById(R.id.pView);
     }
 
     @Override

@@ -39,6 +39,8 @@ public class ComboEntry extends BaseEntry {
     public int index;
     @SerializedName("wimgs")
     public String wimgs[];
+    @SerializedName("farm")
+    public String farm;
 
     private boolean mine;
 

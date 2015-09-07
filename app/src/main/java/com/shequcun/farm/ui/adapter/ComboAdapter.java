@@ -43,7 +43,7 @@ public class ComboAdapter extends ArrayAdapter<ComboEntry> {
             vh.per_weight = (TextView) v.findViewById(R.id.per_weight);
             vh.times = (TextView) v.findViewById(R.id.times);
             vh.dis_cycle = (TextView) v.findViewById(R.id.dis_cycle);
-            vh.all_weight = (TextView) v.findViewById(R.id.all_weight);
+            vh.farm_tv = (TextView) v.findViewById(R.id.farm_tv);
             vh.combo_price = (TextView) v.findViewById(R.id.combo_price);
             vh.combo_img = (ImageView) v.findViewById(R.id.combo_img);
             vh.combo_mprice = (TextView) v.findViewById(R.id.combo_mprice);
@@ -66,18 +66,17 @@ public class ComboAdapter extends ArrayAdapter<ComboEntry> {
 
             if (entry.shipday != null) {
                 vh.dis_cycle.setText(entry.shipday.length + "次/周");//"每周配送" +
+                vh.times.setText("送" + entry.duration * entry.shipday.length + "次");
             }
 
             if (entry.weights != null) {
                 vh.per_weight.setText(Utils.unitConversion(entry.weights[entry.index]) + "/次");//"每次配送" +
-                vh.all_weight.setText("共" + Utils.unitConversion(entry.duration * entry.weights[entry.index] * entry.shipday.length));
             }
-
+            vh.farm_tv.setText("来自:" + entry.farm);
             Paint paint = vh.combo_mprice.getPaint();
             paint.setAntiAlias(true);//抗锯齿
             paint.setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);  // 设置中划线并加清晰
             vh.combo_mprice.setText(Utils.unitPeneyToYuan(entry.mprices[entry.index]));
-            vh.times.setText("送" + entry.duration + "周");
             vh.combo_price.setText(Utils.unitPeneyToYuan(entry.prices[entry.index]));
         }
 
@@ -108,7 +107,7 @@ public class ComboAdapter extends ArrayAdapter<ComboEntry> {
         /**
          * 套餐斤数
          */
-        TextView all_weight;
+//        TextView all_weight;
         /**
          * 套餐价格
          */
@@ -119,5 +118,7 @@ public class ComboAdapter extends ArrayAdapter<ComboEntry> {
          * 套餐图片
          */
         ImageView combo_img;
+
+        TextView farm_tv;
     }
 }

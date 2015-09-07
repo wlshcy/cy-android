@@ -88,7 +88,7 @@ public class SqcFarmActivity extends BaseFragmentActivity {
         @Override
         public void onCheckedChanged(RadioGroup group, int checkedId) {
             switch (checkedId) {
-                case R.id.combo_rb:// 套餐
+                case R.id.home_rb:// 首页
 //                    onPageChanged(0);
                     hVpager.setCurrentItem(0);
                     break;
@@ -96,7 +96,7 @@ public class SqcFarmActivity extends BaseFragmentActivity {
 //                    onPageChanged(1);
                     hVpager.setCurrentItem(2);
                     break;
-                case R.id.discount_rb://特惠
+                case R.id.shopping_cart_rb://购物车
                     hVpager.setCurrentItem(1);
                     break;
                 default:

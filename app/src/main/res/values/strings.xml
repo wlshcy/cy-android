@@ -142,5 +142,7 @@
     <string name="choose_dishes_tip">抱歉本期选菜时间已过。请于两天后开始选菜!</string>
     <string name="has_chosen_dishes">本期菜品已选</string>
     <string name="market_price">市场价</string>
-    <string name="specialty">特产</string>
+    <string name="specialty">农庄特产</string>
+    <string name="spike">秒杀</string>
+    <string name="spike_error_tip">您已购买过该产品,不能重复购买!</string>
 </resources>

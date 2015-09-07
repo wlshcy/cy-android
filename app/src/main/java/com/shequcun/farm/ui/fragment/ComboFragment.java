@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.common.widget.CircleFlowIndicator;
 import com.common.widget.ViewFlow;
@@ -58,48 +59,29 @@ public class ComboFragment extends BaseFragment {
     @Override
     protected void initWidget(View v) {
         mListView = (ListView) v.findViewById(R.id.mListView);
-        carousel_img = (ViewFlow) v.findViewById(R.id.carousel_img);
-        carousel_point = (CircleFlowIndicator) v.findViewById(R.id.carousel_point);
+        back = v.findViewById(R.id.back);
+        ((TextView) v.findViewById(R.id.title_center_text)).setText(R.string.choose_combo);
     }
 
     @Override
     protected void setWidgetLsn() {
         mListView.setOnItemClickListener(onItemClick);
+        back.setOnClickListener(onClick);
         buildAdapter();
         requestComboList();
-        requestSlideFromServer();
-        doRegisterRefreshBrodcast();
+//        requestSlideFromServer();
+//        doRegisterRefreshBrodcast();
     }
 
-    AvoidDoubleClickListener onClick = new AvoidDoubleClickListener() {
+
+    View.OnClickListener onClick = new View.OnClickListener() {
         @Override
-        public void onViewClick(View v) {
-            SlidesEntry item = (SlidesEntry) v.getTag();
-            if (item == null)
-                return;
-            if (TextUtils.isEmpty(item.url))
-                return;
-            gotoFragmentByAdd(buildBundle(item.url), R.id.mainpage_ly, new AdFragment(), AdFragment.class.getName());
+        public void onClick(View v) {
+            if (v == back) {
+                popBackStack();
+            }
         }
     };
-
-    void buildCarouselAdapter(List<SlidesEntry> aList) {
-        if (aList == null || aList.size() <= 0) {
-            aList = new ArrayList<SlidesEntry>();
-            SlidesEntry s = new SlidesEntry();
-            aList.add(s);
-        }
-        cAdapter = new CarouselAdapter(getActivity(), aList);
-        cAdapter.buildOnClick(onClick);
-        carousel_img.setAdapter(cAdapter, 0);
-        carousel_img.setFlowIndicator(carousel_point);
-    }
-
-    Bundle buildBundle(final String adUrl) {
-        Bundle bundle = new Bundle();
-        bundle.putString("AdUrl", adUrl);
-        return bundle;
-    }
 
     void buildAdapter() {
         if (adapter == null)
@@ -115,14 +97,15 @@ public class ComboFragment extends BaseFragment {
             ComboEntry entry = adapter.getItem(position);
             if (entry == null)
                 return;
-            if (isLogin()) {
-                if (buildIsMyComboClick(position)) {
-                    gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new ChooseDishesFragment(), ChooseDishesFragment.class.getName());
-                } else
-                    gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new ComboSecondFragment(), ComboSecondFragment.class.getName());
-            } else {
-                gotoFragmentByAdd(R.id.mainpage_ly, new LoginFragment(), LoginFragment.class.getName());
-            }
+//            if (isLogin()) {
+            if (buildIsMyComboClick(position)) {
+                gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new ChooseDishesFragment(), ChooseDishesFragment.class.getName());
+            } else
+                gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new ComboSecondFragment(), ComboSecondFragment.class.getName());
+//            }
+//            else {
+//                gotoFragmentByAdd(R.id.mainpage_ly, new LoginFragment(), LoginFragment.class.getName());
+//            }
         }
     };
 
@@ -138,15 +121,10 @@ public class ComboFragment extends BaseFragment {
      *
      * @return
      */
-    boolean isLogin() {
-        return new CacheManager(getActivity()).getUserLoginFromDisk() != null;
-    }
+//    boolean isLogin() {
+//        return new CacheManager(getActivity()).getUserLoginFromDisk() != null;
+//    }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        doUnRegisterReceiver();
-    }
 
     /**
      * 请求套餐列表
@@ -198,7 +176,7 @@ public class ComboFragment extends BaseFragment {
 
     void doAddMyComboDataToAdapter(List<ComboEntry> aList) {
         if (aList != null && aList.size() > 0) {
-            for (ComboEntry comboEntry:aList){
+            for (ComboEntry comboEntry : aList) {
                 comboEntry.setMine(true);
             }
             adapter.setIsMyCombo(true);
@@ -246,65 +224,41 @@ public class ComboFragment extends BaseFragment {
         return pView.findViewById(R.id.my_combo).getVisibility() == View.VISIBLE;
     }
 
-    void doRegisterRefreshBrodcast() {
-        if (!mIsBind) {
-            IntentFilter intentFilter = new IntentFilter();
-            intentFilter.addAction(IntentUtil.UPDATE_COMBO_PAGE);
-            getActivity().registerReceiver(mUpdateReceiver, intentFilter);
-            mIsBind = true;
-        }
-    }
+//    void doRegisterRefreshBrodcast() {
+//        if (!mIsBind) {
+//            IntentFilter intentFilter = new IntentFilter();
+//            intentFilter.addAction(IntentUtil.UPDATE_COMBO_PAGE);
+//            getActivity().registerReceiver(mUpdateReceiver, intentFilter);
+//            mIsBind = true;
+//        }
+//    }
 
-    private BroadcastReceiver mUpdateReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            if (TextUtils.isEmpty(action)) {
-                return;
-            }
-            if (action.equals(IntentUtil.UPDATE_COMBO_PAGE)) {
-                if (adapter != null)
-                    adapter.clear();
-                requestComboList();
-            }
-        }
-    };
+//    private BroadcastReceiver mUpdateReceiver = new BroadcastReceiver() {
+//        @Override
+//        public void onReceive(Context context, Intent intent) {
+//            String action = intent.getAction();
+//            if (TextUtils.isEmpty(action)) {
+//                return;
+//            }
+//            if (action.equals(IntentUtil.UPDATE_COMBO_PAGE)) {
+//                if (adapter != null)
+//                    adapter.clear();
+//                requestComboList();
+//            }
+//        }
+//    };
 
-    private void doUnRegisterReceiver() {
-        if (mIsBind) {
-            getActivity().unregisterReceiver(mUpdateReceiver);
-            mIsBind = false;
-        }
-    }
+//    private void doUnRegisterReceiver() {
+//        if (mIsBind) {
+//            getActivity().unregisterReceiver(mUpdateReceiver);
+//            mIsBind = false;
+//        }
+//    }
 
-    /**
-     * 请求轮播图
-     */
-    void requestSlideFromServer() {
-        HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "cai/slide", new AsyncHttpResponseHandler() {
-            @Override
-            public void onSuccess(int sCode, Header[] h, byte[] data) {
-                if (data != null && data.length > 0) {
-                    SlidesListEntry entry = JsonUtilsParser.fromJson(new String(data), SlidesListEntry.class);
-                    if (entry != null) {
-                        buildCarouselAdapter(entry.aList);
-                    }
-                }
-            }
 
-            @Override
-            public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
-                buildCarouselAdapter(null);
-            }
-        });
-    }
-    boolean mIsBind = false;
+    //    boolean mIsBind = false;
     ComboAdapter adapter;
-    CarouselAdapter cAdapter;
     ListView mListView;
-    /**
-     * 轮播的图片
-     */
-    ViewFlow carousel_img;
-    CircleFlowIndicator carousel_point;
+
+    View back;
 }

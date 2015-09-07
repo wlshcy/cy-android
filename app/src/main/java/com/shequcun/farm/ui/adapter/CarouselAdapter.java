@@ -23,7 +23,7 @@ public class CarouselAdapter extends BaseAdapter {
 
     private LayoutInflater mInflater;
     private List<SlidesEntry> mImageList;
-    private AvoidDoubleClickListener onClick;
+    private View.OnClickListener onClick;
 
     public CarouselAdapter(Context context, List<SlidesEntry> list) {
         this.mInflater = (LayoutInflater) context
@@ -31,7 +31,7 @@ public class CarouselAdapter extends BaseAdapter {
         this.mImageList = list;
     }
 
-    public void buildOnClick(AvoidDoubleClickListener onClick) {
+    public void buildOnClick(View.OnClickListener onClick) {
         this.onClick = onClick;
     }
 

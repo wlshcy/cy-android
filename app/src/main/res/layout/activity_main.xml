@@ -32,22 +32,22 @@
             android:paddingTop="3dp">
 
             <RadioButton
-                android:id="@+id/combo_rb"
+                android:id="@+id/home_rb"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@null"
                 android:button="@null"
-                android:drawableTop="@drawable/combo_selector" />
+                android:drawableTop="@drawable/home_selector" />
 
             <RadioButton
-                android:id="@+id/discount_rb"
+                android:id="@+id/shopping_cart_rb"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@null"
                 android:button="@null"
-                android:drawableTop="@drawable/specialty_selector" />
+                android:drawableTop="@drawable/shopping_cart_selector" />
 
             <RadioButton
                 android:id="@+id/mine_rb"

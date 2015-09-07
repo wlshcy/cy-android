@@ -42,6 +42,35 @@ public class RecommendEntry extends BaseEntry {
     public int type;// 1.普通菜品，2.秒杀菜品
     @SerializedName("bought")//true表示已购买，不需要下单时再判断了
     public boolean bought;
+    @SerializedName("sales")
+    public int sales;//销量
+    @SerializedName("mprice")
+    public int mprice;//市场价格
+
+    @SerializedName("farm")
+    public String farm;
+    @SerializedName("detail")
+    public RecommendDetailEntry detail;
+//    "detail":null,
+//            "descr":"",
+//            "type":1,
+//            "maxpacks":1000,
+//            "imgs":[
+//            "https://img.shequcun.com/1508/26151/048c99a3fa724f38b70033b3dbbd9587.png"
+//            ],
+//            "remains":100000,
+//            "farm":"吾优吾绿",
+//            "fid":2,
+//            "title":"五常稻花香1kg",
+//            "iid":104,
+//            "mprice":5000,
+//            "price":2500,
+//            "status":1,
+//            "sales":0,
+//            "id":7,
+//            "packw":1000
+
+
 //    "type": 2,
 //    "iid": 17,
 //            "maxpacks": 5,

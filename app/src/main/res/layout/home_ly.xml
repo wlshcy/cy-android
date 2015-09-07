@@ -9,32 +9,24 @@
         android:layout_height="fill_parent"
         android:background="@color/gray_ececec"
         android:descendantFocusability="beforeDescendants"
+        android:fillViewport="true"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        ptr:ptrAnimationStyle="flip"
-        ptr:ptrMode="disabled">
+        ptr:ptrAnimationStyle="flip">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <include layout="@layout/common_title_ly"/>
+            <include layout="@layout/carousel_ly" />
 
-            <ListView
-                android:id="@+id/mListView"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_marginBottom="7dp"
-                android:layout_marginTop="7dp"
-                android:cacheColorHint="#00000000"
-                android:divider="@null"
-                android:dividerHeight="7dp"
-                android:fastScrollEnabled="true"
-                android:paddingLeft="7dp"
-                android:paddingRight="7dp" />
+            <include layout="@layout/combo_title_ly"/>
+
+            <include layout="@layout/farm_specialty_title_ly" />
+
+            <include layout="@layout/farm_specialty_gv_ly" />
         </LinearLayout>
-
     </com.common.widget.PullToRefreshScrollView>
 
 </LinearLayout>

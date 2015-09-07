@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/px324"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/list_item_selector"
+    android:minHeight="@dimen/px424"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+
+        <ImageView
+            android:id="@+id/goods_img"
+            android:layout_width="@dimen/px324"
+            android:layout_height="@dimen/px260"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop" />
+
+
+        <TextView
+            android:id="@+id/spike_tv"
+            android:layout_width="@dimen/px76"
+            android:layout_height="@dimen/px36"
+            android:layout_margin="@dimen/px16"
+            android:background="@drawable/orange_f17b52_corner"
+            android:gravity="center"
+            android:text="@string/spike"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/font23" />
+    </FrameLayout>
+
+
+    <TextView
+        android:id="@+id/goods_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/px20"
+        android:text="Title"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/font30" />
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/px26"
+        android:layout_marginTop="@dimen/px20"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/merge_unit_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10个/份"
+                android:textColor="@color/gray_9a9a9a"
+                android:textSize="@dimen/font26" />
+
+            <TextView
+                android:id="@+id/price_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/px20"
+                android:text="￥3600.00"
+
+                android:textColor="@color/green_32bd6f"
+                android:textSize="@dimen/font26" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/px30"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/sale_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="11人选择"
+                android:textColor="@color/gray_9a9a9a"
+                android:textSize="@dimen/font26" />
+
+            <TextView
+                android:id="@+id/mprice_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/px20"
+                android:text="￥3600.00"
+                android:textColor="@color/gray_9a9a9a"
+                android:textSize="@dimen/font26" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>

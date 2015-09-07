@@ -51,72 +51,82 @@
             android:layout_marginTop="@dimen/px20"
             android:orientation="horizontal">
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/times"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:text="送X次"
+                android:textColor="@color/orange_F17b52"
+                android:textSize="@dimen/font26" />
 
-                <TextView
-                    android:id="@+id/dis_cycle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="1次/周"
-                    android:textColor="@color/black_303030"
-                    android:textSize="@dimen/font26" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/px10"
+                android:layout_marginRight="@dimen/px10"
+                android:text="|"
+                android:textColor="@color/orange_F17b52" />
+
+            <TextView
+                android:id="@+id/per_weight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="6斤/次"
+                android:textColor="@color/orange_F17b52"
+                android:textSize="@dimen/font26" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/px10"
+                android:layout_marginRight="@dimen/px10"
+                android:text="|"
+                android:textColor="@color/orange_F17b52" />
+
+            <TextView
+                android:id="@+id/dis_cycle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1次/周"
+                android:textColor="@color/orange_F17b52"
+                android:textSize="@dimen/font26" />
+
+        </LinearLayout>
 
 
-                <TextView
-                    android:id="@+id/times"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/px16"
-                    android:text="4次/月"
-                    android:textColor="@color/black_303030"
-                    android:textSize="@dimen/font26" />
-
-                <TextView
-                    android:id="@+id/combo_price"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/px20"
-                    android:text="￥3600.00"
-                    android:textColor="@android:color/black" />
+        <TextView
+            android:id="@+id/farm_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="来自:"
+            android:layout_marginLeft="@dimen/px40"
+            android:layout_marginTop="@dimen/px20"
+            android:textColor="@color/gray_9a9a9a"
+            android:textSize="@dimen/font26" />
 
 
-            </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/px40"
+            android:layout_marginTop="@dimen/px20"
+            android:orientation="horizontal">
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/combo_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="￥3600.00"
+                android:textColor="@color/green_32bd6f" />
+
+
+            <TextView
+                android:id="@+id/combo_mprice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/px70"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/per_weight"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="6斤/次"
-                    android:textColor="@color/black_303030"
-                    android:textSize="@dimen/font26" />
-
-                <TextView
-                    android:id="@+id/all_weight"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/px16"
-                    android:text="共60kg"
-                    android:textColor="@color/black_303030"
-                    android:textSize="@dimen/font26" />
-
-
-                <TextView
-                    android:id="@+id/combo_mprice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/px20"
-                    android:text="￥3600.00"
-                    android:textColor="@color/gray_9a9a9a" />
-            </LinearLayout>
+                android:text="￥3600.00"
+                android:textColor="@color/gray_9a9a9a" />
         </LinearLayout>
     </LinearLayout>
 
