@@ -145,4 +145,6 @@
     <string name="specialty">农庄特产</string>
     <string name="spike">秒杀</string>
     <string name="spike_error_tip">您已购买过该产品,不能重复购买!</string>
+    <string name="organic_farm_combo">有机农庄宅配套餐</string>
+    <string name="more_combo">更多营养套餐</string>
 </resources>

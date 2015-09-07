@@ -7,6 +7,8 @@
     android:horizontalSpacing="@dimen/px20"
     android:isScrollContainer="false"
     android:numColumns="2"
-    android:padding="@dimen/px20"
+    android:paddingLeft="@dimen/px20"
+    android:paddingRight="@dimen/px20"
+    android:paddingBottom="@dimen/px20"
     android:stretchMode="columnWidth"
     android:verticalSpacing="@dimen/px20" />

@@ -11,6 +11,7 @@
         android:descendantFocusability="beforeDescendants"
         android:fillViewport="true"
         android:focusable="true"
+        android:scrollbars="none"
         android:focusableInTouchMode="true"
         ptr:ptrAnimationStyle="flip">
 

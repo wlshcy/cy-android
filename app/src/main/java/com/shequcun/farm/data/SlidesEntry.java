@@ -5,13 +5,15 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by apple check_turn_on 15/7/23.
  */
-public class SlidesEntry extends BaseEntry{
+public class SlidesEntry extends BaseEntry {
     @SerializedName("title")
     public String title;
     @SerializedName("img")
     public String img;
     @SerializedName("url")
     public String url;
+    @SerializedName("link")
+    public LinkEntry link;
 
 //    id	int	幻灯片id	自增主键	10
 //    cid	int	城市id		1

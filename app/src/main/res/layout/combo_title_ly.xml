@@ -2,14 +2,65 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/px296"
+    android:layout_marginTop="@dimen/px16"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/buy_tv"
-        android:background="@drawable/list_item_selector"
+    <View
         android:layout_width="match_parent"
-        android:text="@string/buy"
+        android:layout_height="0.5dp"
+        android:background="@color/gray_cecece" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px66"
+        android:background="@android:color/white"
         android:gravity="center"
-        android:layout_height="@dimen/px66" />
+        android:text="@string/organic_farm_combo" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/gray_cecece" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="0.5dp">
+
+        <ImageView
+            android:id="@+id/no_combo_iv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/icon_no_combo"
+            android:visibility="gone" />
+
+
+        <LinearLayout
+            android:id="@+id/more_combo_ly"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/has_combo_iv"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:scaleType="fitXY"
+                android:src="@drawable/icon_has_combo" />
+
+            <TextView
+                android:id="@+id/more_combo"
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/list_item_selector"
+                android:gravity="center"
+                android:text="@string/more_combo" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
 
 </LinearLayout>

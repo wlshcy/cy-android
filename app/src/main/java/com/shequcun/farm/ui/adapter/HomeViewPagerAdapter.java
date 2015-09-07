@@ -8,6 +8,7 @@ import android.util.SparseArray;
 import android.view.ViewGroup;
 
 import com.shequcun.farm.ui.fragment.ComboFragment;
+import com.shequcun.farm.ui.fragment.FarmSpecialtyShoppingCartFragment;
 import com.shequcun.farm.ui.fragment.HomeFragment;
 import com.shequcun.farm.ui.fragment.SpecialtyFragment;
 import com.shequcun.farm.ui.fragment.MyFragment;
@@ -38,7 +39,7 @@ public class HomeViewPagerAdapter extends FragmentPagerAdapter {
             f = new MyFragment();
 //            f = new LoginFragment();
         } else if (position == 1) {
-            f = new SpecialtyFragment();
+            f = new FarmSpecialtyShoppingCartFragment();
         }
         mPageReferenceMap.put(position, f);
         return f;

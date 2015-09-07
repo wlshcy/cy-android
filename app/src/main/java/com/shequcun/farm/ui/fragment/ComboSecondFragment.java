@@ -42,7 +42,6 @@ public class ComboSecondFragment extends BaseFragment {
     @Override
     protected void setWidgetLsn() {
         back.setOnClickListener(onClick);
-
         mLv.setOnItemClickListener(onItemLsn);
         buildAdapter();
     }

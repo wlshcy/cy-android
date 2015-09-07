@@ -97,15 +97,10 @@ public class ComboFragment extends BaseFragment {
             ComboEntry entry = adapter.getItem(position);
             if (entry == null)
                 return;
-//            if (isLogin()) {
             if (buildIsMyComboClick(position)) {
                 gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new ChooseDishesFragment(), ChooseDishesFragment.class.getName());
             } else
                 gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new ComboSecondFragment(), ComboSecondFragment.class.getName());
-//            }
-//            else {
-//                gotoFragmentByAdd(R.id.mainpage_ly, new LoginFragment(), LoginFragment.class.getName());
-//            }
         }
     };
 

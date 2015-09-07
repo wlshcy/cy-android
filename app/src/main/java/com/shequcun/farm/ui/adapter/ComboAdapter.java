@@ -66,7 +66,7 @@ public class ComboAdapter extends ArrayAdapter<ComboEntry> {
 
             if (entry.shipday != null) {
                 vh.dis_cycle.setText(entry.shipday.length + "次/周");//"每周配送" +
-                vh.times.setText("送" + entry.duration * entry.shipday.length + "次");
+                vh.times.setText("共" + entry.duration * entry.shipday.length + "次");
             }
 
             if (entry.weights != null) {

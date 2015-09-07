@@ -56,7 +56,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="送X次"
-                android:textColor="@color/orange_F17b52"
+                android:textColor="@color/orange_f36043"
                 android:textSize="@dimen/font26" />
 
             <TextView
@@ -65,14 +65,14 @@
                 android:layout_marginLeft="@dimen/px10"
                 android:layout_marginRight="@dimen/px10"
                 android:text="|"
-                android:textColor="@color/orange_F17b52" />
+                android:textColor="@color/orange_f36043" />
 
             <TextView
                 android:id="@+id/per_weight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="6斤/次"
-                android:textColor="@color/orange_F17b52"
+                android:textColor="@color/orange_f36043"
                 android:textSize="@dimen/font26" />
 
             <TextView
@@ -81,14 +81,14 @@
                 android:layout_marginLeft="@dimen/px10"
                 android:layout_marginRight="@dimen/px10"
                 android:text="|"
-                android:textColor="@color/orange_F17b52" />
+                android:textColor="@color/orange_f36043" />
 
             <TextView
                 android:id="@+id/dis_cycle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="1次/周"
-                android:textColor="@color/orange_F17b52"
+                android:textColor="@color/orange_f36043"
                 android:textSize="@dimen/font26" />
 
         </LinearLayout>

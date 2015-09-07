@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 
 import com.android.volley.toolbox.NetworkImageView;
 import com.bitmap.cache.ImageCacheManager;
@@ -57,17 +58,19 @@ public class CarouselAdapter extends BaseAdapter {
         if (convertView == null) {
             holder = new ViewHolder();
             convertView = mInflater.inflate(R.layout.image_item, null);
-            holder.coverView = (NetworkImageView) convertView
+            holder.coverView = (ImageView) convertView
                     .findViewById(R.id.imgView);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        if (TextUtils.isEmpty(item.url)) {
-            holder.coverView.setDefaultImageResId(R.drawable.icon_combo_default);
+        if (TextUtils.isEmpty(item.img)) {
+            holder.coverView.setImageResource(R.drawable.icon_combo_default);
+        } else {
+            ImageCacheManager.getInstance().displayImage(holder.coverView, item.img);
         }
-        holder.coverView.setImageUrl(item.img, ImageCacheManager.getInstance()
-                .getImageLoader());
+//        holder.coverView.setImageUrl(item.img, ImageCacheManager.getInstance()
+//                .getImageLoader());
 
 
         holder.coverView.setTag(item);
@@ -76,6 +79,6 @@ public class CarouselAdapter extends BaseAdapter {
     }
 
     class ViewHolder {
-        public NetworkImageView coverView;
+        public ImageView coverView;
     }
 }

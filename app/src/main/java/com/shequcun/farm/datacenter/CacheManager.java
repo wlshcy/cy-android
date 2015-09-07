@@ -1,9 +1,13 @@
 package com.shequcun.farm.datacenter;
 
 import android.content.Context;
+import android.text.TextUtils;
 
+import com.shequcun.farm.data.RecommendEntry;
 import com.shequcun.farm.data.UserLoginEntry;
 import com.shequcun.farm.db.DBLite;
+import com.shequcun.farm.db.DBRecordItem;
+import com.shequcun.farm.db.RecommendItemKey;
 import com.shequcun.farm.util.JsonUtilsParser;
 
 /**
@@ -90,7 +94,66 @@ public class CacheManager {
         return uEntry;
     }
 
+
+    public RecommendEntry[] getRecommendFromDisk() {
+        DBLite dblite = new DBLite(mContext, null, KeyWord_RecommendTag);
+        dblite.loadData();
+        int length = dblite.getRecordSize();
+        if (length <= 0)
+            return null;
+        RecommendEntry[] ze = new RecommendEntry[length];
+        for (int i = 0; i < length; i++) {
+            DBRecordItem aitem = dblite.getRecord(i);
+            ze[i] = parseRecommentItem(aitem.getStringValue("RecommentItem", ""));
+        }
+        return ze;
+    }
+
+    public void saveRecommendToDisk(RecommendItemKey zItem) {
+        try {
+            if (zItem == null || zItem.object == null)
+                return;
+            String newHist = zItem.getKeyId();
+            DBLite dblite = new DBLite(mContext, null, KeyWord_RecommendTag);
+            dblite.loadData();
+            int length = dblite.getRecordSize();
+            for (int i = 0; i < length; i++) {
+                DBRecordItem aitem = dblite.getRecord(i);
+                if (newHist.contentEquals(aitem.getStringValue("RecommentItemKey",
+                        ""))) {
+                    dblite.deleteRecord(i);
+                    break;
+                }
+            }
+            length = dblite.getRecordSize();
+            if (length >= MAX_COUNT) {
+                dblite.deleteRecord(length - 1);
+            }
+            DBRecordItem item = new DBRecordItem();
+            item.setStringValue("RecommentItemKey", newHist);
+            RecommendEntry zEntry = (RecommendEntry) zItem.object;
+            item.setStringValue("RecommentItem", JsonUtilsParser.toJson(zEntry));
+            dblite.insertRecord(item, 0);
+            dblite.saveToDisk();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+
+    private RecommendEntry parseRecommentItem(String result) {
+        if (TextUtils.isEmpty(result))
+            return null;
+        try {
+            return JsonUtilsParser.fromJson(result, RecommendEntry.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
     final String KeyWord_UserZoneCacheTag = "UserZoneCacheTag";
     final String KeyWord_UserLoginCacheTag = "UserLoginCacheTag";
     final String KeyWord_UserAddressTag = "UserAddressTag";
+    final String KeyWord_RecommendTag = "UserRecommendTag";
+    final int MAX_COUNT = 100;
 }

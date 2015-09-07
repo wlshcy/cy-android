@@ -12,18 +12,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
+import com.android.volley.Request;
 import com.common.widget.CircleFlowIndicator;
 import com.common.widget.ExpandableHeightGridView;
 import com.common.widget.PullToRefreshBase;
 import com.common.widget.PullToRefreshScrollView;
 import com.common.widget.ViewFlow;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 import com.shequcun.farm.R;
+import com.shequcun.farm.data.ComboDetailEntry;
+import com.shequcun.farm.data.ComboEntry;
+import com.shequcun.farm.data.HomeEntry;
+import com.shequcun.farm.data.LinkEntry;
 import com.shequcun.farm.data.RecommendEntry;
 import com.shequcun.farm.data.RecommentListEntry;
 import com.shequcun.farm.data.SlidesEntry;
 import com.shequcun.farm.data.SlidesListEntry;
+import com.shequcun.farm.data.UserLoginEntry;
 import com.shequcun.farm.datacenter.CacheManager;
+import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.ui.adapter.CarouselAdapter;
 import com.shequcun.farm.ui.adapter.FarmSpecialtyAdapter;
 import com.shequcun.farm.util.HttpRequestUtil;
@@ -31,6 +39,7 @@ import com.shequcun.farm.util.IntentUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.ToastHelper;
+import com.shequcun.farm.util.Utils;
 
 import org.apache.http.Header;
 
@@ -60,19 +69,26 @@ public class HomeFragment extends BaseFragment {
         carousel_point = (CircleFlowIndicator) v.findViewById(R.id.carousel_point);
         pView = (PullToRefreshScrollView) v.findViewById(R.id.pView);
         gv = (ExpandableHeightGridView) v.findViewById(R.id.gv);
-        buy_tv = v.findViewById(R.id.buy_tv);
+        no_combo_iv = v.findViewById(R.id.no_combo_iv);
+        more_combo_ly = v.findViewById(R.id.more_combo_ly);
+        has_combo_iv = v.findViewById(R.id.has_combo_iv);
+        more_combo = v.findViewById(R.id.more_combo);
     }
 
     @Override
     protected void setWidgetLsn() {
-        requestSlideFromServer();
+//        requestSlideFromServer();
         doRegisterRefreshBrodcast();
-        pView.setMode(PullToRefreshBase.Mode.PULL_FROM_END);
+//        pView.setMode(PullToRefreshBase.Mode.PULL_FROM_END);
+        pView.setMode(PullToRefreshBase.Mode.DISABLED);
         pView.setOnRefreshListener(onRefrshLsn);
         gv.setOnItemClickListener(onItemClk);
-        buy_tv.setOnClickListener(onClick);
+        no_combo_iv.setOnClickListener(onClick);
+        has_combo_iv.setOnClickListener(onClick);
+        more_combo.setOnClickListener(onClick);
         buildGridViewAdapter();
-        requestRecomendDishes();
+        requestHome(1);
+//        requestRecomendDishes();
     }
 
 
@@ -99,35 +115,10 @@ public class HomeFragment extends BaseFragment {
                 return;
             }
             if (action.equals(IntentUtil.UPDATE_COMBO_PAGE)) {
-//                if (adapter != null)
-//                    adapter.clear();
-//                requestComboList();
+                requestHome(2);
             }
         }
     };
-
-
-    /**
-     * 请求轮播图
-     */
-    void requestSlideFromServer() {
-        HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "cai/slide", new AsyncHttpResponseHandler() {
-            @Override
-            public void onSuccess(int sCode, Header[] h, byte[] data) {
-                if (data != null && data.length > 0) {
-                    SlidesListEntry entry = JsonUtilsParser.fromJson(new String(data), SlidesListEntry.class);
-                    if (entry != null) {
-                        buildCarouselAdapter(entry.aList);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
-                buildCarouselAdapter(null);
-            }
-        });
-    }
 
     private void doUnRegisterReceiver() {
         if (mIsBind) {
@@ -151,15 +142,27 @@ public class HomeFragment extends BaseFragment {
     private View.OnClickListener onClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (v == buy_tv) {
+            if (v == no_combo_iv || v == more_combo) {
                 gotoFragmentByAdd(R.id.mainpage_ly, new ComboFragment(), ComboFragment.class.getName());
+                return;
+            } else if (v == has_combo_iv) {//进入选菜页
+                gotoFragmentByAdd(buildBundle_(comboEntry), R.id.mainpage_ly, new ChooseDishesFragment(), ChooseDishesFragment.class.getName());
                 return;
             }
             SlidesEntry item = (SlidesEntry) v.getTag();
             if (item == null)
                 return;
-            if (TextUtils.isEmpty(item.url))
+            if (TextUtils.isEmpty(item.url)) {
+                LinkEntry link = item.link;
+                if (link == null || link.type == 0)
+                    return;
+                if (link.type == 1) {//1.套餐详情,
+                    requestComboDetail(link.id);
+                } else if (link.type == 2) {//2.菜品详情
+                }
                 return;
+            }
+
             gotoFragmentByAdd(buildBundle(item.url), R.id.mainpage_ly, new AdFragment(), AdFragment.class.getName());
         }
     };
@@ -178,9 +181,39 @@ public class HomeFragment extends BaseFragment {
 
         @Override
         public void onPullUpToRefresh(PullToRefreshBase refreshView) {
-            requestRecomendDishes();
+//            requestRecomendDishes();
         }
     };
+
+    void requestHome(final int mode) {
+        RequestParams params = new RequestParams();
+        params.add("mode", mode + "");
+        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "cai/home", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int sCode, Header[] h, byte[] data) {
+                if (data != null && data.length > 0) {
+                    HomeEntry hEntry = JsonUtilsParser.fromJson(new String(data), HomeEntry.class);
+                    if (hEntry != null) {
+                        if (TextUtils.isEmpty(hEntry.errmsg)) {
+                            if (mode != 2) {
+                                buildCarouselAdapter(hEntry.sList);
+                                addDataToAdapter(hEntry.rList);
+                            }
+                            doSaveMyComboToDisk(hEntry.myCombos);
+                            return;
+                        }
+                        ToastHelper.showShort(getActivity(), hEntry.errmsg);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
+                buildCarouselAdapter(null);
+            }
+        });
+    }
+
 
     /**
      * 请求特产
@@ -259,6 +292,79 @@ public class HomeFragment extends BaseFragment {
         return bundle;
     }
 
+
+    void doSaveMyComboToDisk(ComboEntry entry) {
+        if (entry != null) {
+            byte[] data = new CacheManager(getActivity()).getUserLoginFromDisk();
+            if (data != null && data.length > 0) {
+                UserLoginEntry uentry = JsonUtilsParser.fromJson(new String(data), UserLoginEntry.class);
+                if (uentry != null) {
+                    uentry.mycomboids = new int[1];
+                    comboEntry = entry;
+                    uentry.mycomboids[0] = comboEntry.id;
+                    new CacheManager(getActivity()).saveUserLoginToDisk(JsonUtilsParser.toJson(uentry).getBytes());
+                }
+                no_combo_iv.setVisibility(View.GONE);
+                more_combo_ly.setVisibility(View.VISIBLE);
+
+            }
+        } else {
+            comboEntry = null;
+            no_combo_iv.setVisibility(View.VISIBLE);
+            more_combo_ly.setVisibility(View.GONE);
+        }
+    }
+
+    void requestComboDetail(int id) {
+        final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
+        RequestParams params = new RequestParams();
+        params.add("id", "" + id);
+        HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "cai/combodtl", params, new AsyncHttpResponseHandler() {
+
+            @Override
+            public void onStart() {
+                super.onStart();
+                pDlg.show();
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                pDlg.dismiss();
+            }
+
+            @Override
+            public void onSuccess(int sCode, Header[] h, byte[] data) {
+                if (data != null && data.length > 0) {
+                    ComboDetailEntry entry = JsonUtilsParser.fromJson(new String(data), ComboDetailEntry.class);
+                    if (entry != null) {
+                        if (TextUtils.isEmpty(entry.errmsg)) {
+                            gotoFragmentByAdd(buildBundle_(entry.combo), R.id.mainpage_ly, new ComboSecondFragment(), ComboSecondFragment.class.getName());
+                            return;
+                        }
+                        ToastHelper.showShort(getActivity(), entry.errmsg);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
+                if (sCode == 0) {
+                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
+                    return;
+                }
+                ToastHelper.showShort(getActivity(), "请求失败,错误码" + sCode);
+            }
+        });
+    }
+
+    Bundle buildBundle_(ComboEntry entry) {
+        Bundle bundle = new Bundle();
+        entry.setPosition(entry.index);
+        bundle.putSerializable("ComboEntry", entry);
+        return bundle;
+    }
+
     /**
      * 是否登录成功
      *
@@ -278,5 +384,9 @@ public class HomeFragment extends BaseFragment {
     PullToRefreshScrollView pView;
     ExpandableHeightGridView gv;
     private FarmSpecialtyAdapter adapter;
-    View buy_tv;
+    View no_combo_iv;
+    View more_combo_ly;
+    View has_combo_iv;//进入选菜页
+    View more_combo;//更多套餐
+    ComboEntry comboEntry;
 }

@@ -51,6 +51,12 @@ public class RecommendEntry extends BaseEntry {
     public String farm;
     @SerializedName("detail")
     public RecommendDetailEntry detail;
+
+    /**
+     * 购买单品的数量
+     */
+    @SerializedName("count")
+    public int count = 0;
 //    "detail":null,
 //            "descr":"",
 //            "type":1,

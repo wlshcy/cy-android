@@ -68,7 +68,7 @@ public class OrderDetailsFragment extends BaseFragment {
         address = (TextView) v.findViewById(R.id.address);
         rightTv = (TextView) v.findViewById(R.id.title_right_text);
         rightTv.setText(R.string.consultation);
-        re_choose_dishes = v.findViewById(R.id.re_choose_dishes);
+//        re_choose_dishes = v.findViewById(R.id.re_choose_dishes);
         commitOrderTv = (TextView) v.findViewById(R.id.bug_order_tv);
         addressLy = v.findViewById(R.id.addressee_ly);
         add_address_ly = v.findViewById(R.id.add_address_ly);
@@ -145,7 +145,7 @@ public class OrderDetailsFragment extends BaseFragment {
     protected void setWidgetLsn() {
         back.setOnClickListener(onClick);
         rightTv.setOnClickListener(onClick);
-        re_choose_dishes.setOnClickListener(onClick);
+//        re_choose_dishes.setOnClickListener(onClick);
         commitOrderTv.setOnClickListener(onClick);
         addressLy.setOnClickListener(onClick);
         add_address_ly.setOnClickListener(onClick);
@@ -159,9 +159,10 @@ public class OrderDetailsFragment extends BaseFragment {
                 popBackStack();
             else if (v == rightTv)
                 ConsultationDlg.showCallTelDlg(getActivity());
-            else if (re_choose_dishes == v) {//重新选择菜品
-
-            } else if (v == commitOrderTv) {
+//            else if (re_choose_dishes == v) {//重新选择菜品
+//
+//            }
+            else if (v == commitOrderTv) {
 
                 if (commitOrderTv.getText().toString().equals(getResources().getString(R.string.pay_immediately))) {
                     makeOrder();
@@ -533,7 +534,7 @@ public class OrderDetailsFragment extends BaseFragment {
     TextView addressee_info;
     TextView address;
     TextView rightTv;
-    View re_choose_dishes;
+
     /**
      * 价格
      */
