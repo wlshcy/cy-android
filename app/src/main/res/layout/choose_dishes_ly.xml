@@ -96,7 +96,7 @@
                         android:layout_weight="1">
 
                         <TextView
-                            android:id="@+id/bug_order_tv"
+                            android:id="@+id/buy_order_tv"
                             android:layout_width="@dimen/px210"
                             android:layout_height="@dimen/px74"
                             android:layout_gravity="center_vertical|right"

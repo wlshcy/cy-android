@@ -5,28 +5,32 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.common.widget.ExpandableHeightListView;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.AddressEntry;
 import com.shequcun.farm.data.AddressListEntry;
+import com.shequcun.farm.data.OrderEntry;
+import com.shequcun.farm.data.PayParams;
 import com.shequcun.farm.data.RecommendEntry;
 import com.shequcun.farm.data.UserLoginEntry;
 import com.shequcun.farm.datacenter.CacheManager;
+import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.db.RecommendItemKey;
 import com.shequcun.farm.dlg.ConsultationDlg;
+import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.model.PhotoModel;
 import com.shequcun.farm.ui.adapter.FarmSpecialtyShopCartAdapter;
 import com.shequcun.farm.util.HttpRequestUtil;
@@ -35,6 +39,7 @@ import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.ResUtil;
 import com.shequcun.farm.util.ToastHelper;
+import com.shequcun.farm.util.Utils;
 
 import org.apache.http.Header;
 
@@ -93,13 +98,7 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment {
                 addDataToAdapter(rEntryArray);
                 return;
             } else {
-                if (adapter != null) {
-                    adapter.clear();
-                }
-                if (footerView != null) {
-                    mLv.removeFooterView(footerView);
-                    footerView = null;
-                }
+                resetWidgetStatus();
             }
             shopCartView = LayoutInflater.from(getActivity()).inflate(R.layout.farm_shopping_cart_widget_ly, null);
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -108,6 +107,23 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment {
         }
     }
 
+
+    void resetWidgetStatus() {
+        if (adapter != null) {
+            adapter.clear();
+        }
+        if (footerView != null) {
+            mLv.removeFooterView(footerView);
+            footerView = null;
+        }
+
+        if (sChilidView != null) {
+            pView.removeView(sChilidView);
+            sChilidView = null;
+        }
+        if (pAddressView != null)
+            pAddressView.setVisibility(View.GONE);
+    }
 
     View.OnClickListener onClick = new View.OnClickListener() {
         @Override
@@ -135,7 +151,7 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment {
 //            mLv.addFooterView(sChilidView, null, false);
 //        }
 
-        updateNumberCopies(part);
+        updateWidget(part, allMoney);
     }
 
     void removeWidgetFromView() {
@@ -165,8 +181,10 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment {
 
     void addDataToAdapter(RecommendEntry[] rEntryArray) {
         allPart = 0;
+        allMoney = 0;
         for (int i = 0; i < rEntryArray.length; ++i) {
             allPart += rEntryArray[i].count;
+            allMoney += rEntryArray[i].count * rEntryArray[i].price;
         }
         adapter.addAll(rEntryArray);
         adapter.notifyDataSetChanged();
@@ -217,6 +235,8 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment {
                 - mLv.getFirstVisiblePosition());
         if (pView == null)
             return;
+        alipay = null;
+        orderno = null;
         TextView tvCount = (TextView) pView.findViewById(R.id.goods_count);// 显示数量
         if (tvCount.getVisibility() == View.GONE) {
             tvCount.setVisibility(View.VISIBLE);
@@ -243,7 +263,8 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment {
         } else {
             new CacheManager(getActivity()).saveRecommendToDisk(zItem);
         }
-        updateNumberCopies(isAdd ? ++allPart : --allPart);
+        allMoney = isAdd ? allMoney + goodItem.price : allMoney - goodItem.price;
+        updateWidget(isAdd ? ++allPart : --allPart, allMoney);
         tvCount.setText(String.valueOf(intCount));
     }
 
@@ -253,10 +274,11 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment {
         doUnRegisterReceiver();
     }
 
-    void updateNumberCopies(int part) {
-        if (number_copies == null)
+    void updateWidget(int part, int allMoney) {
+        if (number_copies == null || shop_cart_total_price_tv == null)
             return;
         number_copies.setText("共" + part + "份");
+        shop_cart_total_price_tv.setText("共付:" + Utils.unitPeneyToYuan(allMoney));
     }
 
     void doRegisterRefreshBrodcast() {
@@ -333,31 +355,158 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment {
         int size = list.size();
         for (int i = 0; i < size; ++i) {
             AddressEntry entry = list.get(i);
-            if (entry.isDefault) {
-                if (!TextUtils.isEmpty(entry.name) && !TextUtils.isEmpty(uEntry.address)) {
-                    addressEntry = entry;
-                    addressLy.setVisibility(View.VISIBLE);
-                    add_address_ly.setVisibility(View.GONE);
-                    addressee_info.setText(entry.name + "  " + entry.mobile);
-                    address.setText("地址: " + uEntry.address);
-                } else {
-                    addressLy.setVisibility(View.GONE);
-                    add_address_ly.setVisibility(View.VISIBLE);
-                }
-                return;
+//            if (entry.isDefault) {
+            if (!TextUtils.isEmpty(entry.name) && !TextUtils.isEmpty(uEntry.address)) {
+                addressEntry = entry;
+                addressLy.setVisibility(View.VISIBLE);
+                add_address_ly.setVisibility(View.GONE);
+                addressee_info.setText(entry.name + "  " + entry.mobile);
+                address.setText("地址: " + uEntry.address);
+            } else {
+                addressLy.setVisibility(View.GONE);
+                add_address_ly.setVisibility(View.VISIBLE);
             }
+            return;
+//            }
         }
     }
 
     void addSchildView() {
         if (sChilidView == null) {
             sChilidView = LayoutInflater.from(getActivity()).inflate(R.layout.farm_shopping_cart_footer_ly, null);
+            shop_cart_total_price_tv = (TextView) sChilidView.findViewById(R.id.shop_cart_total_price_tv);
+            ((TextView) sChilidView.findViewById(R.id.shop_cart_surpport_now_pay_tv)).setText(R.string.has_choosen_dishes);
+
+            sChilidView.findViewById(R.id.buy_order_tv).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    createOrder(addressEntry);
+                }
+            });
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+
             params.bottomMargin = ResUtil.dipToPixel(getActivity(), 5);
+
             pView.addView(sChilidView, params);
+
+
         }
     }
+
+    /**
+     * 创建单品订单
+     */
+    void createOrder(AddressEntry entry) {
+        if (entry == null || TextUtils.isEmpty(entry.name) || TextUtils.isEmpty(entry.mobile) || TextUtils.isEmpty(entry.zname)) {
+            ToastHelper.showShort(getActivity(), "地址获取失败,请稍后重试...");
+            return;
+        }
+        String address = null;
+        UserLoginEntry uEntry = new CacheManager(getActivity()).getUserLoginEntry();
+        if (uEntry != null && !TextUtils.isEmpty(uEntry.address)) {
+            address = uEntry.address;
+        }
+        if (!TextUtils.isEmpty(alipay) && !TextUtils.isEmpty(orderno)) {
+            gotoFragmentByAdd(buildBundle(orderno, allMoney, alipay, R.string.pay_success), R.id.mainpage_ly, new PayFragment(), PayFragment.class.getName());
+            return;
+        }
+
+        RequestParams params = new RequestParams();
+        params.add("type", "3");
+        params.add("name", entry.name);
+        params.add("mobile", entry.mobile);
+        params.add("address", address);
+        params.add("extras", getExtras());
+        params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
+
+
+        final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
+        HttpRequestUtil.httpPost(LocalParams.getBaseUrl() + "cai/order", params, new AsyncHttpResponseHandler() {
+
+            @Override
+            public void onStart() {
+                super.onStart();
+                pDlg.show();
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                pDlg.dismiss();
+            }
+
+            @Override
+            public void onSuccess(int sCode, Header[] h, byte[] data) {
+                if (data != null && data.length > 0) {
+                    OrderEntry entry = JsonUtilsParser.fromJson(new String(data), OrderEntry.class);
+                    if (entry != null) {
+                        if (TextUtils.isEmpty(entry.errmsg)) {
+                            gotoFragmentByAdd(buildBundle(orderno = entry.orderno, allMoney, alipay = entry.alipay, R.string.pay_success), R.id.mainpage_ly, new PayFragment(), PayFragment.class.getName());
+                            mHandler.sendEmptyMessageDelayed(0, 30 * 60 * 1000);
+                            return;
+                        }
+                        ToastHelper.showShort(getActivity(), entry.errmsg);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
+                if (sCode == 0) {
+                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
+                    return;
+                }
+                ToastHelper.showShort(getActivity(), "错误码" + sCode);
+            }
+        });
+    }
+
+    Bundle buildBundle(String orderno, int orderMoney, String alipay, int titleId) {
+        Bundle bundle = new Bundle();
+        PayParams payParams = new PayParams();
+        payParams.setParams(orderno, orderMoney, alipay, false, titleId);
+        bundle.putSerializable("PayParams", payParams);
+        return bundle;
+    }
+
+    public String getExtras() {
+        String result = "";
+        RecommendEntry[] rEntryArray = new CacheManager(getActivity()).getRecommendFromDisk();
+        if (rEntryArray != null && rEntryArray.length > 0) {
+            for (int i = 0; i < rEntryArray.length; ++i) {
+                RecommendEntry entry = rEntryArray[i];
+
+//                if (i == aList.size()) {
+//                    result += item.id + ":" + item.getCount();
+//                    break;
+//                }
+//                result += item.id + ":" + item.getCount() + ",";
+
+                if (entry != null) {
+                    if (result.length() > 0) {
+                        result += ",";
+                    }
+                    result += entry.id + ":" + entry.count;
+                }
+            }
+        }
+        return result;
+    }
+
+
+    private android.os.Handler mHandler = new android.os.Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 0:
+                    alipay = null;
+                    orderno = null;
+                    break;
+            }
+        }
+    };
 
     View pAddressView;
     AddressEntry addressEntry;
@@ -366,6 +515,7 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment {
     View shopCartView;
     RelativeLayout pView;
     TextView rightTv;
+    TextView shop_cart_total_price_tv;
     ExpandableHeightListView mLv;
     TextView number_copies;
     TextView addressee_info;
@@ -373,8 +523,12 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment {
     TextView address;
     View addressLy;
     View footerView;
+    //总份数
     private int allPart = 0;
+    //总价格
+    private int allMoney = 0;
     View sChilidView;
     ScrollView pScrollView;
-
+    String orderno;
+    String alipay;
 }

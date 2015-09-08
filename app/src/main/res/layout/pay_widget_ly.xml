@@ -31,7 +31,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/bug_order_tv"
+        android:id="@+id/buy_order_tv"
         android:layout_width="@dimen/px180"
         android:layout_height="@dimen/px100"
         android:background="@drawable/shopping_cart_widget_selector_1"

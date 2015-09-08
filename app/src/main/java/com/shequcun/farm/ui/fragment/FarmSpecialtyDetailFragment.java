@@ -118,7 +118,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
             pView.addView(childView, params);
             ((TextView) childView.findViewById(R.id.shop_cart_total_price_tv)).setText("共付:" + Utils.unitPeneyToYuan(entry.price));
             ((TextView) childView.findViewById(R.id.shop_cart_surpport_now_pay_tv)).setText("您已选好菜品了!");
-            childView.findViewById(R.id.bug_order_tv).setOnClickListener(new View.OnClickListener() {//支付
+            childView.findViewById(R.id.buy_order_tv).setOnClickListener(new View.OnClickListener() {//支付
                 @Override
                 public void onClick(View view) {
                     requestAddress();

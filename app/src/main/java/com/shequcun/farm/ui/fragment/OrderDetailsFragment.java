@@ -69,7 +69,7 @@ public class OrderDetailsFragment extends BaseFragment {
         rightTv = (TextView) v.findViewById(R.id.title_right_text);
         rightTv.setText(R.string.consultation);
 //        re_choose_dishes = v.findViewById(R.id.re_choose_dishes);
-        commitOrderTv = (TextView) v.findViewById(R.id.bug_order_tv);
+        commitOrderTv = (TextView) v.findViewById(R.id.buy_order_tv);
         addressLy = v.findViewById(R.id.addressee_ly);
         add_address_ly = v.findViewById(R.id.add_address_ly);
         shop_cart_total_price_tv = (TextView) v.findViewById(R.id.shop_cart_total_price_tv);
@@ -129,13 +129,13 @@ public class OrderDetailsFragment extends BaseFragment {
                     } else if (entry.duration >= 4) {
                         shop_cart_surpport_now_pay_tv.setText("本套餐只支持月付!");
                     } else {
-                        shop_cart_surpport_now_pay_tv.setText("您已选好菜品了!");
+                        shop_cart_surpport_now_pay_tv.setText(R.string.has_choosen_dishes);
                     }
                 }
 
                 commitOrderTv.setText(R.string.pay_immediately);
             } else {
-                shop_cart_surpport_now_pay_tv.setText("您已选好菜品了!");
+                shop_cart_surpport_now_pay_tv.setText(R.string.has_choosen_dishes);
             }
         }
     }

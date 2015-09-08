@@ -79,7 +79,7 @@ public class ChooseDishesFragment extends BaseFragment {
         mShopCartClearTv = (TextView) v.findViewById(R.id.shop_cart_clear_tv);
         emptyView = v.findViewById(R.id.empty_view);
         mOrderController = DisheDataCenter.getInstance();
-        mBuyOrderTv = (TextView) v.findViewById(R.id.bug_order_tv);
+        mBuyOrderTv = (TextView) v.findViewById(R.id.buy_order_tv);
         mShopCartIv = (ImageView) v.findViewById(R.id.shop_cart_iv);
         mBadgeViewShopCart = new BadgeView(getActivity(), mShopCartIv);
         mBadgeViewShopCart.setWidth(ResUtil.dip2px(getActivity(), 20));

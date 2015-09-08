@@ -66,7 +66,7 @@ public class SingleDishesFragment extends BaseFragment {
         rightTv = (TextView) v.findViewById(R.id.title_right_text);
         rightTv.setText(R.string.consultation);
         re_choose_dishes = v.findViewById(R.id.re_choose_dishes);
-        commitOrderTv = (TextView) v.findViewById(R.id.bug_order_tv);
+        commitOrderTv = (TextView) v.findViewById(R.id.buy_order_tv);
         addressLy = v.findViewById(R.id.addressee_ly);
         add_address_ly = v.findViewById(R.id.add_address_ly);
         shop_cart_total_price_tv = (TextView) v.findViewById(R.id.shop_cart_total_price_tv);

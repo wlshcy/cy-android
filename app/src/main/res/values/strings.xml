@@ -182,4 +182,5 @@
     <string name="add_remark">添加备注</string>
     <string name="use_discount_red_packets">使用优惠红包</string>
     <string name="red_packets_money">X元可用</string>
+    <string name="has_choosen_dishes">您已选好菜品了!</string>
 </resources>
