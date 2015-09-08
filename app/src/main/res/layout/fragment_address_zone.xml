@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/gray_ececec">
+
+    <include layout="@layout/common_title_ly"></include>
+
+    <EditText
+        android:id="@+id/zone_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/px20"
+        android:paddingRight="@dimen/px20"
+        android:paddingTop="@dimen/px24"
+        android:background="@android:color/white"
+        android:layout_marginTop="@dimen/px20"
+        android:gravity="left|top"
+        android:hint="@string/hint_input_street_and_zone_name"
+        android:lines="5"
+        android:singleLine="false"
+        android:textSize="@dimen/font28"
+        />
+    <TextView
+        android:id="@+id/save_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/px20"
+        android:paddingTop="@dimen/px30"
+        android:paddingBottom="@dimen/px30"
+        android:layout_marginLeft="@dimen/px110"
+        android:layout_marginRight="@dimen/px110"
+        android:background="@drawable/btn_bg_red_selector"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:text="@string/save_address"
+        />
+</LinearLayout>

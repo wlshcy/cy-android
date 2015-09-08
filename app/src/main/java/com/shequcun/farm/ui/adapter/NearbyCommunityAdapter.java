@@ -49,6 +49,8 @@ public class NearbyCommunityAdapter extends ArrayAdapter<ZoneEntry> {
                     .findViewById(R.id.community_info);
             viewHolder.community_address = (TextView) v
                     .findViewById(R.id.community_address);
+            viewHolder.dist = (TextView) v
+                    .findViewById(R.id.dist_tv);
             v.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) v.getTag();
@@ -65,6 +67,8 @@ public class NearbyCommunityAdapter extends ArrayAdapter<ZoneEntry> {
 //            viewHolder.community_info.setText(data.name);
 //        }
         viewHolder.community_info.setText(data.name);
+        if (data.dist > 0)
+            viewHolder.dist.setText("(" + data.dist + "m)");
 
         return v;
     }
@@ -72,6 +76,7 @@ public class NearbyCommunityAdapter extends ArrayAdapter<ZoneEntry> {
     class ViewHolder {
         TextView community_info;
         TextView community_address;
+        TextView dist;
     }
 
 }

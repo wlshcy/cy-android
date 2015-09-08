@@ -39,7 +39,6 @@
                 android:layout_marginLeft="@dimen/px40"
                 android:drawableLeft="@drawable/icon_combo_green"
                 android:drawablePadding="@dimen/px20"
-                android:text="@string/abc_action_bar_home_description"
                 android:textColor="@color/black_303030"
                 android:visibility="gone" />
         </FrameLayout>

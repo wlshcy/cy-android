@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_ececec"
+    android:orientation="vertical"
+    >
+
+    <include layout="@layout/common_title_ly" />
+
+    <com.common.widget.PullToRefreshListView
+        android:id="@+id/red_packets_lv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/px10"
+        android:paddingRight="@dimen/px10"
+        android:scrollbars="none"
+        android:divider="@color/gray_ececec"
+        android:dividerHeight="@dimen/px20"
+        android:background="@color/gray_ececec">
+    </com.common.widget.PullToRefreshListView>
+    <TextView
+        android:id="@+id/empty_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="@string/empty_red_packets"
+        android:visibility="gone" />
+</LinearLayout>

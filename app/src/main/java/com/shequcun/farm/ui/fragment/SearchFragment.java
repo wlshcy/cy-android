@@ -1,6 +1,8 @@
 package com.shequcun.farm.ui.fragment;
 
+import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -11,8 +13,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationListener;
+import com.amap.api.location.LocationManagerProxy;
+import com.amap.api.location.LocationProviderProxy;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.shequcun.farm.R;
@@ -34,7 +41,7 @@ import java.util.List;
 /**
  * Created by apple on 15/8/5.
  */
-public class SearchFragment extends BaseFragment {
+public class SearchFragment extends BaseFragment implements AMapLocationListener {
     @Override
     public boolean onBackPressed() {
         return false;
@@ -48,12 +55,14 @@ public class SearchFragment extends BaseFragment {
 
     @Override
     protected void initWidget(View v) {
+        startLocation();
         keyword_et = (EditText) v.findViewById(R.id.keyword_et);
         back = v.findViewById(R.id.back);
         mSearchResultLv = (ListView) v.findViewById(R.id.mLv);
         search_community = v.findViewById(R.id.search_community);
         fill_in_address = v.findViewById(R.id.fill_in_address);
         ((TextView) v.findViewById(R.id.title_center_text)).setText(R.string.search_community);
+        pBar = (ProgressBar) v.findViewById(R.id.progress_bar);
     }
 
     @Override
@@ -74,7 +83,7 @@ public class SearchFragment extends BaseFragment {
             else if (search_community == v)
                 searchCommunity();
             else if (fill_in_address == v) {
-                gotoFragmentByAdd(R.id.mainpage_ly, new FillInAddressFragment(), FillInAddressFragment.class.getName());
+                gotoFragmentByAdd(R.id.mainpage_ly, new AddressZoneFragment(), AddressZoneFragment.class.getName());
             }
         }
     };
@@ -89,7 +98,6 @@ public class SearchFragment extends BaseFragment {
             IntentUtil.sendUpdateMyAddressMsg(getActivity(), zEntry);
             //new CacheManager(getActivity()).saveZoneCacheToDisk(JsonUtilsParser.toJson(zEntry).getBytes());
             //popBackStack();
-            popBackStack();
             popBackStack();
         }
     };
@@ -148,7 +156,7 @@ public class SearchFragment extends BaseFragment {
             return;
         }
         RequestParams params = new RequestParams();
-        params.add("cid", buildCityId());
+        params.add("cid", "1");
         params.add("kw", keyword);
 
         HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "zone/search", params, new AsyncHttpResponseHandler() {
@@ -204,7 +212,9 @@ public class SearchFragment extends BaseFragment {
 
         @Override
         public void afterTextChanged(Editable editable) {
-
+            if (pBar.getVisibility() == View.VISIBLE)
+                pBar.setVisibility(View.GONE);
+            startLocation();
         }
     };
 
@@ -215,10 +225,122 @@ public class SearchFragment extends BaseFragment {
         mSearchResultLv.setAdapter(adapter);
     }
 
+    private void searchCommunityDependLonLat(double lon, double lat) {
+        RequestParams params = new RequestParams();
+        params.add("lng", "" + lon);
+        params.add("lat", "" + lat);
+        HttpRequestUtil.httpGet(LocalParams.getBaseUrl()
+                + "zone/v2/list", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                if (pBar != null) {
+                    pBar.setVisibility(View.VISIBLE);
+                }
+                super.onStart();
+            }
+
+            @Override
+            public void onFinish() {
+                if (pBar != null) {
+                    pBar.setVisibility(View.GONE);
+                }
+                super.onFinish();
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] data) {
+                if (data != null && data.length > 0) {
+                    ZoneListEntry zEntry = JsonUtilsParser.fromJson(new String(
+                            data), ZoneListEntry.class);
+                    if (zEntry != null) {
+                        if (!TextUtils.isEmpty(zEntry.errmsg)) {
+                            ToastHelper.showShort(getActivity(), zEntry.errmsg);
+                            return;
+                        }
+                        addDataToAdapter1(zEntry.aList);
+                        stopLocation();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers,
+                                  byte[] data, Throwable error) {
+                ToastHelper.showShort(getActivity(), "加载失败...");
+            }
+        });
+    }
+
+    private void addDataToAdapter1(List<ZoneEntry> aList) {
+        adapter.addAll(aList);
+        adapter.notifyDataSetChanged();
+    }
+
+
+    private void stopLocation() {
+        if (mLocMgrProxy != null) {
+            mLocMgrProxy.removeUpdates(this);
+            mLocMgrProxy.destroy();
+        }
+    }
+
+    @Override
+    public void onLocationChanged(final AMapLocation location) {
+        if (location != null) {
+            if (locationCount++ <= 0) {
+                return;
+            }
+
+            new Handler().post(new Runnable() {
+                @Override
+                public void run() {
+                    searchCommunityDependLonLat(location.getLongitude(), location.getLatitude());
+                }
+            });
+        }
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+    }
+
+    @Override
+    public void onStatusChanged(String s, int i, Bundle bundle) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String s) {
+    }
+
+    @Override
+    public void onProviderDisabled(String s) {
+    }
+
+
+    private void startLocation() {
+        // 初始化定位，只采用网络定位
+        if (mLocMgrProxy == null) {
+            mLocMgrProxy = LocationManagerProxy.getInstance(getActivity());
+            mLocMgrProxy.requestLocationData(
+                    LocationProviderProxy.AMapNetwork, 1000, 0, this);
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        stopLocation();
+        mLocMgrProxy = null;
+    }
+
+    LocationManagerProxy mLocMgrProxy;
+    ProgressBar pBar;
     NearbyCommunityAdapter adapter;
     ListView mSearchResultLv;
     View search_community;
     EditText keyword_et;
     View fill_in_address;
     View back;
+    private int locationCount = 0;
 }

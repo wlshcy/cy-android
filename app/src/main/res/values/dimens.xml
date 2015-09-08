@@ -76,4 +76,9 @@
     <dimen name="px424">202dp</dimen>
     <dimen name="px260">130dp</dimen>
     <dimen name="px296">148dp</dimen>
+    <dimen name="px140">70dp</dimen>
+    <dimen name="px34">17dp</dimen>
+    <dimen name="px72">36dp</dimen>
+    <dimen name="px42">21dp</dimen>
+    <dimen name="px28">14dp</dimen>
 </resources>

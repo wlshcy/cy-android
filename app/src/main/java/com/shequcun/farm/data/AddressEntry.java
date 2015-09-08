@@ -21,21 +21,23 @@ public class AddressEntry extends BaseEntry {
     public String name;
     @SerializedName("mobile")
     public String mobile;
-    @SerializedName("city")
-    public String city;
-    @SerializedName("region")
-    public String region;
-    @SerializedName("street")
-    public String street;
+//    @SerializedName("city")
+//    public String city;
+//    @SerializedName("region")
+//    public String region;
+//    @SerializedName("street")
+//    public String street;
     @SerializedName("zname")
     public String zname;
-    @SerializedName("building")
-    public String building;//楼号
-    @SerializedName("unit")
-    public String unit;//单元号
-    @SerializedName("room")
-    public String room;//门牌号
-    @SerializedName("default")
+    @SerializedName("bur")
+    public String bur;
+//    @SerializedName("building")
+//    public String building;//楼号
+//    @SerializedName("unit")
+//    public String unit;//单元号
+//    @SerializedName("room")
+//    public String room;//门牌号
+//    @SerializedName("default")
     public boolean isDefault;
 
     public int zid=0;

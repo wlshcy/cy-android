@@ -106,6 +106,12 @@ public class MyFragment extends BaseFragment {
                     gotoFragment(R.id.mainpage_ly, new LoginFragment(), LoginFragment.class.getName());
             }
         });
+        hView_1.findViewById(R.id.address_tv).setOnClickListener(new AvoidDoubleClickListener() {
+            @Override
+            public void onViewClick(View v) {
+                gotoFragment(R.id.mainpage_ly, new AddressListFragment(), AddressListFragment.class.getName());
+            }
+        });
 
         mLv.addHeaderView(hView_1, null, false);
 //        mLv.addHeaderView(hView_2 = buildHeadView(uEntry), null, false);
@@ -193,10 +199,16 @@ public class MyFragment extends BaseFragment {
                 case 0://我的订单
                     gotoFragment(R.id.mainpage_ly, new MyOrderViewPagerFragment(), MyOrderViewPagerFragment.class.getName());
                     break;
-                case 1://拨打客服电话
+                case 1://订单延期配送
+                    gotoFragment(R.id.mainpage_ly, new OrderDelayFragment(), OrderDelayFragment.class.getName());
+                    break;
+                case 2://我的优惠红包
+                    gotoFragment(R.id.mainpage_ly, new RedPacketsListFragment(), RedPacketsListFragment.class.getName());
+                    break;
+                case 3://拨打客服电话
                     ConsultationDlg.showCallTelDlg(getActivity());
                     break;
-                case 2://设置
+                case 4://设置
                     gotoFragmentByAdd(R.id.mainpage_ly, new SetFragment(), SetFragment.class.getName());
                     break;
             }

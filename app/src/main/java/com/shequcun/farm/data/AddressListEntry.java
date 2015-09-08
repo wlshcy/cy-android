@@ -2,6 +2,7 @@ package com.shequcun.farm.data;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -9,5 +10,5 @@ import java.util.List;
  */
 public class AddressListEntry extends BaseEntry {
     @SerializedName("addresses")
-    public List<AddressEntry> aList;
+    public ArrayList<AddressEntry> aList;
 }

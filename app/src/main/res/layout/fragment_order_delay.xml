@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/gray_ececec">
+
+    <include layout="@layout/common_title_ly"></include>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/px42"
+        android:paddingBottom="@dimen/px50"
+        android:paddingLeft="@dimen/px48"
+        android:paddingRight="@dimen/px48"
+        android:text="@string/delay_delivery_note"
+        android:textColor="@color/common_text"
+        />
+
+    <TextView
+        android:id="@+id/delay_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_delay_a_week_delivery"
+        android:paddingTop="@dimen/px30"
+        android:paddingBottom="@dimen/px30"
+        android:layout_marginLeft="@dimen/px110"
+        android:layout_marginRight="@dimen/px110"
+        android:background="@drawable/btn_bg_red_selector"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        />
+</LinearLayout>
