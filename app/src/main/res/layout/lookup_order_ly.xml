@@ -7,36 +7,7 @@
 
     <include layout="@layout/common_title_ly" />
 
-    <LinearLayout
-        android:id="@+id/addressee_ly"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/px16"
-        android:background="@android:color/white"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/icon_ribbon" />
-
-        <TextView
-            android:id="@+id/addressee_info"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/px16"
-            android:paddingLeft="@dimen/px40" />
-
-        <TextView
-            android:id="@+id/address"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/px16"
-            android:layout_marginTop="@dimen/px10"
-            android:paddingLeft="@dimen/px40" />
-    </LinearLayout>
-
+    <include layout="@layout/address_widget_ly"/>
 
     <ListView
         android:id="@+id/mLv"

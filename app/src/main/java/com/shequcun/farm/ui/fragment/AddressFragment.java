@@ -257,7 +257,7 @@ public class AddressFragment extends BaseFragment {
             return;
         uEntry.address = address;
         new CacheManager(getActivity()).saveUserLoginToDisk(JsonUtilsParser.toJson(uEntry).getBytes());
-        IntentUtil.sendUpdateOrderDetailsAddressMsg(getActivity());
+        IntentUtil.sendUpdateAddressMsg(getActivity());
         IntentUtil.sendUpdateMyInfoMsg(getActivity());
         IntentUtil.sendUpdateAddressRequest(getActivity());
 //        IntentUtil.sendUpdateMyAddressMsg(getActivity(), "", address);

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/pAddressView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/px16"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px60"
+        android:background="@color/green_32bd6f"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/px40"
+        android:text="@string/ucai_common_tip"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/font26" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_ribbon" />
+
+
+    <TextView
+        android:id="@+id/add_address_ly"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px70"
+        android:drawableLeft="@drawable/icon_red_add"
+        android:drawablePadding="@dimen/px20"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/px40"
+        android:text="@string/add_address"
+        android:textColor="@color/red_fe5647"
+        android:visibility="gone" />
+
+
+    <LinearLayout
+        android:id="@+id/addressee_ly"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/px40"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/addressee_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/px16"
+            android:text="name+mobile" />
+
+        <TextView
+            android:id="@+id/address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/px16"
+            android:layout_marginTop="@dimen/px10"
+            android:text="Address" />
+    </LinearLayout>
+
+
+</LinearLayout>

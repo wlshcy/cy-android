@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/px360"
+    android:background="@color/gray_ececec"
+
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/remark_ly"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/list_item_selector"
+        android:padding="@dimen/px30">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="@string/remark"
+            android:textColor="@color/black_444444" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical"
+            android:drawableRight="@drawable/icon_more"
+            android:gravity="center"
+            android:text="@string/add_remark"
+            android:textColor="@color/gray_9a9a9a" />
+    </FrameLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#e4e4e4" />
+
+    <FrameLayout
+        android:id="@+id/red_packets_money_ly"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/list_item_selector"
+        android:padding="@dimen/px30">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="@string/use_discount_red_packets"
+            android:textColor="@color/black_444444" />
+
+        <TextView
+            android:id="@+id/red_packets_money_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical"
+            android:drawableRight="@drawable/icon_more"
+            android:gravity="center"
+            android:text="@string/red_packets_money"
+            android:textColor="@color/red_fe5647" />
+    </FrameLayout>
+
+
+    <include
+        android:layout_marginTop="@dimen/px30"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/pay_widget_ly" />
+
+
+</LinearLayout>

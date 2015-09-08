@@ -38,7 +38,7 @@
         android:src="@drawable/add_dishes_selector" />
 
     <TextView
-        android:id="@+id/bug_order_tv"
+        android:id="@+id/shop_cart_tv"
         android:layout_width="@dimen/px180"
         android:layout_height="@dimen/px70"
         android:layout_alignParentRight="true"

@@ -48,6 +48,7 @@ public class CacheManager {
         return null;
     }
 
+
     public void saveZoneCacheToDisk(byte[] data) {
         try {
             DBLite dblite = new DBLite(mContext, null,
@@ -109,6 +110,36 @@ public class CacheManager {
         return ze;
     }
 
+    public void delRecommendToDisk() {
+        DBLite dblite = new DBLite(mContext, null, KeyWord_RecommendTag);
+        dblite.deleteData();
+    }
+
+
+    public void delRecommendItemToDisk(RecommendItemKey zItem) {
+        try {
+            if (zItem == null || zItem.object == null)
+                return;
+            String newHist = zItem.getKeyId();
+            DBLite dblite = new DBLite(mContext, null, KeyWord_RecommendTag);
+            dblite.loadData();
+            int length = dblite.getRecordSize();
+            for (int i = 0; i < length; i++) {
+                DBRecordItem aitem = dblite.getRecord(i);
+                if (newHist.contentEquals(aitem.getStringValue("RecommentItemKey",
+                        ""))) {
+                    dblite.deleteRecord(i);
+                    break;
+                }
+            }
+
+            dblite.saveToDisk();
+        } catch (Exception e) {
+
+        }
+
+    }
+
     public void saveRecommendToDisk(RecommendItemKey zItem) {
         try {
             if (zItem == null || zItem.object == null)
@@ -151,6 +182,7 @@ public class CacheManager {
             return null;
         }
     }
+
     final String KeyWord_UserZoneCacheTag = "UserZoneCacheTag";
     final String KeyWord_UserLoginCacheTag = "UserLoginCacheTag";
     final String KeyWord_UserAddressTag = "UserAddressTag";

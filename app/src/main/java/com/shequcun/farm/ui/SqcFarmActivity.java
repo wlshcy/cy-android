@@ -78,7 +78,7 @@ public class SqcFarmActivity extends BaseFragmentActivity {
     /**
      * @param index
      */
-    private void buildRadioButtonStatus(int index) {
+    public void buildRadioButtonStatus(int index) {
         RadioButton rb = ((RadioButton) radiogroup.getChildAt(index));
         rb.setChecked(true);
     }

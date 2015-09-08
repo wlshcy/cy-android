@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.transition.Slide;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,9 +26,12 @@ import com.shequcun.farm.data.SlidesEntry;
 import com.shequcun.farm.data.UserLoginEntry;
 import com.shequcun.farm.datacenter.CacheManager;
 import com.shequcun.farm.datacenter.PersistanceManager;
+import com.shequcun.farm.db.RecommendItemKey;
 import com.shequcun.farm.dlg.ProgressDlg;
+import com.shequcun.farm.ui.SqcFarmActivity;
 import com.shequcun.farm.ui.adapter.CarouselAdapter;
 import com.shequcun.farm.util.HttpRequestUtil;
+import com.shequcun.farm.util.IntentUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.ToastHelper;
@@ -149,6 +151,18 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
                 public void onClick(View view) {
                     entry.count--;
                     goods_count.setText(entry.count + "");
+                }
+            });
+
+            childView.findViewById(R.id.shop_cart_tv).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    RecommendItemKey itemKey = new RecommendItemKey();
+                    itemKey.object = entry;
+                    new CacheManager(getActivity()).saveRecommendToDisk(itemKey);
+                    IntentUtil.sendUpdateFarmShoppingCartMsg(getActivity());
+                    ((SqcFarmActivity) getActivity()).buildRadioButtonStatus(1);
+                    popBackStack();
                 }
             });
         }

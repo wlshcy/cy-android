@@ -61,12 +61,22 @@ public class IntentUtil {
         mContext.sendBroadcast(intent);
     }
 
-    public static final String UPDATE_ORDER_DETAILS_MSG = "com.youcai.refresh.orderdetails.address";
+    public static final String UPDATE_ADDRESS_MSG = "com.youcai.refresh.orderdetails.address";
 
-    public static void sendUpdateOrderDetailsAddressMsg(Context mContext) {
+    public static void sendUpdateAddressMsg(Context mContext) {
         Intent intent = new Intent();
-        intent.setAction(UPDATE_ORDER_DETAILS_MSG);
-//        intent.putExtra("AddressEntry", entry);
+        intent.setAction(UPDATE_ADDRESS_MSG);
+        mContext.sendBroadcast(intent);
+    }
+
+    /**
+     * 刷新农庄特产购物车界面
+     */
+    public static final String UPDATE_FARM_SHOPPING_CART_MSG = "com.youcai.refresh.farm.shoppingcart";
+
+    public static void sendUpdateFarmShoppingCartMsg(Context mContext) {
+        Intent intent = new Intent();
+        intent.setAction(UPDATE_FARM_SHOPPING_CART_MSG);
         mContext.sendBroadcast(intent);
     }
 

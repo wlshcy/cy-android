@@ -23,6 +23,7 @@
     <color name="black_303030">#303030</color>
     <color name="black_1e1e1e">#1E1E1E</color>
     <color name="gray_a9a9a9">#a9a9a9</color>
+    <color name="gray_9e9e9e">#9e9e9e</color>
     <color name="gray_676767">#676767</color>
     <color name="gray_4a4a4a">#4A4A4A</color><!--灰色-->
     <color name="green_11C258">#11c258</color>
@@ -41,6 +42,7 @@
     <color name="red_eb3f30">#eb3f30</color>
     <color name="red_fc3d2e">#FC3D2E</color>
     <color name="red_fe0c0c">#FE0c0c</color>
+    <color name="red_fe5647">#FE5647</color>
     <color name="red_fe786b">#fe786b</color>
     <color name="red_f36043">#F36043</color>
     <color name="red_dc5439">#dc5439</color>

@@ -317,7 +317,7 @@ public class ChooseDishesFragment extends BaseFragment {
     private View.OnClickListener mUpOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (!goNext){
+            if (!goNext) {
                 return;
             }
             if (v.getTag() instanceof Integer) {
@@ -771,7 +771,7 @@ public class ChooseDishesFragment extends BaseFragment {
                 choose_dishes_tip.setOnClickListener(new AvoidDoubleClickListener() {
                     @Override
                     public void onViewClick(View v) {
-                        gotoFragment(buildBundle(buildOrderParams(entry)), R.id.mainpage_ly, new ModifyOrderFragment(), ModifyOrderFragment.class.getName());
+                        gotoFragmentByAdd(buildBundle(buildOrderParams(entry)), R.id.mainpage_ly, new ModifyOrderFragment(), ModifyOrderFragment.class.getName());
                     }
                 });
                 return false;

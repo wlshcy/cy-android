@@ -159,9 +159,6 @@ public class OrderDetailsFragment extends BaseFragment {
                 popBackStack();
             else if (v == rightTv)
                 ConsultationDlg.showCallTelDlg(getActivity());
-//            else if (re_choose_dishes == v) {//重新选择菜品
-//
-//            }
             else if (v == commitOrderTv) {
 
                 if (commitOrderTv.getText().toString().equals(getResources().getString(R.string.pay_immediately))) {
@@ -406,7 +403,7 @@ public class OrderDetailsFragment extends BaseFragment {
     void doRegisterRefreshBrodcast() {
         if (!mIsBind) {
             IntentFilter intentFilter = new IntentFilter();
-            intentFilter.addAction(IntentUtil.UPDATE_ORDER_DETAILS_MSG);
+            intentFilter.addAction(IntentUtil.UPDATE_ADDRESS_MSG);
             getActivity().registerReceiver(mUpdateReceiver, intentFilter);
             mIsBind = true;
         }
@@ -428,7 +425,7 @@ public class OrderDetailsFragment extends BaseFragment {
             if (TextUtils.isEmpty(action)) {
                 return;
             }
-            if (action.equals(IntentUtil.UPDATE_ORDER_DETAILS_MSG)) {
+            if (action.equals(IntentUtil.UPDATE_ADDRESS_MSG)) {
                 buildUserLoginEntry();
                 requestUserAddress();
             }

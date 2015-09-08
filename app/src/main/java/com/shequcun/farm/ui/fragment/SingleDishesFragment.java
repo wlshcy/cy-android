@@ -215,7 +215,7 @@ public class SingleDishesFragment extends BaseFragment {
     void doRegisterRefreshBrodcast() {
         if (!mIsBind) {
             IntentFilter intentFilter = new IntentFilter();
-            intentFilter.addAction(IntentUtil.UPDATE_ORDER_DETAILS_MSG);
+            intentFilter.addAction(IntentUtil.UPDATE_ADDRESS_MSG);
             getActivity().registerReceiver(mUpdateReceiver, intentFilter);
             mIsBind = true;
         }
@@ -237,7 +237,7 @@ public class SingleDishesFragment extends BaseFragment {
             if (TextUtils.isEmpty(action)) {
                 return;
             }
-            if (action.equals(IntentUtil.UPDATE_ORDER_DETAILS_MSG)) {
+            if (action.equals(IntentUtil.UPDATE_ADDRESS_MSG)) {
                 buildUserLoginEntry();
                 requestUserAddress();
             }
