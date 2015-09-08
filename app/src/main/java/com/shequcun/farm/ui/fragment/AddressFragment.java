@@ -17,7 +17,6 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.AddressEntry;
-import com.shequcun.farm.data.AddressListEntry;
 import com.shequcun.farm.data.UserLoginEntry;
 import com.shequcun.farm.data.ZoneEntry;
 import com.shequcun.farm.datacenter.CacheManager;
@@ -28,6 +27,7 @@ import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.IntentUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
+import com.shequcun.farm.util.PhoneUtil;
 import com.shequcun.farm.util.ToastHelper;
 import com.shequcun.farm.util.Utils;
 
@@ -55,25 +55,40 @@ public class AddressFragment extends BaseFragment {
 
     @Override
     protected void initWidget(View v) {
-        house_number_edit = (EditText) v.findViewById(R.id.house_number_edit);
         name_edit = (EditText) v.findViewById(R.id.name_edit);
         mobile_phone_edit = (EditText) v.findViewById(R.id.mobile_phone_edit);
         community_tv = (TextView) v.findViewById(R.id.community_tv);
-        building_number_edit = (EditText) v.findViewById(R.id.building_number_edit);
-        unit_number_edit = (EditText) v.findViewById(R.id.unit_number_edit);
+        choose_zone_tv = (TextView) v.findViewById(R.id.choose_zone_tv);
+        addressDetailEt = (EditText) v.findViewById(R.id.building_number_edit);
+//        house_number_edit = (EditText) v.findViewById(R.id.house_number_edit);
+//        unit_number_edit = (EditText) v.findViewById(R.id.unit_number_edit);
         back = v.findViewById(R.id.back);
         ((TextView) v.findViewById(R.id.title_center_text)).setText(R.string.receiveing_address);
         commit = (TextView) v.findViewById(R.id.title_right_text);
-        commit.setText(R.string.commit);
+        commit.setTextColor(getResources().getColor(R.color.green_2bc36c));
+        commit.setText(R.string.save);
         doRegisterRefreshBrodcast();
     }
 
     @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            entry = (AddressEntry) bundle.getSerializable("AddressEntry");
+            if (entry != null) {
+                setWidgetContent(entry);
+            }
+        }
+    }
+
+    @Override
     protected void setWidgetLsn() {
-        community_tv.setOnClickListener(onClick);
+//        community_tv.setOnClickListener(onClick);
         back.setOnClickListener(onClick);
         commit.setOnClickListener(onClick);
-        requestUserAddress();
+        choose_zone_tv.setOnClickListener(onClick);
+//        requestUserAddress();
     }
 
     @Override
@@ -87,85 +102,95 @@ public class AddressFragment extends BaseFragment {
         @Override
         public void onViewClick(View v) {
             Utils.hideVirtualKeyboard(getActivity(), v);
-            if (v == community_tv)
-                gotoFragmentByAdd(R.id.mainpage_ly, new NearbyCommunityFragment(), NearbyCommunityFragment.class.getName());
+            if (v == choose_zone_tv)
+                gotoFragmentByAdd(R.id.mainpage_ly, new SearchFragment(), SearchFragment.class.getName());
             else if (v == back)
                 popBackStack();
-            else if (v == commit) {
+            else if (v == commit)
                 upLoadAddressToServer();
-                //(R.id.mainpage_ly, new ComboMongoliaLayerFragment(), ComboMongoliaLayerFragment.class.getName());
-            }
+            //(R.id.mainpage_ly, new ComboMongoliaLayerFragment(), ComboMongoliaLayerFragment.class.getName());
         }
     };
 
-
     void upLoadAddressToServer() {
-        if (entry == null)
-            return;
-        String name = name_edit.getText().toString();
+        name = name_edit.getText().toString().trim();
         if (TextUtils.isEmpty(name)) {
             ToastHelper.showShort(getActivity(), R.string.input_name);
             return;
         }
-        String phone_number = mobile_phone_edit.getText().toString();
+        mobile = mobile_phone_edit.getText().toString().trim();
 
-        if (TextUtils.isEmpty(phone_number)) {
+        if (TextUtils.isEmpty(mobile)) {
             ToastHelper.showShort(getActivity(), R.string.input_mobile_phone);
             return;
         }
+        if (!PhoneUtil.isPhone(mobile)) {
+            ToastHelper.showShort(getActivity(), R.string.common_phone_format_error);
+            return;
+        }
 
-        String community = community_tv.getText().toString();
+        community = community_tv.getText().toString().trim();
         if (TextUtils.isEmpty(community)) {
             ToastHelper.showShort(getActivity(), R.string.choose_community);
             return;
         }
 
-        String building_NO = building_number_edit.getText().toString();
+        detailAddr = addressDetailEt.getText().toString().trim();
 
-        if (TextUtils.isEmpty(building_NO)) {
+        if (TextUtils.isEmpty(detailAddr)) {
             ToastHelper.showShort(getActivity(), R.string.input_building_number);
             return;
         }
 
-        String union_NO = unit_number_edit.getText().toString();
-
-        if (TextUtils.isEmpty(union_NO)) {
-            ToastHelper.showShort(getActivity(), R.string.input_union_number);
+        if (!checkDiff()) {
+            ToastHelper.showShort(getActivity(), R.string.duplicate_address_content);
             return;
         }
 
-        String house_NO = house_number_edit.getText().toString();
 
-        if (TextUtils.isEmpty(house_NO)) {
-            ToastHelper.showShort(getActivity(), R.string.input_house_number);
-            return;
-        }
+//        String union_NO = unit_number_edit.getText().toString();
+//
+//        if (TextUtils.isEmpty(union_NO)) {
+//            ToastHelper.showShort(getActivity(), R.string.input_union_number);
+//            return;
+//        }
+//
+//        String house_NO = house_number_edit.getText().toString();
+//
+//        if (TextUtils.isEmpty(house_NO)) {
+//            ToastHelper.showShort(getActivity(), R.string.input_house_number);
+//            return;
+//        }
 
         final RequestParams params = new RequestParams();
         params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
         params.put("name", name);
-        params.put("mobile", phone_number);
-        params.put("id", entry.id);
-        if (!TextUtils.isEmpty(entry.street)) {
-            params.put("street", entry.street);
-            params.put("region", "");
-            params.put("city", "");
-            params.put("zname", "");
-            params.put("building", "");
-            params.put("unit", "");
-            params.put("room", "");
-        } else {
-            params.put("street", "");
-            params.put("zid", entry == null ? "0" : "" + entry.zid);
-            params.put("region", entry == null ? "" : entry.region);
-            params.put("city", entry == null ? "北京市" : entry.city);
-            params.put("zname", community);
-            params.put("building", building_NO);
-            params.put("unit", union_NO);
-            params.put("room", house_NO);
-        }
+        params.put("mobile", mobile);
+        if (entry != null)
+            params.put("id", entry.id);
+        params.put("zid", entry == null ? "0" : "" + entry.zid);
+        params.put("zname", community);
+        params.put("bur", detailAddr);
+//        if (!TextUtils.isEmpty(entry.street)) {
+//            params.put("street", entry.street);
+//            params.put("region", "");
+//            params.put("city", "");
+//            params.put("zname", "");
+//            params.put("building", "");
+//            params.put("unit", "");
+//            params.put("room", "");
+//        } else {
+//            params.put("street", "");
+//            params.put("zid", entry == null ? "0" : "" + entry.zid);
+//            params.put("region", entry == null ? "" : entry.region);
+//            params.put("city", entry == null ? "北京市" : entry.city);
+//            params.put("zname", community);
+//            params.put("building", detailAddr);
+////            params.put("unit", union_NO);
+////            params.put("room", house_NO);
+//        }
         final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
-        HttpRequestUtil.httpPost(LocalParams.getBaseUrl() + "user/address", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.httpPost(LocalParams.getBaseUrl() + "user/v2/address", params, new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {
                 super.onStart();
@@ -210,6 +235,19 @@ public class AddressFragment extends BaseFragment {
         });
     }
 
+    private boolean checkDiff() {
+        if (entry == null) return true;
+        if (!TextUtils.isEmpty(entry.name) && !entry.name.equals(name))
+            return true;
+        if (!TextUtils.isEmpty(entry.mobile) && !entry.mobile.equals(mobile))
+            return true;
+        if (!TextUtils.isEmpty(entry.zname) && znameDiff)
+            return true;
+        if (!TextUtils.isEmpty(entry.bur) && !entry.bur.equals(detailAddr))
+            return true;
+        return false;
+    }
+
     void updateUserInfo(String address) {
         byte[] data = new CacheManager(getActivity()).getUserLoginFromDisk();
         if (data == null || data.length <= 0)
@@ -221,51 +259,9 @@ public class AddressFragment extends BaseFragment {
         new CacheManager(getActivity()).saveUserLoginToDisk(JsonUtilsParser.toJson(uEntry).getBytes());
         IntentUtil.sendUpdateOrderDetailsAddressMsg(getActivity());
         IntentUtil.sendUpdateMyInfoMsg(getActivity());
+        IntentUtil.sendUpdateAddressRequest(getActivity());
 //        IntentUtil.sendUpdateMyAddressMsg(getActivity(), "", address);
         popBackStack();
-    }
-
-    void requestUserAddress() {
-        final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
-        HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "user/address", new AsyncHttpResponseHandler() {
-            @Override
-            public void onStart() {
-                super.onStart();
-                if (pDlg != null)
-                    pDlg.show();
-            }
-
-            @Override
-            public void onFinish() {
-                super.onFinish();
-                if (pDlg != null)
-                    pDlg.dismiss();
-            }
-
-            @Override
-            public void onSuccess(int sCode, Header[] h, byte[] data) {
-                if (data != null && data.length > 0) {
-                    AddressListEntry entry = JsonUtilsParser.fromJson(new String(data), AddressListEntry.class);
-                    if (entry != null) {
-                        if (TextUtils.isEmpty(entry.errmsg)) {
-                            buildDefaultAddress(entry.aList);
-                            return;
-                        } else {
-                            ToastHelper.showShort(getActivity(), entry.errmsg);
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
-                if (sCode == 0) {
-                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
-                    return;
-                }
-                ToastHelper.showShort(getActivity(), "请求失败,错误码" + sCode);
-            }
-        });
     }
 
     /**
@@ -299,12 +295,14 @@ public class AddressFragment extends BaseFragment {
             mobile_phone_edit.setText(entry.mobile);
         if (!TextUtils.isEmpty(entry.zname))
             community_tv.setText(entry.zname);
-        if (!TextUtils.isEmpty(entry.building))
-            building_number_edit.setText(entry.building);
-        if (!TextUtils.isEmpty(entry.unit))
-            unit_number_edit.setText(entry.unit);
-        if (!TextUtils.isEmpty(entry.room))
-            house_number_edit.setText(entry.room);
+        if (!TextUtils.isEmpty(entry.bur))
+            addressDetailEt.setText(entry.bur);
+//        if (!TextUtils.isEmpty(entry.building))
+//            addressDetailEt.setText(entry.building);
+//        if (!TextUtils.isEmpty(entry.unit))
+//            unit_number_edit.setText(entry.unit);
+//        if (!TextUtils.isEmpty(entry.room))
+//            house_number_edit.setText(entry.room);
     }
 
     void doRegisterRefreshBrodcast() {
@@ -334,26 +332,26 @@ public class AddressFragment extends BaseFragment {
             }
             if (action.equals("com.youcai.refresh.myaddress")) {
                 ZoneEntry zEntry = (ZoneEntry) intent.getSerializableExtra("ZoneEntry");
-                if (zEntry != null) {
+                if (zEntry != null)
                     setWidgetContent(zEntry);
-                } else {
-                    if (entry != null) {
-                        entry.zname = intent.getStringExtra("community_name");
-                        entry.street = intent.getStringExtra("details_address");
-                        setWidgetContent(entry);
-                    }
-                }
+                String details_address = intent.getStringExtra("details_address");
+                if (!TextUtils.isEmpty(details_address))
+                    community_tv.setText(details_address);
+//                setWidgetContent(entry);
+//                    }
+//                }
             }
         }
     };
 
     void setWidgetContent(ZoneEntry zEntry) {
         if (entry != null) {
-            entry.region = zEntry.region;
-            entry.city = zEntry.city;
+//            entry.region = zEntry.region;
+//            entry.city = zEntry.city;
+            if (!TextUtils.isEmpty(entry.name)&&!entry.name.equals(zEntry.name)) znameDiff = true;
             entry.zname = zEntry.name;
             entry.zid = zEntry.id;
-            entry.street = "";
+//            entry.street = "";
         }
         community_tv.setText(zEntry.name);
     }
@@ -362,7 +360,7 @@ public class AddressFragment extends BaseFragment {
     /**
      * 门牌号
      */
-    EditText house_number_edit;
+//    EditText house_number_edit;
     /**
      * 姓名
      */
@@ -372,14 +370,17 @@ public class AddressFragment extends BaseFragment {
      */
     EditText mobile_phone_edit;
     TextView community_tv;
+    TextView choose_zone_tv;
     /**
      * 楼号
      */
-    EditText building_number_edit;
+    EditText addressDetailEt;
     /**
      * 单元号
      */
-    EditText unit_number_edit;
+//    EditText unit_number_edit;
     View back;
     TextView commit;
+    private boolean znameDiff;
+    private String name, mobile, community, detailAddr;
 }

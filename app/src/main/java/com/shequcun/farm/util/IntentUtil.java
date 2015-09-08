@@ -13,6 +13,8 @@ public class IntentUtil {
 
     public final static String UPDATE_COMBO_PAGE = "com.youcai.refresh。combo";
     public final static String UPDATE_MINE_PAGE = "com.youcai.refresh";
+    public final static String UPDATE_ADDRESS_REQUEST = "com.youcai.refresh.address_request";
+
 
     /**
      * @param mContext
@@ -50,11 +52,11 @@ public class IntentUtil {
         mContext.sendBroadcast(intent);
     }
 
-    public static void sendUpdateMyAddressMsg(Context mContext, String community_name, String details_address) {
+    public static void sendUpdateMyAddressMsg(Context mContext, String details_address) {
         Intent intent = new Intent();
         intent.setAction("com.youcai.refresh.myaddress");
 //        intent.putExtra("ZoneEntry",zEntry);
-        intent.putExtra("community_name", community_name);
+//        intent.putExtra("community_name", community_name);
         intent.putExtra("details_address", details_address);
         mContext.sendBroadcast(intent);
     }
@@ -65,6 +67,12 @@ public class IntentUtil {
         Intent intent = new Intent();
         intent.setAction(UPDATE_ORDER_DETAILS_MSG);
 //        intent.putExtra("AddressEntry", entry);
+        mContext.sendBroadcast(intent);
+    }
+
+    public static void sendUpdateAddressRequest(Context mContext) {
+        Intent intent = new Intent();
+        intent.setAction(UPDATE_ADDRESS_REQUEST);
         mContext.sendBroadcast(intent);
     }
 

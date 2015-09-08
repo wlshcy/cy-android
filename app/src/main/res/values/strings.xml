@@ -30,7 +30,7 @@
     <string name="input_name">请输入您的姓名</string>
     <string name="input_mobile_phone">请输入您的手机号码</string>
     <string name="choose_community">请选择您的小区</string>
-    <string name="input_building_number">请输入您的楼号</string>
+    <string name="input_building_number">请输入您的楼号及门牌号</string>
     <string name="input_union_number">请输入您的单元号</string>
     <string name="input_house_number">请输入您的门牌号</string>
 
@@ -80,6 +80,7 @@
     <!-- 收货地址 -->
     <string name="title_receive_address">收货地址</string>
     <string name="address">地址</string>
+    <string name="my_address">我的地址</string>
     <string name="title_edit_address">编辑收货地址</string>
     <string name="common_required_buiding_num">请输入楼号</string>
     <string name="common_required_door_num">请输入门牌号</string>
@@ -97,6 +98,7 @@
     <string name="combo_introduce">套餐介绍</string>
     <string name="shopping_combo">购买套餐</string>
     <string name="add_address">单击此处添加您的收货地址!</string>
+    <string name="address_add">添加地址</string>
     <string name="submit_immediately">立即提交</string>
     <string name="pay_immediately">立即支付</string>
     <string name="pay_success">支付成功</string>
@@ -147,4 +149,31 @@
     <string name="spike_error_tip">您已购买过该产品,不能重复购买!</string>
     <string name="organic_farm_combo">有机农庄宅配套餐</string>
     <string name="more_combo">更多营养套餐</string>
+    <!--红包-->
+    <string name="use_favorable_red_packets">使用优惠红包</string>
+    <string name="pay_red_packets">支付红包</string>
+    <string name="use_for_app_off_line_pay">App下单在线支付使用</string>
+    <string name="expiry_date_content">有效期至 A</string>
+    <string name="use_rule">使用规则</string>
+    <string name="empty_red_packets">您还没有红包</string>
+    <!--延期配送-->
+    <string name="delay_delivery_note">如家中有事，您可以选择延期配送菜品。延期期间不在给您短信通知选菜，延期结束后我门会通知您选菜。</string>
+    <string name="btn_delay_a_week_delivery">延期一周配送</string>
+    <string name="order_delay_delivery">订单延期配送</string>
+    <string name="prompt_order_delivery">您确定订单延期配送？</string>
+    <!--我的地址-->
+    <string name="save">保存</string>
+    <string name="save_address">保存地址</string>
+    <string name="input_zone_address">输入小区地址</string>
+    <string name="contract">联系人</string>
+    <string name="receive_address">收货地址</string>
+    <string name="input_receive_name">请填写收货人姓名</string>
+    <string name="input_receive_mobile">请填写收货人手机号</string>
+    <string name="building_and_room_no">楼号－门牌号：</string>
+    <string name="sample_building_room">例：12号楼1501室</string>
+    <string name="click_to_choose">点击选择</string>
+    <string name="hint_input_street_and_zone_name">请输入：街道，小区名称</string>
+    <string name="duplicate_address_content">请修改地址后保存</string>
+    <string name="prompt_delete_address">您确定删除该地址？</string>
+
 </resources>
