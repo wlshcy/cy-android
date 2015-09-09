@@ -26,7 +26,7 @@
         android:paddingBottom="@dimen/px30"
         android:layout_marginLeft="@dimen/px110"
         android:layout_marginRight="@dimen/px110"
-        android:background="@drawable/btn_bg_red_selector"
+        android:background="@null"
         android:gravity="center"
         android:textColor="@android:color/white"
         android:textSize="16sp"

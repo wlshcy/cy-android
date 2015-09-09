@@ -70,8 +70,8 @@ public class MyFragment extends BaseFragment {
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
-                case R.id.set://设置
-                    break;
+//                case R.id.set://设置
+//                    break;
                 case R.id.tv_status://登录或选择菜品
                     gotoFragment(R.id.mainpage_ly, new LoginFragment(), LoginFragment.class.getName());
                     break;
@@ -95,7 +95,7 @@ public class MyFragment extends BaseFragment {
             uEntry = null;
         }
         hView_1 = LayoutInflater.from(getActivity()).inflate(R.layout.my_item_head_ly, null);
-        hView_1.findViewById(R.id.set).setOnClickListener(onClick);
+//        hView_1.findViewById(R.id.set).setOnClickListener(onClick);
         ((TextView) hView_1.findViewById(R.id.mobile_phone)).setText(uEntry != null ? uEntry.mobile : "");
         ((CircleImageView) hView_1.findViewById(R.id.my_head)).setImageUrl(uEntry != null ? uEntry.headimg : null, ImageCacheManager.getInstance().getImageLoader());
         ((TextView) hView_1.findViewById(R.id.address_tv)).setText(uEntry != null ? uEntry.address : "");

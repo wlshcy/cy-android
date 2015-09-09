@@ -9,7 +9,9 @@ import android.widget.TextView;
 
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.AddressEntry;
+import com.shequcun.farm.data.CouponEntry;
 import com.shequcun.farm.data.RedPacketsEntry;
+import com.shequcun.farm.util.Utils;
 
 import java.util.ArrayList;
 
@@ -17,7 +19,7 @@ import java.util.ArrayList;
  * Created by cong on 15/9/7.
  */
 public class RedPacketsAdapter extends BaseAdapter{
-    private ArrayList<RedPacketsEntry> list = new ArrayList<RedPacketsEntry>();
+    private ArrayList<CouponEntry> list = new ArrayList<>();
     private Context context;
 
     public RedPacketsAdapter(Context context) {
@@ -51,13 +53,13 @@ public class RedPacketsAdapter extends BaseAdapter{
         }else {
             vh = (ViewHolder)convertView.getTag();
         }
-        RedPacketsEntry entry = (RedPacketsEntry)getItem(position);
-        vh.count.setText(entry.count+"");
-        vh.expiryDate.setText(entry.date + "");
+        CouponEntry entry = (CouponEntry)getItem(position);
+        vh.count.setText(entry.par+"");
+        vh.expiryDate.setText(Utils.getTime(entry.created));
         return convertView;
     }
 
-    public void addAll(ArrayList<RedPacketsEntry> list){
+    public void addAll(ArrayList<CouponEntry> list){
         this.list.addAll(list);
         notifyDataSetChanged();
     }

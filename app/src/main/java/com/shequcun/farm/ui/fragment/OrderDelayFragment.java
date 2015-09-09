@@ -101,7 +101,7 @@ public class OrderDelayFragment extends BaseFragment {
         HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "cai/delay", new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                String result = new String(responseBody.toString());
+                String result = new String(responseBody);
                 DelayEntry entry = JsonUtilsParser.fromJson(result, DelayEntry.class);
                 if (entry != null) {
                     if (TextUtils.isEmpty(entry.errcode)) {
@@ -127,7 +127,7 @@ public class OrderDelayFragment extends BaseFragment {
         HttpRequestUtil.httpPost(LocalParams.getBaseUrl() + "cai/delay", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                String result = new String(responseBody.toString());
+                String result = new String(responseBody);
                 DelayEntry entry = JsonUtilsParser.fromJson(result, DelayEntry.class);
                 if (entry != null) {
                     if (TextUtils.isEmpty(entry.errcode)) {
@@ -138,17 +138,21 @@ public class OrderDelayFragment extends BaseFragment {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-
+                if (statusCode == 0) {
+                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
+                    return;
+                }
+                ToastHelper.showShort(getActivity(), "请求失败,错误码" + statusCode);
             }
         });
     }
 
     private void successDelay(boolean delay) {
         if (delay) {
-            delayTv.setTextColor(getResources().getColor(R.color.gray_575757));
+            delayTv.setBackgroundResource(R.drawable.btn_bg_gray_selector);
             delayTv.setEnabled(false);
         } else {
-            delayTv.setTextColor(getResources().getColor(R.color.red_eb3f30));
+            delayTv.setBackgroundResource(R.drawable.btn_bg_red_selector);
             delayTv.setEnabled(true);
         }
     }
