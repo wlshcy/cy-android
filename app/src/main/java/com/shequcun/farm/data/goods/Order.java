@@ -139,6 +139,35 @@ public class Order {
         return aList;
     }
 
+    /**
+     * 从所有菜品中筛选中未选菜品
+     *
+     * @param allDishesItem 所有菜品
+     * @return 未选菜品
+     */
+    public List<DishesItemEntry> buildNoChooseItems(List<DishesItemEntry> allDishesItem) {
+        List<DishesItemEntry> aList = new ArrayList<DishesItemEntry>();
+        List<DishesItemEntry> hasChoosenItem = buildItems();//已选菜品
+        int size = allDishesItem.size();
+        int size1 = hasChoosenItem.size();
+        for (int i = 0; i < size; i++) {
+            boolean isAdd = false;
+            DishesItemEntry pItemEntry = allDishesItem.get(i);
+            for (int j = 0; j < size1; ++j) {
+                DishesItemEntry sItemEntry = hasChoosenItem.get(i);
+                if (pItemEntry.id == sItemEntry.id) {
+                    isAdd = false;
+                    break;
+                } else {
+                    isAdd = true;
+                }
+            }
+            if (isAdd)
+                aList.add(pItemEntry);
+        }
+        return aList;
+    }
+
     public void setItems(List<DishesItemEntry> items) {
         this.items = items;
     }

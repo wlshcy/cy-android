@@ -52,6 +52,16 @@ public class DisheDataCenter {
         return mOrder.getItemById(id);
     }
 
+    /**
+     * 从所有菜品中筛选中未选菜品
+     *
+     * @param allDishesItem 所有菜品
+     * @return 未选菜品
+     */
+    public List<DishesItemEntry> getNoChooseDishesItems(List<DishesItemEntry> allDishesItem) {
+        return mOrder.buildNoChooseItems(allDishesItem);
+    }
+
     public void removeItemById(int id) {
         mOrder.removeItemById(id);
     }

@@ -349,7 +349,6 @@ public class ChooseDishesFragment extends BaseFragment {
 //        结束点为购物车图位置
         int fXY[] = new int[]{0, 0};
         mShopCartIv.getLocationOnScreen(fXY);
-        // logger.error("x1:" + fXY[0] + "y1:" + fXY[1]);
 //        新创建一个红色小球
         final TextView flyTv = new TextView(getActivity());
         int flyWidth = ResUtil.dip2px(getActivity(), 20);
@@ -357,8 +356,6 @@ public class ChooseDishesFragment extends BaseFragment {
         FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(flyWidth,
                 flyHeight);
         lp.gravity = Gravity.BOTTOM | Gravity.RIGHT;
-        // Log.e(TAG,
-        // "deviceWidth:"+getDeviceWidth()+"deviceHeight:"+getDeviceHeight());
 //        红色小球左边距＝设备宽度－开始点
         int rmargin = getDeviceWidth() - sXY[0];
         int bmargin = getDeviceHeight() - sXY[1];
@@ -462,7 +459,6 @@ public class ChooseDishesFragment extends BaseFragment {
             mBadgeViewShopCart.hide();
         }
         updateBuyOrderStatus();
-//        toggleTotalPrice();
     }
 
     /**
@@ -481,14 +477,12 @@ public class ChooseDishesFragment extends BaseFragment {
      */
     private void toggleBuyOrder(boolean buy) {
         if (buy) {
-
             mBuyOrderTv
                     .setBackgroundResource(R.drawable.shopping_cart_widget_selector_1);
             mBuyOrderTv.setText(R.string.small_market_buy);
             mBuyOrderTv.setTextColor(getResources().getColor(
                     R.color.white_fefefe));
             mShopCartPriceTv.setText(R.string.choose_dishes_successful);
-//            mShopCartPriceTv.setText("您已选择了" + Utils.unitConversion(mOrderController.getItemsWeight()));
         } else {
             mBuyOrderTv
                     .setBackgroundResource(R.drawable.shopping_cart_widget_selector_2);
@@ -532,9 +526,7 @@ public class ChooseDishesFragment extends BaseFragment {
 //        数量加一
             int intCount = Integer.parseInt(count) + 1;
             DishesItemEntry goodItem = adapter.getItem(position);
-//            if (!mOrderController.getItems().contains(goodItem)) {
             mOrderController.addItem(goodItem);
-//            }
             goodItem.setCount(intCount);
 //        刷新数量
             tvCount.setText(String.valueOf(intCount));
