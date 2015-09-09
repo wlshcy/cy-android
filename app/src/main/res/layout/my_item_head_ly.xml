@@ -11,42 +11,41 @@
         android:layout_height="@dimen/px394"
         android:background="@drawable/icon_my_bg">
 
-        <com.common.widget.CircleImageView
-            android:id="@+id/my_head"
-            android:layout_width="@dimen/px180"
-            android:layout_height="@dimen/px180"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/px84"
-            android:src="@drawable/icon_default_head" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/mobile_phone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center|bottom"
-            android:layout_marginBottom="@dimen/px74"
-            android:text="@string/mobile_phone"
-            android:textColor="@color/green_446628"
-            android:textSize="@dimen/font30" />
+            <com.common.widget.CircleImageView
+                android:id="@+id/my_head"
+                android:layout_width="@dimen/px180"
+                android:layout_height="@dimen/px180"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/px84"
+                android:src="@drawable/icon_default_head" />
 
-        <TextView
-            android:id="@+id/address_tv"
-            android:textColor="@color/green_446628"
-            android:layout_width="wrap_content"
-            android:layout_marginBottom="@dimen/px30"
-            android:textSize="@dimen/font28"
-            android:layout_gravity="center|bottom"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/mobile_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|bottom"
+                android:text="@string/mobile_phone"
+                android:textColor="@color/green_446628"
+                android:textSize="@dimen/font30" />
 
-        <ImageView
-            android:id="@+id/set"
-            android:layout_width="@dimen/px70"
-            android:layout_height="@dimen/px70"
-            android:layout_gravity="right"
-            android:layout_marginRight="@dimen/px26"
-            android:layout_marginTop="@dimen/px26"
-            android:visibility="gone"
-            android:src="@drawable/icon_set" />
+            <TextView
+                android:id="@+id/address_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|bottom"
+                android:paddingBottom="@dimen/px24"
+                android:paddingTop="@dimen/px24"
+                android:gravity="center"
+                android:textColor="@color/green_446628"
+                android:textSize="@dimen/font28" />
+
+        </LinearLayout>
+
 
     </FrameLayout>
 
