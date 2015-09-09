@@ -27,6 +27,11 @@ public class PayParams implements Serializable {
      */
     public int titleId;
 
+    /**
+     * 订单类型
+     */
+    public int type = 0;
+
     public void setParams(String orderno, int orderMoney, String alipay, boolean isRecoDishes, int titleId) {
         this.orderno = orderno;
         this.orderMoney = orderMoney;

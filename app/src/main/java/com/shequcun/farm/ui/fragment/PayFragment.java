@@ -12,9 +12,11 @@ import android.widget.TextView;
 
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.PayParams;
+import com.shequcun.farm.datacenter.CacheManager;
 import com.shequcun.farm.util.AlipayUtils;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
 import com.shequcun.farm.util.Constrants;
+import com.shequcun.farm.util.IntentUtil;
 import com.shequcun.farm.util.ToastHelper;
 import com.shequcun.farm.util.Utils;
 
@@ -99,8 +101,14 @@ public class PayFragment extends BaseFragment {
 
                     // 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
                     if (TextUtils.equals(resultStatus, "9000")) {
-//                        Toast.makeText(PayDemoActivity.this, "支付成功",
-//                                Toast.LENGTH_SHORT).show();
+
+                        Bundle bundle = getArguments();
+                        PayParams entry = bundle != null ? ((PayParams) bundle.getSerializable("PayParams")) : null;
+                        if (entry != null && entry.type==3) {
+                            new CacheManager(getActivity()).delRecommendToDisk();
+                            IntentUtil.sendUpdateFarmShoppingCartMsg(getActivity());
+                        }
+
                         ToastHelper.showShort(getActivity(), "支付成功");
                         gotoFragmentByAdd(getArguments(), R.id.mainpage_ly, new PayResultFragment(), PayResultFragment.class.getName());
                     } else {
@@ -126,10 +134,8 @@ public class PayFragment extends BaseFragment {
 
         ;
     };
-
     View alipay_ly;
     View back;
     TextView pay_money;
-
     AlipayUtils aUtils;
 }

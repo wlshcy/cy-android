@@ -123,6 +123,7 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment {
         }
         if (pAddressView != null)
             pAddressView.setVisibility(View.GONE);
+        memo = null;
     }
 
     View.OnClickListener onClick = new View.OnClickListener() {
@@ -272,6 +273,7 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         doUnRegisterReceiver();
+        mHandler.removeCallbacksAndMessages(null);
     }
 
     void updateWidget(int part, int allMoney) {
@@ -286,6 +288,7 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment {
             IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction(IntentUtil.UPDATE_FARM_SHOPPING_CART_MSG);
             intentFilter.addAction(IntentUtil.UPDATE_ADDRESS_MSG);
+            intentFilter.addAction(IntentUtil.UPDATE_FARM_SHOPPING_CART_MEMO);
             getActivity().registerReceiver(mUpdateReceiver, intentFilter);
             mIsBind = true;
         }
@@ -303,6 +306,12 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment {
                 addWidgetToView();
             } else if (action.equals(IntentUtil.UPDATE_ADDRESS_MSG)) {
                 requestUserAddress();
+            } else if (action.equals(IntentUtil.UPDATE_FARM_SHOPPING_CART_MEMO)) {
+                if (remark_tv != null) {
+                    memo = intent.getStringExtra("MEMO");
+                    if (!TextUtils.isEmpty(memo))
+                        remark_tv.setText(memo);
+                }
             }
         }
     };
@@ -383,14 +392,20 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment {
                     createOrder(addressEntry);
                 }
             });
+
+            sChilidView.findViewById(R.id.remark_ly).setOnClickListener(new View.OnClickListener() {//添加备注
+                @Override
+                public void onClick(View v) {
+                    gotoFragmentByAdd(R.id.mainpage_ly, new RemarkFragment(), RemarkFragment.class.getName());
+                }
+            });
+            remark_tv = (TextView) sChilidView.findViewById(R.id.remark_tv);
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 
             params.bottomMargin = ResUtil.dipToPixel(getActivity(), 5);
 
             pView.addView(sChilidView, params);
-
-
         }
     }
 
@@ -419,6 +434,7 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment {
         params.add("address", address);
         params.add("extras", getExtras());
         params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
+        params.add("memo", memo);
 
 
         final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
@@ -466,6 +482,7 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment {
         Bundle bundle = new Bundle();
         PayParams payParams = new PayParams();
         payParams.setParams(orderno, orderMoney, alipay, false, titleId);
+        payParams.type = 3;
         bundle.putSerializable("PayParams", payParams);
         return bundle;
     }
@@ -476,13 +493,6 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment {
         if (rEntryArray != null && rEntryArray.length > 0) {
             for (int i = 0; i < rEntryArray.length; ++i) {
                 RecommendEntry entry = rEntryArray[i];
-
-//                if (i == aList.size()) {
-//                    result += item.id + ":" + item.getCount();
-//                    break;
-//                }
-//                result += item.id + ":" + item.getCount() + ",";
-
                 if (entry != null) {
                     if (result.length() > 0) {
                         result += ",";
@@ -521,6 +531,7 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment {
     TextView addressee_info;
     View add_address_ly;
     TextView address;
+    TextView remark_tv;
     View addressLy;
     View footerView;
     //总份数
@@ -531,4 +542,5 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment {
     ScrollView pScrollView;
     String orderno;
     String alipay;
+    String memo;
 }

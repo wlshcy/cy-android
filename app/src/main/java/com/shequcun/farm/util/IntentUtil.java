@@ -73,12 +73,21 @@ public class IntentUtil {
      * 刷新农庄特产购物车界面
      */
     public static final String UPDATE_FARM_SHOPPING_CART_MSG = "com.youcai.refresh.farm.shoppingcart";
+    public static final String UPDATE_FARM_SHOPPING_CART_MEMO = "com.youcai.refresh.farm.shoppingcart.memo";
 
     public static void sendUpdateFarmShoppingCartMsg(Context mContext) {
         Intent intent = new Intent();
         intent.setAction(UPDATE_FARM_SHOPPING_CART_MSG);
         mContext.sendBroadcast(intent);
     }
+
+    public static void sendUpdateFarmShoppingCartMsg(Context mContext, String subAction) {
+        Intent intent = new Intent();
+        intent.setAction(UPDATE_FARM_SHOPPING_CART_MEMO);
+        intent.putExtra("MEMO", subAction);
+        mContext.sendBroadcast(intent);
+    }
+
 
     public static void sendUpdateAddressRequest(Context mContext) {
         Intent intent = new Intent();

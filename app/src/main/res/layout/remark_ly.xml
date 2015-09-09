@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:background="@color/gray_ebebeb"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/common_title_ly"/>
+
+
+    <EditText
+        android:id="@+id/leave_msg_to_farm"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_margin="8dp"
+        android:background="@drawable/edit_bg"
+        android:gravity="left|top"
+        android:hint="@string/leave_msg_to_farm"
+        android:padding="10dp"
+        android:textColor="@color/gray_575757"
+        android:textSize="@dimen/font30"/>
+
+</LinearLayout>

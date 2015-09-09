@@ -27,12 +27,12 @@
         android:id="@+id/add_address_ly"
         android:layout_width="match_parent"
         android:layout_height="@dimen/px70"
-        android:drawableLeft="@drawable/icon_red_add"
+        android:drawableLeft="@drawable/icon_add"
         android:drawablePadding="@dimen/px20"
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/px40"
         android:text="@string/add_address"
-        android:textColor="@color/red_fe5647"
+        android:textColor="@color/green_32bd6f"
         android:visibility="gone" />
 
 

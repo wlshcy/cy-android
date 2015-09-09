@@ -183,4 +183,5 @@
     <string name="use_discount_red_packets">使用优惠红包</string>
     <string name="red_packets_money">X元可用</string>
     <string name="has_choosen_dishes">您已选好菜品了!</string>
+    <string name="leave_msg_to_farm">留言给农庄</string>
 </resources>
