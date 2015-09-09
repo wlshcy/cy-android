@@ -1,14 +1,13 @@
 package com.shequcun.farm.data;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.util.ArrayList;
+
 /**
  * Created by cong on 15/9/7.
  */
-public class RedPacketsEntry {
-    public int count;
-    public long date;
-
-    public RedPacketsEntry(int count, long date) {
-        this.count = count;
-        this.date = date;
-    }
+public class RedPacketsEntry extends BaseEntry {
+    @SerializedName("coupons")
+    public ArrayList<CouponEntry> list;
 }

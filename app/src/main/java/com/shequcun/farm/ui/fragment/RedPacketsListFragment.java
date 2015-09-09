@@ -3,6 +3,7 @@ package com.shequcun.farm.ui.fragment;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -18,9 +19,16 @@ import com.common.widget.PullToRefreshAdapterViewBase;
 import com.common.widget.PullToRefreshBase;
 import com.common.widget.PullToRefreshListView;
 import com.common.widget.PullToRefreshScrollView;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.RedPacketsEntry;
 import com.shequcun.farm.ui.adapter.RedPacketsAdapter;
+import com.shequcun.farm.util.HttpRequestUtil;
+import com.shequcun.farm.util.JsonUtilsParser;
+import com.shequcun.farm.util.LocalParams;
+import com.shequcun.farm.util.ToastHelper;
+
+import org.apache.http.Header;
 
 import java.util.ArrayList;
 
@@ -32,12 +40,18 @@ public class RedPacketsListFragment extends BaseFragment {
     private TextView titleTv;
     private TextView rightTv;
     private RedPacketsAdapter adapter;
-    private View emptyView,leftIv;
+    private View emptyView, leftIv;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_red_packets_list, null);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        reuqestRedPacketsList();
     }
 
     @Override
@@ -59,7 +73,6 @@ public class RedPacketsListFragment extends BaseFragment {
             adapter = new RedPacketsAdapter(getActivity());
         }
         redPacketsLv.setAdapter(adapter);
-        succesRedPacketsList();
     }
 
     @Override
@@ -102,16 +115,35 @@ public class RedPacketsListFragment extends BaseFragment {
     };
 
     private void reuqestRedPacketsList() {
-        ArrayList list = new ArrayList();
-        list.add(new RedPacketsEntry(100, 100));
-        list.add(new RedPacketsEntry(100, 100));
-        list.add(new RedPacketsEntry(100, 100));
-        list.add(new RedPacketsEntry(100, 100));
-        mHandler.sendEmptyMessageDelayed(0,100);
-//        redPacketsLv.onRefreshComplete();
-        adapter.addAll(list);
-//        if (redPacketsLv.isRefreshing())
-//        redPacketsLv.getRefreshableView().smoothScrollToPosition(0);
+        HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "cai/coupon", new AsyncHttpResponseHandler() {
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                mHandler.sendEmptyMessageDelayed(0, 1000);
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String result = new String(responseBody.toString());
+                RedPacketsEntry entry = JsonUtilsParser.fromJson(result, RedPacketsEntry.class);
+                if (entry != null) {
+                    if (TextUtils.isEmpty(entry.errcode)) {
+                        succesRedPacketsList(entry.list);
+                    } else {
+                        ToastHelper.showShort(getActivity(), entry.errmsg);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                if (statusCode == 0) {
+                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
+                    return;
+                }
+                ToastHelper.showShort(getActivity(), "请求失败,错误码" + statusCode);
+            }
+        });
     }
 
     private void addEmptyView() {
@@ -125,15 +157,8 @@ public class RedPacketsListFragment extends BaseFragment {
         redPacketsLv.setEmptyView(emptyView);
     }
 
-    private void succesRedPacketsList() {
-        ArrayList list = new ArrayList();
-//        list.add(new RedPacketsEntry(100, 100));
-//        list.add(new RedPacketsEntry(100, 100));
-//        list.add(new RedPacketsEntry(100, 100));
-//        list.add(new RedPacketsEntry(100, 100));
-//        list.add(new RedPacketsEntry(100, 100));
-//        list.add(new RedPacketsEntry(100, 100));
-//        list.add(new RedPacketsEntry(100, 100));
+    private void succesRedPacketsList(ArrayList list) {
+        if (list == null || list.isEmpty()) return;
         adapter.addAll(list);
         if (adapter.getCount() <= 0)
             addEmptyView();
