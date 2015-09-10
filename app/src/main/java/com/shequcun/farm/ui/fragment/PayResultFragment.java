@@ -11,16 +11,26 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 import com.shequcun.farm.R;
+import com.shequcun.farm.data.CouponShareEntry;
 import com.shequcun.farm.data.PayParams;
 import com.shequcun.farm.data.RecommendEntry;
 import com.shequcun.farm.data.RecommentListEntry;
+import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.ui.adapter.RecommendAdapter;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
 import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.IntentUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
+import com.shequcun.farm.util.ShareContent;
+import com.shequcun.farm.util.ShareUtil;
+import com.shequcun.farm.util.ToastHelper;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.bean.SocializeEntity;
+import com.umeng.socialize.bean.StatusCode;
+import com.umeng.socialize.controller.listener.SocializeListeners;
 
 import org.apache.http.Header;
 
@@ -221,6 +231,72 @@ public class PayResultFragment extends BaseFragment {
 
         return R.string.pay_success;
     }
+
+    private void requestRedPacktetShareUrl(String orderNo){
+        RequestParams params = new RequestParams();
+        params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
+        params.add("orderno",orderNo);
+        HttpRequestUtil.httpPost(LocalParams.getBaseUrl() + "cai/coupon", params,new AsyncHttpResponseHandler() {
+            @Override
+            public void onFinish() {
+                super.onFinish();
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String result = new String(responseBody);
+                CouponShareEntry entry = JsonUtilsParser.fromJson(result, CouponShareEntry.class);
+                if (entry != null) {
+                    if (TextUtils.isEmpty(entry.errmsg)) {
+                        useUmengToShare(entry.url,entry.title,entry.content);
+                    } else {
+                        ToastHelper.showShort(getActivity(), entry.errmsg);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                if (statusCode == 0) {
+                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
+                    return;
+                }
+                ToastHelper.showShort(getActivity(), "请求失败,错误码" + statusCode);
+            }
+        });
+    }
+
+    private void useUmengToShare(String url,String title,String content) {
+        if (shareController == null)
+            shareController = new ShareUtil(getActivity());
+        ShareContent shareContent = new ShareContent();
+        shareContent.setUrlImage("drawable:///" + R.drawable.ic_launcher);
+        shareContent.setTargetUrl(url);
+        shareContent.setTitle(title);
+        shareContent.setContent(content);
+        shareController.wxShareContent(shareContent);
+        shareController.circleShareContent(shareContent);
+        shareController.postShare(mSnsPostListener);
+    }
+
+    private SocializeListeners.SnsPostListener mSnsPostListener = new SocializeListeners.SnsPostListener() {
+
+        @Override
+        public void onStart() {
+        }
+
+        @Override
+        public void onComplete(SHARE_MEDIA sm, int eCode,
+                               SocializeEntity sEntity) {
+            String showText = "分享成功";
+            if (eCode != StatusCode.ST_CODE_SUCCESSED) {
+                showText = "分享失败 [" + eCode + "]";
+            }
+            ToastHelper.showShort(getActivity(), showText);
+        }
+    };
+
+    private ShareUtil shareController;
 
     TextView recoTv;
     ListView mLv;
