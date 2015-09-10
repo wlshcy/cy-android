@@ -33,6 +33,7 @@ import com.umeng.socialize.bean.StatusCode;
 import com.umeng.socialize.controller.listener.SocializeListeners;
 
 import org.apache.http.Header;
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -73,6 +74,24 @@ public class PayResultFragment extends BaseFragment {
         IntentUtil.sendUpdateComboMsg(getActivity());
 //        if (isRecomDishes())
 //            requestRecomendDishes();
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        String orderNo = getOrderNoFromParams();
+        if (!TextUtils.isEmpty(orderNo))
+            alertRedPacketsShare(orderNo);
+    }
+
+    String getOrderNoFromParams(){
+        PayParams payParams = getPayParams();
+        return payParams==null?null:payParams.orderno;
+    }
+
+    PayParams getPayParams(){
+        Bundle bundle = getArguments();
+        return bundle != null ? ((PayParams) bundle.getSerializable("PayParams")) : null;
     }
 
 
@@ -230,6 +249,27 @@ public class PayResultFragment extends BaseFragment {
             return entry.titleId;
 
         return R.string.pay_success;
+    }
+
+    private void alertRedPacketsShare(final String orderNo) {
+        final AlertDialog alert = new AlertDialog.Builder(getActivity()).create();
+        alert.show();
+        alert.setCancelable(false);
+        alert.getWindow().setContentView(R.layout.prompt_redpackets_share);
+        alert.getWindow().findViewById(R.id.share_tv).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alert.dismiss();
+                requestRedPacktetShareUrl(orderNo);
+            }
+        });
+        alert.getWindow().findViewById(R.id.close_iv)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alert.dismiss();
+                    }
+                });
     }
 
     private void requestRedPacktetShareUrl(String orderNo){

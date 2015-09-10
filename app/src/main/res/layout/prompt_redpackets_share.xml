@@ -2,29 +2,71 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="@dimen/px48" >
+    android:paddingLeft="@dimen/px48"
+    android:paddingRight="@dimen/px48">
 
     <FrameLayout
-        android:id="@+id/container_fl"
+        android:id="@+id/container_ll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:orientation="horizontal" >
+        android:layout_gravity="center">
 
         <ImageView
-            android:id="@+id/content_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            />
+            android:background="@drawable/red_packets" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/px48"
+                android:gravity="center"
+                android:text="@string/congratulations_you_get_red_packets"
+                android:textColor="#FCE961"
+                android:textSize="24sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/px48"
+                android:gravity="center"
+                android:text="@string/share_red_packets_tip"
+                android:textColor="@color/common_text"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/share_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/px48"
+                android:background="@drawable/btn_red_packets_selector"
+                android:gravity="center"
+                android:paddingBottom="@dimen/px30"
+                android:paddingLeft="@dimen/px120"
+                android:paddingRight="@dimen/px120"
+                android:paddingTop="@dimen/px30"
+                android:text="@string/share_red_packets"
+                android:textColor="#FC3150"
+                android:textSize="16sp" />
+        </LinearLayout>
     </FrameLayout>
 
     <ImageView
+        android:id="@+id/close_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/container_fl"
-        android:background="@drawable/icon_close_combo" />
-
-
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/px24"
+        android:background="@drawable/icon_close_red_packets" />
 </RelativeLayout>

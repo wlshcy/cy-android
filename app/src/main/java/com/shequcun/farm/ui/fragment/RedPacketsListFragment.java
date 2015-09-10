@@ -76,12 +76,17 @@ public class RedPacketsListFragment extends BaseFragment {
         redPacketsLv.setOnRefreshListener(onRefreshListener);
         redPacketsLv.setOnRefreshingScrollToOriginal(onRefreshingScrollToOriginal);
         leftIv.setOnClickListener(onClickListener);
+        rightTv.setOnClickListener(onClickListener);
     }
 
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            popBackStack();
+            if (v == rightTv) {
+
+            } else if (v == leftIv) {
+                popBackStack();
+            }
         }
     };
 
