@@ -92,7 +92,6 @@ public class SetWebViewFragment extends BaseFragment {
         // 滚动条风格，为0指滚动条不占用空间，直接覆盖在网页上
         mWebView.setScrollBarStyle(0);
         // android4.2以前
-        mWebView.addJavascriptInterface(new CallByJS(), "sqcSDK");
         mWebView.setWebViewClient(new WebViewClient() {
 
             @Override
