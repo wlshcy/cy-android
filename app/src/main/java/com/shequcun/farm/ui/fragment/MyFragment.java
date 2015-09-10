@@ -65,22 +65,6 @@ public class MyFragment extends BaseFragment {
         doUnRegisterReceiver();
     }
 
-    View.OnClickListener onClick = new View.OnClickListener() {
-
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-//                case R.id.set://设置
-//                    break;
-                case R.id.tv_status://登录或选择菜品
-                    gotoFragment(R.id.mainpage_ly, new LoginFragment(), LoginFragment.class.getName());
-                    break;
-                default:
-                    break;
-            }
-        }
-    };
-
     void addHeader() {
         if (mLv == null)
             return;
