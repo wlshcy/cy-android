@@ -30,6 +30,6 @@
 
     <include
         layout="@layout/pay_widget_ly"
-        android:layout_gravity="bottom" />
+        />
 
 </LinearLayout>
