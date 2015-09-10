@@ -4,23 +4,18 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.common.widget.PullToRefreshAdapterViewBase;
 import com.common.widget.PullToRefreshBase;
 import com.common.widget.PullToRefreshListView;
-import com.common.widget.PullToRefreshScrollView;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.shequcun.farm.R;
+import com.shequcun.farm.data.CouponEntry;
 import com.shequcun.farm.data.RedPacketsEntry;
 import com.shequcun.farm.ui.adapter.RedPacketsAdapter;
 import com.shequcun.farm.util.HttpRequestUtil;
@@ -30,7 +25,7 @@ import com.shequcun.farm.util.ToastHelper;
 
 import org.apache.http.Header;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by cong on 15/9/7.
@@ -124,7 +119,7 @@ public class RedPacketsListFragment extends BaseFragment {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                String result = new String(responseBody.toString());
+                String result = new String(responseBody);
                 RedPacketsEntry entry = JsonUtilsParser.fromJson(result, RedPacketsEntry.class);
                 if (entry != null) {
                     if (TextUtils.isEmpty(entry.errcode)) {
@@ -157,7 +152,7 @@ public class RedPacketsListFragment extends BaseFragment {
         redPacketsLv.setEmptyView(emptyView);
     }
 
-    private void succesRedPacketsList(ArrayList list) {
+    private void succesRedPacketsList(List<CouponEntry> list) {
         if (list == null || list.isEmpty()) return;
         adapter.addAll(list);
         if (adapter.getCount() <= 0)
