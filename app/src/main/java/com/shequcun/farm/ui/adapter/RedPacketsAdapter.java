@@ -14,12 +14,13 @@ import com.shequcun.farm.data.RedPacketsEntry;
 import com.shequcun.farm.util.Utils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by cong on 15/9/7.
  */
 public class RedPacketsAdapter extends BaseAdapter{
-    private ArrayList<CouponEntry> list = new ArrayList<>();
+    private List<CouponEntry> list = new ArrayList<>();
     private Context context;
 
     public RedPacketsAdapter(Context context) {
@@ -49,17 +50,23 @@ public class RedPacketsAdapter extends BaseAdapter{
             vh = new ViewHolder();
             vh.count = (TextView)convertView.findViewById(R.id.money_count_tv);
             vh.expiryDate = (TextView)convertView.findViewById(R.id.expiry_date_tv);
+            vh.moneySymbolTv = (TextView)convertView.findViewById(R.id.money_symbol_tv);
             convertView.setTag(vh);
         }else {
             vh = (ViewHolder)convertView.getTag();
         }
         CouponEntry entry = (CouponEntry)getItem(position);
-        vh.count.setText(entry.par+"");
-        vh.expiryDate.setText(Utils.getTime(entry.created));
+        if (entry.distype==1){
+            vh.count.setText(entry.discount/100+"");
+        }else if (entry.distype==2){
+            vh.count.setText(entry.discount/10+"折");
+            vh.moneySymbolTv.setVisibility(View.GONE);
+        }
+        vh.expiryDate.setText(Utils.getTime(entry.expire));
         return convertView;
     }
 
-    public void addAll(ArrayList<CouponEntry> list){
+    public void addAll(List<CouponEntry> list){
         this.list.addAll(list);
         notifyDataSetChanged();
     }
@@ -67,5 +74,6 @@ public class RedPacketsAdapter extends BaseAdapter{
     static class ViewHolder{
         TextView count;
         TextView expiryDate;
+        TextView moneySymbolTv;
     }
 }

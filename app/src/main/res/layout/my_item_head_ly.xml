@@ -33,16 +33,16 @@
                 android:textColor="@color/green_446628"
                 android:textSize="@dimen/font30" />
 
-            <TextView
-                android:id="@+id/address_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|bottom"
-                android:paddingBottom="@dimen/px24"
-                android:paddingTop="@dimen/px24"
-                android:gravity="center"
-                android:textColor="@color/green_446628"
-                android:textSize="@dimen/font28" />
+            <!--<TextView-->
+                <!--android:id="@+id/address_tv"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center|bottom"-->
+                <!--android:paddingBottom="@dimen/px24"-->
+                <!--android:paddingTop="@dimen/px24"-->
+                <!--android:gravity="center"-->
+                <!--android:textColor="@color/green_446628"-->
+                <!--android:textSize="@dimen/font28" />-->
 
         </LinearLayout>
 

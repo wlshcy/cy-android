@@ -1,7 +1,11 @@
 package com.shequcun.farm.ui.fragment;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -9,6 +13,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
@@ -86,11 +91,19 @@ public class SetWebViewFragment extends BaseFragment {
         mWebView.loadUrl(htmlUrl);
         // 滚动条风格，为0指滚动条不占用空间，直接覆盖在网页上
         mWebView.setScrollBarStyle(0);
+        // android4.2以前
         mWebView.setWebViewClient(new WebViewClient() {
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                return super.shouldOverrideUrlLoading(view, url);
+                if (url.startsWith("tel:")) {
+                    Intent intent = new Intent(Intent.ACTION_DIAL,
+                            Uri.parse(url));
+                    startActivity(intent);
+                }else if(url.startsWith("http:") || url.startsWith("https:")) {
+                    view.loadUrl(url);
+                }
+                return true;
             }
 
             @SuppressLint("NewApi")
@@ -142,7 +155,6 @@ public class SetWebViewFragment extends BaseFragment {
             }
         }
     };
-
 
     WebView mWebView;
     final int PROGRESS_LOADING = 1;

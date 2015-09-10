@@ -131,8 +131,10 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment {
         public void onClick(View v) {
             if (v == rightTv) {
                 ConsultationDlg.showCallTelDlg(getActivity());
-            } else if (v == add_address_ly || v == addressLy) {
+            } else if (v == add_address_ly) {
                 gotoFragmentByAdd(R.id.mainpage_ly, new AddressFragment(), AddressFragment.class.getName());
+            } else if (v == addressLy) {
+                gotoFragmentByAdd(R.id.mainpage_ly, new AddressListFragment(), AddressListFragment.class.getName());
             }
         }
     };
@@ -305,6 +307,12 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment {
             if (action.equals(IntentUtil.UPDATE_FARM_SHOPPING_CART_MSG)) {
                 addWidgetToView();
             } else if (action.equals(IntentUtil.UPDATE_ADDRESS_MSG)) {
+                /*来自于选择地址*/
+                AddressEntry entry = (AddressEntry) intent.getSerializableExtra("AddressEntry");
+                if (entry != null) {
+                    setDateToAddressInfoView(entry);
+                    return;
+                }
                 requestUserAddress();
             } else if (action.equals(IntentUtil.UPDATE_FARM_SHOPPING_CART_MEMO)) {
                 if (remark_tv != null) {
@@ -378,6 +386,12 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment {
             return;
 //            }
         }
+    }
+
+    private void setDateToAddressInfoView(AddressEntry entry) {
+        addressEntry = entry;
+        addressee_info.setText(entry.name + "  " + entry.mobile);
+        address.setText("地址: " + entry.city+entry.region+entry.zname+entry.bur);
     }
 
     void addSchildView() {

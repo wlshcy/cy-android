@@ -3,6 +3,7 @@ package com.shequcun.farm.util;
 import android.content.Context;
 import android.content.Intent;
 
+import com.shequcun.farm.data.AddressEntry;
 import com.shequcun.farm.data.ComboEntry;
 import com.shequcun.farm.data.ZoneEntry;
 
@@ -11,9 +12,10 @@ import com.shequcun.farm.data.ZoneEntry;
  */
 public class IntentUtil {
 
-    public final static String UPDATE_COMBO_PAGE = "com.youcai.refresh。combo";
+    public final static String UPDATE_COMBO_PAGE = "com.youcai.refresh.combo";
     public final static String UPDATE_MINE_PAGE = "com.youcai.refresh";
     public final static String UPDATE_ADDRESS_REQUEST = "com.youcai.refresh.address_request";
+    public final static String UPDATE_ADDRESS_SELECT = "com.youcai.refresh.address_select";
 
 
     /**
@@ -69,6 +71,13 @@ public class IntentUtil {
         mContext.sendBroadcast(intent);
     }
 
+    public static void sendUpdateAddressMsg(Context mContext,AddressEntry entry) {
+        Intent intent = new Intent();
+        intent.setAction(UPDATE_ADDRESS_MSG);
+        intent.putExtra("AddressEntry", entry);
+        mContext.sendBroadcast(intent);
+    }
+
     /**
      * 刷新农庄特产购物车界面
      */
@@ -94,5 +103,4 @@ public class IntentUtil {
         intent.setAction(UPDATE_ADDRESS_REQUEST);
         mContext.sendBroadcast(intent);
     }
-
 }

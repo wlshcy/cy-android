@@ -11,6 +11,8 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -51,6 +53,11 @@ public class OrderDetailsFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.order_details_ly, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override
@@ -171,8 +178,10 @@ public class OrderDetailsFragment extends BaseFragment {
                 } else {
                     modifyOrder(buildOrederno());
                 }
-            } else if (v == add_address_ly || v == addressLy) {
+            } else if (v == add_address_ly) {
                 gotoFragmentByAdd(R.id.mainpage_ly, new AddressFragment(), AddressFragment.class.getName());
+            } else if (v == addressLy) {
+                gotoFragmentByAdd(R.id.mainpage_ly, new AddressListFragment(), AddressListFragment.class.getName());
             }
         }
     };
@@ -340,7 +349,7 @@ public class OrderDetailsFragment extends BaseFragment {
     }
 
     void requestUserAddress() {
-        HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "user/address", new AsyncHttpResponseHandler() {
+        HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "user/v2/address", new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int sCode, Header[] h, byte[] data) {
                 if (data != null && data.length > 0) {
@@ -393,6 +402,12 @@ public class OrderDetailsFragment extends BaseFragment {
         }
     }
 
+    private void setDateToAddressInfoView(AddressEntry entry) {
+        addressEntry = entry;
+        addressee_info.setText(entry.name + "  " + entry.mobile);
+        address.setText("地址: " + entry.bur);
+    }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -423,6 +438,12 @@ public class OrderDetailsFragment extends BaseFragment {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             if (TextUtils.isEmpty(action)) {
+                return;
+            }
+            /*来自于选择地址*/
+            AddressEntry entry = (AddressEntry) intent.getSerializableExtra("AddressEntry");
+            if (entry != null) {
+                setDateToAddressInfoView(entry);
                 return;
             }
             if (action.equals(IntentUtil.UPDATE_ADDRESS_MSG)) {

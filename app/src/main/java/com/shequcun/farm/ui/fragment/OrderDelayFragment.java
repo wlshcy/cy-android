@@ -149,9 +149,11 @@ public class OrderDelayFragment extends BaseFragment {
 
     private void successDelay(boolean delay) {
         if (delay) {
+            delayTv.setText(R.string.btn_has_delaied_a_week_delivery);
             delayTv.setBackgroundResource(R.drawable.btn_bg_gray_selector);
             delayTv.setEnabled(false);
         } else {
+            delayTv.setText(R.string.btn_delay_a_week_delivery);
             delayTv.setBackgroundResource(R.drawable.btn_bg_red_selector);
             delayTv.setEnabled(true);
         }
