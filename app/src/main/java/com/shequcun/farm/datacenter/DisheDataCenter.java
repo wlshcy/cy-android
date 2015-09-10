@@ -3,6 +3,7 @@ package com.shequcun.farm.datacenter;
 import com.shequcun.farm.data.DishesItemEntry;
 import com.shequcun.farm.data.goods.Order;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,6 +26,25 @@ public class DisheDataCenter {
 
     public String getOrderItemsString() {
         return mOrder.getItemsString();
+    }
+
+
+    /**
+     * 备选菜拼接的字符串
+     *
+     * @return
+     */
+    public String getOrderOptionItemString() {
+        return mOrder.getOptionItemsString();
+    }
+
+
+    public void addOptionItem(DishesItemEntry item) {
+        mOrder.addOptionItem(item);
+    }
+
+    public void removeOptionItem(DishesItemEntry item) {
+        mOrder.removeOptionItem(item);
     }
 
     public List<DishesItemEntry> getItems() {
@@ -148,6 +168,10 @@ public class DisheDataCenter {
             mOrder.clear();
         mOrder = null;
         instance = null;
+    }
+
+    public void clearOptionItems() {
+        mOrder.clearOptionItems();
     }
 
 

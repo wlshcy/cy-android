@@ -104,6 +104,8 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment {
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             params.addRule(RelativeLayout.CENTER_IN_PARENT);
             pView.addView(shopCartView, params);
+        } else {
+
         }
     }
 
@@ -148,12 +150,6 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment {
             requestUserAddress();
             addSchildView();
         }
-
-//        if (sChilidView == null) {
-//            sChilidView = LayoutInflater.from(getActivity()).inflate(R.layout.farm_shopping_cart_footer_ly, null);
-//            mLv.addFooterView(sChilidView, null, false);
-//        }
-
         updateWidget(part, allMoney);
     }
 
@@ -307,6 +303,8 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment {
             if (action.equals(IntentUtil.UPDATE_FARM_SHOPPING_CART_MSG)) {
                 addWidgetToView();
             } else if (action.equals(IntentUtil.UPDATE_ADDRESS_MSG)) {
+                if (!isLogin())
+                    return;
                 /*来自于选择地址*/
                 AddressEntry entry = (AddressEntry) intent.getSerializableExtra("AddressEntry");
                 if (entry != null) {
@@ -372,26 +370,26 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment {
         int size = list.size();
         for (int i = 0; i < size; ++i) {
             AddressEntry entry = list.get(i);
-//            if (entry.isDefault) {
-            if (!TextUtils.isEmpty(entry.name) && !TextUtils.isEmpty(uEntry.address)) {
-                addressEntry = entry;
-                addressLy.setVisibility(View.VISIBLE);
-                add_address_ly.setVisibility(View.GONE);
-                addressee_info.setText(entry.name + "  " + entry.mobile);
-                address.setText("地址: " + uEntry.address);
-            } else {
-                addressLy.setVisibility(View.GONE);
-                add_address_ly.setVisibility(View.VISIBLE);
+            if (entry.isDefault) {
+                if (!TextUtils.isEmpty(entry.name) && !TextUtils.isEmpty(uEntry.address)) {
+                    addressEntry = entry;
+                    addressLy.setVisibility(View.VISIBLE);
+                    add_address_ly.setVisibility(View.GONE);
+                    addressee_info.setText(entry.name + "  " + entry.mobile);
+                    address.setText("地址: " + uEntry.address);
+                } else {
+                    addressLy.setVisibility(View.GONE);
+                    add_address_ly.setVisibility(View.VISIBLE);
+                }
+                return;
             }
-            return;
-//            }
         }
     }
 
     private void setDateToAddressInfoView(AddressEntry entry) {
         addressEntry = entry;
         addressee_info.setText(entry.name + "  " + entry.mobile);
-        address.setText("地址: " + entry.city+entry.region+entry.zname+entry.bur);
+        address.setText("地址: " + entry.city + entry.region + entry.zname + entry.bur);
     }
 
     void addSchildView() {

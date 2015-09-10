@@ -5,6 +5,7 @@ import com.shequcun.farm.data.DishesItemEntry;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Order {
     private static final String TAG = "Order";
@@ -14,9 +15,12 @@ public class Order {
     private String mobile;
     @SerializedName("descr")
     private String descr;
+    /**
+     * 备选菜容量
+     */
+    private List<DishesItemEntry> optionItems = new ArrayList<DishesItemEntry>();
 
     public DishesItemEntry getItemById(int id) {
-
         for (DishesItemEntry it : items) {
             if (id == it.id) {
                 return it;
@@ -28,9 +32,7 @@ public class Order {
     public String getItemsString() {
         String result = "";
         int i = 0;
-
         List<DishesItemEntry> aList = buildItems();
-
         for (DishesItemEntry item : aList) {
             i++;
             if (i == aList.size()) {
@@ -61,22 +63,12 @@ public class Order {
     }
 
     public int getItemsCount() {
-//        int numItem = 0;
-//        for (DishesItemEntry it : items) {
-//            if (it.getCount() > 0) {
-//                numItem += it.getCount();
-//            }
-//        }
-//        return numItem;
         return items == null ? 0 : items.size();
     }
 
     public int getItemsWeight() {
         int weight = 0;
         for (DishesItemEntry it : items) {
-//            if (it.getCount() > 0) {
-//                weight += (it.getCount() * it.packw);
-//            }
             weight += it.packw;
         }
         return weight;
@@ -110,17 +102,31 @@ public class Order {
         items.add(item);
     }
 
-//    public float getItemsTotalPrice() {
-//        float totalPrice = 0.0f;
-//        int i = 0;
-//        for (DishesItemEntry it : items) {
-//            i++;
-//            Log.e(TAG, it.toString());
-////			totalPrice = totalPrice+it.getTotalPrice();
-//            Log.e(TAG, "totalPrice:" + i + "/" + totalPrice);
-//        }
-//        return totalPrice;
-//    }
+    public void addOptionItem(DishesItemEntry item) {
+        if (optionItems == null) {
+            optionItems = new ArrayList<DishesItemEntry>();
+        }
+        optionItems.add(item);
+    }
+
+    public void removeOptionItem(DishesItemEntry item) {
+        if (optionItems == null || optionItems.size() <= 0) {
+            return;
+        }
+        optionItems.remove(item);
+    }
+
+
+    public String getOptionItemsString() {
+        String result = "";
+        for (int i = 0; i < optionItems.size(); ++i) {
+            if (result.length() > 0)
+                result += ",";
+            result += optionItems.get(i).id; //+ ":" + 1;
+        }
+        return result;
+    }
+
 
     public List<DishesItemEntry> getItems() {
         return items;
@@ -154,7 +160,7 @@ public class Order {
             boolean isAdd = false;
             DishesItemEntry pItemEntry = allDishesItem.get(i);
             for (int j = 0; j < size1; ++j) {
-                DishesItemEntry sItemEntry = hasChoosenItem.get(i);
+                DishesItemEntry sItemEntry = hasChoosenItem.get(j);
                 if (pItemEntry.id == sItemEntry.id) {
                     isAdd = false;
                     break;
@@ -165,7 +171,28 @@ public class Order {
             if (isAdd)
                 aList.add(pItemEntry);
         }
-        return aList;
+        return buildRandomNoChooseItem(aList);
+    }
+
+
+    private List<DishesItemEntry> buildRandomNoChooseItem(List<DishesItemEntry> aList) {
+        List<DishesItemEntry> aaList = new ArrayList<DishesItemEntry>();
+        Random random = new Random();
+        int max = aList.size();
+        int min = random.nextInt(max - 4);
+        for (int i = 0; i < 3; ++i) {
+//            int ran = random.nextInt(max) % (max - min) + min;
+            if (!aaList.contains(aList.get(min + i)))
+                aaList.add(aList.get(min + i));
+            else
+                --i;
+        }
+        return aaList;
+    }
+
+    public void clearOptionItems() {
+        if (optionItems != null)
+            optionItems.clear();
     }
 
     public void setItems(List<DishesItemEntry> items) {

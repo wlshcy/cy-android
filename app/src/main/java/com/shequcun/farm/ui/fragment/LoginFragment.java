@@ -60,11 +60,6 @@ public class LoginFragment extends BaseFragment {
      * 鉴权
      */
     private void doAuthInit() {
-//        String cookieValue = PersistanceManager.getCookieValue(getActivity());
-//        if (!TextUtils.isEmpty(cookieValue)) {
-//            doGetSnsCode();
-//            return;
-//        }
         HttpRequestUtil.httpGet(
                 LocalParams.getBaseUrl() + "auth/init",
                 new AsyncHttpResponseHandler() {
@@ -154,15 +149,11 @@ public class LoginFragment extends BaseFragment {
                         UserLoginEntry lEntry = JsonUtilsParser.fromJson(
                                 new String(body), UserLoginEntry.class);
                         if (lEntry != null) {
-//                            requestPushBind();
                             if (TextUtils.isEmpty(lEntry.errmsg)) {
-//                                baseFragmentActivity.startActivity(new Intent(baseFragmentActivity,
-//                                        SheQuCunMainActivity.class));
-//                                saveUserLoginEntryToDisk(lEntry);
-//                                baseFragmentActivity.finish();
                                 new CacheManager(getActivity()).saveUserLoginToDisk(body);
                                 IntentUtil.sendUpdateMyInfoMsg(getActivity());
                                 IntentUtil.sendUpdateComboMsg(getActivity());
+                                IntentUtil.sendUpdateFarmShoppingCartMsg(getActivity());
                                 popBackStack();
                                 return;
                             } else {

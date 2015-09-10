@@ -305,10 +305,11 @@ public class OrderDetailsFragment extends BaseFragment {
         String name = addressEntry.name;
         String mobile = addressEntry.mobile;
         String address = uEntry.address;
-        requestCaiOrder(combo_id, type, combo_idx, items, name, mobile, address);
+        String spares = mOrderController.getOrderOptionItemString();
+        requestCaiOrder(combo_id, type, combo_idx, spares, items, name, mobile, address);
     }
 
-    private void requestCaiOrder(int combo_id, int type, String combo_idx, String items, String name, String mobile, String address) {
+    private void requestCaiOrder(int combo_id, int type, String combo_idx, String spares, String items, String name, String mobile, String address) {
         RequestParams params = new RequestParams();
         params.add("combo_id", combo_id + "");
         params.add("type", type + "");
@@ -317,6 +318,7 @@ public class OrderDetailsFragment extends BaseFragment {
         params.add("name", name);
         params.add("mobile", mobile);
         params.add("address", address);
+        params.add("spares", spares);
         params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
         HttpRequestUtil.httpPost(LocalParams.getBaseUrl() + "cai/order", params, new AsyncHttpResponseHandler() {
             @Override

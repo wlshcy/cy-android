@@ -99,6 +99,30 @@ public class Utils {
     }
 
     public static SpannableString getSpanableSpan(String strFrom1,
+                                                  String strTo1, int size1, int size2) {
+        if (TextUtils.isEmpty(strFrom1) || TextUtils.isEmpty(strTo1))
+            return null;
+
+        SpannableString wordtoSpan = new SpannableString(strFrom1 + strTo1);
+
+        int flag = Spannable.SPAN_EXCLUSIVE_EXCLUSIVE;
+        int start = 0;
+        int end = strFrom1.length();
+        wordtoSpan.setSpan(new AbsoluteSizeSpan(size1), start, end, flag);
+        wordtoSpan.setSpan(new ForegroundColorSpan(0xFF7b7b7b), start, end,
+                flag);
+
+        start = end;
+        end += strTo1.length();
+        wordtoSpan.setSpan(new AbsoluteSizeSpan(size2), start, end, flag);
+        wordtoSpan.setSpan(new ForegroundColorSpan(0xFFf36043), start, end,
+                flag);
+//        wordtoSpan.setSpan(new StyleSpan(android.graphics.Typeface.BOLD),
+//                start, end, flag); // 粗体
+        return wordtoSpan;
+    }
+
+    public static SpannableString getSpanableSpan(String strFrom1,
                                                   String strTo1, String strFrom2, int size1, int size2) {
         if (TextUtils.isEmpty(strFrom1) || TextUtils.isEmpty(strTo1)
                 || TextUtils.isEmpty(strFrom2))

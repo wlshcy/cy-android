@@ -64,7 +64,8 @@ public class LocalParams {
 
     public static String getBaseUrl() {
 //        return getKeyValue("base_url");
-        return "https://api.shequcun.com/";
+        return "http://192.168.1.100:9100/";
+//        return "https://api.shequcun.com/";
     }
 
 //    public String getAlipayPid() {

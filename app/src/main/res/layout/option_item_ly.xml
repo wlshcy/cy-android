@@ -4,7 +4,17 @@
     android:layout_height="@dimen/px230"
     android:background="@android:color/white">
 
-    <com.android.volley.toolbox.NetworkImageView
+    <CheckBox
+        android:id="@+id/option_cb"
+        android:layout_width="@dimen/px60"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/px48"
+        android:background="@null"
+        android:button="@drawable/option_item_selector" />
+
+    <ImageView
         android:id="@+id/goods_img"
         android:layout_width="@dimen/px170"
         android:layout_height="@dimen/px170"
@@ -33,42 +43,6 @@
             android:layout_marginTop="@dimen/px40"
             android:textColor="@color/black_444444"
             android:textSize="@dimen/font30" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="@dimen/px48"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/goods_sub"
-            android:layout_width="@dimen/px80"
-            android:layout_height="@dimen/px80"
-            android:scaleType="centerInside"
-            android:src="@drawable/icon_sub"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/goods_count"
-            android:layout_width="@dimen/px48"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="0"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/font30"
-            android:visibility="gone" />
-
-        <ImageView
-            android:id="@+id/goods_add"
-            android:layout_width="@dimen/px80"
-            android:layout_height="@dimen/px80"
-            android:scaleType="centerInside"
-            android:src="@drawable/add_dishes_selector" />
-
     </LinearLayout>
 
 
