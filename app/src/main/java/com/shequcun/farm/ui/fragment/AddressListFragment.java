@@ -16,9 +16,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.AddressEntry;
 import com.shequcun.farm.data.AddressListEntry;
+import com.shequcun.farm.data.BaseEntry;
+import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.ui.adapter.MyAddressAdapter;
 import com.shequcun.farm.util.HttpRequestUtil;
@@ -30,7 +33,6 @@ import com.shequcun.farm.util.ToastHelper;
 import org.apache.http.Header;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by cong on 15/9/7.
@@ -42,11 +44,24 @@ public class AddressListFragment extends BaseFragment {
     private View back;
     private View addAddress;
     private int maxLen = 5;
+    private int action = Action.SELECT;
+
+    interface Action {
+        String KEY = "Action";
+        int SELECT = 0;
+        int SETTING = 1;
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_address_list, null);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        initParams();
     }
 
     @Override
@@ -65,6 +80,12 @@ public class AddressListFragment extends BaseFragment {
     @Override
     public boolean onBackPressed() {
         return false;
+    }
+
+    private void initParams() {
+        Bundle bundle = getArguments();
+        if (bundle == null) return;
+        action = bundle.getInt(Action.KEY);
     }
 
     @Override
@@ -114,10 +135,17 @@ public class AddressListFragment extends BaseFragment {
             AddressEntry entry = (AddressEntry) adapter.getItem(position - addressLv.getHeaderViewsCount());
             Bundle bundle = new Bundle();
             bundle.putSerializable("AddressEntry", entry);
-            AddressFragment fragment = new AddressFragment();
-            gotoFragmentByAdd(bundle, fragment, fragment.getClass());
+            if (action == Action.SETTING)
+                gotoAddressFragment(bundle);
+            else if (action == Action.SELECT)
+                requestSetDefaultAddr(entry.id, entry);
         }
     };
+
+    private void gotoAddressFragment(Bundle bundle) {
+        AddressFragment fragment = new AddressFragment();
+        gotoFragmentByAdd(bundle, fragment, fragment.getClass());
+    }
 
     private void requestAddress() {
         final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
@@ -138,15 +166,14 @@ public class AddressListFragment extends BaseFragment {
 
             @Override
             public void onSuccess(int sCode, Header[] h, byte[] data) {
-                if (data != null && data.length > 0) {
-                    AddressListEntry entry = JsonUtilsParser.fromJson(new String(data), AddressListEntry.class);
-                    if (entry != null) {
-                        if (TextUtils.isEmpty(entry.errmsg)) {
-                            successAddress(entry.aList);
-                            return;
-                        } else {
-                            ToastHelper.showShort(getActivity(), entry.errmsg);
-                        }
+                String result = new String(data);
+                AddressListEntry entry = JsonUtilsParser.fromJson(result, AddressListEntry.class);
+                if (entry != null) {
+                    if (TextUtils.isEmpty(entry.errmsg)) {
+                        successAddress(entry.aList);
+                        return;
+                    } else {
+                        ToastHelper.showShort(getActivity(), entry.errmsg);
                     }
                 }
             }
@@ -165,12 +192,69 @@ public class AddressListFragment extends BaseFragment {
     private void successAddress(ArrayList<AddressEntry> list) {
         if (list == null || list.isEmpty())
             return;
-        else if (list.size() >= maxLen)
+        else if (list.size() >= maxLen) {
             goneAddAddressView();
-        else
-            showAddAddressView();
+        } else {
+            /*设置显示添加地址item*/
+            if (action == Action.SETTING)
+                showAddAddressView();
+            else
+                goneAddAddressView();
+        }
         adapter.clear();
         adapter.addAll(list);
+    }
+
+    private void requestSetDefaultAddr(int id, final AddressEntry addressEntry) {
+        final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
+        RequestParams params = new RequestParams();
+        params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
+        params.add("id", id + "");
+        HttpRequestUtil.httpPost(LocalParams.getBaseUrl() + "user/v2/address", params,
+                new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onStart() {
+                        super.onStart();
+                        if (pDlg != null)
+                            pDlg.show();
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        super.onFinish();
+                        if (pDlg != null)
+                            pDlg.dismiss();
+                    }
+
+                    @Override
+                    public void onSuccess(int sCode, Header[] h, byte[] data) {
+                        if (data != null && data.length > 0) {
+                            BaseEntry entry = JsonUtilsParser.fromJson(new String(data), BaseEntry.class);
+                            if (entry != null) {
+                                if (TextUtils.isEmpty(entry.errmsg)) {
+                                    goback(addressEntry);
+                                    return;
+                                } else {
+                                    ToastHelper.showShort(getActivity(), entry.errmsg);
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
+                        if (sCode == 0) {
+                            ToastHelper.showShort(getActivity(), R.string.network_error_tip);
+                            return;
+                        }
+                        ToastHelper.showShort(getActivity(), "请求失败,错误码" + sCode);
+                    }
+                });
+    }
+
+    private void goback(AddressEntry entry) {
+        IntentUtil.sendUpdateAddressMsg(getActivity(), entry);
+        popBackStack();
     }
 
     private void goneAddAddressView() {
@@ -235,8 +319,8 @@ public class AddressListFragment extends BaseFragment {
         checkForShowingAddAddressView();
     }
 
-    private void checkForShowingAddAddressView(){
-        if (adapter.getCount()<maxLen){
+    private void checkForShowingAddAddressView() {
+        if (adapter.getCount() < maxLen) {
             addAddAddressView();
             showAddAddressView();
         }
