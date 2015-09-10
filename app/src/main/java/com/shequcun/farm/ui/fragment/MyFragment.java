@@ -98,7 +98,7 @@ public class MyFragment extends BaseFragment {
 //        hView_1.findViewById(R.id.set).setOnClickListener(onClick);
         ((TextView) hView_1.findViewById(R.id.mobile_phone)).setText(uEntry != null ? uEntry.mobile : "");
         ((CircleImageView) hView_1.findViewById(R.id.my_head)).setImageUrl(uEntry != null ? uEntry.headimg : null, ImageCacheManager.getInstance().getImageLoader());
-        ((TextView) hView_1.findViewById(R.id.address_tv)).setText(uEntry != null ? uEntry.address : "");
+//        ((TextView) hView_1.findViewById(R.id.address_tv)).setText(uEntry != null ? uEntry.address : "");
         hView_1.findViewById(R.id.my_head).setOnClickListener(new AvoidDoubleClickListener() {
             @Override
             public void onViewClick(View v) {
@@ -106,12 +106,12 @@ public class MyFragment extends BaseFragment {
                     gotoFragment(R.id.mainpage_ly, new LoginFragment(), LoginFragment.class.getName());
             }
         });
-        hView_1.findViewById(R.id.address_tv).setOnClickListener(new AvoidDoubleClickListener() {
-            @Override
-            public void onViewClick(View v) {
-                gotoFragment(R.id.mainpage_ly, new AddressListFragment(), AddressListFragment.class.getName());
-            }
-        });
+//        hView_1.findViewById(R.id.address_tv).setOnClickListener(new AvoidDoubleClickListener() {
+//            @Override
+//            public void onViewClick(View v) {
+//                gotoFragment(R.id.mainpage_ly, new AddressListFragment(), AddressListFragment.class.getName());
+//            }
+//        });
 
         mLv.addHeaderView(hView_1, null, false);
 //        mLv.addHeaderView(hView_2 = buildHeadView(uEntry), null, false);
@@ -208,7 +208,12 @@ public class MyFragment extends BaseFragment {
                 case 3://拨打客服电话
                     ConsultationDlg.showCallTelDlg(getActivity());
                     break;
-                case 4://设置
+                case 4://地址管理
+                    Bundle bundle =new Bundle();
+                    bundle.putInt(AddressListFragment.Action.KEY,AddressListFragment.Action.SETTING);
+                    gotoFragmentByAdd(bundle,R.id.mainpage_ly, new AddressListFragment(), AddressListFragment.class.getName());
+                    break;
+                case 5://设置
                     gotoFragmentByAdd(R.id.mainpage_ly, new SetFragment(), SetFragment.class.getName());
                     break;
             }
