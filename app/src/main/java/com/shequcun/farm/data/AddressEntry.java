@@ -14,7 +14,7 @@ public class AddressEntry extends BaseEntry {
 //    @SerializedName("houseno")
 //    public String houseno;//门牌号
 //    @SerializedName("address")
-//    public String address;
+    public String address;
     @SerializedName("id")
     public int id;
     @SerializedName("name")

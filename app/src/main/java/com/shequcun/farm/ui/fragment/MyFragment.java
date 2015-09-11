@@ -79,10 +79,8 @@ public class MyFragment extends BaseFragment {
             uEntry = null;
         }
         hView_1 = LayoutInflater.from(getActivity()).inflate(R.layout.my_item_head_ly, null);
-//        hView_1.findViewById(R.id.set).setOnClickListener(onClick);
         ((TextView) hView_1.findViewById(R.id.mobile_phone)).setText(uEntry != null ? uEntry.mobile : "");
         ((CircleImageView) hView_1.findViewById(R.id.my_head)).setImageUrl(uEntry != null ? uEntry.headimg : null, ImageCacheManager.getInstance().getImageLoader());
-//        ((TextView) hView_1.findViewById(R.id.address_tv)).setText(uEntry != null ? uEntry.address : "");
         hView_1.findViewById(R.id.my_head).setOnClickListener(new AvoidDoubleClickListener() {
             @Override
             public void onViewClick(View v) {
@@ -90,35 +88,8 @@ public class MyFragment extends BaseFragment {
                     gotoFragment(R.id.mainpage_ly, new LoginFragment(), LoginFragment.class.getName());
             }
         });
-//        hView_1.findViewById(R.id.address_tv).setOnClickListener(new AvoidDoubleClickListener() {
-//            @Override
-//            public void onViewClick(View v) {
-//                gotoFragment(R.id.mainpage_ly, new AddressListFragment(), AddressListFragment.class.getName());
-//            }
-//        });
-
         mLv.addHeaderView(hView_1, null, false);
-//        mLv.addHeaderView(hView_2 = buildHeadView(uEntry), null, false);
     }
-
-//    void addHeader(ComboEntry entry) {
-//        if (mLv == null)
-//            return;
-//        if (hView_1 != null)
-//            mLv.removeHeaderView(hView_1);
-//        if (hView_2 != null)
-//            mLv.removeHeaderView(hView_2);
-//        byte[] data = new CacheManager(getActivity()).getUserLoginFromDisk();
-//        if (data != null && data.length > 0) {
-//            uEntry = JsonUtilsParser.fromJson(new String(data), UserLoginEntry.class);
-//        }
-//        hView_1 = LayoutInflater.from(getActivity()).inflate(R.layout.my_item_head_ly, null);
-//        hView_1.findViewById(R.id.set).setOnClickListener(onClick);
-//        ((TextView) hView_1.findViewById(R.id.mobile_phone)).setText(uEntry != null ? uEntry.mobile : "");
-//        ((CircleImageView) hView_1.findViewById(R.id.my_head)).setImageUrl(uEntry != null ? uEntry.headimg : null, ImageCacheManager.getInstance().getImageLoader());
-//        mLv.addHeaderView(hView_1, null, false);
-//        mLv.addHeaderView(hView_2 = buildHeaderView(uEntry, entry), null, false);
-//    }
 
     void buildAdapter() {
         addHeader();
@@ -126,48 +97,6 @@ public class MyFragment extends BaseFragment {
             adapter = new MyAdapter(getActivity(), getResources().getStringArray(R.array.my_array));
         mLv.setAdapter(adapter);
     }
-
-//    View buildHeadView(UserLoginEntry uEntry) {
-//        View hView = null;
-//        if (uEntry == null) {
-//            hView = LayoutInflater.from(getActivity()).inflate(R.layout.no_login_ly, null);
-//            hView.findViewById(R.id.tv_status).setOnClickListener(onClick);
-//        }
-//        else {
-//            if (hasChosenCombo) {
-//                hView = LayoutInflater.from(getActivity()).inflate(R.layout.have_chosen_ly, null);
-//            } else {
-//                hView = LayoutInflater.from(getActivity()).inflate(R.layout.no_login_ly, null);
-//                ((TextView) hView.findViewById(R.id.tv_tip)).setText(R.string.no_combo_tip);
-//                ((TextView) hView.findViewById(R.id.tv_status)).setText(R.string.choose_combo);
-//                hView.findViewById(R.id.tv_status).setOnClickListener(onClick);
-//            }
-//        }
-//        return hView;
-//    }
-
-//    View buildHeaderView(UserLoginEntry uEntry, ComboEntry entry) {
-//        View hView = null;
-//        if (uEntry == null) {
-//            hView = LayoutInflater.from(getActivity()).inflate(R.layout.no_login_ly, null);
-//            hView.findViewById(R.id.tv_status).setOnClickListener(onClick);
-//        } else {
-//            if (entry != null) {
-//                hView = LayoutInflater.from(getActivity()).inflate(R.layout.have_chosen_ly, null);
-//                ((TextView) hView.findViewById(R.id.combo_name)).setText(entry.title);
-//                ((TextView) hView.findViewById(R.id.dis_cycle)).setText("每周配送" + entry.shipday.length + "次");
-//                ((TextView) hView.findViewById(R.id.per_weight)).setText("每次配送" + Utils.unitConversion(entry.weights[entry.index]));
-//                ((TextView) hView.findViewById(R.id.times)).setText("配送" + entry.duration + "周");
-//                ((TextView) hView.findViewById(R.id.all_weight)).setText("共" + Utils.unitConversion(entry.duration * entry.weights[entry.index] * entry.shipday.length));
-//            }
-//        }
-//        return hView;
-//    }
-
-    /**
-     * 是否选择菜品
-     */
-//    boolean hasChosenCombo = false;
 
     private AdapterView.OnItemClickListener onItemClick = new AdapterView.OnItemClickListener() {
         @Override
@@ -193,9 +122,9 @@ public class MyFragment extends BaseFragment {
                     ConsultationDlg.showCallTelDlg(getActivity());
                     break;
                 case 4://地址管理
-                    Bundle bundle =new Bundle();
-                    bundle.putInt(AddressListFragment.Action.KEY,AddressListFragment.Action.SETTING);
-                    gotoFragmentByAdd(bundle,R.id.mainpage_ly, new AddressListFragment(), AddressListFragment.class.getName());
+                    Bundle bundle = new Bundle();
+                    bundle.putInt(AddressListFragment.Action.KEY, AddressListFragment.Action.SETTING);
+                    gotoFragmentByAdd(bundle, R.id.mainpage_ly, new AddressListFragment(), AddressListFragment.class.getName());
                     break;
                 case 5://设置
                     gotoFragmentByAdd(R.id.mainpage_ly, new SetFragment(), SetFragment.class.getName());
@@ -221,12 +150,6 @@ public class MyFragment extends BaseFragment {
             if (TextUtils.isEmpty(action)) {
                 return;
             }
-//            ComboEntry entry = (ComboEntry) intent.getSerializableExtra("ComboEntry");
-//            if (entry != null) {
-//                addHeader(entry);
-//                return;
-//            }
-
             if (action.equals("com.youcai.refresh")) {
                 addHeader();
             }

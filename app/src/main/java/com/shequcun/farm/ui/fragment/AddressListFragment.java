@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +35,7 @@ import com.shequcun.farm.util.ToastHelper;
 import org.apache.http.Header;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by cong on 15/9/7.
@@ -253,7 +256,20 @@ public class AddressListFragment extends BaseFragment {
     }
 
     private void goback(AddressEntry entry) {
-        IntentUtil.sendUpdateAddressMsg(getActivity(), entry);
+        FragmentManager manager = getActivity().getSupportFragmentManager();
+        if (manager != null) {
+            List<Fragment> aList = manager.getFragments();
+            if (aList != null && aList.size() > 0) {
+                int length = aList.size();
+                for (int i = 1; i < length; i++) {
+                    Fragment fragment = aList.get(i);
+                    if (fragment != null && fragment instanceof PayComboFragment) {
+                        ((PayComboFragment) fragment).setAddressWidgetContent(entry);
+                        break;
+                    }
+                }
+            }
+        }
         popBackStack();
     }
 

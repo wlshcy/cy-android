@@ -258,7 +258,7 @@ public class SetFragment extends BaseFragment {
                             if (logout) {
                                 ToastHelper.showShort(getActivity(), R.string.logout_success);
                                 new CacheManager(getActivity()).delUserLoginToDisk();
-                                IntentUtil.sendUpdateMyInfoMsg(getActivity());
+//                                IntentUtil.sendUpdateMyInfoMsg(getActivity());
                                 IntentUtil.sendUpdateComboMsg(getActivity());
                                 IntentUtil.sendUpdateFarmShoppingCartMsg(getActivity());
                                 popBackStack();
