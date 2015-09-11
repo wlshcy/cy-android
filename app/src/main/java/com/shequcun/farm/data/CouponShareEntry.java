@@ -12,4 +12,6 @@ public class CouponShareEntry extends BaseEntry{
     public String content;
     @SerializedName("title")
     public String title;
+    @SerializedName("count")
+    public int count;
 }

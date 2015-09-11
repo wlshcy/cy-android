@@ -81,7 +81,7 @@ public class PayResultFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         String orderNo = getOrderNoFromParams();
         if (!TextUtils.isEmpty(orderNo))
-            alertRedPacketsShare(orderNo);
+            requestRedPacktetShareUrl(orderNo);
     }
 
     String getOrderNoFromParams(){
@@ -251,16 +251,18 @@ public class PayResultFragment extends BaseFragment {
         return R.string.pay_success;
     }
 
-    private void alertRedPacketsShare(final String orderNo) {
+    private void alertRedPacketsShare(int count,final String url, final String title, final String content) {
         final AlertDialog alert = new AlertDialog.Builder(getActivity()).create();
         alert.show();
         alert.setCancelable(false);
         alert.getWindow().setContentView(R.layout.prompt_redpackets_share);
+        TextView countTv = (TextView)alert.getWindow().findViewById(R.id.red_packets_count_tv);
+        countTv.setText(countTv.getText().toString().replace("A",count>0?count+"":"N"));
         alert.getWindow().findViewById(R.id.share_tv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 alert.dismiss();
-                requestRedPacktetShareUrl(orderNo);
+                useUmengToShare(url,title,content);
             }
         });
         alert.getWindow().findViewById(R.id.close_iv)
@@ -288,7 +290,7 @@ public class PayResultFragment extends BaseFragment {
                 CouponShareEntry entry = JsonUtilsParser.fromJson(result, CouponShareEntry.class);
                 if (entry != null) {
                     if (TextUtils.isEmpty(entry.errmsg)) {
-                        useUmengToShare(entry.url,entry.title,entry.content);
+                        alertRedPacketsShare(entry.count,entry.url, entry.title, entry.content);
                     } else {
                         ToastHelper.showShort(getActivity(), entry.errmsg);
                     }
