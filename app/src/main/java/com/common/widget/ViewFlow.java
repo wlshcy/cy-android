@@ -163,6 +163,7 @@ public class ViewFlow extends AdapterView<Adapter> {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
+        this.getParent().requestDisallowInterceptTouchEvent(true);
         if (getChildCount() == 0)
             return false;
 

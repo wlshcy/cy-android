@@ -2,13 +2,17 @@ package com.shequcun.farm.ui.fragment;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -30,6 +34,7 @@ import com.shequcun.farm.db.RecommendItemKey;
 import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.ui.SqcFarmActivity;
 import com.shequcun.farm.ui.adapter.CarouselAdapter;
+import com.shequcun.farm.ui.adapter.ViewPagerAdapter;
 import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.IntentUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
@@ -61,12 +66,35 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
 
     @Override
     protected void initWidget(View v) {
+        backIv = (ImageView)v.findViewById(R.id.back);
+        shareIv = (ImageView)v.findViewById(R.id.share_iv);
         entry = buildRecommendEntry();
         carousel_img = (ViewFlow) v.findViewById(R.id.carousel_img);
         carousel_point = (CircleFlowIndicator) v.findViewById(R.id.carousel_point);
         back = v.findViewById(R.id.back);
         share = v.findViewById(R.id.share);
         pView = (RelativeLayout) v.findViewById(R.id.pView);
+        initViewPager(v);
+    }
+
+    private void initViewPager(View v){
+        viewPager = (ViewPager) v.findViewById(R.id.welcome_viewpager);
+        views = new ArrayList<View>();
+        for (int i = 0; i < pics.length; i++) {
+            ImageView iv = new ImageView(getActivity());
+            LinearLayout.LayoutParams mParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT);
+            iv.setLayoutParams(mParams);
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN) {
+                iv.setBackground(getResources().getDrawable(pics[i]));
+            } else {
+                iv.setBackgroundDrawable(getResources().getDrawable(pics[i]));
+            }
+            views.add(iv);
+        }
+        vpAdapter = new ViewPagerAdapter(views);
+        viewPager.setAdapter(vpAdapter);
     }
 
     @Override
@@ -345,8 +373,8 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
     /**
      * 轮播的图片
      */
-    ViewFlow carousel_img;
-    CircleFlowIndicator carousel_point;
+//    ViewFlow carousel_img;
+//    CircleFlowIndicator carousel_point;
     CarouselAdapter cAdapter;
     RecommendEntry entry;
     View back;
@@ -354,4 +382,12 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
     RelativeLayout pView;
     String alipay;
     String orderno;
+
+    ImageView shareIv;
+    ImageView backIv;
+    ViewPagerAdapter vpAdapter;
+    ViewPager viewPager;
+    private int[] pics = {R.drawable.guide1, R.drawable.guide2,
+            R.drawable.guide3};
+    private ArrayList<View> views;
 }
