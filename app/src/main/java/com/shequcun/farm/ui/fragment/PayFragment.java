@@ -10,15 +10,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 import com.shequcun.farm.R;
+import com.shequcun.farm.data.OrderEntry;
 import com.shequcun.farm.data.PayParams;
 import com.shequcun.farm.datacenter.CacheManager;
+import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.util.AlipayUtils;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
 import com.shequcun.farm.util.Constrants;
+import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.IntentUtil;
+import com.shequcun.farm.util.JsonUtilsParser;
+import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.ToastHelper;
 import com.shequcun.farm.util.Utils;
+
+import org.apache.http.Header;
 
 /**
  * 支付界面
@@ -134,6 +143,9 @@ public class PayFragment extends BaseFragment {
 
         ;
     };
+
+
+
     View alipay_ly;
     View back;
     TextView pay_money;

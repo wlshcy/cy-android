@@ -181,7 +181,7 @@ public class SingleDishesFragment extends BaseFragment {
         if (list == null || list.size() <= 0) {
             addressLy.setVisibility(View.GONE);
             add_address_ly.setVisibility(View.VISIBLE);
-            doRegisterRefreshBrodcast();
+//            doRegisterRefreshBrodcast();
             return;
         }
         int size = list.size();
@@ -195,7 +195,7 @@ public class SingleDishesFragment extends BaseFragment {
                     addressee_info.setText(entry.name + "  " + entry.mobile);
                     address.setText("地址: " + uEntry.address);
                 } else {
-                    doRegisterRefreshBrodcast();
+//                    doRegisterRefreshBrodcast();
                     addressLy.setVisibility(View.GONE);
                     add_address_ly.setVisibility(View.VISIBLE);
                 }
@@ -207,42 +207,42 @@ public class SingleDishesFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        doUnRegisterReceiver();
+//        doUnRegisterReceiver();
         mHandler.removeCallbacksAndMessages(null);
     }
 
 
-    void doRegisterRefreshBrodcast() {
-        if (!mIsBind) {
-            IntentFilter intentFilter = new IntentFilter();
-            intentFilter.addAction(IntentUtil.UPDATE_ADDRESS_MSG);
-            getActivity().registerReceiver(mUpdateReceiver, intentFilter);
-            mIsBind = true;
-        }
-    }
+//    void doRegisterRefreshBrodcast() {
+//        if (!mIsBind) {
+//            IntentFilter intentFilter = new IntentFilter();
+//            intentFilter.addAction(IntentUtil.UPDATE_ADDRESS_MSG);
+//            getActivity().registerReceiver(mUpdateReceiver, intentFilter);
+//            mIsBind = true;
+//        }
+//    }
 
-    private void doUnRegisterReceiver() {
-        if (mIsBind) {
-            getActivity().unregisterReceiver(mUpdateReceiver);
-            mIsBind = false;
-        }
-    }
+//    private void doUnRegisterReceiver() {
+//        if (mIsBind) {
+//            getActivity().unregisterReceiver(mUpdateReceiver);
+//            mIsBind = false;
+//        }
+//    }
 
-    boolean mIsBind = false;
+//    boolean mIsBind = false;
 
-    private BroadcastReceiver mUpdateReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            if (TextUtils.isEmpty(action)) {
-                return;
-            }
-            if (action.equals(IntentUtil.UPDATE_ADDRESS_MSG)) {
-                buildUserLoginEntry();
-                requestUserAddress();
-            }
-        }
-    };
+//    private BroadcastReceiver mUpdateReceiver = new BroadcastReceiver() {
+//        @Override
+//        public void onReceive(Context context, Intent intent) {
+//            String action = intent.getAction();
+//            if (TextUtils.isEmpty(action)) {
+//                return;
+//            }
+//            if (action.equals(IntentUtil.UPDATE_ADDRESS_MSG)) {
+//                buildUserLoginEntry();
+//                requestUserAddress();
+//            }
+//        }
+//    };
 
     /**
      * 创建单品订单

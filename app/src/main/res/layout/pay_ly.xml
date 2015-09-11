@@ -2,75 +2,91 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
+    android:background="@color/gray_ebebeb"
     android:orientation="vertical">
 
     <include layout="@layout/common_title_ly" />
 
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/px40"
-        android:src="@drawable/icon_vip" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/px50"
-        android:text="@string/please_pay_money"
-        android:textColor="@color/gray_676767"
-        android:textSize="@dimen/px32" />
-
-
-    <TextView
-        android:id="@+id/pay_money"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/px30"
-        android:text="￥"
-        android:textColor="@color/orange_ff9000"
-        android:textSize="@dimen/font40" />
-
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="@dimen/px56"
-        android:background="@color/common_bg_color" />
+        android:layout_height="@dimen/px20"/>
 
-    <FrameLayout
-        android:id="@+id/alipay_ly"
-        android:background="@drawable/list_item_selector"
+    <include layout="@layout/address_widget_ly"/>
+
+    <!--<ImageView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center_horizontal"-->
+        <!--android:layout_marginTop="@dimen/px40"-->
+        <!--android:src="@drawable/icon_vip" />-->
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/px150">
-
-        <ImageView
-            android:layout_width="@dimen/px100"
-            android:layout_height="@dimen/px100"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/px40"
-            android:src="@drawable/icon_alipay" />
-
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/px10"
+        android:background="@android:color/white"
+        android:layout_height="match_parent">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right|center_vertical"
-            android:layout_marginRight="@dimen/px40"
-            android:drawablePadding="@dimen/px40"
-            android:drawableRight="@drawable/icon_more"
-            android:gravity="center"
-            android:text="@string/alipay_pay"
-            android:textColor="@color/gray_676767"
-            android:textSize="@dimen/font28" />
-    </FrameLayout>
+            android:layout_gravity="center_horizontal"
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/common_bg_color" />
+            android:layout_marginTop="@dimen/px40"
+            android:text="@string/please_pay_money"
+            android:textColor="@color/gray_676767"
+            android:textSize="@dimen/px32" />
+        <!--android:layout_marginTop="@dimen/px50"-->
+
+        <TextView
+            android:id="@+id/pay_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/px30"
+            android:text="￥"
+            android:textColor="@color/orange_ff9000"
+            android:textSize="@dimen/font40" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/px56"
+            android:background="@color/common_bg_color" />
+
+        <FrameLayout
+            android:id="@+id/alipay_ly"
+            android:background="@drawable/list_item_selector"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/px150">
+
+            <ImageView
+                android:layout_width="@dimen/px100"
+                android:layout_height="@dimen/px100"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/px40"
+                android:src="@drawable/icon_alipay" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center_vertical"
+                android:layout_marginRight="@dimen/px40"
+                android:drawablePadding="@dimen/px40"
+                android:drawableRight="@drawable/icon_more"
+                android:gravity="center"
+                android:text="@string/alipay_pay"
+                android:textColor="@color/gray_676767"
+                android:textSize="@dimen/font28" />
+        </FrameLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/common_bg_color" />
+
+    </LinearLayout>
+
+
 
 
 </LinearLayout>

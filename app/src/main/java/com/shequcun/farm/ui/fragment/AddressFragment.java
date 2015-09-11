@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -142,10 +144,10 @@ public class AddressFragment extends BaseFragment {
             return;
         }
 
-        if (!checkDiff()) {
-            ToastHelper.showShort(getActivity(), R.string.duplicate_address_content);
-            return;
-        }
+//        if (!checkDiff()) {
+//            ToastHelper.showShort(getActivity(), R.string.duplicate_address_content);
+//            return;
+//        }
 
 
 //        String union_NO = unit_number_edit.getText().toString();
@@ -213,7 +215,11 @@ public class AddressFragment extends BaseFragment {
                         if (jObj != null) {
                             String errmsg = jObj.optString("errmsg");
                             if (TextUtils.isEmpty(errmsg)) {
-                                updateUserInfo(jObj.optString("address"));
+                                AddressEntry entry = new AddressEntry();
+                                entry.address = jObj.optString("address");
+                                entry.name = name;
+                                entry.mobile = mobile;
+                                updateUserInfo(entry);
                                 return;
                             }
                             ToastHelper.showShort(getActivity(), errmsg);
@@ -235,32 +241,37 @@ public class AddressFragment extends BaseFragment {
         });
     }
 
-    private boolean checkDiff() {
-        if (entry == null) return true;
-        if (!TextUtils.isEmpty(entry.name) && !entry.name.equals(name))
-            return true;
-        if (!TextUtils.isEmpty(entry.mobile) && !entry.mobile.equals(mobile))
-            return true;
-        if (!TextUtils.isEmpty(entry.zname) && znameDiff)
-            return true;
-        if (!TextUtils.isEmpty(entry.bur) && !entry.bur.equals(detailAddr))
-            return true;
-        return false;
-    }
+//    private boolean checkDiff() {
+//        if (entry == null) return true;
+//        if (!TextUtils.isEmpty(entry.name) && !entry.name.equals(name))
+//            return true;
+//        if (!TextUtils.isEmpty(entry.mobile) && !entry.mobile.equals(mobile))
+//            return true;
+//        if (!TextUtils.isEmpty(entry.zname) && znameDiff)
+//            return true;
+//        if (!TextUtils.isEmpty(entry.bur) && !entry.bur.equals(detailAddr))
+//            return true;
+//        return false;
+//    }
 
-    void updateUserInfo(String address) {
-        byte[] data = new CacheManager(getActivity()).getUserLoginFromDisk();
-        if (data == null || data.length <= 0)
-            return;
-        UserLoginEntry uEntry = JsonUtilsParser.fromJson(new String(data), UserLoginEntry.class);
-        if (uEntry == null)
-            return;
-        uEntry.address = address;
-        new CacheManager(getActivity()).saveUserLoginToDisk(JsonUtilsParser.toJson(uEntry).getBytes());
-        IntentUtil.sendUpdateAddressMsg(getActivity());
-        IntentUtil.sendUpdateMyInfoMsg(getActivity());
+    void updateUserInfo(AddressEntry entry) {
+        FragmentManager manager = getActivity().getSupportFragmentManager();
+        if (manager != null) {
+            List<Fragment> aList = manager.getFragments();
+            if (aList != null && aList.size() > 0) {
+                int length = aList.size();
+                for (int i = 1; i < length; i++) {
+                    Fragment fragment = aList.get(i);
+                    if (fragment != null && fragment instanceof PayComboFragment) {
+                        ((PayComboFragment) fragment).setAddressWidgetContent(entry);
+                        break;
+                    }
+                }
+            }
+        }
+
         IntentUtil.sendUpdateAddressRequest(getActivity());
-//        IntentUtil.sendUpdateMyAddressMsg(getActivity(), "", address);
+//        IntentUtil.sendUpdateAddressMsg(getActivity());
         popBackStack();
     }
 
@@ -345,14 +356,11 @@ public class AddressFragment extends BaseFragment {
     };
 
     void setWidgetContent(ZoneEntry zEntry) {
-        if (entry != null) {
-//            entry.region = zEntry.region;
-//            entry.city = zEntry.city;
-            if (!TextUtils.isEmpty(entry.name)&&!entry.name.equals(zEntry.name)) znameDiff = true;
-            entry.zname = zEntry.name;
-            entry.zid = zEntry.id;
-//            entry.street = "";
-        }
+        if (entry == null)
+            entry = new AddressEntry();
+        if (!TextUtils.isEmpty(entry.name) && !entry.name.equals(zEntry.name)) znameDiff = true;
+        entry.zname = zEntry.name;
+        entry.zid = zEntry.id;
         community_tv.setText(zEntry.name);
     }
 

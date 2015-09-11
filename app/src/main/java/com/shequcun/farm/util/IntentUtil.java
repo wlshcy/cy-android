@@ -21,12 +21,12 @@ public class IntentUtil {
     /**
      * @param mContext
      */
-    public static void sendUpdateMyInfoMsg(Context mContext) {
-        Intent intent = new Intent();
-        intent.setAction(UPDATE_MINE_PAGE);
-        intent.putExtra("UpdateAction", "UpdateMyInfo");
-        mContext.sendBroadcast(intent);
-    }
+//    public static void sendUpdateMyInfoMsg(Context mContext) {
+//        Intent intent = new Intent();
+//        intent.setAction(UPDATE_MINE_PAGE);
+//        intent.putExtra("UpdateAction", "UpdateMyInfo");
+//        mContext.sendBroadcast(intent);
+//    }
 
     /**
      * 发送刷新套餐页的广播

@@ -151,7 +151,7 @@ public class LoginFragment extends BaseFragment {
                         if (lEntry != null) {
                             if (TextUtils.isEmpty(lEntry.errmsg)) {
                                 new CacheManager(getActivity()).saveUserLoginToDisk(body);
-                                IntentUtil.sendUpdateMyInfoMsg(getActivity());
+//                                IntentUtil.sendUpdateMyInfoMsg(getActivity());
                                 IntentUtil.sendUpdateComboMsg(getActivity());
                                 IntentUtil.sendUpdateFarmShoppingCartMsg(getActivity());
                                 popBackStack();

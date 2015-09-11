@@ -15,7 +15,8 @@
         android:paddingLeft="@dimen/px40"
         android:text="@string/ucai_common_tip"
         android:textColor="@android:color/white"
-        android:textSize="@dimen/font26" />
+        android:textSize="@dimen/font26"
+        android:visibility="gone" />
 
     <ImageView
         android:layout_width="match_parent"
