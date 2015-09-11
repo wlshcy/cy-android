@@ -3,6 +3,8 @@ package com.shequcun.farm.ui.fragment;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -110,7 +112,28 @@ public class RedPacketsListFragment extends BaseFragment {
     private AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+            if (adapter == null)
+                return;
+            CouponEntry entry = (CouponEntry) adapter.getItem(position-redPacketsLv.getRefreshableView().getHeaderViewsCount());
+            if (entry == null)
+                return;
+            if (entry.used)
+                return;
+            FragmentManager manager = getActivity().getSupportFragmentManager();
+            if (manager != null) {
+                List<Fragment> aList = manager.getFragments();
+                if (aList != null && aList.size() > 0) {
+                    int length = aList.size();
+                    for (int i = 1; i < length; i++) {
+                        Fragment fragment = aList.get(i);
+                        if (fragment != null && fragment instanceof FarmSpecialtyShoppingCartFragment) {
+                            ((FarmSpecialtyShoppingCartFragment) fragment).updateRedPackets(entry);
+                            break;
+                        }
+                    }
+                }
+            }
+            popBackStack();
         }
     };
 

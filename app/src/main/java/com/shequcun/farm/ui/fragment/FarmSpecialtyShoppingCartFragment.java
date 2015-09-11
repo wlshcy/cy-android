@@ -22,6 +22,7 @@ import com.loopj.android.http.RequestParams;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.AddressEntry;
 import com.shequcun.farm.data.AddressListEntry;
+import com.shequcun.farm.data.CouponEntry;
 import com.shequcun.farm.data.OrderEntry;
 import com.shequcun.farm.data.PayParams;
 import com.shequcun.farm.data.RecommendEntry;
@@ -105,7 +106,18 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment {
             params.addRule(RelativeLayout.CENTER_IN_PARENT);
             pView.addView(shopCartView, params);
         } else {
-
+            resetWidgetStatus();
+            removeWidgetFromView();
+            noLoginView = LayoutInflater.from(getActivity()).inflate(R.layout.no_login_ly, null);
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            params.addRule(RelativeLayout.CENTER_IN_PARENT);
+            pView.addView(noLoginView, params);
+            noLoginView.findViewById(R.id.go_login).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    gotoFragmentByAdd(R.id.mainpage_ly, new LoginFragment(), LoginFragment.class.getName());
+                }
+            });
         }
     }
 
@@ -125,6 +137,7 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment {
         }
         if (pAddressView != null)
             pAddressView.setVisibility(View.GONE);
+
         memo = null;
     }
 
@@ -158,6 +171,11 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment {
             pView.removeView(shopCartView);
             shopCartView = null;
         }
+
+        if (noLoginView != null) {
+            pView.removeView(noLoginView);
+            noLoginView = null;
+        }
     }
 
     /**
@@ -181,6 +199,10 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment {
     void addDataToAdapter(RecommendEntry[] rEntryArray) {
         allPart = 0;
         allMoney = 0;
+        cEntry = null;
+        if (red_packets_money_tv != null)
+            red_packets_money_tv.setText("");
+
         for (int i = 0; i < rEntryArray.length; ++i) {
             allPart += rEntryArray[i].count;
             allMoney += rEntryArray[i].count * rEntryArray[i].price;
@@ -189,7 +211,6 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment {
         adapter.notifyDataSetChanged();
         addFooter(allPart);
         pScrollView.fullScroll(View.FOCUS_UP);
-//        mLv.smoothScrollToPosition(0);
     }
 
     View.OnClickListener onGoodsImgLsn = new View.OnClickListener() {
@@ -392,6 +413,9 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment {
         address.setText("地址: " + entry.city + entry.region + entry.zname + entry.bur);
     }
 
+    /**
+     * 添加备注优惠红包至界面
+     */
     void addSchildView() {
         if (sChilidView == null) {
             sChilidView = LayoutInflater.from(getActivity()).inflate(R.layout.farm_shopping_cart_footer_ly, null);
@@ -411,12 +435,18 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment {
                     gotoFragmentByAdd(R.id.mainpage_ly, new RemarkFragment(), RemarkFragment.class.getName());
                 }
             });
+
+            sChilidView.findViewById(R.id.red_packets_money_ly).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    gotoFragment(R.id.mainpage_ly, new RedPacketsListFragment(), RedPacketsListFragment.class.getName());
+                }
+            });
             remark_tv = (TextView) sChilidView.findViewById(R.id.remark_tv);
+            red_packets_money_tv = (TextView) sChilidView.findViewById(R.id.red_packets_money_tv);
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-
             params.bottomMargin = ResUtil.dipToPixel(getActivity(), 5);
-
             pView.addView(sChilidView, params);
         }
     }
@@ -447,7 +477,8 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment {
         params.add("extras", getExtras());
         params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
         params.add("memo", memo);
-
+        if (cEntry != null)
+            params.add("coupon_id", cEntry.id + "");
 
         final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
         HttpRequestUtil.httpPost(LocalParams.getBaseUrl() + "cai/order", params, new AsyncHttpResponseHandler() {
@@ -530,6 +561,23 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment {
         }
     };
 
+    public void updateRedPackets(CouponEntry entry) {
+        cEntry = entry;
+        if (red_packets_money_tv != null) {
+            if (entry.distype == 1) {
+                allMoney -= entry.discount;
+                red_packets_money_tv.setText("使用" + entry.discount / 100 + "元红包");
+            } else if (entry.distype == 2) {
+                int discount = entry.discount / 10;
+                allMoney *= discount;
+                red_packets_money_tv.setText("我要打" + discount + "折");
+            }
+        }
+
+        updateWidget(allPart, allMoney);
+    }
+
+    TextView red_packets_money_tv;
     View pAddressView;
     AddressEntry addressEntry;
     boolean mIsBind = false;
@@ -555,4 +603,7 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment {
     String orderno;
     String alipay;
     String memo;
+    CouponEntry cEntry;
+
+    View noLoginView;
 }

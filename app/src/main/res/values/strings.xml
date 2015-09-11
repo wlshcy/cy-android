@@ -192,4 +192,6 @@
     <string name="option_dishes_tip">由于蔬菜有天气、病害等不确定因素影响,可能有某种蔬菜当日无法配送的情况,所以请在以下选择2-3种备选蔬菜.</string>
     <string name="option_dishes_tip_1">※备选菜为必选项</string>
     <string name="no_choose_option_tip">亲,您还没有选择备选菜哦!请单击备选菜,选择2-3种吧!</string>
+    <string name="no_login_tip">亲,您还未登录哦~登录后才可查看购物车哦~</string>
+    <string name="go_login">去登录</string>
 </resources>
