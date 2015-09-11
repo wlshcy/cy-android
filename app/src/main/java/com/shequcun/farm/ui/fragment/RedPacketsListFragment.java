@@ -151,7 +151,7 @@ public class RedPacketsListFragment extends BaseFragment {
                 RedPacketsEntry entry = JsonUtilsParser.fromJson(result, RedPacketsEntry.class);
                 if (entry != null) {
                     if (TextUtils.isEmpty(entry.errcode)) {
-                        succesRedPacketsList(entry.list);
+                        succesRedPacketsList(entry);
                     } else {
                         ToastHelper.showShort(getActivity(), entry.errmsg);
                     }
@@ -180,9 +180,10 @@ public class RedPacketsListFragment extends BaseFragment {
         redPacketsLv.setEmptyView(emptyView);
     }
 
-    private void succesRedPacketsList(List<CouponEntry> list) {
-        if (list == null || list.isEmpty()) return;
-        adapter.addAll(list);
+    private void succesRedPacketsList(RedPacketsEntry entry) {
+        if (entry.list == null || entry.list.isEmpty()) return;
+        adapter.setServeTime(entry.time);
+        adapter.addAll(entry.list);
         if (adapter.getCount() <= 0)
             addEmptyView();
     }
