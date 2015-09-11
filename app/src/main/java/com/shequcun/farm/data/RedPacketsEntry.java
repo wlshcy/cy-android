@@ -11,4 +11,6 @@ import java.util.List;
 public class RedPacketsEntry extends BaseEntry {
     @SerializedName("coupons")
     public List<CouponEntry> list;
+    @SerializedName("time")
+    public long time;
 }

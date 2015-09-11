@@ -16,6 +16,7 @@ import com.common.widget.PullToRefreshAdapterViewBase;
 import com.common.widget.PullToRefreshBase;
 import com.common.widget.PullToRefreshListView;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.CouponEntry;
 import com.shequcun.farm.data.RedPacketsEntry;
@@ -38,6 +39,7 @@ public class RedPacketsListFragment extends BaseFragment {
     private TextView rightTv;
     private RedPacketsAdapter adapter;
     private View emptyView, leftIv;
+    public static final String KEY_TYPE = "type";
 
     @Nullable
     @Override
@@ -48,7 +50,7 @@ public class RedPacketsListFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        reuqestRedPacketsList();
+        reuqestRedPacketsList(getTypeFromParams());
     }
 
     @Override
@@ -104,7 +106,7 @@ public class RedPacketsListFragment extends BaseFragment {
         public void onRefresh(PullToRefreshBase refreshView) {
             if (redPacketsLv.isHeaderShown()) {
             } else {
-                reuqestRedPacketsList();
+                reuqestRedPacketsList(getTypeFromParams());
             }
         }
     };
@@ -137,7 +139,9 @@ public class RedPacketsListFragment extends BaseFragment {
         }
     };
 
-    private void reuqestRedPacketsList() {
+    private void reuqestRedPacketsList(int type) {
+        RequestParams params = new RequestParams();
+        params.add("type",type+"");
         HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "cai/coupon", new AsyncHttpResponseHandler() {
             @Override
             public void onFinish() {
@@ -151,7 +155,7 @@ public class RedPacketsListFragment extends BaseFragment {
                 RedPacketsEntry entry = JsonUtilsParser.fromJson(result, RedPacketsEntry.class);
                 if (entry != null) {
                     if (TextUtils.isEmpty(entry.errcode)) {
-                        succesRedPacketsList(entry.list);
+                        succesRedPacketsList(entry);
                     } else {
                         ToastHelper.showShort(getActivity(), entry.errmsg);
                     }
@@ -180,9 +184,10 @@ public class RedPacketsListFragment extends BaseFragment {
         redPacketsLv.setEmptyView(emptyView);
     }
 
-    private void succesRedPacketsList(List<CouponEntry> list) {
-        if (list == null || list.isEmpty()) return;
-        adapter.addAll(list);
+    private void succesRedPacketsList(RedPacketsEntry entry) {
+        if (entry.list == null || entry.list.isEmpty()) return;
+        adapter.setServeTime(entry.time);
+        adapter.addAll(entry.list);
         if (adapter.getCount() <= 0)
             addEmptyView();
     }
@@ -193,4 +198,10 @@ public class RedPacketsListFragment extends BaseFragment {
                 redPacketsLv.onRefreshComplete();
         }
     };
+
+    private int getTypeFromParams(){
+        Bundle bundle = getArguments();
+        if (bundle==null)return 1;
+        return bundle.getInt(KEY_TYPE);
+    }
 }

@@ -13,7 +13,7 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/px30"
         android:scaleType="centerInside"
-        android:src="@drawable/icon_sub"
+        android:src="@drawable/icon_minus_rectangle"
         />
 
     <TextView
@@ -35,7 +35,7 @@
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/goods_count"
         android:scaleType="centerInside"
-        android:src="@drawable/add_dishes_selector" />
+        android:src="@drawable/add_dishes_selector1" />
 
     <TextView
         android:id="@+id/shop_cart_tv"
@@ -44,7 +44,7 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/px20"
-        android:background="@drawable/shopping_cart_widget_selector_1"
+        android:background="@drawable/shopping_cart_widget_selector_3"
         android:gravity="center"
         android:text="@string/shop_cart"
         android:textColor="@color/white_f4f4f4"

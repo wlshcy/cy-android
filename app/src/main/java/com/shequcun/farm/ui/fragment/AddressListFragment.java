@@ -193,9 +193,10 @@ public class AddressListFragment extends BaseFragment {
     }
 
     private void successAddress(ArrayList<AddressEntry> list) {
-        if (list == null || list.isEmpty())
+        if (list == null || list.isEmpty()){
+            showAddAddressView();
             return;
-        else if (list.size() >= maxLen) {
+        } else if (list.size() >= maxLen) {
             goneAddAddressView();
         } else {
             /*设置显示添加地址item*/

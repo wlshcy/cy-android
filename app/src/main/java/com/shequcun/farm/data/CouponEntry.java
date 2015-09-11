@@ -23,8 +23,8 @@ public class CouponEntry implements Serializable{
     public boolean used;
     @SerializedName("expire")
     public long expire;
-    @SerializedName("created")
-    public long created;
+//    @SerializedName("created")
+//    public long created;
     @SerializedName("discount")
     public int discount;
     @SerializedName("distype")
