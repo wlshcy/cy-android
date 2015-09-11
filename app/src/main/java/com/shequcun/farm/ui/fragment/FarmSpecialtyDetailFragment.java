@@ -3,11 +3,9 @@ package com.shequcun.farm.ui.fragment;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Paint;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -15,8 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.common.widget.CircleFlowIndicator;
@@ -37,7 +33,6 @@ import com.shequcun.farm.db.RecommendItemKey;
 import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.ui.SqcFarmActivity;
 import com.shequcun.farm.ui.adapter.CarouselAdapter;
-import com.shequcun.farm.ui.adapter.ViewPagerAdapter;
 import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.IntentUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
@@ -134,9 +129,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
         if (entry.type == 2) {//秒杀菜品
             final View childView = LayoutInflater.from(getActivity()).inflate(R.layout.pay_widget_ly, null);
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-//            params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
             params.gravity= Gravity.BOTTOM;
-//            childView.setLayoutParams(params);
             pView.addView(childView, params);
             ((TextView) childView.findViewById(R.id.shop_cart_total_price_tv)).setText("共付:" + Utils.unitPeneyToYuan(entry.price));
             ((TextView) childView.findViewById(R.id.shop_cart_surpport_now_pay_tv)).setText("您已选好菜品了!");
@@ -149,9 +142,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
         } else if (entry.type == 1) {//普通菜品
             final View childView = LayoutInflater.from(getActivity()).inflate(R.layout.shop_cart_widget_ly, null);
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-//            params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
             params.gravity= Gravity.BOTTOM;
-//            childView.setLayoutParams(params);
             pView.addView(childView, params);
 
             final TextView goods_count = (TextView) childView.findViewById(R.id.goods_count);
@@ -373,7 +364,6 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
     CarouselAdapter cAdapter;
     RecommendEntry entry;
     View back;
-    View share;
     FrameLayout pView;
     String alipay;
     String orderno;
@@ -389,9 +379,4 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
     ImageView contentImgIv;//产品图片
     ImageView shareIv;
     ImageView backIv;
-//    ViewPagerAdapter vpAdapter;
-//    ViewPager viewPager;
-    private int[] pics = {R.drawable.guide1, R.drawable.guide2,
-            R.drawable.guide3};
-    private ArrayList<View> views;
 }
