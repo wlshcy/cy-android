@@ -130,8 +130,8 @@ public class OrderDelayFragment extends BaseFragment {
                 String result = new String(responseBody);
                 DelayEntry entry = JsonUtilsParser.fromJson(result, DelayEntry.class);
                 if (entry != null) {
-                    if (TextUtils.isEmpty(entry.errcode)) {
-                        successDelay(entry.delayed);
+                    if (TextUtils.isEmpty(entry.errmsg)) {
+                        successDelay(true);
                     }
                 }
             }
