@@ -19,11 +19,14 @@ import com.common.widget.CircleFlowIndicator;
 import com.common.widget.ViewFlow;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.AddressEntry;
 import com.shequcun.farm.data.AddressListEntry;
 import com.shequcun.farm.data.OrderEntry;
 import com.shequcun.farm.data.PayParams;
+import com.shequcun.farm.data.RecommendDetailEntry;
 import com.shequcun.farm.data.RecommendEntry;
 import com.shequcun.farm.data.SlidesEntry;
 import com.shequcun.farm.data.UserLoginEntry;
@@ -33,12 +36,19 @@ import com.shequcun.farm.db.RecommendItemKey;
 import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.ui.SqcFarmActivity;
 import com.shequcun.farm.ui.adapter.CarouselAdapter;
+import com.shequcun.farm.util.Constrants;
 import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.IntentUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
+import com.shequcun.farm.util.ShareContent;
+import com.shequcun.farm.util.ShareUtil;
 import com.shequcun.farm.util.ToastHelper;
 import com.shequcun.farm.util.Utils;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.bean.SocializeEntity;
+import com.umeng.socialize.bean.StatusCode;
+import com.umeng.socialize.controller.listener.SocializeListeners;
 
 import org.apache.http.Header;
 
@@ -58,35 +68,67 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
     }
 
     @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setDataToView(entry);
+    }
+
+    private void setDataToView(RecommendEntry entry) {
+        nameTv.setText(entry.title);
+        if (!TextUtils.isEmpty(entry.descr))
+            descTv.setText(entry.descr);
+        else
+            descTv.setVisibility(View.GONE);
+        priceNowTv.setText("¥" + ((float) entry.price) / 100);
+        priceOriginTv.setText("¥" + ((float) entry.mprice) / 100);
+        personSelectTv.setText(entry.sales + "人选择");
+        standardTv.setText("规格：" + entry.packw + "g/份");
+        if (entry.detail!=null&&!TextUtils.isEmpty(entry.detail.storage))
+            storageMethodTv.setText("储存方法：" + entry.detail.storage);
+        else
+            storageMethodTv.setText("储存方法：无");
+        if (!TextUtils.isEmpty(entry.farm))
+            producingPlaceTv.setText("农庄：" + entry.farm);
+        else
+            producingPlaceTv.setText("农庄：无");
+        if (entry.imgs != null && entry.imgs.length > 0) {
+            if (!ImageLoader.getInstance().isInited())
+                ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(getActivity()));
+            ImageLoader.getInstance().displayImage(entry.imgs[0], contentImgIv);
+        }
+    }
+
+    @Override
     public boolean onBackPressed() {
         return false;
     }
 
     @Override
     protected void initWidget(View v) {
-        backIv = (ImageView)v.findViewById(R.id.back);
-        shareIv = (ImageView)v.findViewById(R.id.share_iv);
+        backIv = (ImageView) v.findViewById(R.id.back);
+        shareIv = (ImageView) v.findViewById(R.id.share_iv);
         entry = buildRecommendEntry();
         carousel_img = (ViewFlow) v.findViewById(R.id.carousel_img);
         carousel_point = (CircleFlowIndicator) v.findViewById(R.id.carousel_point);
         back = v.findViewById(R.id.back);
         pView = (FrameLayout) v.findViewById(R.id.pView);
 
-        nameTv = (TextView)v.findViewById(R.id.name_tv);
-        descTv = (TextView)v.findViewById(R.id.desc_tv);
-        priceNowTv = (TextView)v.findViewById(R.id.price_now_tv);
-        priceOriginTv = (TextView)v.findViewById(R.id.price_origin_tv);
+        nameTv = (TextView) v.findViewById(R.id.name_tv);
+        descTv = (TextView) v.findViewById(R.id.desc_tv);
+        priceNowTv = (TextView) v.findViewById(R.id.price_now_tv);
+        priceOriginTv = (TextView) v.findViewById(R.id.price_origin_tv);
         /*删除线*/
         priceOriginTv.setPaintFlags(priceOriginTv.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-        personSelectTv = (TextView)v.findViewById(R.id.person_select_tv);
-        standardTv = (TextView)v.findViewById(R.id.standard_tv);
-        storageMethodTv = (TextView)v.findViewById(R.id.storage_method_tv);
-        producingPlaceTv = (TextView)v.findViewById(R.id.producing_place_tv);
-        contentImgIv = (ImageView)v.findViewById(R.id.content_img_iv);
+        personSelectTv = (TextView) v.findViewById(R.id.person_select_tv);
+        standardTv = (TextView) v.findViewById(R.id.standard_tv);
+        storageMethodTv = (TextView) v.findViewById(R.id.storage_method_tv);
+        producingPlaceTv = (TextView) v.findViewById(R.id.producing_place_tv);
+        contentImgIv = (ImageView) v.findViewById(R.id.content_img_iv);
     }
 
     @Override
     protected void setWidgetLsn() {
+        shareIv.setOnClickListener(onClick);
         back.setOnClickListener(onClick);
         buildCarouselAdapter();
         addChildViewToParent();
@@ -115,6 +157,8 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
         public void onClick(View v) {
             if (v == back)
                 popBackStack();
+            else if (v == shareIv)
+                useUmengToShare("", "", "");
         }
     };
 
@@ -129,7 +173,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
         if (entry.type == 2) {//秒杀菜品
             final View childView = LayoutInflater.from(getActivity()).inflate(R.layout.pay_widget_ly, null);
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            params.gravity= Gravity.BOTTOM;
+            params.gravity = Gravity.BOTTOM;
             pView.addView(childView, params);
             ((TextView) childView.findViewById(R.id.shop_cart_total_price_tv)).setText("共付:" + Utils.unitPeneyToYuan(entry.price));
             ((TextView) childView.findViewById(R.id.shop_cart_surpport_now_pay_tv)).setText("您已选好菜品了!");
@@ -142,7 +186,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
         } else if (entry.type == 1) {//普通菜品
             final View childView = LayoutInflater.from(getActivity()).inflate(R.layout.shop_cart_widget_ly, null);
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            params.gravity= Gravity.BOTTOM;
+            params.gravity = Gravity.BOTTOM;
             pView.addView(childView, params);
 
             final TextView goods_count = (TextView) childView.findViewById(R.id.goods_count);
@@ -355,6 +399,38 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
         super.onDestroyView();
         mHandler.removeCallbacksAndMessages(null);
     }
+
+    private void useUmengToShare(String url, String title, String content) {
+        if (shareController == null)
+            shareController = new ShareUtil(getActivity());
+        ShareContent shareContent = new ShareContent();
+        shareContent.setUrlImage("drawable:///" + R.drawable.ic_launcher);
+        shareContent.setTargetUrl(url);
+        shareContent.setTitle(title);
+        shareContent.setContent(content);
+        shareController.wxShareContent(shareContent);
+        shareController.circleShareContent(shareContent);
+        shareController.postShare(mSnsPostListener);
+    }
+
+    private SocializeListeners.SnsPostListener mSnsPostListener = new SocializeListeners.SnsPostListener() {
+
+        @Override
+        public void onStart() {
+        }
+
+        @Override
+        public void onComplete(SHARE_MEDIA sm, int eCode,
+                               SocializeEntity sEntity) {
+            String showText = "分享成功";
+            if (eCode != StatusCode.ST_CODE_SUCCESSED) {
+                showText = "分享失败 [" + eCode + "]";
+            }
+            ToastHelper.showShort(getActivity(), showText);
+        }
+    };
+
+    private ShareUtil shareController;
 
     /**
      * 轮播的图片
