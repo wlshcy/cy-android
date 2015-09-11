@@ -83,7 +83,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
         priceOriginTv.setText("¥" + ((float) entry.mprice) / 100);
         personSelectTv.setText(entry.sales + "人选择");
         standardTv.setText("规格：" + entry.packw + "g/份");
-        if (entry.detail!=null&&!TextUtils.isEmpty(entry.detail.storage))
+        if (entry.detail != null && !TextUtils.isEmpty(entry.detail.storage))
             storageMethodTv.setText("储存方法：" + entry.detail.storage);
         else
             storageMethodTv.setText("储存方法：无");
@@ -96,6 +96,19 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
                 ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(getActivity()));
             ImageLoader.getInstance().displayImage(entry.imgs[0], contentImgIv);
         }
+        RecommendEntry localEntry = readRecommendEntryFromDisk(entry);
+        if (localEntry == null) return;
+        if (goods_count == null) return;
+        goods_count.setText(localEntry.count+"");
+    }
+
+    private RecommendEntry readRecommendEntryFromDisk(RecommendEntry pEntry) {
+        RecommendEntry[] entries = new CacheManager(getActivity()).getRecommendFromDisk();
+        for (int i = 0; i < entries.length; i++) {
+            if (pEntry.id > 0 && pEntry.id == entries[i].id)
+                return pEntry;
+        }
+        return null;
     }
 
     @Override
@@ -189,7 +202,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
             params.gravity = Gravity.BOTTOM;
             pView.addView(childView, params);
 
-            final TextView goods_count = (TextView) childView.findViewById(R.id.goods_count);
+            goods_count = (TextView) childView.findViewById(R.id.goods_count);
             final View goods_sub = childView.findViewById(R.id.goods_sub);
             final View goods_add = childView.findViewById(R.id.goods_add);
 
@@ -208,6 +221,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
                 @Override
                 public void onClick(View view) {
                     entry.count--;
+                    if (entry.count < 0) entry.count = 0;
                     goods_count.setText(entry.count + "");
                 }
             });
@@ -455,4 +469,5 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
     ImageView contentImgIv;//产品图片
     ImageView shareIv;
     ImageView backIv;
+    TextView goods_count;
 }
