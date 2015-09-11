@@ -5,6 +5,5 @@
     <!-- 按下时的背景图片 -->
     <item android:drawable="@color/common_list_item_pressed_bg" android:state_enabled="true" android:state_pressed="true" />
     <item android:drawable="@color/common_list_item_pressed_bg" android:state_enabled="true" android:state_focused="true" />
-    <item android:drawable="@color/light_gray_color" />
 
 </selector>

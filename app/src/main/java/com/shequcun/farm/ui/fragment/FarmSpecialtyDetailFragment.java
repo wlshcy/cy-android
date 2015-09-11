@@ -8,9 +8,11 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -72,36 +74,14 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
         carousel_img = (ViewFlow) v.findViewById(R.id.carousel_img);
         carousel_point = (CircleFlowIndicator) v.findViewById(R.id.carousel_point);
         back = v.findViewById(R.id.back);
-        share = v.findViewById(R.id.share);
-        pView = (RelativeLayout) v.findViewById(R.id.pView);
-        initViewPager(v);
-    }
-
-    private void initViewPager(View v){
-        viewPager = (ViewPager) v.findViewById(R.id.welcome_viewpager);
-        views = new ArrayList<View>();
-        for (int i = 0; i < pics.length; i++) {
-            ImageView iv = new ImageView(getActivity());
-            LinearLayout.LayoutParams mParams = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.MATCH_PARENT);
-            iv.setLayoutParams(mParams);
-            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN) {
-                iv.setBackground(getResources().getDrawable(pics[i]));
-            } else {
-                iv.setBackgroundDrawable(getResources().getDrawable(pics[i]));
-            }
-            views.add(iv);
-        }
-        vpAdapter = new ViewPagerAdapter(views);
-        viewPager.setAdapter(vpAdapter);
+        pView = (FrameLayout) v.findViewById(R.id.pView);
     }
 
     @Override
     protected void setWidgetLsn() {
         back.setOnClickListener(onClick);
         buildCarouselAdapter();
-        addChildViewToParent();
+//        addChildViewToParent();
     }
 
     void buildCarouselAdapter() {
@@ -140,8 +120,9 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
             return;
         if (entry.type == 2) {//秒杀菜品
             final View childView = LayoutInflater.from(getActivity()).inflate(R.layout.pay_widget_ly, null);
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//            params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+            params.gravity= Gravity.BOTTOM;
 //            childView.setLayoutParams(params);
             pView.addView(childView, params);
             ((TextView) childView.findViewById(R.id.shop_cart_total_price_tv)).setText("共付:" + Utils.unitPeneyToYuan(entry.price));
@@ -154,8 +135,9 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
             });
         } else if (entry.type == 1) {//普通菜品
             final View childView = LayoutInflater.from(getActivity()).inflate(R.layout.shop_cart_widget_ly, null);
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//            params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+            params.gravity= Gravity.BOTTOM;
 //            childView.setLayoutParams(params);
             pView.addView(childView, params);
 
@@ -373,20 +355,20 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
     /**
      * 轮播的图片
      */
-//    ViewFlow carousel_img;
-//    CircleFlowIndicator carousel_point;
+    ViewFlow carousel_img;
+    CircleFlowIndicator carousel_point;
     CarouselAdapter cAdapter;
     RecommendEntry entry;
     View back;
     View share;
-    RelativeLayout pView;
+    FrameLayout pView;
     String alipay;
     String orderno;
 
     ImageView shareIv;
     ImageView backIv;
-    ViewPagerAdapter vpAdapter;
-    ViewPager viewPager;
+//    ViewPagerAdapter vpAdapter;
+//    ViewPager viewPager;
     private int[] pics = {R.drawable.guide1, R.drawable.guide2,
             R.drawable.guide3};
     private ArrayList<View> views;
