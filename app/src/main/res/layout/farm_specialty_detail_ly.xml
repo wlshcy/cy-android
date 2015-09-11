@@ -5,10 +5,10 @@
     android:layout_height="match_parent"
     android:background="@color/white_fefefe">
 
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingBottom="@dimen/px100"
         android:scrollbars="none">
 
         <LinearLayout
@@ -32,8 +32,8 @@
                 android:id="@+id/desc_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/px22"
-                android:paddingLeft="@dimen/px38"
+                android:paddingTop="@dimen/px22"
+                android:paddingLeft="@dimen/px34"
                 android:text="有菜安心直采蜂蜜"
                 android:textColor="@color/black_8e8e8e"
                 android:textSize="@dimen/font36" />
@@ -81,7 +81,7 @@
                 android:id="@+id/standard_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/px34"
+                android:paddingBottom="@dimen/px34"
                 android:paddingLeft="@dimen/px38"
                 android:paddingTop="@dimen/px34"
                 android:text="规格："

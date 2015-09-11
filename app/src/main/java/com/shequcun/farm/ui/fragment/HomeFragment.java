@@ -192,7 +192,8 @@ public class HomeFragment extends BaseFragment {
             @Override
             public void onSuccess(int sCode, Header[] h, byte[] data) {
                 if (data != null && data.length > 0) {
-                    HomeEntry hEntry = JsonUtilsParser.fromJson(new String(data), HomeEntry.class);
+                    String result = new String(data);
+                    HomeEntry hEntry = JsonUtilsParser.fromJson(result, HomeEntry.class);
                     if (hEntry != null) {
                         if (TextUtils.isEmpty(hEntry.errmsg)) {
                             if (mode != 2) {
