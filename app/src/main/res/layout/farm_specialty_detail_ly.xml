@@ -1,40 +1,178 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/pView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray_ececec">
+    android:background="@color/white_fefefe">
+
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none">
 
-        <RelativeLayout
-
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
+            <include layout="@layout/carousel_ly"></include>
 
-            <include layout="@layout/carousel_ly" />
+            <TextView
+                android:id="@+id/name_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/px38"
+                android:paddingLeft="@dimen/px38"
+                android:text="有菜安心直采蜂蜜"
+                android:textColor="@color/black_131313"
+                android:textSize="@dimen/font36" />
 
-            <ImageView
-                android:id="@+id/back"
+            <TextView
+                android:id="@+id/desc_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/px22"
+                android:paddingLeft="@dimen/px38"
+                android:text="有菜安心直采蜂蜜"
+                android:textColor="@color/black_8e8e8e"
+                android:textSize="@dimen/font36" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/px38"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/px34">
+
+                <TextView
+                    android:id="@+id/price_now_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/px24"
+                    android:paddingLeft="@dimen/px38"
+                    android:text="¥35.00"
+                    android:textColor="@color/black_32bd6f"
+                    android:textSize="@dimen/font40" />
+
+                <TextView
+                    android:id="@+id/price_origin_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="¥69.00"
+                    android:textColor="@color/black_8e8e8e"
+                    android:textSize="@dimen/font24" />
+
+                <TextView
+                    android:id="@+id/person_select_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|bottom"
+                    android:layout_marginRight="@dimen/px60"
+                    android:text="112人已选"
+                    android:textColor="@color/black_8e8e8e"
+                    android:textSize="@dimen/font24" />
+            </LinearLayout>
+
+            <include layout="@layout/common_line"></include>
+
+            <TextView
+                android:id="@+id/standard_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/px16"
-                android:src="@drawable/icon_close_recomment_details" />
+                android:layout_marginBottom="@dimen/px34"
+                android:paddingLeft="@dimen/px38"
+                android:paddingTop="@dimen/px34"
+                android:text="规格："
+                android:textColor="@color/black_131313"
+                android:textSize="@dimen/font30" />
+
+            <include layout="@layout/common_line"></include>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/px20"
+                android:background="@color/gray_ececec"></View>
+
+            <include layout="@layout/common_line"></include>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scaleType="center"
+                    android:src="@drawable/check_green_food_tip" />
+            </FrameLayout>
+
+            <include layout="@layout/common_line"></include>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/px20"
+                android:background="@color/gray_ececec"></View>
+
+            <include layout="@layout/common_line"></include>
+
+            <TextView
+                android:id="@+id/storage_method_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/px34"
+                android:paddingLeft="@dimen/px38"
+                android:paddingTop="@dimen/px34"
+                android:text="储藏方法：0-10度冷藏储存"
+                android:textSize="@dimen/font30" />
+
+            <include layout="@layout/common_line"></include>
+
+            <TextView
+                android:id="@+id/producing_place_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/px34"
+                android:paddingTop="@dimen/px34"
+                android:drawableRight="@drawable/icon_more"
+                android:paddingLeft="@dimen/px38"
+                android:paddingRight="@dimen/px38"
+                android:text="产地：北京吾优吾绿农庄"
+                android:textSize="@dimen/font30" />
+
+            <include layout="@layout/common_line"></include>
 
             <ImageView
-                android:id="@+id/share"
-                android:layout_width="wrap_content"
+                android:id="@+id/content_img_iv"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_margin="@dimen/px16"
-                android:src="@drawable/icon_share" />
-        </RelativeLayout>
-
+                android:background="@drawable/ic_loading_failure" />
+        </LinearLayout>
     </ScrollView>
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px102"
+        >
 
-</RelativeLayout>
+        <com.common.widget.CircleImageView
+            android:id="@+id/back"
+            android:layout_width="@dimen/px66"
+            android:layout_height="@dimen/px66"
+            android:layout_gravity="left|center_vertical"
+            android:layout_marginLeft="@dimen/px40"
+            android:src="@drawable/icon_close_white"/>
+
+        <com.common.widget.CircleImageView
+            android:id="@+id/share_iv"
+            android:layout_width="@dimen/px66"
+            android:layout_height="@dimen/px66"
+            android:layout_marginRight="@dimen/px40"
+            android:layout_gravity="right|center_vertical"
+            android:src="@drawable/icon_share_white"
+            />
+
+    </FrameLayout>
+
+</FrameLayout>

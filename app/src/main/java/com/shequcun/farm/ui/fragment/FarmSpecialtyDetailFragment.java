@@ -2,14 +2,17 @@ package com.shequcun.farm.ui.fragment;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.common.widget.CircleFlowIndicator;
@@ -61,12 +64,25 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
 
     @Override
     protected void initWidget(View v) {
+        backIv = (ImageView)v.findViewById(R.id.back);
+        shareIv = (ImageView)v.findViewById(R.id.share_iv);
         entry = buildRecommendEntry();
         carousel_img = (ViewFlow) v.findViewById(R.id.carousel_img);
         carousel_point = (CircleFlowIndicator) v.findViewById(R.id.carousel_point);
         back = v.findViewById(R.id.back);
-        share = v.findViewById(R.id.share);
-        pView = (RelativeLayout) v.findViewById(R.id.pView);
+        pView = (FrameLayout) v.findViewById(R.id.pView);
+
+        nameTv = (TextView)v.findViewById(R.id.name_tv);
+        descTv = (TextView)v.findViewById(R.id.desc_tv);
+        priceNowTv = (TextView)v.findViewById(R.id.price_now_tv);
+        priceOriginTv = (TextView)v.findViewById(R.id.price_origin_tv);
+        /*删除线*/
+        priceOriginTv.setPaintFlags(priceOriginTv.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        personSelectTv = (TextView)v.findViewById(R.id.person_select_tv);
+        standardTv = (TextView)v.findViewById(R.id.standard_tv);
+        storageMethodTv = (TextView)v.findViewById(R.id.storage_method_tv);
+        producingPlaceTv = (TextView)v.findViewById(R.id.producing_place_tv);
+        contentImgIv = (ImageView)v.findViewById(R.id.content_img_iv);
     }
 
     @Override
@@ -112,9 +128,8 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
             return;
         if (entry.type == 2) {//秒杀菜品
             final View childView = LayoutInflater.from(getActivity()).inflate(R.layout.pay_widget_ly, null);
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-//            childView.setLayoutParams(params);
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            params.gravity= Gravity.BOTTOM;
             pView.addView(childView, params);
             ((TextView) childView.findViewById(R.id.shop_cart_total_price_tv)).setText("共付:" + Utils.unitPeneyToYuan(entry.price));
             ((TextView) childView.findViewById(R.id.shop_cart_surpport_now_pay_tv)).setText("您已选好菜品了!");
@@ -126,9 +141,8 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
             });
         } else if (entry.type == 1) {//普通菜品
             final View childView = LayoutInflater.from(getActivity()).inflate(R.layout.shop_cart_widget_ly, null);
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-//            childView.setLayoutParams(params);
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            params.gravity= Gravity.BOTTOM;
             pView.addView(childView, params);
 
             final TextView goods_count = (TextView) childView.findViewById(R.id.goods_count);
@@ -350,8 +364,19 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
     CarouselAdapter cAdapter;
     RecommendEntry entry;
     View back;
-    View share;
-    RelativeLayout pView;
+    FrameLayout pView;
     String alipay;
     String orderno;
+
+    TextView nameTv;//产品名称
+    TextView descTv;//产品描述
+    TextView priceNowTv;//产品现价
+    TextView priceOriginTv;//产品原价
+    TextView personSelectTv;//产品已选人数
+    TextView standardTv;//产品规格
+    TextView storageMethodTv;//产品冷藏方法
+    TextView producingPlaceTv;//产品产地
+    ImageView contentImgIv;//产品图片
+    ImageView shareIv;
+    ImageView backIv;
 }
