@@ -2,6 +2,7 @@ package com.shequcun.farm.ui.fragment;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
@@ -75,13 +76,25 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
         carousel_point = (CircleFlowIndicator) v.findViewById(R.id.carousel_point);
         back = v.findViewById(R.id.back);
         pView = (FrameLayout) v.findViewById(R.id.pView);
+
+        nameTv = (TextView)v.findViewById(R.id.name_tv);
+        descTv = (TextView)v.findViewById(R.id.desc_tv);
+        priceNowTv = (TextView)v.findViewById(R.id.price_now_tv);
+        priceOriginTv = (TextView)v.findViewById(R.id.price_origin_tv);
+        /*删除线*/
+        priceOriginTv.setPaintFlags(priceOriginTv.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        personSelectTv = (TextView)v.findViewById(R.id.person_select_tv);
+        standardTv = (TextView)v.findViewById(R.id.standard_tv);
+        storageMethodTv = (TextView)v.findViewById(R.id.storage_method_tv);
+        producingPlaceTv = (TextView)v.findViewById(R.id.producing_place_tv);
+        contentImgIv = (ImageView)v.findViewById(R.id.content_img_iv);
     }
 
     @Override
     protected void setWidgetLsn() {
         back.setOnClickListener(onClick);
         buildCarouselAdapter();
-//        addChildViewToParent();
+        addChildViewToParent();
     }
 
     void buildCarouselAdapter() {
@@ -365,6 +378,15 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
     String alipay;
     String orderno;
 
+    TextView nameTv;//产品名称
+    TextView descTv;//产品描述
+    TextView priceNowTv;//产品现价
+    TextView priceOriginTv;//产品原价
+    TextView personSelectTv;//产品已选人数
+    TextView standardTv;//产品规格
+    TextView storageMethodTv;//产品冷藏方法
+    TextView producingPlaceTv;//产品产地
+    ImageView contentImgIv;//产品图片
     ImageView shareIv;
     ImageView backIv;
 //    ViewPagerAdapter vpAdapter;
