@@ -9,13 +9,12 @@
         android:id="@+id/flower_iv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/flower_stroke" />
+        />
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="@dimen/px16"
-        android:paddingLeft="@dimen/px16"
         android:paddingRight="@dimen/px16"
         android:paddingTop="@dimen/px50">
 
@@ -31,38 +30,57 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical">
-
-                <TextView
-                    android:id="@+id/money_symbol_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/px36"
-                    android:gravity="center"
-                    android:text="¥"
-                    android:textColor="@color/red_fe786b"
-                    android:textSize="25sp" />
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1.2">
 
                 <TextView
                     android:id="@+id/money_count_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/px32"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="@dimen/px24"
+                    android:layout_marginRight="@dimen/px24"
+                    android:layout_gravity="center"
                     android:gravity="bottom"
                     android:padding="0dp"
                     android:text="0"
                     android:textColor="@color/red_fe786b"
                     android:textSize="48sp" />
-            </LinearLayout>
+
+                <TextView
+                    android:id="@+id/money_symbol_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@id/money_count_tv"
+                    android:layout_alignBaseline="@id/money_count_tv"
+                    android:gravity="bottom"
+                    android:text="¥"
+                    android:textColor="@color/red_fe786b"
+                    android:textSize="25sp"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/zhe_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@id/money_count_tv"
+                    android:layout_alignBottom="@+id/money_count_tv"
+                    android:layout_toRightOf="@id/money_count_tv"
+                    android:gravity="bottom"
+                    android:text="折"
+                    android:textColor="@color/red_fe786b"
+                    android:textSize="25sp"
+                    android:visibility="visible" />
+            </RelativeLayout>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/px70"
+                android:layout_weight="1"
                 android:orientation="vertical">
 
                 <TextView

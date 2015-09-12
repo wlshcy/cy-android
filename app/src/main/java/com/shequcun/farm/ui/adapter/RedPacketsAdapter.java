@@ -44,13 +44,14 @@ public class RedPacketsAdapter extends BaseAdapter{
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder vh= null;
+        ViewHolder vh;
         if (convertView==null){
             convertView = LayoutInflater.from(context).inflate(R.layout.item_red_packets,null);
             vh = new ViewHolder();
             vh.count = (TextView)convertView.findViewById(R.id.money_count_tv);
             vh.expiryDate = (TextView)convertView.findViewById(R.id.expiry_date_tv);
             vh.moneySymbolTv = (TextView)convertView.findViewById(R.id.money_symbol_tv);
+            vh.zheTv = (TextView)convertView.findViewById(R.id.zhe_tv);
             vh.flowerIv = (ImageView)convertView.findViewById(R.id.flower_iv);
             convertView.setTag(vh);
         }else {
@@ -59,15 +60,19 @@ public class RedPacketsAdapter extends BaseAdapter{
         CouponEntry entry = (CouponEntry)getItem(position);
         if (entry.distype==1){
             vh.count.setText(entry.discount/100+"");
+            vh.zheTv.setVisibility(View.GONE);
         }else if (entry.distype==2){
-            vh.count.setText(((float)entry.discount)/10+"折");
+            vh.count.setText(((float)entry.discount)/10+"");
             vh.moneySymbolTv.setVisibility(View.GONE);
         }
         if (entry.used||(serveTime>0&&entry.expire<=serveTime)){
             vh.count.setTextColor(context.getResources().getColor(R.color.gray_cccccc));
             vh.moneySymbolTv.setTextColor(context.getResources().getColor(R.color.gray_cccccc));
+            vh.zheTv.setTextColor(context.getResources().getColor(R.color.gray_cccccc));
             vh.expiryDate.setTextColor(context.getResources().getColor(R.color.gray_cccccc));
-            vh.flowerIv.setImageResource(R.drawable.flower_stroke_gray);
+            vh.flowerIv.setBackgroundResource(R.drawable.flower_stroke_gray);
+        }else {
+            vh.flowerIv.setBackgroundResource(R.drawable.flower_stroke);
         }
         vh.expiryDate.setText("有效期至"+Utils.getTime(entry.expire));
         return convertView;
@@ -87,6 +92,7 @@ public class RedPacketsAdapter extends BaseAdapter{
         TextView count;
         TextView expiryDate;
         TextView moneySymbolTv;
+        TextView zheTv;
         ImageView flowerIv;
     }
 

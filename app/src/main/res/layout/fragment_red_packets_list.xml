@@ -17,6 +17,7 @@
         android:scrollbars="none"
         android:divider="@color/gray_ececec"
         android:dividerHeight="@dimen/px20"
+        android:listSelector="#0000"
         android:background="@color/gray_ececec">
     </com.common.widget.PullToRefreshListView>
     <TextView
