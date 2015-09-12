@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/px360"
+    android:layout_height="wrap_content"
     android:background="@color/gray_ececec"
 
     android:orientation="vertical">
@@ -40,6 +40,7 @@
         android:id="@+id/red_packets_money_ly"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:background="@drawable/list_item_selector"
         android:padding="@dimen/px30">
 
@@ -48,6 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:text="@string/use_discount_red_packets"
+
             android:textColor="@color/black_444444" />
 
         <TextView
@@ -65,7 +67,7 @@
         layout="@layout/pay_widget_ly"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/px30" />
+        android:layout_marginTop="@dimen/px20" />
 
 
 </LinearLayout>

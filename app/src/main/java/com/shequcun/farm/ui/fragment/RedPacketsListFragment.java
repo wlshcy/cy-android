@@ -137,8 +137,8 @@ public class RedPacketsListFragment extends BaseFragment {
                     int length = aList.size();
                     for (int i = 1; i < length; i++) {
                         Fragment fragment = aList.get(i);
-                        if (fragment != null && fragment instanceof FarmSpecialtyShoppingCartFragment) {
-                            ((FarmSpecialtyShoppingCartFragment) fragment).updateRedPackets(entry);
+                        if (fragment != null && fragment instanceof PayComboFragment) {
+                            ((PayComboFragment) fragment).updateRedPackets(entry);
                             break;
                         }
                     }

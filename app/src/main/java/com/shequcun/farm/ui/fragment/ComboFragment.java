@@ -148,6 +148,8 @@ public class ComboFragment extends BaseFragment {
                     ComboListEntry entry = JsonUtilsParser.fromJson(new String(data), ComboListEntry.class);
                     if (entry != null) {
                         if (TextUtils.isEmpty(entry.errmsg)) {
+                            if (adapter != null)
+                                adapter.clear();
                             doAddMyComboDataToAdapter(entry.myCombos);
                             doAddDataToAdapter(entry.aList);
                             return;

@@ -2,6 +2,8 @@ package com.shequcun.farm.ui.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,10 +49,28 @@ public class RemarkFragment extends BaseFragment {
     View.OnClickListener onClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (v == back)
+            if (v == back) {
                 popBackStack();
-            else if (v == save) {
-                IntentUtil.sendUpdateFarmShoppingCartMsg(getActivity(), leave_msg_to_farm.getText().toString());
+            } else if (v == save) {
+
+
+                if (lsn != null) {
+                    lsn.updateRemarkWidget(leave_msg_to_farm.getText().toString());
+                }
+
+//                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+//                String tag = fragmentManager
+//                        .getBackStackEntryAt(
+//                                fragmentManager
+//                                        .getBackStackEntryCount() - 1)
+//                        .getName();
+//                Log.d("This is your Top Fragment name: ", "" + tag);
+
+
+//                FragmentManager fragManager = getActivity().getSupportFragmentManager();
+//                int count = fragManager.getBackStackEntryCount();
+//                Fragment frag = fragManager.getFragments().get(count > 0 ? count - 2 : count);
+
                 popBackStack();
             }
         }
@@ -60,6 +80,16 @@ public class RemarkFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         Utils.hideVirtualKeyboard(getActivity(), back);
+    }
+
+    CallBackLsn lsn;
+
+    public void setCallBackLsn(CallBackLsn lsn) {
+        this.lsn = lsn;
+    }
+
+    public interface CallBackLsn {
+        public void updateRemarkWidget(String remark);
     }
 
     View back;

@@ -279,14 +279,6 @@ public class ChooseDishesFragment extends BaseFragment {
         }
     };
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        if (mOrderController != null) {
-            mOrderController.release();
-            mOrderController = null;
-        }
-    }
 
     /**
      * 弹出备选菜品对话框
@@ -884,6 +876,15 @@ public class ChooseDishesFragment extends BaseFragment {
                 getActivity().getResources().getColorStateList(R.color.gray_d8d8d8));
         mBuyOrderTv.setText(R.string.has_chosen_dishes);
         mBuyOrderTv.setEnabled(false);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (mOrderController != null) {
+            mOrderController.release();
+            mOrderController = null;
+        }
     }
 
     TextView option_dishes_tv;

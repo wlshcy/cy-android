@@ -269,9 +269,7 @@ public class AddressFragment extends BaseFragment {
                 }
             }
         }
-
         IntentUtil.sendUpdateAddressRequest(getActivity());
-//        IntentUtil.sendUpdateAddressMsg(getActivity());
         popBackStack();
     }
 
@@ -308,12 +306,6 @@ public class AddressFragment extends BaseFragment {
             community_tv.setText(entry.zname);
         if (!TextUtils.isEmpty(entry.bur))
             addressDetailEt.setText(entry.bur);
-//        if (!TextUtils.isEmpty(entry.building))
-//            addressDetailEt.setText(entry.building);
-//        if (!TextUtils.isEmpty(entry.unit))
-//            unit_number_edit.setText(entry.unit);
-//        if (!TextUtils.isEmpty(entry.room))
-//            house_number_edit.setText(entry.room);
     }
 
     void doRegisterRefreshBrodcast() {

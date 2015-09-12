@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Random;
 
 public class Order {
-    private static final String TAG = "Order";
     @SerializedName("items")
     private List<DishesItemEntry> items = new ArrayList<DishesItemEntry>();
     @SerializedName("mobile")

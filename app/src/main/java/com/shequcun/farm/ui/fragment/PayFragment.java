@@ -53,6 +53,8 @@ public class PayFragment extends BaseFragment {
         pay_money = (TextView) v.findViewById(R.id.pay_money);
         ((TextView) v.findViewById(R.id.title_center_text)).setText(R.string.pay);
         pay_money.setText(Utils.unitPeneyToYuan(getOrderMoney()));
+        v.findViewById(R.id.red_packets_money_ly).setVisibility(View.GONE);
+        v.findViewById(R.id.pAddressView).setVisibility(View.GONE);
     }
 
     int getOrderMoney() {
@@ -113,7 +115,7 @@ public class PayFragment extends BaseFragment {
 
                         Bundle bundle = getArguments();
                         PayParams entry = bundle != null ? ((PayParams) bundle.getSerializable("PayParams")) : null;
-                        if (entry != null && entry.type==3) {
+                        if (entry != null && entry.type == 3) {
                             new CacheManager(getActivity()).delRecommendToDisk();
                             IntentUtil.sendUpdateFarmShoppingCartMsg(getActivity());
                         }
@@ -143,7 +145,6 @@ public class PayFragment extends BaseFragment {
 
         ;
     };
-
 
 
     View alipay_ly;

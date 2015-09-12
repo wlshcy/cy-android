@@ -26,6 +26,40 @@
         android:layout_marginTop="@dimen/px10"
         android:background="@android:color/white"
         android:layout_height="match_parent">
+
+
+
+        <FrameLayout
+            android:id="@+id/red_packets_money_ly"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/list_item_selector"
+            android:padding="@dimen/px30">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/px10"
+                android:layout_gravity="center_vertical"
+                android:text="@string/use_discount_red_packets"
+                android:textColor="@color/black_444444" />
+
+            <TextView
+                android:id="@+id/red_packets_money_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center_vertical"
+                android:drawableRight="@drawable/icon_more"
+                android:gravity="center"
+                android:text="     红包"
+                android:textColor="@color/red_fe5647" />
+        </FrameLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#e4e4e4" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

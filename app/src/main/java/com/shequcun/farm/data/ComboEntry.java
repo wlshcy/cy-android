@@ -85,4 +85,6 @@ public class ComboEntry extends BaseEntry {
 //    orderno：最近一次选菜订单号
 //    status：最近一次选菜订单状态
 //    chgtime:  最近一次选菜订单状态变更时间
+
+    public OtherInfo info;
 }

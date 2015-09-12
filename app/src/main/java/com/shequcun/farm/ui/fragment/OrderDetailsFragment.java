@@ -16,6 +16,7 @@ import com.shequcun.farm.data.AddressEntry;
 import com.shequcun.farm.data.AddressListEntry;
 import com.shequcun.farm.data.ComboEntry;
 import com.shequcun.farm.data.OrderEntry;
+import com.shequcun.farm.data.OtherInfo;
 import com.shequcun.farm.data.PayParams;
 import com.shequcun.farm.data.UserLoginEntry;
 import com.shequcun.farm.datacenter.CacheManager;
@@ -40,7 +41,7 @@ import java.util.List;
  * 订单详情页
  * Created by apple on 15/8/10.
  */
-public class OrderDetailsFragment extends BaseFragment {
+public class OrderDetailsFragment extends BaseFragment implements RemarkFragment.CallBackLsn {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -64,6 +65,8 @@ public class OrderDetailsFragment extends BaseFragment {
         commitOrderTv = (TextView) v.findViewById(R.id.buy_order_tv);
         shop_cart_total_price_tv = (TextView) v.findViewById(R.id.shop_cart_total_price_tv);
         shop_cart_surpport_now_pay_tv = (TextView) v.findViewById(R.id.shop_cart_surpport_now_pay_tv);
+        remark_ly = v.findViewById(R.id.remark_ly);
+        remark_tv = (TextView) v.findViewById(R.id.remark_tv);
         entry = buildEntry();
         buildUserLoginEntry();
         showBottomWidget();
@@ -130,6 +133,7 @@ public class OrderDetailsFragment extends BaseFragment {
         back.setOnClickListener(onClick);
         rightTv.setOnClickListener(onClick);
         commitOrderTv.setOnClickListener(onClick);
+        remark_ly.setOnClickListener(onClick);
         buildAdapter();
     }
 
@@ -150,6 +154,10 @@ public class OrderDetailsFragment extends BaseFragment {
                 } else {
                     modifyOrder(buildOrederno());
                 }
+            } else if (v == remark_ly) {
+                RemarkFragment fragment = new RemarkFragment();
+                fragment.setCallBackLsn(OrderDetailsFragment.this);
+                gotoFragmentByAdd(R.id.mainpage_ly, fragment, RemarkFragment.class.getName());
             }
         }
     };
@@ -403,11 +411,11 @@ public class OrderDetailsFragment extends BaseFragment {
 
             @Override
             public void onFailure(int sCode, Header[] h, byte[] data, Throwable e) {
-                if(sCode==0){
-                    ToastHelper.showShort(getActivity(),R.string.network_error_tip);
+                if (sCode == 0) {
+                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
                     return;
                 }
-                ToastHelper.showShort(getActivity(),"创建订单失败.错误码"+sCode);
+                ToastHelper.showShort(getActivity(), "创建订单失败.错误码" + sCode);
             }
         });
     }
@@ -438,6 +446,17 @@ public class OrderDetailsFragment extends BaseFragment {
         return entry.getPosition() + "";
     }
 
+    @Override
+    public void updateRemarkWidget(String remark) {
+        if (entry != null) {
+            entry.info = new OtherInfo();
+            entry.info.memo = remark;
+        }
+        if (remark_tv != null) {
+            remark_tv.setText(remark);
+        }
+    }
+
     ComboEntry entry;
     TextView titleTv;
     TextView commitOrderTv;
@@ -445,15 +464,14 @@ public class OrderDetailsFragment extends BaseFragment {
     OrderDetailsAdapter adapter;
     ListView mLv;
     View back;
-    //    TextView addressee_info;
     TextView address;
     TextView rightTv;
-
     /**
      * 价格
      */
     TextView shop_cart_total_price_tv;
     TextView shop_cart_surpport_now_pay_tv;
-    //    View add_address_ly;
     DisheDataCenter mOrderController = DisheDataCenter.getInstance();
+    View remark_ly;
+    TextView remark_tv;
 }
