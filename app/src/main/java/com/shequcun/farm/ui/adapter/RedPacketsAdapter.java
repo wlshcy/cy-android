@@ -66,15 +66,21 @@ public class RedPacketsAdapter extends BaseAdapter{
         if (entry.used||(serveTime>0&&entry.expire<=serveTime)){
             vh.count.setTextColor(context.getResources().getColor(R.color.gray_cccccc));
             vh.moneySymbolTv.setTextColor(context.getResources().getColor(R.color.gray_cccccc));
-            vh.flowerIv.setImageResource(R.drawable.flower_stroke);
+            vh.expiryDate.setTextColor(context.getResources().getColor(R.color.gray_cccccc));
+            vh.flowerIv.setImageResource(R.drawable.flower_stroke_gray);
         }
-        vh.expiryDate.setText(Utils.getTime(entry.expire));
+        vh.expiryDate.setText("有效期至"+Utils.getTime(entry.expire));
         return convertView;
     }
 
     public void addAll(List<CouponEntry> list){
         this.list.addAll(list);
         notifyDataSetChanged();
+    }
+
+    public Object getLastItem(){
+        if (this.list.isEmpty())return null;
+        return getItem(this.getCount()-1);
     }
 
     static class ViewHolder{

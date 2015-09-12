@@ -49,6 +49,9 @@ public class RedPacketsListFragment extends BaseFragment {
     private RedPacketsAdapter adapter;
     private View emptyView, leftIv;
     public static final String KEY_TYPE = "type";
+    private int type = 0;
+    private int length = 10;
+    private int curSize = 0;
 
     @Nullable
     @Override
@@ -59,7 +62,8 @@ public class RedPacketsListFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        reuqestRedPacketsList(getTypeFromParams());
+        type = getTypeFromParams();
+        reuqestRedPacketsList(type, 0);
     }
 
     @Override
@@ -96,7 +100,7 @@ public class RedPacketsListFragment extends BaseFragment {
         @Override
         public void onClick(View v) {
             if (v == rightTv) {
-                requestRedPacktetShareUrl("1595002445473430");
+                requestRedPacktetShareUrl("");
             } else if (v == leftIv) {
                 popBackStack();
             }
@@ -115,7 +119,8 @@ public class RedPacketsListFragment extends BaseFragment {
         public void onRefresh(PullToRefreshBase refreshView) {
             if (redPacketsLv.isHeaderShown()) {
             } else {
-                reuqestRedPacketsList(getTypeFromParams());
+                CouponEntry entry = (CouponEntry) adapter.getLastItem();
+                reuqestRedPacketsList(type, entry == null ? 0 : entry.id);
             }
         }
     };
@@ -148,10 +153,14 @@ public class RedPacketsListFragment extends BaseFragment {
         }
     };
 
-    private void reuqestRedPacketsList(int type) {
+    private void reuqestRedPacketsList(int type, int lastId) {
         RequestParams params = new RequestParams();
-        params.add("type", type + "");
-        HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "cai/coupon", new AsyncHttpResponseHandler() {
+        /*所有优惠券不传type*/
+        if (type != 0)
+            params.add("type", 2 + "");
+        params.add("lastid", lastId + "");
+        params.add("length", length + "");
+        HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "cai/coupon", params, new AsyncHttpResponseHandler() {
             @Override
             public void onFinish() {
                 super.onFinish();
@@ -163,7 +172,7 @@ public class RedPacketsListFragment extends BaseFragment {
                 String result = new String(responseBody);
                 RedPacketsEntry entry = JsonUtilsParser.fromJson(result, RedPacketsEntry.class);
                 if (entry != null) {
-                    if (TextUtils.isEmpty(entry.errcode)) {
+                    if (TextUtils.isEmpty(entry.errmsg)) {
                         succesRedPacketsList(entry);
                     } else {
                         ToastHelper.showShort(getActivity(), entry.errmsg);
@@ -183,22 +192,18 @@ public class RedPacketsListFragment extends BaseFragment {
     }
 
     private void addEmptyView() {
-//        TextView emptyTv = new TextView(getActivity());
-//        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-//        emptyTv.setText("您还没有红包呐～");
-//        emptyTv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-//        emptyTv.setLayoutParams(layoutParams);
-//        emptyTv.setGravity(Gravity.CENTER);
-//        emptyTv.setVisibility(View.GONE);
         redPacketsLv.setEmptyView(emptyView);
     }
 
     private void succesRedPacketsList(RedPacketsEntry entry) {
-        if (entry.list == null || entry.list.isEmpty()) return;
+        if (entry.list == null || entry.list.isEmpty()) {
+            addEmptyView();
+            return;
+        }
+        if (curSize > 0 && curSize % 10 < length) return;
         adapter.setServeTime(entry.time);
         adapter.addAll(entry.list);
-        if (adapter.getCount() <= 0)
-            addEmptyView();
+        curSize = adapter.getCount();
     }
 
     private Handler mHandler = new Handler() {
@@ -210,7 +215,7 @@ public class RedPacketsListFragment extends BaseFragment {
 
     private int getTypeFromParams() {
         Bundle bundle = getArguments();
-        if (bundle == null) return 1;
+        if (bundle == null) return 0;
         return bundle.getInt(KEY_TYPE);
     }
 

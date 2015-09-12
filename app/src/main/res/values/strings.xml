@@ -153,9 +153,8 @@
     <string name="use_favorable_red_packets">使用优惠红包</string>
     <string name="pay_red_packets">支付红包</string>
     <string name="use_for_app_off_line_pay">App下单在线支付使用</string>
-    <string name="expiry_date_content">有效期至 A</string>
     <string name="use_rule">使用规则</string>
-    <string name="empty_red_packets">您还没有红包</string>
+    <string name="empty_red_packets">您还没有红包唉～\n让朋友分享给您个红包吧</string>
     <string name="share_red_packets">发红包</string>
     <string name="congratulations_you_get_red_packets">恭喜您获得A个红包</string>
     <string name="share_red_packets_tip">分享红包给好友\n可用于抵扣在线支付金额</string>

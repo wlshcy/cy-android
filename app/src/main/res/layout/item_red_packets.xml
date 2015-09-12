@@ -11,79 +11,84 @@
         android:layout_height="wrap_content"
         android:background="@drawable/flower_stroke" />
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="@dimen/px50"
         android:paddingBottom="@dimen/px16"
         android:paddingLeft="@dimen/px16"
-        android:paddingRight="@dimen/px16">
+        android:paddingRight="@dimen/px16"
+        android:paddingTop="@dimen/px50">
 
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-
-            <TextView
-                android:id="@+id/money_count_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:gravity="bottom"
-                android:padding="0dp"
-                android:text="0"
-                android:textColor="@color/red_fe786b"
-                android:textSize="48sp" />
-
-            <TextView
-                android:id="@+id/money_symbol_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/money_count_tv"
-                android:gravity="center"
-                android:text="¥"
-                android:textColor="@color/red_fe786b"
-                android:textSize="25sp" />
-        </RelativeLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/pay_red_packets"
-                android:textColor="@color/common_text"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/expiry_date_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/px20"
-                android:text="@string/expiry_date_content"
-                android:textColor="@color/red_fe786b"
-                android:textSize="11sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/px20"
-                android:text="@string/use_for_app_off_line_pay"
-                android:textColor="@color/common_text"
-                android:textSize="11sp" />
-        </LinearLayout>
         <ImageView
             android:id="@+id/logo_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:layout_gravity="center_vertical|right"
             android:src="@drawable/logo" />
-    </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/money_symbol_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/px36"
+                    android:gravity="center"
+                    android:text="¥"
+                    android:textColor="@color/red_fe786b"
+                    android:textSize="25sp" />
+
+                <TextView
+                    android:id="@+id/money_count_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/px32"
+                    android:gravity="bottom"
+                    android:padding="0dp"
+                    android:text="0"
+                    android:textColor="@color/red_fe786b"
+                    android:textSize="48sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/px70"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pay_red_packets"
+                    android:textColor="@color/common_text"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/expiry_date_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/px20"
+                    android:textColor="@color/red_fe786b"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/px20"
+                    android:text="@string/use_for_app_off_line_pay"
+                    android:textColor="@color/common_text"
+                    android:textSize="11sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </FrameLayout>
 </LinearLayout>
