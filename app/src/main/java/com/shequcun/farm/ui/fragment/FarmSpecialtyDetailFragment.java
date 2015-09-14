@@ -106,6 +106,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
 
     private RecommendEntry readRecommendEntryFromDisk(RecommendEntry pEntry) {
         RecommendEntry[] entries = new CacheManager(getActivity()).getRecommendFromDisk();
+        if (entries == null) return null;
         for (int i = 0; i < entries.length; i++) {
             if (pEntry.id > 0 && pEntry.id == entries[i].id)
                 return pEntry;

@@ -17,14 +17,16 @@
         android:scrollbars="none"
         android:divider="@color/gray_ececec"
         android:dividerHeight="@dimen/px20"
+        android:listSelector="#0000"
         android:background="@color/gray_ececec">
     </com.common.widget.PullToRefreshListView>
     <TextView
         android:id="@+id/empty_list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingTop="@dimen/px120"
         android:layout_gravity="center"
-        android:gravity="center"
+        android:gravity="top|center_horizontal"
         android:text="@string/empty_red_packets"
         android:visibility="gone" />
 </LinearLayout>

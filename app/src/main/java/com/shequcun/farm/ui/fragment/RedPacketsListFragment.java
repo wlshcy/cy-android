@@ -1,6 +1,5 @@
 package com.shequcun.farm.ui.fragment;
 
-import android.app.AlertDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -20,23 +19,16 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.CouponEntry;
-import com.shequcun.farm.data.CouponShareEntry;
 import com.shequcun.farm.data.RedPacketsEntry;
-import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.ui.adapter.RedPacketsAdapter;
 import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
-import com.shequcun.farm.util.ShareContent;
-import com.shequcun.farm.util.ShareUtil;
 import com.shequcun.farm.util.ToastHelper;
-import com.umeng.socialize.bean.SHARE_MEDIA;
-import com.umeng.socialize.bean.SocializeEntity;
-import com.umeng.socialize.bean.StatusCode;
-import com.umeng.socialize.controller.listener.SocializeListeners;
 
 import org.apache.http.Header;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -49,6 +41,9 @@ public class RedPacketsListFragment extends BaseFragment {
     private RedPacketsAdapter adapter;
     private View emptyView, leftIv;
     public static final String KEY_TYPE = "type";
+    private int type = 0;
+    private int length = 10;
+    private int curSize = 0;
 
     @Nullable
     @Override
@@ -59,7 +54,8 @@ public class RedPacketsListFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        reuqestRedPacketsList(getTypeFromParams());
+        type = getTypeFromParams();
+        reuqestRedPacketsList(type, 0);
     }
 
     @Override
@@ -96,7 +92,7 @@ public class RedPacketsListFragment extends BaseFragment {
         @Override
         public void onClick(View v) {
             if (v == rightTv) {
-                requestRedPacktetShareUrl("1595002445473430");
+//                requestRedPacktetShareUrl("");
             } else if (v == leftIv) {
                 popBackStack();
             }
@@ -115,7 +111,8 @@ public class RedPacketsListFragment extends BaseFragment {
         public void onRefresh(PullToRefreshBase refreshView) {
             if (redPacketsLv.isHeaderShown()) {
             } else {
-                reuqestRedPacketsList(getTypeFromParams());
+                CouponEntry entry = (CouponEntry) adapter.getLastItem();
+                reuqestRedPacketsList(type, entry == null ? 0 : entry.id);
             }
         }
     };
@@ -148,10 +145,14 @@ public class RedPacketsListFragment extends BaseFragment {
         }
     };
 
-    private void reuqestRedPacketsList(int type) {
+    private void reuqestRedPacketsList(int type, int lastId) {
         RequestParams params = new RequestParams();
-        params.add("type", type + "");
-        HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "cai/coupon", new AsyncHttpResponseHandler() {
+        /*查看优惠券时不传type，查询出所有的优惠券*/
+        if (type != 0)
+            params.add("type", 2 + "");
+        params.add("lastid", lastId + "");
+        params.add("length", length + "");
+        HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "cai/coupon", params, new AsyncHttpResponseHandler() {
             @Override
             public void onFinish() {
                 super.onFinish();
@@ -163,8 +164,8 @@ public class RedPacketsListFragment extends BaseFragment {
                 String result = new String(responseBody);
                 RedPacketsEntry entry = JsonUtilsParser.fromJson(result, RedPacketsEntry.class);
                 if (entry != null) {
-                    if (TextUtils.isEmpty(entry.errcode)) {
-                        succesRedPacketsList(entry);
+                    if (TextUtils.isEmpty(entry.errmsg)) {
+                        successRedPacketsList(entry);
                     } else {
                         ToastHelper.showShort(getActivity(), entry.errmsg);
                     }
@@ -183,22 +184,34 @@ public class RedPacketsListFragment extends BaseFragment {
     }
 
     private void addEmptyView() {
-//        TextView emptyTv = new TextView(getActivity());
-//        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-//        emptyTv.setText("您还没有红包呐～");
-//        emptyTv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-//        emptyTv.setLayoutParams(layoutParams);
-//        emptyTv.setGravity(Gravity.CENTER);
-//        emptyTv.setVisibility(View.GONE);
         redPacketsLv.setEmptyView(emptyView);
     }
 
-    private void succesRedPacketsList(RedPacketsEntry entry) {
-        if (entry.list == null || entry.list.isEmpty()) return;
-        adapter.setServeTime(entry.time);
-        adapter.addAll(entry.list);
-        if (adapter.getCount() <= 0)
+    private void successRedPacketsList(RedPacketsEntry entry) {
+        if (entry.list == null || entry.list.isEmpty()) {
             addEmptyView();
+            return;
+        }
+        entry.list.get(0).used = true;
+        if (curSize > 0 && curSize % length < length) return;
+        /*选择优惠券时*/
+        if (type!=0){
+            /*过滤出无效优惠券*/
+            filterExpire(entry.list,entry.time);
+        }else {
+            adapter.setServeTime(entry.time);
+        }
+        adapter.addAll(entry.list);
+        curSize = adapter.getCount();
+    }
+
+    private void filterExpire(List<CouponEntry> list, long serveTime) {
+        Iterator<CouponEntry> i = list.iterator();
+        while (i.hasNext()) {
+            CouponEntry entry = i.next();
+            if (entry.used || (serveTime > 0 && entry.expire <= serveTime))
+                i.remove();
+        }
     }
 
     private Handler mHandler = new Handler() {
@@ -210,96 +223,7 @@ public class RedPacketsListFragment extends BaseFragment {
 
     private int getTypeFromParams() {
         Bundle bundle = getArguments();
-        if (bundle == null) return 1;
+        if (bundle == null) return 0;
         return bundle.getInt(KEY_TYPE);
     }
-
-    private void alertRedPacketsShare(int count, final String url, final String title, final String content) {
-        final AlertDialog alert = new AlertDialog.Builder(getActivity()).create();
-        alert.show();
-        alert.setCancelable(false);
-        alert.getWindow().setContentView(R.layout.prompt_redpackets_share);
-        TextView countTv = (TextView) alert.getWindow().findViewById(R.id.red_packets_count_tv);
-        countTv.setText(countTv.getText().toString().replace("A", count > 0 ? count + "" : "N"));
-        alert.getWindow().findViewById(R.id.share_tv).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alert.dismiss();
-                useUmengToShare(url, title, content);
-            }
-        });
-        alert.getWindow().findViewById(R.id.close_iv)
-                .setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        alert.dismiss();
-                    }
-                });
-    }
-
-    private void requestRedPacktetShareUrl(String orderNo) {
-        RequestParams params = new RequestParams();
-        params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
-        params.add("orderno", orderNo);
-        HttpRequestUtil.httpPost(LocalParams.getBaseUrl() + "cai/coupon", params, new AsyncHttpResponseHandler() {
-            @Override
-            public void onFinish() {
-                super.onFinish();
-            }
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                String result = new String(responseBody);
-                CouponShareEntry entry = JsonUtilsParser.fromJson(result, CouponShareEntry.class);
-                if (entry != null) {
-                    if (TextUtils.isEmpty(entry.errmsg)) {
-                        alertRedPacketsShare(entry.count, entry.url, entry.title, entry.content);
-                    } else {
-                        ToastHelper.showShort(getActivity(), entry.errmsg);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                if (statusCode == 0) {
-                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
-                    return;
-                }
-                ToastHelper.showShort(getActivity(), "请求失败,错误码" + statusCode);
-            }
-        });
-    }
-
-    private void useUmengToShare(String url, String title, String content) {
-        if (shareController == null)
-            shareController = new ShareUtil(getActivity());
-        ShareContent shareContent = new ShareContent();
-        shareContent.setUrlImage("drawable:///" + R.drawable.icon_share_redpackets_logo);
-        shareContent.setTargetUrl(url);
-        shareContent.setTitle(title);
-        shareContent.setContent(content);
-        shareController.wxShareContent(shareContent);
-        shareController.circleShareContent(shareContent);
-        shareController.postShare(mSnsPostListener);
-    }
-
-    private SocializeListeners.SnsPostListener mSnsPostListener = new SocializeListeners.SnsPostListener() {
-
-        @Override
-        public void onStart() {
-        }
-
-        @Override
-        public void onComplete(SHARE_MEDIA sm, int eCode,
-                               SocializeEntity sEntity) {
-            String showText = "分享成功";
-            if (eCode != StatusCode.ST_CODE_SUCCESSED) {
-                showText = "分享失败 [" + eCode + "]";
-            }
-            ToastHelper.showShort(getActivity(), showText);
-        }
-    };
-
-    private ShareUtil shareController;
 }
