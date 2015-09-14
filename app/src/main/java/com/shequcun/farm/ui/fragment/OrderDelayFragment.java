@@ -40,8 +40,7 @@ public class OrderDelayFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        requestDelayState();
+//        requestDelayState();
     }
 
     @Override
@@ -56,8 +55,10 @@ public class OrderDelayFragment extends BaseFragment {
         titleTv.setText(R.string.order_delay_delivery);
         leftIv = v.findViewById(R.id.back);
         orderNo = readOrderNoFromDisk();
-        if (!TextUtils.isEmpty(orderNo))
+        if (TextUtils.isEmpty(orderNo))
             disableDelayView(R.string.you_have_not_buy_combo);
+        else
+            disableDelayView(R.string.btn_delay_a_week_delivery);
     }
 
     @Override
