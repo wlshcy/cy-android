@@ -20,6 +20,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.ComboEntry;
 import com.shequcun.farm.data.OtherInfo;
+import com.shequcun.farm.data.RecommendDetailEntry;
 import com.shequcun.farm.data.RecommendEntry;
 import com.shequcun.farm.data.SlidesEntry;
 import com.shequcun.farm.datacenter.CacheManager;
@@ -75,10 +76,10 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
             producingPlaceTv.setText("农庄：" + entry.farm);
         else
             producingPlaceTv.setText("农庄：无");
-        if (entry.imgs != null && entry.imgs.length > 0) {
+        if (entry.detail != null && !TextUtils.isEmpty(entry.detail.image)) {
             if (!ImageLoader.getInstance().isInited())
                 ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(getActivity()));
-            ImageLoader.getInstance().displayImage(entry.imgs[0], contentImgIv);
+            ImageLoader.getInstance().displayImage(entry.detail.image, contentImgIv);
         }
         RecommendEntry localEntry = readRecommendEntryFromDisk(entry);
         if (localEntry == null) return;
