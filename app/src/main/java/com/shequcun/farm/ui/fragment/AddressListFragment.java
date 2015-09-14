@@ -193,7 +193,7 @@ public class AddressListFragment extends BaseFragment {
     }
 
     private void successAddress(ArrayList<AddressEntry> list) {
-        if (list == null || list.isEmpty()){
+        if (list == null || list.isEmpty()) {
             showAddAddressView();
             return;
         } else if (list.size() >= maxLen) {
@@ -291,6 +291,7 @@ public class AddressListFragment extends BaseFragment {
 
     private void addBroadcast() {
         IntentFilter intentFilter = new IntentFilter(IntentUtil.UPDATE_ADDRESS_REQUEST);
+        intentFilter.addAction(IntentUtil.UPDATE_ADDRESS_REQUEST);
         getActivity().registerReceiver(broadcastReceiver, intentFilter);
     }
 
