@@ -24,6 +24,7 @@ import com.shequcun.farm.datacenter.CacheManager;
 import com.shequcun.farm.dlg.ConsultationDlg;
 import com.shequcun.farm.ui.adapter.MyAdapter;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
+import com.shequcun.farm.util.IntentUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
 
 /**
@@ -137,7 +138,7 @@ public class MyFragment extends BaseFragment {
     void doRegisterRefreshBrodcast() {
         if (!mIsBind) {
             IntentFilter intentFilter = new IntentFilter();
-            intentFilter.addAction("com.youcai.refresh");
+            intentFilter.addAction(IntentUtil.UPDATE_MINE_PAGE);
             getActivity().registerReceiver(mUpdateReceiver, intentFilter);
             mIsBind = true;
         }

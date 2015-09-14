@@ -40,10 +40,10 @@ public class IntentUtil {
         mContext.sendBroadcast(intent);
     }
 
-    public static void sendUpdateMyInfoMsg(Context mContext, ComboEntry entry) {
+    public static void sendUpdateMyInfoMsg(Context mContext) {
         Intent intent = new Intent();
         intent.setAction(UPDATE_MINE_PAGE);
-        intent.putExtra("ComboEntry", entry);
+//        intent.putExtra("ComboEntry", entry);
         mContext.sendBroadcast(intent);
     }
 
@@ -71,7 +71,7 @@ public class IntentUtil {
         mContext.sendBroadcast(intent);
     }
 
-    public static void sendUpdateAddressMsg(Context mContext,AddressEntry entry) {
+    public static void sendUpdateAddressMsg(Context mContext, AddressEntry entry) {
         Intent intent = new Intent();
         intent.setAction(UPDATE_ADDRESS_MSG);
         intent.putExtra("AddressEntry", entry);
