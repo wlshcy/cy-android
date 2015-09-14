@@ -308,6 +308,10 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
         return entry != null ? entry.orderno : null;
     }
 
+    String buildOrderCon() {
+        return entry != null ? entry.con : null;
+    }
+
     boolean isCreateOrder() {
         return (entry != null) ? entry.choose : false;
     }
@@ -346,7 +350,7 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
         params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
         params.add("items", mOrderController.getOrderItemsString());
         params.add("memo", remark_tv.getText().toString());
-        params.add("orderno", buildOrederno());
+        params.add("orderno", buildOrderCon());
         final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
         HttpRequestUtil.httpPost(LocalParams.getBaseUrl() + "cai/choose", params, new AsyncHttpResponseHandler() {
 

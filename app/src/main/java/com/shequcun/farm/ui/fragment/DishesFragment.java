@@ -74,7 +74,7 @@ public class DishesFragment extends BaseFragment {
             if (entry != null) {
 
                 if (entry.status == 1 || entry.status == 3 || entry.status == 0 || entry.status == 2) {
-                    gotoFragment(buildBundle(buildOrderParams(entry)), R.id.mainpage_ly, new ModifyOrderFragment(), ModifyOrderFragment.class.getName());
+                    gotoFragmentByAdd(buildBundle(buildOrderParams(entry)), R.id.mainpage_ly, new ModifyOrderFragment(), ModifyOrderFragment.class.getName());
                 }
 //                else if (entry.status == 0) {
 //                    requestAlipay(entry);

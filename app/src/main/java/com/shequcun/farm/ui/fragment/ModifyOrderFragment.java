@@ -292,7 +292,7 @@ public class ModifyOrderFragment extends BaseFragment {
     Bundle buildBundle(String orderno, int orderMoney, String alipay, int titleId) {
         Bundle bundle = new Bundle();
         PayParams payParams = new PayParams();
-        payParams.setParams(orderno, orderMoney, alipay, false, titleId,false);
+        payParams.setParams(orderno, orderMoney, alipay, false, titleId, false);
         bundle.putSerializable("PayParams", payParams);
         return bundle;
     }
@@ -319,7 +319,7 @@ public class ModifyOrderFragment extends BaseFragment {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("ComboEntry", entry);
                 popBackStack();
-                gotoFragment(bundle, R.id.mainpage_ly, new ChooseDishesFragment(), ChooseDishesFragment.class.getName());
+                gotoFragmentByAdd(bundle, R.id.mainpage_ly, new ChooseDishesFragment(), ChooseDishesFragment.class.getName());
             }
         });
         builder.setNeutralButton(R.string.cancel, null);

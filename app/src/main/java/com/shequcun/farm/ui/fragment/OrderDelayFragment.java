@@ -16,6 +16,7 @@ import com.shequcun.farm.data.DelayEntry;
 import com.shequcun.farm.data.UserLoginEntry;
 import com.shequcun.farm.datacenter.CacheManager;
 import com.shequcun.farm.datacenter.PersistanceManager;
+import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
@@ -58,7 +59,8 @@ public class OrderDelayFragment extends BaseFragment {
         if (TextUtils.isEmpty(orderNo))
             disableDelayView(R.string.you_have_not_buy_combo);
         else
-            disableDelayView(R.string.btn_delay_a_week_delivery);
+            requestGetDelayState(orderNo);
+//            disableDelayView(R.string.btn_delay_a_week_delivery);
     }
 
     @Override
@@ -104,7 +106,7 @@ public class OrderDelayFragment extends BaseFragment {
                     @Override
                     public void onClick(View v) {
                         alert.dismiss();
-                        requestDelayOrder(orderNo);
+                        requestPostDelayOrder(orderNo);
                     }
                 });
     }
@@ -114,21 +116,36 @@ public class OrderDelayFragment extends BaseFragment {
         return userLoginEntry == null ? null : userLoginEntry.orderno;
     }
 
-    private void requestDelayState() {
-        HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "cai/delay", new AsyncHttpResponseHandler() {
+    private void requestGetDelayState(String orderNo) {
+        RequestParams params = new RequestParams();
+        params.add("orderno", orderNo);
+        final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
+        HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "cai/delay", params, new AsyncHttpResponseHandler() {
+
+            @Override
+            public void onStart() {
+                super.onStart();
+                pDlg.show();
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                pDlg.dismiss();
+            }
+
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String result = new String(responseBody);
                 DelayEntry entry = JsonUtilsParser.fromJson(result, DelayEntry.class);
                 if (entry != null) {
-                    if (TextUtils.isEmpty(entry.errcode)) {
-                        successDelay(entry.delayed);
-                    }
+                    successDelay(entry.delayed);
                 }
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                successDelay(false);
                 if (statusCode == 0) {
                     ToastHelper.showShort(getActivity(), R.string.network_error_tip);
                     return;
@@ -138,24 +155,36 @@ public class OrderDelayFragment extends BaseFragment {
         });
     }
 
-    private void requestDelayOrder(String orderNo) {
+    private void requestPostDelayOrder(String orderNo) {
         RequestParams params = new RequestParams();
         params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
         params.add("orderno", orderNo);
+        final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
         HttpRequestUtil.httpPost(LocalParams.getBaseUrl() + "cai/delay", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String result = new String(responseBody);
                 DelayEntry entry = JsonUtilsParser.fromJson(result, DelayEntry.class);
-                if (entry != null) {
-                    if (TextUtils.isEmpty(entry.errmsg)) {
-                        successDelay(true);
-                    }
+                if (entry != null && TextUtils.isEmpty(entry.errmsg)) {
+                    successDelay(true);
                 }
             }
 
             @Override
+            public void onStart() {
+                super.onStart();
+                pDlg.show();
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                pDlg.dismiss();
+            }
+
+            @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                successDelay(false);
                 if (statusCode == 0) {
                     ToastHelper.showShort(getActivity(), R.string.network_error_tip);
                     return;
