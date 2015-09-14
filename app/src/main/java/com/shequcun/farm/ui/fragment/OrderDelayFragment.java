@@ -13,6 +13,8 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.DelayEntry;
+import com.shequcun.farm.data.UserLoginEntry;
+import com.shequcun.farm.datacenter.CacheManager;
 import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
@@ -27,6 +29,7 @@ import org.apache.http.Header;
 public class OrderDelayFragment extends BaseFragment {
     private TextView titleTv, delayTv;
     private View leftIv;
+    private String orderNo;
 
     @Nullable
     @Override
@@ -37,6 +40,7 @@ public class OrderDelayFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         requestDelayState();
     }
 
@@ -51,6 +55,9 @@ public class OrderDelayFragment extends BaseFragment {
         delayTv = (TextView) v.findViewById(R.id.delay_tv);
         titleTv.setText(R.string.order_delay_delivery);
         leftIv = v.findViewById(R.id.back);
+        orderNo = readOrderNoFromDisk();
+        if (!TextUtils.isEmpty(orderNo))
+            disableDelayView(R.string.you_have_not_buy_combo);
     }
 
     @Override
@@ -66,6 +73,10 @@ public class OrderDelayFragment extends BaseFragment {
             if (v == leftIv) {
                 popBackStack();
             } else if (v == delayTv) {
+                if (TextUtils.isEmpty(orderNo)) {
+                    ToastHelper.showShort(getActivity(), R.string.you_have_not_buy_combo);
+                    return;
+                }
                 alertDelay();
             }
         }
@@ -92,9 +103,14 @@ public class OrderDelayFragment extends BaseFragment {
                     @Override
                     public void onClick(View v) {
                         alert.dismiss();
-                        requestDelayOrder();
+                        requestDelayOrder(orderNo);
                     }
                 });
+    }
+
+    private String readOrderNoFromDisk() {
+        UserLoginEntry userLoginEntry = new CacheManager(getActivity()).getUserLoginEntry();
+        return userLoginEntry == null ? null : userLoginEntry.orderno;
     }
 
     private void requestDelayState() {
@@ -121,9 +137,10 @@ public class OrderDelayFragment extends BaseFragment {
         });
     }
 
-    private void requestDelayOrder() {
+    private void requestDelayOrder(String orderNo) {
         RequestParams params = new RequestParams();
         params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
+        params.add("orderno", orderNo);
         HttpRequestUtil.httpPost(LocalParams.getBaseUrl() + "cai/delay", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -149,13 +166,17 @@ public class OrderDelayFragment extends BaseFragment {
 
     private void successDelay(boolean delay) {
         if (delay) {
-            delayTv.setText(R.string.btn_has_delaied_a_week_delivery);
-            delayTv.setBackgroundResource(R.drawable.btn_bg_gray_selector);
-            delayTv.setEnabled(false);
+            disableDelayView(R.string.btn_has_delaied_a_week_delivery);
         } else {
             delayTv.setText(R.string.btn_delay_a_week_delivery);
             delayTv.setBackgroundResource(R.drawable.btn_bg_red_selector);
             delayTv.setEnabled(true);
         }
+    }
+
+    private void disableDelayView(int strId) {
+        delayTv.setText(strId);
+        delayTv.setBackgroundResource(R.drawable.btn_bg_gray_selector);
+        delayTv.setEnabled(false);
     }
 }

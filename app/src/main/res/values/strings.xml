@@ -194,4 +194,6 @@
     <string name="no_choose_option_tip">亲,您还没有选择备选菜哦!请单击备选菜,选择2-3种吧!</string>
     <string name="no_login_tip">亲,您还未登录哦~登录后才可查看购物车哦~</string>
     <string name="go_login">去登录</string>
+
+    <string name="you_have_not_buy_combo">您还没有购买套餐</string>
 </resources>
