@@ -92,12 +92,19 @@ public class RedPacketsListFragment extends BaseFragment {
         @Override
         public void onClick(View v) {
             if (v == rightTv) {
-//                requestRedPacktetShareUrl("");
-            } else if (v == leftIv) {
+                gotoRuleFragment();
+                } else if (v == leftIv) {
                 popBackStack();
             }
         }
     };
+
+    private void gotoRuleFragment(){
+        Bundle bundle = new Bundle();
+        bundle.putString("Url", "https://store.shequcun.com/coupon/yc_info");
+        bundle.putInt("TitleId", R.string.red_packets_rule);
+        gotoFragmentByAdd(bundle, R.id.mainpage_ly, new SetWebViewFragment(), SetWebViewFragment.class.getName());
+    }
 
     private PullToRefreshAdapterViewBase.OnRefreshingScrollToOriginal onRefreshingScrollToOriginal = new PullToRefreshAdapterViewBase.OnRefreshingScrollToOriginal() {
         @Override
