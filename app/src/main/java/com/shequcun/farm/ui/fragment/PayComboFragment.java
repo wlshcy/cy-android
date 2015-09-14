@@ -208,7 +208,7 @@ public class PayComboFragment extends BaseFragment {
     Bundle buildBundle(String orderno, int orderMoney, String alipay, boolean isRecoDishes, int titleId) {
         Bundle bundle = new Bundle();
         PayParams payParams = new PayParams();
-        payParams.setParams(orderno, orderMoney, alipay, isRecoDishes, titleId);
+        payParams.setParams(orderno, orderMoney, alipay, isRecoDishes, titleId, true);
         bundle.putSerializable("PayParams", payParams);
         return bundle;
     }
@@ -248,8 +248,8 @@ public class PayComboFragment extends BaseFragment {
                     // 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
                     if (TextUtils.equals(resultStatus, "9000")) {
                         ToastHelper.showShort(getActivity(), "支付成功");
-                        OtherInfo info=buildOtherInfo();
-                        if(info!=null && info.type==3){
+                        OtherInfo info = buildOtherInfo();
+                        if (info != null && info.type == 3) {
                             new CacheManager(getActivity()).delRecommendToDisk();
                         }
                         gotoFragmentByAdd(buildBundle(entry.orderno, getOrderMoney(), alipay, true, R.string.order_result), R.id.mainpage_ly, new PayResultFragment(), PayResultFragment.class.getName());

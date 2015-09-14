@@ -317,7 +317,7 @@ public class SingleDishesFragment extends BaseFragment {
     Bundle buildBundle(String orderno, int orderMoney, String alipay, int titleId) {
         Bundle bundle = new Bundle();
         PayParams payParams = new PayParams();
-        payParams.setParams(orderno, orderMoney, alipay, false, titleId);
+        payParams.setParams(orderno, orderMoney, alipay, false, titleId,true);
         bundle.putSerializable("PayParams", payParams);
         return bundle;
     }

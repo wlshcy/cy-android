@@ -245,7 +245,7 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
     Bundle buildBundle(String orderno, int orderMoney, String alipay, boolean isRecoDishes, int titleId) {
         Bundle bundle = new Bundle();
         PayParams payParams = new PayParams();
-        payParams.setParams(orderno, orderMoney, alipay, isRecoDishes, titleId);
+        payParams.setParams(orderno, orderMoney, alipay, isRecoDishes, titleId, false);
         bundle.putSerializable("PayParams", payParams);
         return bundle;
     }
@@ -255,6 +255,8 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
         params.add("orderno", orderno);
         String items = mOrderController.getOrderItemsString();
         params.add("items", items);
+        params.add("memo", remark_tv.getText().toString());
+        params.add("spares", mOrderController.getOrderOptionItemString());
         params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
         final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
         HttpRequestUtil.httpPost(LocalParams.getBaseUrl() + "cai/altorder", params, new AsyncHttpResponseHandler() {

@@ -32,11 +32,17 @@ public class PayParams implements Serializable {
      */
     public int type = 0;
 
-    public void setParams(String orderno, int orderMoney, String alipay, boolean isRecoDishes, int titleId) {
+    public void setParams(String orderno, int orderMoney, String alipay, boolean isRecoDishes, int titleId, boolean isSendRedPackage) {
         this.orderno = orderno;
         this.orderMoney = orderMoney;
         this.alipay = alipay;
         this.isRecoDishes = isRecoDishes;
         this.titleId = titleId;
+        this.isSendRedPackage = isSendRedPackage;
     }
+
+    /**
+     * 是否要发红包
+     */
+    public boolean isSendRedPackage;
 }

@@ -445,14 +445,14 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment implements R
     }
 
 
-    Bundle buildBundle(String orderno, int orderMoney, String alipay, int titleId) {
-        Bundle bundle = new Bundle();
-        PayParams payParams = new PayParams();
-        payParams.setParams(orderno, orderMoney, alipay, false, titleId);
-        payParams.type = 3;
-        bundle.putSerializable("PayParams", payParams);
-        return bundle;
-    }
+//    Bundle buildBundle(String orderno, int orderMoney, String alipay, int titleId) {
+//        Bundle bundle = new Bundle();
+//        PayParams payParams = new PayParams();
+//        payParams.setParams(orderno, orderMoney, alipay, false, titleId);
+//        payParams.type = 3;
+//        bundle.putSerializable("PayParams", payParams);
+//        return bundle;
+//    }
 
     public String getExtras() {
         String result = "";

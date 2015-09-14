@@ -80,16 +80,22 @@ public class PayResultFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         String orderNo = getOrderNoFromParams();
-        if (!TextUtils.isEmpty(orderNo))
+        if (!TextUtils.isEmpty(orderNo) && isRequesetRedPackage())
             requestRedPacktetShareUrl(orderNo);
     }
 
-    String getOrderNoFromParams(){
+
+    boolean isRequesetRedPackage() {
         PayParams payParams = getPayParams();
-        return payParams==null?null:payParams.orderno;
+        return payParams == null ? false : payParams.isSendRedPackage;
     }
 
-    PayParams getPayParams(){
+    String getOrderNoFromParams() {
+        PayParams payParams = getPayParams();
+        return payParams == null ? null : payParams.orderno;
+    }
+
+    PayParams getPayParams() {
         Bundle bundle = getArguments();
         return bundle != null ? ((PayParams) bundle.getSerializable("PayParams")) : null;
     }
@@ -251,18 +257,18 @@ public class PayResultFragment extends BaseFragment {
         return R.string.pay_success;
     }
 
-    private void alertRedPacketsShare(int count,final String url, final String title, final String content) {
+    private void alertRedPacketsShare(int count, final String url, final String title, final String content) {
         final AlertDialog alert = new AlertDialog.Builder(getActivity()).create();
         alert.show();
         alert.setCancelable(false);
         alert.getWindow().setContentView(R.layout.prompt_redpackets_share);
-        TextView countTv = (TextView)alert.getWindow().findViewById(R.id.red_packets_count_tv);
-        countTv.setText(countTv.getText().toString().replace("A",count>0?count+"":"N"));
+        TextView countTv = (TextView) alert.getWindow().findViewById(R.id.red_packets_count_tv);
+        countTv.setText(countTv.getText().toString().replace("A", count > 0 ? count + "" : "N"));
         alert.getWindow().findViewById(R.id.share_tv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 alert.dismiss();
-                useUmengToShare(url,title,content);
+                useUmengToShare(url, title, content);
             }
         });
         alert.getWindow().findViewById(R.id.close_iv)
@@ -274,11 +280,11 @@ public class PayResultFragment extends BaseFragment {
                 });
     }
 
-    private void requestRedPacktetShareUrl(String orderNo){
+    private void requestRedPacktetShareUrl(String orderNo) {
         RequestParams params = new RequestParams();
         params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
-        params.add("orderno",orderNo);
-        HttpRequestUtil.httpPost(LocalParams.getBaseUrl() + "cai/coupon", params,new AsyncHttpResponseHandler() {
+        params.add("orderno", orderNo);
+        HttpRequestUtil.httpPost(LocalParams.getBaseUrl() + "cai/coupon", params, new AsyncHttpResponseHandler() {
             @Override
             public void onFinish() {
                 super.onFinish();
@@ -290,7 +296,7 @@ public class PayResultFragment extends BaseFragment {
                 CouponShareEntry entry = JsonUtilsParser.fromJson(result, CouponShareEntry.class);
                 if (entry != null) {
                     if (TextUtils.isEmpty(entry.errmsg)) {
-                        alertRedPacketsShare(entry.count,entry.url, entry.title, entry.content);
+                        alertRedPacketsShare(entry.count, entry.url, entry.title, entry.content);
                     } else {
                         ToastHelper.showShort(getActivity(), entry.errmsg);
                     }
@@ -308,7 +314,7 @@ public class PayResultFragment extends BaseFragment {
         });
     }
 
-    private void useUmengToShare(String url,String title,String content) {
+    private void useUmengToShare(String url, String title, String content) {
         if (shareController == null)
             shareController = new ShareUtil(getActivity());
         ShareContent shareContent = new ShareContent();

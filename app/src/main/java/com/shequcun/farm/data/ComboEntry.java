@@ -87,5 +87,7 @@ public class ComboEntry extends BaseEntry {
     @SerializedName("chgtime")
     public JsonObject json;
 
+    @SerializedName("con")
+    public String con;//套餐订单号
     public OtherInfo info;
 }

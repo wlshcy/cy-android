@@ -133,6 +133,9 @@ public class DishesFragment extends BaseFragment {
     public void requestOrderEntry() {
         UserLoginEntry uentry = new CacheManager(getActivity()).getUserLoginEntry();
         if (uentry == null || TextUtils.isEmpty(uentry.orderno)) {
+            if (pBar != null) {
+                pBar.setVisibility(View.GONE);
+            }
             return;
         }
         RequestParams params = new RequestParams();
