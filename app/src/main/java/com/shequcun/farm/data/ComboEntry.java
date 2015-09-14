@@ -1,5 +1,6 @@
 package com.shequcun.farm.data;
 
+import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -82,10 +83,9 @@ public class ComboEntry extends BaseEntry {
     public String orderno;
     @SerializedName("status")
     public int status;//0.未付款, 1.待配送, 2.配送中, 3.配送完成, 4.取消订单
-//    orderno：最近一次选菜订单号
-//    status：最近一次选菜订单状态
-//    chgtime:  最近一次选菜订单状态变更时间
-    //下单日期
-    public String date;
+
+    @SerializedName("chgtime")
+    public JsonObject json;
+
     public OtherInfo info;
 }

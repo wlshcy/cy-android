@@ -177,6 +177,7 @@ public class ChooseDishesFragment extends BaseFragment {
     }
 
     void requsetDishesList() {
+
         int id = buildRequestID();
         RequestParams params = new RequestParams();
         params.add("combo_id", id + "");
@@ -859,7 +860,7 @@ public class ChooseDishesFragment extends BaseFragment {
 
     ModifyOrderParams buildOrderParams(ComboEntry entry) {
         ModifyOrderParams params = new ModifyOrderParams();
-        params.setParams(entry.id, entry.orderno, 1, entry.id, entry.prices[entry.getPosition()], entry.combo_idx, entry.status, entry.date);
+        params.setParams(entry.id, entry.orderno, 1, entry.id, entry.prices[entry.getPosition()], entry.combo_idx, entry.status, "下单日期:" + Utils.getTime(entry.json.get(entry.status + "").getAsLong()));
         return params;
     }
 
