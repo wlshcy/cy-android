@@ -156,8 +156,15 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
         public void onClick(View v) {
             if (v == back)
                 popBackStack();
-            else if (v == shareIv)
-                useUmengToShare("", "", "");
+            else if (v == shareIv){
+                ShareContent shareContent = new ShareContent();
+//                shareContent.setUrlImage("drawable:///" + R.drawable.icon_share);
+                shareContent.setImageId(R.drawable.ic_launcher);
+                shareContent.setTargetUrl("https://store.shequcun.com/about/ycabout");
+                shareContent.setTitle("");
+                shareContent.setContent("");
+                useUmengToShare(shareContent);
+            }
         }
     };
 
@@ -446,14 +453,9 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
                 });
     }
 
-    private void useUmengToShare(String url, String title, String content) {
+    private void useUmengToShare(ShareContent shareContent) {
         if (shareController == null)
             shareController = new ShareUtil(getActivity());
-        ShareContent shareContent = new ShareContent();
-        shareContent.setUrlImage("drawable:///" + R.drawable.ic_launcher);
-        shareContent.setTargetUrl(url);
-        shareContent.setTitle(title);
-        shareContent.setContent(content);
         shareController.wxShareContent(shareContent);
         shareController.circleShareContent(shareContent);
         shareController.postShare(mSnsPostListener);
