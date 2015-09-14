@@ -164,6 +164,7 @@
     <string name="btn_has_delaied_a_week_delivery">您已延期一周配送</string>
     <string name="order_delay_delivery">订单延期配送</string>
     <string name="prompt_order_delivery">您确定订单延期配送？</string>
+    <string name="red_packets_rule">红包使用规则</string>
     <!--我的地址-->
     <string name="save">保存</string>
     <string name="save_address">保存地址</string>
