@@ -29,7 +29,7 @@ import org.apache.http.Header;
 public class OrderDelayFragment extends BaseFragment {
     private TextView titleTv, delayTv;
     private View leftIv;
-//    private String orderNo;
+    private String orderNo;
 
     @Nullable
     @Override
@@ -40,8 +40,7 @@ public class OrderDelayFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        requestDelayState();
+//        requestDelayState();
     }
 
     @Override
@@ -55,7 +54,11 @@ public class OrderDelayFragment extends BaseFragment {
         delayTv = (TextView) v.findViewById(R.id.delay_tv);
         titleTv.setText(R.string.order_delay_delivery);
         leftIv = v.findViewById(R.id.back);
-
+        orderNo = readOrderNoFromDisk();
+        if (TextUtils.isEmpty(orderNo))
+            disableDelayView(R.string.you_have_not_buy_combo);
+        else
+            disableDelayView(R.string.btn_delay_a_week_delivery);
     }
 
     @Override
@@ -71,10 +74,10 @@ public class OrderDelayFragment extends BaseFragment {
             if (v == leftIv) {
                 popBackStack();
             } else if (v == delayTv) {
-//                if (TextUtils.isEmpty(re)) {
-//                    ToastHelper.showShort(getActivity(), R.string.you_have_not_buy_combo);
-//                    return;
-//                }
+                if (TextUtils.isEmpty(orderNo)) {
+                    ToastHelper.showShort(getActivity(), R.string.you_have_not_buy_combo);
+                    return;
+                }
                 alertDelay();
             }
         }
@@ -101,7 +104,7 @@ public class OrderDelayFragment extends BaseFragment {
                     @Override
                     public void onClick(View v) {
                         alert.dismiss();
-                        requestDelayOrder(readOrderNoFromDisk());
+                        requestDelayOrder(orderNo);
                     }
                 });
     }
@@ -112,15 +115,7 @@ public class OrderDelayFragment extends BaseFragment {
     }
 
     private void requestDelayState() {
-
-        if (TextUtils.isEmpty(readOrderNoFromDisk())) {
-            disableDelayView(R.string.you_have_not_buy_combo);
-            return;
-        }
-
-        RequestParams params = new RequestParams();
-        params.add("orderno", readOrderNoFromDisk());
-        HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "cai/delay", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "cai/delay", new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String result = new String(responseBody);
