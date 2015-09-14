@@ -185,7 +185,20 @@ public class LoginFragment extends BaseFragment {
         params.add("mobile", mobileNumber);
         params.add("type", 2 + "");
         params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
+        final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
         HttpRequestUtil.httpPost(LocalParams.getBaseUrl() + "util/smscode", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                super.onStart();
+                pDlg.show();
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                pDlg.dismiss();
+            }
+
             @Override
             public void onSuccess(int statusCode, Header[] h, byte[] data) {
                 if (data != null && data.length > 0) {

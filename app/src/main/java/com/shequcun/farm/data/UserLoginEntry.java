@@ -28,4 +28,6 @@ public class UserLoginEntry extends BaseEntry implements Serializable {
     public String zname;
     @SerializedName("mycomboids")
     public int mycomboids[];
+    @SerializedName("orderno")
+    public String orderno;
 }

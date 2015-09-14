@@ -303,6 +303,7 @@ public class HomeFragment extends BaseFragment {
                     uentry.mycomboids = new int[1];
                     comboEntry = entry;
                     uentry.mycomboids[0] = comboEntry.id;
+                    uentry.orderno = comboEntry.orderno;
                     new CacheManager(getActivity()).saveUserLoginToDisk(JsonUtilsParser.toJson(uentry).getBytes());
                 }
                 no_combo_iv.setVisibility(View.GONE);

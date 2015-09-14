@@ -138,8 +138,8 @@ public class PayComboFragment extends BaseFragment {
         params.add("spares", mOrderController.getOrderOptionItemString());
         if (coupon_id >= 0)
             params.add("coupon_id", coupon_id + "");
-        if(entry!=null && entry.info!=null){
-            params.add("memo",entry.info.memo);
+        if (entry != null && entry.info != null) {
+            params.add("memo", entry.info.memo);
         }
         params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
         final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
@@ -247,16 +247,12 @@ public class PayComboFragment extends BaseFragment {
 
                     // 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
                     if (TextUtils.equals(resultStatus, "9000")) {
-
-//                        Bundle bundle = getArguments();
-//                        PayParams entry = bundle != null ? ((PayParams) bundle.getSerializable("PayParams")) : null;
-//                        if (entry != null && entry.type == 3) {
-//                            new CacheManager(getActivity()).delRecommendToDisk();
-//                            IntentUtil.sendUpdateFarmShoppingCartMsg(getActivity());
-//                        }
-
                         ToastHelper.showShort(getActivity(), "支付成功");
-                        gotoFragmentByAdd(getArguments(), R.id.mainpage_ly, new PayResultFragment(), PayResultFragment.class.getName());
+                        OtherInfo info=buildOtherInfo();
+                        if(info!=null && info.type==3){
+                            new CacheManager(getActivity()).delRecommendToDisk();
+                        }
+                        gotoFragmentByAdd(buildBundle(entry.orderno, getOrderMoney(), alipay, true, R.string.order_result), R.id.mainpage_ly, new PayResultFragment(), PayResultFragment.class.getName());
                     } else {
                         // 判断resultStatus 为非“9000”则代表可能支付失败
                         // “8000”代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认，最终交易是否成功以服务端异步通知为准（小概率状态）

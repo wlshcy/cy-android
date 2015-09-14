@@ -150,7 +150,8 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
                     return;
                 }
                 if (isCreateOrder()) {
-                    requestUserAddress();
+//                    requestUserAddress();
+                    createOrder();
                 } else {
                     modifyOrder(buildOrederno());
                 }
@@ -309,74 +310,44 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
         return (entry != null) ? entry.choose : false;
     }
 
-    void requestUserAddress() {
-        HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "user/v2/address", new AsyncHttpResponseHandler() {
-            @Override
-            public void onSuccess(int sCode, Header[] h, byte[] data) {
-                if (data != null && data.length > 0) {
-                    AddressListEntry entry = JsonUtilsParser.fromJson(new String(data), AddressListEntry.class);
-                    if (entry != null) {
-                        if (TextUtils.isEmpty(entry.errmsg)) {
-                            successUserAddress(entry.aList);
-                            return;
-                        } else {
-                            ToastHelper.showShort(getActivity(), entry.errmsg);
-                        }
-                    }
-                }
-            }
+//    void requestUserAddress() {
+//        HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "user/v2/address", new AsyncHttpResponseHandler() {
+//            @Override
+//            public void onSuccess(int sCode, Header[] h, byte[] data) {
+//                if (data != null && data.length > 0) {
+//                    AddressListEntry entry = JsonUtilsParser.fromJson(new String(data), AddressListEntry.class);
+//                    if (entry != null) {
+//                        if (TextUtils.isEmpty(entry.errmsg)) {
+//                            successUserAddress(entry.aList);
+//                            return;
+//                        } else {
+//                            ToastHelper.showShort(getActivity(), entry.errmsg);
+//                        }
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
+//                if (sCode == 0) {
+//                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
+//                    return;
+//                }
+//                ToastHelper.showShort(getActivity(), "请求失败,错误码" + sCode);
+//            }
+//        });
+//    }
 
-            @Override
-            public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
-                if (sCode == 0) {
-                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
-                    return;
-                }
-                ToastHelper.showShort(getActivity(), "请求失败,错误码" + sCode);
-            }
-        });
-    }
-
-    private void successUserAddress(List<AddressEntry> list) {
-        if (list == null || list.size() <= 0) {
-            ToastHelper.showShort(getActivity(), "提交失败.请您稍后再试.");
-            return;
-        }
-        int size = list.size();
-        for (int i = 0; i < size; ++i) {
-            AddressEntry entry = list.get(i);
-            if (entry.isDefault) {
-                makeOrder(entry);
-                break;
-            }
-        }
-    }
-
-    private void makeOrder(AddressEntry entry) {
-        int combo_id = mOrderController.getItems().get(0).combo_id;
-        int type = isMyCombo() ? 2 : 1;
-        String combo_idx = getComboIdxParams();
-        String items = mOrderController.getOrderItemsString();
-        String name = entry.name;
-        String mobile = entry.mobile;
-        String address = uEntry.address;
-        String spares = mOrderController.getOrderOptionItemString();
-        requestCaiOrder(combo_id, type, combo_idx, spares, items, name, mobile, address);
-    }
-
-    private void requestCaiOrder(int combo_id, int type, String combo_idx, String spares, String items, String name, String mobile, String address) {
+    private void createOrder() {
         RequestParams params = new RequestParams();
-        params.add("combo_id", combo_id + "");
-        params.add("type", type + "");
-        params.add("combo_idx", combo_idx);
-        params.add("items", items);
-        params.add("name", name);
-        params.add("mobile", mobile);
-        params.add("address", address);
-        params.add("spares", spares);
+        params.add("spares", mOrderController.getOrderOptionItemString());
         params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
+        params.add("items", mOrderController.getOrderItemsString());
+        params.add("memo", remark_tv.getText().toString());
+        params.add("orderno", buildOrederno());
         final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
-        HttpRequestUtil.httpPost(LocalParams.getBaseUrl() + "cai/order", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.httpPost(LocalParams.getBaseUrl() + "cai/choose", params, new AsyncHttpResponseHandler() {
+
             @Override
             public void onStart() {
                 super.onStart();
@@ -410,7 +381,7 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
             }
 
             @Override
-            public void onFailure(int sCode, Header[] h, byte[] data, Throwable e) {
+            public void onFailure(int sCode, Header[] headers, byte[] responseBody, Throwable error) {
                 if (sCode == 0) {
                     ToastHelper.showShort(getActivity(), R.string.network_error_tip);
                     return;
@@ -420,31 +391,114 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
         });
     }
 
-    boolean isMyCombo() {
-        if (uEntry != null) {
-            if (uEntry.mycomboids != null) {
-                int curComboId = getComboId();
-                int length = uEntry.mycomboids.length;
-                for (int i = 0; i < length; i++) {
-                    if (curComboId == uEntry.mycomboids[i]) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return (entry != null) ? entry.isMine() : false;
-    }
+//    private void successUserAddress(List<AddressEntry> list) {
+//        if (list == null || list.size() <= 0) {
+//            ToastHelper.showShort(getActivity(), "提交失败.请您稍后再试.");
+//            return;
+//        }
+//        int size = list.size();
+//        for (int i = 0; i < size; ++i) {
+//            AddressEntry entry = list.get(i);
+//            if (entry.isDefault) {
+//                makeOrder(entry);
+//                break;
+//            }
+//        }
+//    }
 
-    String getComboIdxParams() {
-        if (entry != null) {
-            if (!TextUtils.isEmpty(entry.combo_idx))
-                return entry.combo_idx;
-            return entry.getPosition() + "";
-        }
-        if (!TextUtils.isEmpty(entry.combo_idx))
-            return entry.combo_idx;
-        return entry.getPosition() + "";
-    }
+//    private void makeOrder(AddressEntry entry) {
+//        int combo_id = mOrderController.getItems().get(0).combo_id;
+//        int type = isMyCombo() ? 2 : 1;
+//        String combo_idx = getComboIdxParams();
+//        String items = mOrderController.getOrderItemsString();
+//        String name = entry.name;
+//        String mobile = entry.mobile;
+//        String address = uEntry.address;
+//        String spares = mOrderController.getOrderOptionItemString();
+//        requestCaiOrder(combo_id, type, combo_idx, spares, items, name, mobile, address);
+//    }
+
+//    private void requestCaiOrder(int combo_id, int type, String combo_idx, String spares, String items, String name, String mobile, String address) {
+//        RequestParams params = new RequestParams();
+//        params.add("combo_id", combo_id + "");
+//        params.add("type", type + "");
+//        params.add("combo_idx", combo_idx);
+//        params.add("items", items);
+//        params.add("name", name);
+//        params.add("mobile", mobile);
+//        params.add("address", address);
+//        params.add("spares", spares);
+//        params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
+//        final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
+//        HttpRequestUtil.httpPost(LocalParams.getBaseUrl() + "cai/order", params, new AsyncHttpResponseHandler() {
+//            @Override
+//            public void onStart() {
+//                super.onStart();
+//                pDlg.show();
+//            }
+//
+//            @Override
+//            public void onFinish() {
+//                super.onFinish();
+//                pDlg.dismiss();
+//            }
+//
+//            @Override
+//            public void onSuccess(int sCode, Header[] headers, byte[] data) {
+//                if (sCode == 200) {
+//                    String result = new String(data);
+//                    OrderEntry entry = JsonUtilsParser.fromJson(result, OrderEntry.class);
+//                    if (entry != null) {
+//                        if (TextUtils.isEmpty(entry.errmsg)) {
+//                            if (TextUtils.isEmpty(entry.alipay)) {
+//                                gotoFragmentByAdd(buildBundle(entry.orderno, getOrderMoney(), entry.alipay, true, R.string.order_result), R.id.mainpage_ly, new PayResultFragment(), PayResultFragment.class.getName());
+//                                return;
+//                            }
+//                        } else {
+//                            ToastHelper.showShort(getActivity(), entry.errmsg);
+//                        }
+//                    }
+//                } else {
+//                    ToastHelper.showShort(getActivity(), "异常：状态" + sCode);
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(int sCode, Header[] h, byte[] data, Throwable e) {
+//                if (sCode == 0) {
+//                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
+//                    return;
+//                }
+//                ToastHelper.showShort(getActivity(), "创建订单失败.错误码" + sCode);
+//            }
+//        });
+//    }
+
+//    boolean isMyCombo() {
+//        if (uEntry != null) {
+//            if (uEntry.mycomboids != null) {
+//                int curComboId = getComboId();
+//                int length = uEntry.mycomboids.length;
+//                for (int i = 0; i < length; i++) {
+//                    if (curComboId == uEntry.mycomboids[i]) {
+//                        return true;
+//                    }
+//                }
+//            }
+//        }
+//        return (entry != null) ? entry.isMine() : false;
+//    }
+
+//    String getComboIdxParams() {
+//        if (entry != null) {
+//            if (!TextUtils.isEmpty(entry.combo_idx))
+//                return entry.combo_idx;
+//            return entry.getPosition() + "";
+//        }
+//        if (!TextUtils.isEmpty(entry.combo_idx))
+//            return entry.combo_idx;
+//        return entry.getPosition() + "";
+//    }
 
     @Override
     public void updateRemarkWidget(String remark) {

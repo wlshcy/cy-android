@@ -1,10 +1,8 @@
 package com.shequcun.farm.ui.fragment;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -17,32 +15,18 @@ import android.widget.TextView;
 
 import com.common.widget.CircleFlowIndicator;
 import com.common.widget.ViewFlow;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.shequcun.farm.R;
-import com.shequcun.farm.data.AddressEntry;
-import com.shequcun.farm.data.AddressListEntry;
 import com.shequcun.farm.data.ComboEntry;
-import com.shequcun.farm.data.OrderEntry;
 import com.shequcun.farm.data.OtherInfo;
-import com.shequcun.farm.data.PayParams;
-import com.shequcun.farm.data.RecommendDetailEntry;
 import com.shequcun.farm.data.RecommendEntry;
 import com.shequcun.farm.data.SlidesEntry;
-import com.shequcun.farm.data.UserLoginEntry;
 import com.shequcun.farm.datacenter.CacheManager;
-import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.db.RecommendItemKey;
-import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.ui.SqcFarmActivity;
 import com.shequcun.farm.ui.adapter.CarouselAdapter;
-import com.shequcun.farm.util.Constrants;
-import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.IntentUtil;
-import com.shequcun.farm.util.JsonUtilsParser;
-import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.ShareContent;
 import com.shequcun.farm.util.ShareUtil;
 import com.shequcun.farm.util.ToastHelper;
@@ -51,8 +35,6 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.bean.SocializeEntity;
 import com.umeng.socialize.bean.StatusCode;
 import com.umeng.socialize.controller.listener.SocializeListeners;
-
-import org.apache.http.Header;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -226,6 +208,12 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
             goods_add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
+                    if (entry.count > entry.remains) {
+                        alertOutOfRemains();
+                        return;
+                    }
+
                     entry.count++;
                     goods_count.setText(entry.count + "");
                 }
@@ -235,6 +223,8 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
             goods_sub.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    if (entry.count <= 0)
+                        return;
                     entry.count--;
                     if (entry.count < 0) entry.count = 0;
                     goods_count.setText(entry.count + "");
@@ -244,9 +234,11 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
             childView.findViewById(R.id.shop_cart_tv).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    RecommendItemKey itemKey = new RecommendItemKey();
-                    itemKey.object = entry;
-                    new CacheManager(getActivity()).saveRecommendToDisk(itemKey);
+                    if (entry.count > 0) {
+                        RecommendItemKey itemKey = new RecommendItemKey();
+                        itemKey.object = entry;
+                        new CacheManager(getActivity()).saveRecommendToDisk(itemKey);
+                    }
                     IntentUtil.sendUpdateFarmShoppingCartMsg(getActivity());
                     ((SqcFarmActivity) getActivity()).buildRadioButtonStatus(1);
                     popBackStack();
@@ -427,6 +419,32 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
 //        super.onDestroyView();
 ////        mHandler.removeCallbacksAndMessages(null);
 //    }
+
+    private void alertOutOfMaxpacks() {
+        String content = getResources().getString(R.string.out_of_maxpacks);
+        alertDialog(content);
+    }
+
+    private void alertOutOfRemains() {
+        String content = "亲,该菜品库存不足,请选其他菜品吧";
+        alertDialog(content);
+    }
+
+    private void alertDialog(String content) {
+        final AlertDialog alert = new AlertDialog.Builder(getActivity()).create();
+        alert.show();
+        alert.setCancelable(false);
+        alert.getWindow().setContentView(R.layout.alert_dialog);
+        TextView tv = (TextView) alert.getWindow().findViewById(R.id.content_tv);
+        tv.setText(content);
+        alert.getWindow().findViewById(R.id.ok_btn)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alert.dismiss();
+                    }
+                });
+    }
 
     private void useUmengToShare(String url, String title, String content) {
         if (shareController == null)

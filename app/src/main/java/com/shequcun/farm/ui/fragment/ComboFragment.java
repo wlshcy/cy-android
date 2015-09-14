@@ -1,9 +1,5 @@
 package com.shequcun.farm.ui.fragment;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -14,22 +10,15 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.common.widget.CircleFlowIndicator;
-import com.common.widget.ViewFlow;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.ComboEntry;
 import com.shequcun.farm.data.ComboListEntry;
-import com.shequcun.farm.data.SlidesEntry;
-import com.shequcun.farm.data.SlidesListEntry;
 import com.shequcun.farm.data.UserLoginEntry;
 import com.shequcun.farm.datacenter.CacheManager;
 import com.shequcun.farm.dlg.ProgressDlg;
-import com.shequcun.farm.ui.adapter.CarouselAdapter;
 import com.shequcun.farm.ui.adapter.ComboAdapter;
-import com.shequcun.farm.util.AvoidDoubleClickListener;
 import com.shequcun.farm.util.HttpRequestUtil;
-import com.shequcun.farm.util.IntentUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.ToastHelper;
@@ -37,7 +26,6 @@ import com.shequcun.farm.util.Utils;
 
 import org.apache.http.Header;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

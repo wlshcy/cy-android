@@ -18,6 +18,8 @@ import com.shequcun.farm.R;
 import com.shequcun.farm.data.HistoryOrderEntry;
 import com.shequcun.farm.data.ModifyOrderParams;
 import com.shequcun.farm.data.OrderListEntry;
+import com.shequcun.farm.data.UserLoginEntry;
+import com.shequcun.farm.datacenter.CacheManager;
 import com.shequcun.farm.ui.adapter.MyOrderAdapter;
 import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
@@ -55,9 +57,8 @@ public class DishesFragment extends BaseFragment {
 
     @Override
     protected void setWidgetLsn() {
-        scroll_view.setMode(PullToRefreshBase.Mode.PULL_FROM_END);
-        scroll_view.setOnRefreshListener(onRefrshLsn);
-
+        scroll_view.setMode(PullToRefreshBase.Mode.DISABLED);
+//        scroll_view.setOnRefreshListener(onRefrshLsn);
         mLv.setOnItemClickListener(onItemLsn);
         requestOrderEntry();
     }
@@ -130,13 +131,13 @@ public class DishesFragment extends BaseFragment {
 
 
     public void requestOrderEntry() {
-        RequestParams params = new RequestParams();
-        if (adapter != null && adapter.getCount() >= 1) {
-            params.add("lastid", adapter.getItem(adapter.getCount() - 1).id + "");
+        UserLoginEntry uentry = new CacheManager(getActivity()).getUserLoginEntry();
+        if (uentry == null || TextUtils.isEmpty(uentry.orderno)) {
+            return;
         }
-        params.add("length", "20");
-        params.add("type", "1");
-        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "cai/order", params, new AsyncHttpResponseHandler() {
+        RequestParams params = new RequestParams();
+        params.add("orderno", uentry.orderno);
+        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "cai/choose", params, new AsyncHttpResponseHandler() {
             @Override
             public void onFinish() {
                 super.onFinish();
