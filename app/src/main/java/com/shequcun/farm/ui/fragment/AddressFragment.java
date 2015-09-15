@@ -19,15 +19,12 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.AddressEntry;
-import com.shequcun.farm.data.UserLoginEntry;
 import com.shequcun.farm.data.ZoneEntry;
-import com.shequcun.farm.datacenter.CacheManager;
 import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
 import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.IntentUtil;
-import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.PhoneUtil;
 import com.shequcun.farm.util.ToastHelper;
@@ -59,8 +56,9 @@ public class AddressFragment extends BaseFragment {
     protected void initWidget(View v) {
         name_edit = (EditText) v.findViewById(R.id.name_edit);
         mobile_phone_edit = (EditText) v.findViewById(R.id.mobile_phone_edit);
-        community_tv = (TextView) v.findViewById(R.id.community_tv);
         choose_zone_tv = (TextView) v.findViewById(R.id.choose_zone_tv);
+//        choose_zone_tv = (TextView) v.findViewById(R.id.choose_zone_tv);
+        choose_zone_ll = v.findViewById(R.id.choose_zone_ll);
         addressDetailEt = (EditText) v.findViewById(R.id.building_number_edit);
 //        house_number_edit = (EditText) v.findViewById(R.id.house_number_edit);
 //        unit_number_edit = (EditText) v.findViewById(R.id.unit_number_edit);
@@ -86,10 +84,11 @@ public class AddressFragment extends BaseFragment {
 
     @Override
     protected void setWidgetLsn() {
-//        community_tv.setOnClickListener(onClick);
+//        choose_zone_tv.setOnClickListener(onClick);
         back.setOnClickListener(onClick);
         commit.setOnClickListener(onClick);
-        choose_zone_tv.setOnClickListener(onClick);
+//        choose_zone_tv.setOnClickListener(onClick);
+        choose_zone_ll.setOnClickListener(onClick);
 //        requestUserAddress();
     }
 
@@ -104,7 +103,7 @@ public class AddressFragment extends BaseFragment {
         @Override
         public void onViewClick(View v) {
             Utils.hideVirtualKeyboard(getActivity(), v);
-            if (v == choose_zone_tv)
+            if (v == choose_zone_ll)
                 gotoFragmentByAdd(R.id.mainpage_ly, new SearchFragment(), SearchFragment.class.getName());
             else if (v == back)
                 popBackStack();
@@ -131,7 +130,7 @@ public class AddressFragment extends BaseFragment {
             return;
         }
 
-        community = community_tv.getText().toString().trim();
+        community = choose_zone_tv.getText().toString().trim();
         if (TextUtils.isEmpty(community)) {
             ToastHelper.showShort(getActivity(), R.string.choose_community);
             return;
@@ -303,7 +302,7 @@ public class AddressFragment extends BaseFragment {
         if (!TextUtils.isEmpty(entry.mobile))
             mobile_phone_edit.setText(entry.mobile);
         if (!TextUtils.isEmpty(entry.zname))
-            community_tv.setText(entry.zname);
+            choose_zone_tv.setText(entry.zname);
         if (!TextUtils.isEmpty(entry.bur))
             addressDetailEt.setText(entry.bur);
     }
@@ -343,7 +342,7 @@ public class AddressFragment extends BaseFragment {
                     entry.zid = 0;
                     entry.city = null;
                     entry.region = null;
-                    community_tv.setText(details_address);
+                    choose_zone_tv.setText(details_address);
                 }
 //                setWidgetContent(entry);
 //                    }
@@ -358,7 +357,7 @@ public class AddressFragment extends BaseFragment {
         if (!TextUtils.isEmpty(entry.name) && !entry.name.equals(zEntry.name)) znameDiff = true;
         entry.zname = zEntry.name;
         entry.zid = zEntry.id;
-        community_tv.setText(zEntry.name);
+        choose_zone_tv.setText(zEntry.name);
     }
 
     private AddressEntry entry = null;
@@ -374,8 +373,9 @@ public class AddressFragment extends BaseFragment {
      * 手机号
      */
     EditText mobile_phone_edit;
-    TextView community_tv;
     TextView choose_zone_tv;
+//    TextView choose_zone_tv;
+    View choose_zone_ll;
     /**
      * 楼号
      */

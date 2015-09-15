@@ -5,6 +5,7 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -158,8 +159,8 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
 //                shareContent.setUrlImage("drawable:///" + R.drawable.icon_share);
                 shareContent.setImageId(R.drawable.ic_launcher);
                 shareContent.setTargetUrl("https://store.shequcun.com/about/ycabout");
-                shareContent.setTitle("");
-                shareContent.setContent("");
+                shareContent.setTitle("test");
+                shareContent.setContent("test");
                 useUmengToShare(shareContent);
             }else if (v==producingPlaceTv){
                 gotoProducingPlaceFragment(entry.fid);
@@ -462,8 +463,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
     private void useUmengToShare(ShareContent shareContent) {
         if (shareController == null)
             shareController = new ShareUtil(getActivity());
-        shareController.wxShareContent(shareContent);
-        shareController.circleShareContent(shareContent);
+        shareController.shareAll(shareContent);
         shareController.postShare(mSnsPostListener);
     }
 
@@ -478,6 +478,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
                                SocializeEntity sEntity) {
             String showText = "分享成功";
             if (eCode != StatusCode.ST_CODE_SUCCESSED) {
+                Log.e("FarmSpecialty","ecode"+eCode);
                 showText = "分享失败 [" + eCode + "]";
             }
             ToastHelper.showShort(getActivity(), showText);

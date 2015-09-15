@@ -56,11 +56,11 @@ public class OrderDelayFragment extends BaseFragment {
         titleTv.setText(R.string.order_delay_delivery);
         leftIv = v.findViewById(R.id.back);
         orderNo = readOrderNoFromDisk();
-        if (TextUtils.isEmpty(orderNo))
+        if (TextUtils.isEmpty(orderNo)){
             disableDelayView(R.string.you_have_not_buy_combo);
-        else
+        }else{
             requestGetDelayState(orderNo);
-//            disableDelayView(R.string.btn_delay_a_week_delivery);
+        }
     }
 
     @Override
@@ -145,7 +145,7 @@ public class OrderDelayFragment extends BaseFragment {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                successDelay(false);
+                disableDelayView(R.string.btn_delay_a_week_delivery);
                 if (statusCode == 0) {
                     ToastHelper.showShort(getActivity(), R.string.network_error_tip);
                     return;
@@ -184,6 +184,7 @@ public class OrderDelayFragment extends BaseFragment {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                disableDelayView(R.string.btn_delay_a_week_delivery);
                 successDelay(false);
                 if (statusCode == 0) {
                     ToastHelper.showShort(getActivity(), R.string.network_error_tip);
