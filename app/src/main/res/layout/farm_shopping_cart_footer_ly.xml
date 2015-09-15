@@ -6,9 +6,10 @@
 
     android:orientation="vertical">
 
-    <FrameLayout
+    <LinearLayout
         android:id="@+id/remark_ly"
         android:layout_width="match_parent"
+        android:orientation="horizontal"
         android:layout_height="wrap_content"
         android:background="@drawable/list_item_selector"
         android:padding="@dimen/px30">
@@ -22,14 +23,15 @@
 
         <TextView
             android:id="@+id/remark_tv"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="right|center_vertical"
             android:drawableRight="@drawable/icon_more"
-            android:gravity="center"
-            android:text="@string/add_remark"
+            android:gravity="right|center_vertical"
+            android:layout_marginLeft="@dimen/px16"
+            android:hint="@string/add_remark"
             android:textColor="@color/gray_9a9a9a" />
-    </FrameLayout>
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"

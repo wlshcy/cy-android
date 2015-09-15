@@ -158,7 +158,9 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
             } else if (v == remark_ly) {
                 RemarkFragment fragment = new RemarkFragment();
                 fragment.setCallBackLsn(OrderDetailsFragment.this);
-                gotoFragmentByAdd(R.id.mainpage_ly, fragment, RemarkFragment.class.getName());
+                Bundle bundle = new Bundle();
+                bundle.putString("RemarkTip", remark_tv != null ? remark_tv.getText().toString() : "");
+                gotoFragmentByAdd(bundle, R.id.mainpage_ly, fragment, RemarkFragment.class.getName());
             }
         }
     };

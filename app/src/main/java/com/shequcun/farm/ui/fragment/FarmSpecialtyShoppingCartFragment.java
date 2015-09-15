@@ -185,8 +185,7 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment implements R
         allPart = 0;
         allMoney = 0;
         cEntry = null;
-        if (red_packets_money_tv != null)
-            red_packets_money_tv.setText("");
+
 
         for (int i = 0; i < rEntryArray.length; ++i) {
             allPart += rEntryArray[i].count;
@@ -292,7 +291,7 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment implements R
             IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction(IntentUtil.UPDATE_FARM_SHOPPING_CART_MSG);
 //            intentFilter.addAction(IntentUtil.UPDATE_ADDRESS_MSG);
-            intentFilter.addAction(IntentUtil.UPDATE_FARM_SHOPPING_CART_MEMO);
+//            intentFilter.addAction(IntentUtil.UPDATE_FARM_SHOPPING_CART_MEMO);
             getActivity().registerReceiver(mUpdateReceiver, intentFilter);
             mIsBind = true;
         }
@@ -320,13 +319,13 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment implements R
 ////                }
 ////                requestUserAddress();
 //            }
-            else if (action.equals(IntentUtil.UPDATE_FARM_SHOPPING_CART_MEMO)) {
-                if (remark_tv != null) {
-                    memo = intent.getStringExtra("MEMO");
-                    if (!TextUtils.isEmpty(memo))
-                        remark_tv.setText(memo);
-                }
-            }
+//            else if (action.equals(IntentUtil.UPDATE_FARM_SHOPPING_CART_MEMO)) {
+//                if (remark_tv != null) {
+//                    memo = intent.getStringExtra("MEMO");
+//                    if (!TextUtils.isEmpty(memo))
+//                        remark_tv.setText(memo);
+//                }
+//            }
         }
     };
 
@@ -431,28 +430,20 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment implements R
                 public void onClick(View v) {
                     RemarkFragment fragment = new RemarkFragment();
                     fragment.setCallBackLsn(FarmSpecialtyShoppingCartFragment.this);
-                    gotoFragmentByAdd(R.id.mainpage_ly, fragment, RemarkFragment.class.getName());
+                    Bundle bundle = new Bundle();
+                    bundle.putString("RemarkTip", remark_tv != null ? remark_tv.getText().toString() : "");
+                    gotoFragmentByAdd(bundle, R.id.mainpage_ly, fragment, RemarkFragment.class.getName());
                 }
             });
 
             remark_tv = (TextView) sChilidView.findViewById(R.id.remark_tv);
-            red_packets_money_tv = (TextView) sChilidView.findViewById(R.id.red_packets_money_tv);
+
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
             params.bottomMargin = ResUtil.dipToPixel(getActivity(), 5);
             pView.addView(sChilidView, params);
         }
     }
-
-
-//    Bundle buildBundle(String orderno, int orderMoney, String alipay, int titleId) {
-//        Bundle bundle = new Bundle();
-//        PayParams payParams = new PayParams();
-//        payParams.setParams(orderno, orderMoney, alipay, false, titleId);
-//        payParams.type = 3;
-//        bundle.putSerializable("PayParams", payParams);
-//        return bundle;
-//    }
 
     public String getExtras() {
         String result = "";
@@ -508,8 +499,6 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment implements R
         if (remark_tv != null)
             remark_tv.setText(remark);
     }
-
-    TextView red_packets_money_tv;
 
     boolean mIsBind = false;
     FarmSpecialtyShopCartAdapter adapter;
