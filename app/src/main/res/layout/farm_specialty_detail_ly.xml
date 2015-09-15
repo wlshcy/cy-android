@@ -139,7 +139,8 @@
                 android:paddingLeft="@dimen/px38"
                 android:paddingRight="@dimen/px38"
                 android:text="产地：北京吾优吾绿农庄"
-                android:textSize="@dimen/font30" />
+                android:textSize="@dimen/font30"
+                android:background="@drawable/list_bg"/>
 
             <include layout="@layout/common_line"></include>
 
