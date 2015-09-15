@@ -9,7 +9,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 22
         versionCode 1
-        versionName "1.0.1"
+        versionName "2.0.0"
     }
     buildTypes {
         release {
@@ -29,7 +29,6 @@ android {
 }
 
 dependencies {
-    compile files('libs/SqcFarmSDK.jar')
     compile 'com.android.support:appcompat-v7:22.2.0'
     compile files('libs/umeng_social_sdk.jar')
     compile files('libs/SocialSDK_WeiXin_2.jar')
