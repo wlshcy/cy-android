@@ -140,6 +140,26 @@ public class CacheManager {
 
     }
 
+    public RecommendEntry getRecommendEntry(RecommendItemKey zItem) {
+        try {
+            if (zItem == null || zItem.object == null)
+                return null;
+            String newHist = zItem.getKeyId();
+            DBLite dblite = new DBLite(mContext, null, KeyWord_RecommendTag);
+            dblite.loadData();
+            int length = dblite.getRecordSize();
+            for (int i = 0; i < length; i++) {
+                DBRecordItem aitem = dblite.getRecord(i);
+                if (newHist.contentEquals(aitem.getStringValue("RecommentItemKey",
+                        ""))) {
+                    return parseRecommentItem(aitem.getStringValue("RecommentItem", ""));
+                }
+            }
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
     public void saveRecommendToDisk(RecommendItemKey zItem) {
         try {
             if (zItem == null || zItem.object == null)
