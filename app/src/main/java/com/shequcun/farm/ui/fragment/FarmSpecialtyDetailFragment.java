@@ -20,6 +20,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.ComboEntry;
 import com.shequcun.farm.data.OtherInfo;
+import com.shequcun.farm.data.RecommendDetailEntry;
 import com.shequcun.farm.data.RecommendEntry;
 import com.shequcun.farm.data.SlidesEntry;
 import com.shequcun.farm.datacenter.CacheManager;
@@ -75,10 +76,10 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
             producingPlaceTv.setText("农庄：" + entry.farm);
         else
             producingPlaceTv.setText("农庄：无");
-        if (entry.imgs != null && entry.imgs.length > 0) {
+        if (entry.detail != null && !TextUtils.isEmpty(entry.detail.image)) {
             if (!ImageLoader.getInstance().isInited())
                 ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(getActivity()));
-            ImageLoader.getInstance().displayImage(entry.imgs[0], contentImgIv);
+            ImageLoader.getInstance().displayImage(entry.detail.image, contentImgIv);
         }
         RecommendEntry localEntry = readRecommendEntryFromDisk(entry);
         if (localEntry == null) return;
@@ -156,8 +157,15 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
         public void onClick(View v) {
             if (v == back)
                 popBackStack();
-            else if (v == shareIv)
-                useUmengToShare("", "", "");
+            else if (v == shareIv){
+                ShareContent shareContent = new ShareContent();
+//                shareContent.setUrlImage("drawable:///" + R.drawable.icon_share);
+                shareContent.setImageId(R.drawable.ic_launcher);
+                shareContent.setTargetUrl("https://store.shequcun.com/about/ycabout");
+                shareContent.setTitle("");
+                shareContent.setContent("");
+                useUmengToShare(shareContent);
+            }
         }
     };
 
@@ -446,14 +454,9 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
                 });
     }
 
-    private void useUmengToShare(String url, String title, String content) {
+    private void useUmengToShare(ShareContent shareContent) {
         if (shareController == null)
             shareController = new ShareUtil(getActivity());
-        ShareContent shareContent = new ShareContent();
-        shareContent.setUrlImage("drawable:///" + R.drawable.ic_launcher);
-        shareContent.setTargetUrl(url);
-        shareContent.setTitle(title);
-        shareContent.setContent(content);
         shareController.wxShareContent(shareContent);
         shareController.circleShareContent(shareContent);
         shareController.postShare(mSnsPostListener);

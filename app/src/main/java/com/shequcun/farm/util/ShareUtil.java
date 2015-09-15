@@ -35,7 +35,11 @@ public class ShareUtil {
 	}
 
 	public void circleShareContent(ShareContent sc) {
-		UMImage urlImage = new UMImage(act, sc.getUrlImage());
+		UMImage urlImage;
+		if (sc.getImageId()<=0)
+		 urlImage = new UMImage(act, sc.getUrlImage());
+		else
+		 urlImage = new UMImage(act,sc.getImageId());
 		// 设置朋友圈分享的内容
 		CircleShareContent circleMedia = new CircleShareContent();
 		circleMedia.setShareContent(sc.getContent());
@@ -48,7 +52,11 @@ public class ShareUtil {
 	}
 
 	public void wxShareContent(ShareContent sc) {
-		UMImage urlImage = new UMImage(act, sc.getUrlImage());
+		UMImage urlImage;
+		if (sc.getImageId()<=0)
+			urlImage = new UMImage(act, sc.getUrlImage());
+		else
+			urlImage = new UMImage(act,sc.getImageId());
 		WeiXinShareContent weixinContent = new WeiXinShareContent();
 		weixinContent.setShareContent(sc.getContent());
 		weixinContent.setTitle(sc.getTitle());

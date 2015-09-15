@@ -338,8 +338,13 @@ public class AddressFragment extends BaseFragment {
                 if (zEntry != null)
                     setWidgetContent(zEntry);
                 String details_address = intent.getStringExtra("details_address");
-                if (!TextUtils.isEmpty(details_address))
+                if (!TextUtils.isEmpty(details_address)){
+                    entry.zname = details_address;
+                    entry.zid = 0;
+                    entry.city = null;
+                    entry.region = null;
                     community_tv.setText(details_address);
+                }
 //                setWidgetContent(entry);
 //                    }
 //                }

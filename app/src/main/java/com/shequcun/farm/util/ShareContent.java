@@ -5,6 +5,7 @@ public class ShareContent {
 	private String urlImage;
 	private String content;
 	private String targetUrl;
+	private int imageId;
 
 	public String getUrlImage() {
 		return urlImage;
@@ -37,6 +38,12 @@ public class ShareContent {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	
 
+	public int getImageId() {
+		return imageId;
+	}
+
+	public void setImageId(int imageId) {
+		this.imageId = imageId;
+	}
 }
