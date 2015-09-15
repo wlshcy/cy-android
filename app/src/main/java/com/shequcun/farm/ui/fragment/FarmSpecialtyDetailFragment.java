@@ -464,7 +464,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
         if (shareController == null)
             shareController = new ShareUtil(getActivity());
         shareController.shareAll(shareContent);
-        shareController.postShareAll(mSnsPostListener);
+        shareController.postShare(mSnsPostListener);
     }
 
     private SocializeListeners.SnsPostListener mSnsPostListener = new SocializeListeners.SnsPostListener() {

@@ -6,9 +6,7 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.controller.UMServiceFactory;
 import com.umeng.socialize.controller.UMSocialService;
 import com.umeng.socialize.controller.listener.SocializeListeners.SnsPostListener;
-import com.umeng.socialize.media.QQShareContent;
 import com.umeng.socialize.media.UMImage;
-import com.umeng.socialize.sso.UMQQSsoHandler;
 import com.umeng.socialize.weixin.controller.UMWXHandler;
 import com.umeng.socialize.weixin.media.CircleShareContent;
 import com.umeng.socialize.weixin.media.WeiXinShareContent;
@@ -44,7 +42,7 @@ public class ShareUtil {
     public void shareAll(ShareContent sc) {
         wxShareContent(sc);
         circleShareContent(sc);
-        qqZoneShareContent(sc);
+//        qqZoneShareContent(sc);
     }
 
     public void circleShareContent(ShareContent sc) {
@@ -79,17 +77,17 @@ public class ShareUtil {
     }
 
     public void qqZoneShareContent(ShareContent sc) {
-        UMImage urlImage;
-        if (sc.getImageId() <= 0)
-            urlImage = new UMImage(act, sc.getUrlImage());
-        else
-            urlImage = new UMImage(act, sc.getImageId());
-        QQShareContent qqShareContent = new QQShareContent();
-        qqShareContent.setShareContent(sc.getContent());
-        qqShareContent.setTitle(sc.getTitle());
-        qqShareContent.setTargetUrl(sc.getTargetUrl());
-        qqShareContent.setShareMedia(urlImage);
-        mController.setShareMedia(qqShareContent);
+//        UMImage urlImage;
+//        if (sc.getImageId() <= 0)
+//            urlImage = new UMImage(act, sc.getUrlImage());
+//        else
+//            urlImage = new UMImage(act, sc.getImageId());
+//        QQShareContent qqShareContent = new QQShareContent();
+//        qqShareContent.setShareContent(sc.getContent());
+//        qqShareContent.setTitle(sc.getTitle());
+//        qqShareContent.setTargetUrl(sc.getTargetUrl());
+//        qqShareContent.setShareMedia(urlImage);
+//        mController.setShareMedia(qqShareContent);
     }
 
     public void postShare(SnsPostListener snsPostListener) {
