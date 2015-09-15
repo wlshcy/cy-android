@@ -1,5 +1,6 @@
 package com.shequcun.farm.ui.fragment;
 
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -38,6 +39,9 @@ public class RemarkFragment extends BaseFragment {
         ((TextView) v.findViewById(R.id.title_center_text)).setText(R.string.add_remark);
         leave_msg_to_farm.setText(getArguments().getString("RemarkTip"));
         save = (TextView) v.findViewById(R.id.title_right_text);
+        ColorStateList green =
+                getActivity().getResources().getColorStateList(R.color.green_2bbc6a);
+        save.setTextColor(green);
         save.setText(R.string.save);
     }
 
