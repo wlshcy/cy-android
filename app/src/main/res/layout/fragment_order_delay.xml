@@ -21,7 +21,6 @@
         android:id="@+id/delay_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/btn_delay_a_week_delivery"
         android:paddingTop="@dimen/px30"
         android:paddingBottom="@dimen/px30"
         android:layout_marginLeft="@dimen/px110"
