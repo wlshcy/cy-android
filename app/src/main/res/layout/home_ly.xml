@@ -11,8 +11,8 @@
         android:descendantFocusability="beforeDescendants"
         android:fillViewport="true"
         android:focusable="true"
-        android:scrollbars="none"
         android:focusableInTouchMode="true"
+        android:scrollbars="none"
         ptr:ptrAnimationStyle="flip">
 
         <LinearLayout
@@ -22,7 +22,7 @@
 
             <include layout="@layout/carousel_ly" />
 
-            <include layout="@layout/combo_title_ly"/>
+            <include layout="@layout/combo_title_ly" />
 
             <include layout="@layout/farm_specialty_title_ly" />
 

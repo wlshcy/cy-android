@@ -182,6 +182,7 @@ public class HomeFragment extends BaseFragment {
         @Override
         public void onPullUpToRefresh(PullToRefreshBase refreshView) {
 //            requestRecomendDishes();
+//            requestHome(1);
         }
     };
 
