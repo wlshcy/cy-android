@@ -8,8 +8,7 @@
     <ImageView
         android:id="@+id/flower_iv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
+        android:layout_height="wrap_content" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -41,9 +40,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
+                    android:layout_gravity="center"
                     android:layout_marginLeft="@dimen/px24"
                     android:layout_marginRight="@dimen/px24"
-                    android:layout_gravity="center"
                     android:gravity="bottom"
                     android:padding="0dp"
                     android:text="0"
@@ -54,8 +53,8 @@
                     android:id="@+id/money_symbol_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@id/money_count_tv"
                     android:layout_alignBaseline="@id/money_count_tv"
+                    android:layout_toLeftOf="@id/money_count_tv"
                     android:gravity="bottom"
                     android:text="¥"
                     android:textColor="@color/red_fe786b"
@@ -84,6 +83,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/red_packets_name_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/pay_red_packets"
@@ -99,6 +99,15 @@
                     android:textSize="11sp" />
 
                 <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/px20"
+                    android:text="@string/use_for_app_off_line_pay"
+                    android:textColor="@color/common_text"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:id="@+id/target_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/px20"
