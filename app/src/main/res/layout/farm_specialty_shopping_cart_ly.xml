@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tmpId"
-        android:layout_marginBottom="@dimen/px360"
+        android:layout_marginBottom="@dimen/px260"
         android:background="#f3f4f5"
         android:descendantFocusability="beforeDescendants"
         android:focusable="true"

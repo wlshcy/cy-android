@@ -297,19 +297,20 @@ public class PayResultFragment extends BaseFragment {
                 if (entry != null) {
                     if (TextUtils.isEmpty(entry.errmsg)) {
                         alertRedPacketsShare(entry.count, entry.url, entry.title, entry.content);
-                    } else {
-                        ToastHelper.showShort(getActivity(), entry.errmsg);
                     }
+//                    else {
+//                        ToastHelper.showShort(getActivity(), entry.errmsg);
+//                    }
                 }
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                if (statusCode == 0) {
-                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
-                    return;
-                }
-                ToastHelper.showShort(getActivity(), "请求失败,错误码" + statusCode);
+//                if (statusCode == 0) {
+//                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
+//                    return;
+//                }
+//                ToastHelper.showShort(getActivity(), "请求失败,错误码" + statusCode);
             }
         });
     }

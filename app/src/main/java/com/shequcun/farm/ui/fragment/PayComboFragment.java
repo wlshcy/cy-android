@@ -28,7 +28,6 @@ import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.util.AlipayUtils;
 import com.shequcun.farm.util.Constrants;
 import com.shequcun.farm.util.HttpRequestUtil;
-import com.shequcun.farm.util.IntentUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.ToastHelper;
@@ -161,18 +160,21 @@ public class PayComboFragment extends BaseFragment {
             public void onSuccess(int sCode, Header[] headers, byte[] data) {
                 if (sCode == 200) {
                     String result = new String(data);
-                    OrderEntry entry = JsonUtilsParser.fromJson(result, OrderEntry.class);
-                    if (entry != null) {
-                        if (TextUtils.isEmpty(entry.errmsg)) {
-                            alipay = entry.alipay;
-                            if (TextUtils.isEmpty(entry.alipay)) {
-                                gotoFragmentByAdd(buildBundle(entry.orderno, getOrderMoney(), entry.alipay, true, R.string.order_result), R.id.mainpage_ly, new PayResultFragment(), PayResultFragment.class.getName());
+                    OrderEntry orderEntry = JsonUtilsParser.fromJson(result, OrderEntry.class);
+                    if (orderEntry != null) {
+                        if (TextUtils.isEmpty(orderEntry.errmsg)) {
+                            alipay = orderEntry.alipay;
+                            if (entry != null && !TextUtils.isEmpty(orderEntry.orderno)) {
+                                entry.orderno = orderEntry.orderno;
+                            }
+                            if (TextUtils.isEmpty(orderEntry.alipay)) {
+                                gotoFragmentByAdd(buildBundle(orderEntry.orderno, getOrderMoney(), orderEntry.alipay, true, R.string.order_result), R.id.mainpage_ly, new PayResultFragment(), PayResultFragment.class.getName());
                                 return;
                             }
                             aUtils.doAlipay(alipay);
                             mHandler.sendEmptyMessageDelayed(0, 30 * 60 * 1000);
                         } else {
-                            ToastHelper.showShort(getActivity(), entry.errmsg);
+                            ToastHelper.showShort(getActivity(), orderEntry.errmsg);
                         }
                     }
                 } else {

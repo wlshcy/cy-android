@@ -3,7 +3,7 @@
     android:layout_width="@dimen/px324"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:background="@drawable/list_item_selector"
+    android:background="@color/light_gray_color"
     android:minHeight="@dimen/px424"
     android:orientation="vertical">
 

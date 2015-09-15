@@ -103,20 +103,20 @@ public class HttpRequestUtil {
         return myCookieStore;
     }
 
-    /**
-     * @param context
-     * @return
-     */
-    public static boolean netWorkIsValid(Context context) {
-        ConnectivityManager connManager = (ConnectivityManager) context
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connManager.getActiveNetworkInfo();
-        if (networkInfo == null
-                || networkInfo.isConnectedOrConnecting() == false) {
-            return false;
-        }
-        return true;
-    }
+//    /**
+//     * @param context
+//     * @return
+//     */
+//    public static boolean netWorkIsValid(Context context) {
+//        ConnectivityManager connManager = (ConnectivityManager) context
+//                .getSystemService(Context.CONNECTIVITY_SERVICE);
+//        NetworkInfo networkInfo = connManager.getActiveNetworkInfo();
+//        if (networkInfo == null
+//                || networkInfo.isConnectedOrConnecting() == false) {
+//            return false;
+//        }
+//        return true;
+//    }
 
     public static final void addGzipHeader() {
         if (hClient != null)
@@ -151,6 +151,12 @@ public class HttpRequestUtil {
         }
         myCookieStore = null;
         mContext = null;
+    }
+
+    public static void cancelHttpRequest(){
+        if(hClient!=null){
+            hClient.cancelAllRequests(true);
+        }
     }
 
 }
