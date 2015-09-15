@@ -32,14 +32,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="fitXY"
+            android:visibility="gone"
             android:src="@drawable/icon_no_combo"
-            android:visibility="gone" />
+             />
 
 
         <LinearLayout
             android:id="@+id/more_combo_ly"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:visibility="gone"
             android:orientation="horizontal">
 
             <ImageView
