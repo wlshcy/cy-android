@@ -128,6 +128,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
 
     @Override
     protected void setWidgetLsn() {
+        producingPlaceTv.setOnClickListener(onClick);
         shareIv.setOnClickListener(onClick);
         back.setOnClickListener(onClick);
         buildCarouselAdapter();
@@ -165,9 +166,18 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
                 shareContent.setTitle("");
                 shareContent.setContent("");
                 useUmengToShare(shareContent);
+            }else if (v==producingPlaceTv){
+                gotoProducingPlaceFragment(entry.fid);
             }
         }
     };
+
+    private void gotoProducingPlaceFragment(int id){
+        Bundle bundle = new Bundle();
+        bundle.putString("Url", "https://store.shequcun.com/yc_farm_item/"+id);
+        bundle.putInt("TitleId", R.string.farm_info);
+        gotoFragmentByAdd(bundle, R.id.mainpage_ly, new SetWebViewFragment(), SetWebViewFragment.class.getName());
+    }
 
     RecommendEntry buildRecommendEntry() {
         Bundle bundle = getArguments();
@@ -202,14 +212,14 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
                 }
             });
         } else if (entry.type == 1) {//普通菜品
-            final View childView = LayoutInflater.from(getActivity()).inflate(R.layout.shop_cart_widget_ly, null);
+            View childView = LayoutInflater.from(getActivity()).inflate(R.layout.shop_cart_widget_ly, null);
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             params.gravity = Gravity.BOTTOM;
             pView.addView(childView, params);
 
             goods_count = (TextView) childView.findViewById(R.id.goods_count);
-            final View goods_sub = childView.findViewById(R.id.goods_sub);
-            final View goods_add = childView.findViewById(R.id.goods_add);
+            View goods_sub = childView.findViewById(R.id.goods_sub);
+            View goods_add = childView.findViewById(R.id.goods_add);
 
             goods_count.setText(entry.count + "");
 

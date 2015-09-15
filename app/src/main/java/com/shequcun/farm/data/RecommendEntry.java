@@ -49,6 +49,8 @@ public class RecommendEntry extends BaseEntry {
 
     @SerializedName("farm")
     public String farm;
+    @SerializedName("fid")
+    public int fid;
     @SerializedName("detail")
     public RecommendDetailEntry detail;
 
