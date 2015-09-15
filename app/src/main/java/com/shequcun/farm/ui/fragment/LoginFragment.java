@@ -60,9 +60,30 @@ public class LoginFragment extends BaseFragment {
      * 鉴权
      */
     private void doAuthInit() {
+
+        String cookieValue = PersistanceManager.getCookieValue(getActivity());
+        if (!TextUtils.isEmpty(cookieValue)) {
+            doGetSnsCode();
+            return;
+        }
+
+        final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
         HttpRequestUtil.httpGet(
                 LocalParams.getBaseUrl() + "auth/init",
                 new AsyncHttpResponseHandler() {
+
+                    @Override
+                    public void onStart() {
+                        super.onStart();
+                        pDlg.show();
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        super.onFinish();
+                        pDlg.dismiss();
+                    }
+
                     @Override
                     public void onSuccess(int sCode, Header[] headers, byte[] data) {
                         for (Header h : headers) {

@@ -36,6 +36,7 @@ public class RemarkFragment extends BaseFragment {
         back = v.findViewById(R.id.back);
         leave_msg_to_farm = (EditText) v.findViewById(R.id.leave_msg_to_farm);
         ((TextView) v.findViewById(R.id.title_center_text)).setText(R.string.add_remark);
+        leave_msg_to_farm.setText(getArguments().getString("RemarkTip"));
         save = (TextView) v.findViewById(R.id.title_right_text);
         save.setText(R.string.save);
     }
