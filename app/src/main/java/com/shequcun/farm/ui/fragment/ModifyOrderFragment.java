@@ -367,14 +367,32 @@ public class ModifyOrderFragment extends BaseFragment {
         for (int i = 0; i < size; ++i) {
             AddressEntry entry = list.get(i);
             if (entry.isDefault) {
-                if (!TextUtils.isEmpty(entry.name) && !TextUtils.isEmpty(uEntry.address)) {
-                    addressLy.setVisibility(View.VISIBLE);
-                    addressee_info.setText(entry.name + "  " + entry.mobile);
-                    address.setText("地址: " + uEntry.address);
-                }
+                setAddressWidgetContent(entry);
                 return;
             }
         }
+    }
+
+    public void setAddressWidgetContent(AddressEntry entry) {
+        if (entry == null)
+            return;
+        addressLy.setVisibility(View.VISIBLE);
+        addressee_info.setText(entry.name + "  " + entry.mobile);
+        String addressStr = entry.address;
+        if (TextUtils.isEmpty(addressStr)) {
+            StringBuilder builder = new StringBuilder();
+            builder.append(!TextUtils.isEmpty(entry.city) ? entry.city : "");
+            builder.append(!TextUtils.isEmpty(entry.region) ? entry.region : "");
+            builder.append(!TextUtils.isEmpty(entry.zname) ? entry.zname : "");
+            builder.append(!TextUtils.isEmpty(entry.bur) ? entry.bur : "");
+            addressStr = builder.toString();
+        }
+        address.setText("地址: " + addressStr);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
     }
 
     View addressLy;

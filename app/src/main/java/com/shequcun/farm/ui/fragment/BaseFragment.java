@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.shequcun.farm.R;
+import com.shequcun.farm.util.HttpRequestUtil;
 
 /**
  * Created by apple on 15/8/3.
@@ -130,6 +131,12 @@ public abstract class BaseFragment extends Fragment {
         ft.addToBackStack(tag);
 //        ft.commit();
         ft.commitAllowingStateLoss();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        HttpRequestUtil.cancelHttpRequest();
     }
 
     /**
