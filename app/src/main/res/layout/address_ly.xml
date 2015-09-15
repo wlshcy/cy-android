@@ -96,9 +96,10 @@
                 android:layout_height="1.0dp"
                 android:background="#e4e4e4" />
             <LinearLayout
+                android:id="@+id/choose_zone_ll"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/px110"
-                android:background="@android:color/white"
+                android:background="@drawable/list_bg"
                 android:orientation="horizontal"
                 >
 

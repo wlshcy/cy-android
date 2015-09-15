@@ -61,6 +61,7 @@ public class AddressFragment extends BaseFragment {
         mobile_phone_edit = (EditText) v.findViewById(R.id.mobile_phone_edit);
         community_tv = (TextView) v.findViewById(R.id.community_tv);
         choose_zone_tv = (TextView) v.findViewById(R.id.choose_zone_tv);
+        choose_zone_ll = v.findViewById(R.id.choose_zone_ll);
         addressDetailEt = (EditText) v.findViewById(R.id.building_number_edit);
 //        house_number_edit = (EditText) v.findViewById(R.id.house_number_edit);
 //        unit_number_edit = (EditText) v.findViewById(R.id.unit_number_edit);
@@ -89,7 +90,8 @@ public class AddressFragment extends BaseFragment {
 //        community_tv.setOnClickListener(onClick);
         back.setOnClickListener(onClick);
         commit.setOnClickListener(onClick);
-        choose_zone_tv.setOnClickListener(onClick);
+//        choose_zone_tv.setOnClickListener(onClick);
+        choose_zone_ll.setOnClickListener(onClick);
 //        requestUserAddress();
     }
 
@@ -104,7 +106,7 @@ public class AddressFragment extends BaseFragment {
         @Override
         public void onViewClick(View v) {
             Utils.hideVirtualKeyboard(getActivity(), v);
-            if (v == choose_zone_tv)
+            if (v == choose_zone_ll)
                 gotoFragmentByAdd(R.id.mainpage_ly, new SearchFragment(), SearchFragment.class.getName());
             else if (v == back)
                 popBackStack();
@@ -376,6 +378,7 @@ public class AddressFragment extends BaseFragment {
     EditText mobile_phone_edit;
     TextView community_tv;
     TextView choose_zone_tv;
+    View choose_zone_ll;
     /**
      * 楼号
      */
