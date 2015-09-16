@@ -46,7 +46,6 @@ public class AddressEntry extends BaseEntry {
     public boolean isDefault;
 
     public int zid = 0;
-
 //            "region": "朝阳区",
 //            "street": "广渠路29号"
 //            "zname": "九龙花园",
