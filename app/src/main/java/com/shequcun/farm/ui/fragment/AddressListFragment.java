@@ -101,15 +101,41 @@ public class AddressListFragment extends BaseFragment {
         addAddress.setVisibility(View.GONE);
         addressLv.addHeaderView(addAddress);
         adapter = new MyAddressAdapter(getActivity());
+        if (action == Action.SELECT){
+            adapter.setShowDefaultIcon(true);
+        }
+        adapter.setOnUpdateAddressListener(onUpdateAddressListener);
         addressLv.setAdapter(adapter);
     }
 
+    private MyAddressAdapter.OnUpdateAddressListener onUpdateAddressListener = new MyAddressAdapter.OnUpdateAddressListener() {
+        @Override
+        public void onUpdate(AddressEntry entry) {
+            if (entry==null)return;
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("AddressEntry", entry);
+            gotoAddressFragment(bundle);
+        }
+    };
+
+    private MyAddressAdapter.OnChooseAddressListener onChooseAddressListener = new MyAddressAdapter.OnChooseAddressListener() {
+        @Override
+        public void onChoose(AddressEntry entry) {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("AddressEntry", entry);
+            requestSetDefaultAddr(entry.id, entry);
+        }
+    };
+
     @Override
     protected void setWidgetLsn() {
-        addressLv.setOnItemClickListener(onItemClickListener);
+        if (action == Action.SELECT){
+            adapter.setOnChooseAddressListener(onChooseAddressListener);
+        }
+//        addressLv.setOnItemClickListener(onItemClickListener);
         back.setOnClickListener(onClickListener);
         addAddress.setOnClickListener(onClickListener);
-        addressLv.setOnItemLongClickListener(onItemLongClickListener);
+//        addressLv.setOnItemLongClickListener(onItemLongClickListener);
     }
 
     private AdapterView.OnItemLongClickListener onItemLongClickListener = new AdapterView.OnItemLongClickListener() {
@@ -200,10 +226,10 @@ public class AddressListFragment extends BaseFragment {
             goneAddAddressView();
         } else {
             /*设置显示添加地址item*/
-            if (action == Action.SETTING)
-                showAddAddressView();
-            else
-                goneAddAddressView();
+//            if (action == Action.SETTING)
+            showAddAddressView();
+//            else
+//                goneAddAddressView();
         }
         adapter.clear();
         adapter.addAll(list);

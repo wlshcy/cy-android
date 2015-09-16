@@ -32,8 +32,8 @@
                 android:id="@+id/desc_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="@dimen/px22"
                 android:paddingLeft="@dimen/px34"
+                android:paddingTop="@dimen/px22"
                 android:text="有菜安心直采蜂蜜"
                 android:textColor="@color/black_8e8e8e"
                 android:textSize="@dimen/font36" />
@@ -41,7 +41,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/px38"
+                android:layout_marginTop="@dimen/px18"
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/px34">
 
@@ -77,6 +77,13 @@
 
             <include layout="@layout/common_line"></include>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/px14"
+                android:background="@color/gray_ececec"></View>
+
+            <include layout="@layout/common_line"></include>
+
             <TextView
                 android:id="@+id/standard_tv"
                 android:layout_width="wrap_content"
@@ -90,9 +97,39 @@
 
             <include layout="@layout/common_line"></include>
 
+            <TextView
+                android:id="@+id/storage_method_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/px34"
+                android:paddingLeft="@dimen/px38"
+                android:paddingTop="@dimen/px34"
+                android:text="储藏方法：0-10度冷藏储存"
+                android:textColor="@color/black_131313"
+                android:textSize="@dimen/font30" />
+
+            <include layout="@layout/common_line"></include>
+
+            <TextView
+                android:id="@+id/producing_place_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/list_bg"
+                android:drawableRight="@drawable/icon_more"
+                android:paddingBottom="@dimen/px34"
+                android:paddingLeft="@dimen/px38"
+                android:paddingRight="@dimen/px38"
+                android:paddingTop="@dimen/px34"
+                android:text="产地：北京吾优吾绿农庄"
+                android:textColor="@color/black_131313"
+                android:textSize="@dimen/font30" />
+
+            <include layout="@layout/common_line"></include>
+
+
             <View
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/px20"
+                android:layout_height="@dimen/px14"
                 android:background="@color/gray_ececec"></View>
 
             <include layout="@layout/common_line"></include>
@@ -112,50 +149,22 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/px20"
+                android:layout_height="@dimen/px14"
                 android:background="@color/gray_ececec"></View>
 
             <include layout="@layout/common_line"></include>
 
-            <TextView
-                android:id="@+id/storage_method_tv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/px34"
-                android:paddingLeft="@dimen/px38"
-                android:paddingTop="@dimen/px34"
-                android:text="储藏方法：0-10度冷藏储存"
-                android:textSize="@dimen/font30" />
-
-            <include layout="@layout/common_line"></include>
-
-            <TextView
-                android:id="@+id/producing_place_tv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/px34"
-                android:paddingTop="@dimen/px34"
-                android:drawableRight="@drawable/icon_more"
-                android:paddingLeft="@dimen/px38"
-                android:paddingRight="@dimen/px38"
-                android:text="产地：北京吾优吾绿农庄"
-                android:textSize="@dimen/font30"
-                android:background="@drawable/list_bg"/>
-
-            <include layout="@layout/common_line"></include>
 
             <ImageView
                 android:id="@+id/content_img_iv"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                 />
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </ScrollView>
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/px102"
-        >
+        android:layout_height="@dimen/px102">
 
         <com.common.widget.CircleImageView
             android:id="@+id/back"
@@ -163,16 +172,15 @@
             android:layout_height="@dimen/px66"
             android:layout_gravity="left|center_vertical"
             android:layout_marginLeft="@dimen/px40"
-            android:src="@drawable/icon_close_white"/>
+            android:src="@drawable/icon_close_white" />
 
         <com.common.widget.CircleImageView
             android:id="@+id/share_iv"
             android:layout_width="@dimen/px66"
             android:layout_height="@dimen/px66"
-            android:layout_marginRight="@dimen/px40"
             android:layout_gravity="right|center_vertical"
-            android:src="@drawable/icon_share_white"
-            />
+            android:layout_marginRight="@dimen/px40"
+            android:src="@drawable/icon_share_white" />
 
     </FrameLayout>
 

@@ -1,5 +1,6 @@
 package com.shequcun.farm.ui.fragment;
 
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -105,9 +106,19 @@ public class AddressFragment extends BaseFragment {
             Utils.hideVirtualKeyboard(getActivity(), v);
             if (v == choose_zone_ll)
                 gotoFragmentByAdd(R.id.mainpage_ly, new SearchFragment(), SearchFragment.class.getName());
-            else if (v == back)
-                popBackStack();
-            else if (v == commit)
+            else if (v == back) {
+                alertQuitEdit();
+//                boolean hasInput = checkHasInput();
+//                if (hasInput) {
+//                    return;
+//                }
+//                if (entry != null && checkDiff()) {
+//                    alertQuitEdit();
+//                    return;
+//                }
+//                popBackStack();
+
+            } else if (v == commit)
                 upLoadAddressToServer();
             //(R.id.mainpage_ly, new ComboMongoliaLayerFragment(), ComboMongoliaLayerFragment.class.getName());
         }
@@ -131,7 +142,7 @@ public class AddressFragment extends BaseFragment {
         }
 
         community = choose_zone_tv.getText().toString().trim();
-        if (TextUtils.isEmpty(community)) {
+        if (TextUtils.isEmpty(community) || "点击选择".equals(community)) {
             ToastHelper.showShort(getActivity(), R.string.choose_community);
             return;
         }
@@ -240,18 +251,51 @@ public class AddressFragment extends BaseFragment {
         });
     }
 
-//    private boolean checkDiff() {
-//        if (entry == null) return true;
-//        if (!TextUtils.isEmpty(entry.name) && !entry.name.equals(name))
-//            return true;
-//        if (!TextUtils.isEmpty(entry.mobile) && !entry.mobile.equals(mobile))
-//            return true;
-//        if (!TextUtils.isEmpty(entry.zname) && znameDiff)
-//            return true;
-//        if (!TextUtils.isEmpty(entry.bur) && !entry.bur.equals(detailAddr))
-//            return true;
-//        return false;
-//    }
+    private boolean checkDiff() {
+        setInputToFiled();
+        if (!TextUtils.isEmpty(entry.name) && !entry.name.equals(name))
+            return true;
+        if (!TextUtils.isEmpty(entry.mobile) && !entry.mobile.equals(mobile))
+            return true;
+        if (!TextUtils.isEmpty(entry.zname) && znameDiff)
+            return true;
+        if (!TextUtils.isEmpty(entry.bur) && !entry.bur.equals(detailAddr))
+            return true;
+        return false;
+    }
+
+    private void setInputToFiled() {
+        name = name_edit.getText().toString().trim();
+        mobile = mobile_phone_edit.getText().toString().trim();
+        community = choose_zone_tv.getText().toString().trim();
+        detailAddr = addressDetailEt.getText().toString().trim();
+    }
+
+    private boolean checkHasInput() {
+        if (entry == null) {
+            name = name_edit.getText().toString().trim();
+            if (!TextUtils.isEmpty(name)) {
+                return true;
+            }
+            mobile = mobile_phone_edit.getText().toString().trim();
+
+            if (!TextUtils.isEmpty(mobile)) {
+                return true;
+            }
+
+            community = choose_zone_tv.getText().toString().trim();
+            if (!"点击选择".equals(community)) {
+                return true;
+            }
+
+            detailAddr = addressDetailEt.getText().toString().trim();
+
+            if (!TextUtils.isEmpty(detailAddr)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     void updateUserInfo(AddressEntry entry) {
         FragmentManager manager = getActivity().getSupportFragmentManager();
@@ -337,7 +381,7 @@ public class AddressFragment extends BaseFragment {
                 if (zEntry != null)
                     setWidgetContent(zEntry);
                 String details_address = intent.getStringExtra("details_address");
-                if (!TextUtils.isEmpty(details_address)){
+                if (!TextUtils.isEmpty(details_address)) {
                     entry.zname = details_address;
                     entry.zid = 0;
                     entry.city = null;
@@ -360,6 +404,32 @@ public class AddressFragment extends BaseFragment {
         choose_zone_tv.setText(zEntry.name);
     }
 
+    private void alertQuitEdit() {
+        final AlertDialog alert = new AlertDialog.Builder(getActivity()).create();
+        alert.show();
+        alert.setCancelable(false);
+        alert.getWindow().setContentView(R.layout.prompt_dialog);
+        ((TextView) alert.getWindow().findViewById(R.id.content_tv))
+                .setText("确定退出修改？");
+        alert.getWindow().findViewById(R.id.no)
+                .setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        alert.dismiss();
+                    }
+                });
+        alert.getWindow().findViewById(R.id.yes)
+                .setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        alert.dismiss();
+                        popBackStack();
+                    }
+                });
+    }
+
     private AddressEntry entry = null;
     /**
      * 门牌号
@@ -374,7 +444,7 @@ public class AddressFragment extends BaseFragment {
      */
     EditText mobile_phone_edit;
     TextView choose_zone_tv;
-//    TextView choose_zone_tv;
+    //    TextView choose_zone_tv;
     View choose_zone_ll;
     /**
      * 楼号
