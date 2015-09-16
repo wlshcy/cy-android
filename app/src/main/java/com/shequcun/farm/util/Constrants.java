@@ -7,4 +7,6 @@ public class Constrants {
     public final static String Customer_Service_Phone = "01067789567";
     public static final int SDK_PAY_FLAG = 1;
     public static final int SDK_CHECK_FLAG = 2;
+    public static final String URL_FARM = "https://store.shequcun.com/about/ycabout";
+    public static final String URL_SHARE = "https://store.shequcun.com/yc_farm/";
 }
