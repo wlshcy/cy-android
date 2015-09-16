@@ -1,46 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="@dimen/px24"
-    android:paddingBottom="@dimen/px24"
-    android:background="@drawable/list_bg">
+    android:background="@drawable/list_bg"
+    android:orientation="horizontal">
 
-    <ImageView
-        android:id="@+id/choose_iv"
+    <RelativeLayout
+        android:id="@+id/address_rl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/px34"
-        android:layout_alignParentLeft="true"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:addStatesFromChildren="true"
+        android:paddingBottom="@dimen/px24"
+        android:paddingTop="@dimen/px24">
+
+        <ImageView
+            android:id="@+id/choose_iv"
+            android:layout_width="@dimen/px50"
+            android:layout_height="@dimen/px50"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:scaleType="centerInside"
+            android:layout_marginLeft="@dimen/px34"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/px34"
+            android:layout_toRightOf="@id/choose_iv"
+            android:text="1111"
+            android:textColor="@color/common_text" />
+
+        <TextView
+            android:id="@+id/mobile_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/px72"
+            android:layout_marginRight="@dimen/px24"
+            android:layout_toRightOf="@id/name_tv"
+            android:text="1111"
+            android:textColor="@color/common_text" />
+
+        <TextView
+            android:id="@+id/address_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/name_tv"
+            android:layout_marginLeft="@dimen/px34"
+            android:layout_toRightOf="@id/choose_iv"
+            android:text="1111"
+            android:textColor="@color/common_text" />
+
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/update_address_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:visibility="gone"
-        android:background="@drawable/icon_choose"/>
+        android:layout_gravity="center_vertical"
+        android:paddingBottom="@dimen/px48"
+        android:paddingLeft="@dimen/px24"
+        android:paddingRight="@dimen/px48"
+        android:paddingTop="@dimen/px48"
+        android:text="修改"
+        android:textColor="@color/gray_9a9a9a" />
+</LinearLayout>
 
-    <TextView
-        android:id="@+id/name_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/px100"
-        android:layout_alignParentLeft="true"
-        android:text="1111"
-        android:textColor="@color/common_text" />
-
-    <TextView
-        android:id="@+id/mobile_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/px72"
-        android:layout_toRightOf="@id/name_tv"
-        android:text="1111"
-        android:layout_marginRight="@dimen/px24"
-        android:textColor="@color/common_text" />
-
-    <TextView
-        android:id="@+id/address_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/name_tv"
-        android:layout_marginLeft="@dimen/px100"
-        android:text="1111"
-        android:textColor="@color/common_text" />
-</RelativeLayout>
