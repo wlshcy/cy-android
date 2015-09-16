@@ -142,7 +142,7 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment implements R
     void addFooter(final int part) {
         if (footerView == null) {
             footerView = LayoutInflater.from(getActivity()).inflate(R.layout.order_details_footer_ly, null);
-            ((TextView) footerView.findViewById(R.id.distribution_date)).setText("配送日期:  本周五配送");
+//            ((TextView) footerView.findViewById(R.id.distribution_date)).setText("配送日期:  本周五配送");
             number_copies = (TextView) footerView.findViewById(R.id.number_copies);
             mLv.addFooterView(footerView, null, false);
 //            requestUserAddress();
@@ -406,7 +406,7 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment implements R
         if (sChilidView == null) {
             sChilidView = LayoutInflater.from(getActivity()).inflate(R.layout.farm_shopping_cart_footer_ly, null);
             shop_cart_total_price_tv = (TextView) sChilidView.findViewById(R.id.shop_cart_total_price_tv);
-            ((TextView) sChilidView.findViewById(R.id.shop_cart_surpport_now_pay_tv)).setText(R.string.has_choosen_dishes);
+            (sChilidView.findViewById(R.id.shop_cart_surpport_now_pay_tv)).setVisibility(View.GONE);
 
             sChilidView.findViewById(R.id.buy_order_tv).setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -435,6 +435,7 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment implements R
                     gotoFragmentByAdd(bundle, R.id.mainpage_ly, fragment, RemarkFragment.class.getName());
                 }
             });
+
 
             remark_tv = (TextView) sChilidView.findViewById(R.id.remark_tv);
 

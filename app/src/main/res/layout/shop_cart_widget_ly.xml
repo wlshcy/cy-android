@@ -46,7 +46,7 @@
         android:layout_marginRight="@dimen/px20"
         android:background="@drawable/shopping_cart_widget_selector_3"
         android:gravity="center"
-        android:text="@string/shop_cart"
+        android:text="@string/add_shop_cart"
         android:textColor="@color/white_f4f4f4"
         android:textSize="14sp" />
 

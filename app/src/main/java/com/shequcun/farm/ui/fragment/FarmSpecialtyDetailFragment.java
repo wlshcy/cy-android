@@ -53,12 +53,6 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
         return inflater.inflate(R.layout.farm_specialty_detail_ly, container, false);
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        setDataToView(entry);
-    }
-
     private void setDataToView(RecommendEntry entry) {
         nameTv.setText(entry.title);
         if (!TextUtils.isEmpty(entry.descr))
@@ -84,13 +78,14 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
         }
         RecommendEntry localEntry = readRecommendEntryFromDisk(entry);
         if (localEntry == null) return;
-        if (goods_count == null) return;
-        goods_count.setText(localEntry.count + "");
+//        if (goods_count == null) return;
+        this.entry = localEntry;
+//        goods_count.setText(entry.count + "");
     }
 
     private RecommendEntry readRecommendEntryFromDisk(RecommendEntry pEntry) {
-        RecommendItemKey rItemKey=new RecommendItemKey();
-        rItemKey.object=pEntry;
+        RecommendItemKey rItemKey = new RecommendItemKey();
+        rItemKey.object = pEntry;
         return new CacheManager(getActivity()).getRecommendEntry(rItemKey);
     }
 
@@ -128,6 +123,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
         shareIv.setOnClickListener(onClick);
         back.setOnClickListener(onClick);
         buildCarouselAdapter();
+        setDataToView(entry);
         addChildViewToParent();
     }
 
@@ -154,7 +150,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
         public void onClick(View v) {
             if (v == back)
                 popBackStack();
-            else if (v == shareIv){
+            else if (v == shareIv) {
                 ShareContent shareContent = new ShareContent();
 //                shareContent.setUrlImage("drawable:///" + R.drawable.icon_share);
                 shareContent.setImageId(R.drawable.ic_launcher);
@@ -162,15 +158,15 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
                 shareContent.setTitle("test");
                 shareContent.setContent("test");
                 useUmengToShare(shareContent);
-            }else if (v==producingPlaceTv){
+            } else if (v == producingPlaceTv) {
                 gotoProducingPlaceFragment(entry.fid);
             }
         }
     };
 
-    private void gotoProducingPlaceFragment(int id){
+    private void gotoProducingPlaceFragment(int id) {
         Bundle bundle = new Bundle();
-        bundle.putString("Url", "https://store.shequcun.com/yc_farm_item/"+id);
+        bundle.putString("Url", "https://store.shequcun.com/yc_farm_item/" + id);
         bundle.putInt("TitleId", R.string.farm_info);
         gotoFragmentByAdd(bundle, R.id.mainpage_ly, new SetWebViewFragment(), SetWebViewFragment.class.getName());
     }
@@ -189,7 +185,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
             params.gravity = Gravity.BOTTOM;
             pView.addView(childView, params);
             ((TextView) childView.findViewById(R.id.shop_cart_total_price_tv)).setText("共付:" + Utils.unitPeneyToYuan(entry.price));
-            ((TextView) childView.findViewById(R.id.shop_cart_surpport_now_pay_tv)).setText("您已选好菜品了!");
+            childView.findViewById(R.id.shop_cart_surpport_now_pay_tv).setVisibility(View.GONE);
             childView.findViewById(R.id.buy_order_tv).setOnClickListener(new View.OnClickListener() {//支付
                 @Override
                 public void onClick(View view) {
@@ -252,10 +248,12 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
                         RecommendItemKey itemKey = new RecommendItemKey();
                         itemKey.object = entry;
                         new CacheManager(getActivity()).saveRecommendToDisk(itemKey);
+                        IntentUtil.sendUpdateFarmShoppingCartMsg(getActivity());
+                        ToastHelper.showShort(getActivity(), R.string.add_shop_cart_success);
                     }
-                    IntentUtil.sendUpdateFarmShoppingCartMsg(getActivity());
-                    ((SqcFarmActivity) getActivity()).buildRadioButtonStatus(1);
-                    popBackStack();
+//
+//                    ((SqcFarmActivity) getActivity()).buildRadioButtonStatus(1);
+//                    popBackStack();
                 }
             });
         }
@@ -478,7 +476,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
                                SocializeEntity sEntity) {
             String showText = "分享成功";
             if (eCode != StatusCode.ST_CODE_SUCCESSED) {
-                Log.e("FarmSpecialty","ecode"+eCode);
+                Log.e("FarmSpecialty", "ecode" + eCode);
                 showText = "分享失败 [" + eCode + "]";
             }
             ToastHelper.showShort(getActivity(), showText);
