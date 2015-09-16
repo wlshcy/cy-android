@@ -78,6 +78,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
             ImageLoader.getInstance().displayImage(entry.detail.image, contentImgIv);
         }
         RecommendEntry localEntry = readRecommendEntryFromDisk(entry);
+        this.entry.count = 0;
         if (localEntry == null) return;
 //        if (goods_count == null) return;
         this.entry = localEntry;
