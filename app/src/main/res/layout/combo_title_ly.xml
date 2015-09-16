@@ -11,21 +11,21 @@
         android:layout_height="@dimen/px66"
         android:background="@android:color/white"
         android:gravity="center"
+        android:text="@string/organic_farm_combo"
         android:textColor="@android:color/black"
-        android:textSize="@dimen/font32"
-        android:text="@string/organic_farm_combo" />
+        android:textSize="@dimen/font32" />
 
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="-22dp">
+       >
 
         <ImageView
             android:id="@+id/no_combo_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scaleType="fitEnd"
+            android:scaleType="fitXY"
             android:src="@drawable/icon_no_combo"
             android:visibility="gone" />
 
@@ -34,7 +34,7 @@
             android:id="@+id/has_combo_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scaleType="fitEnd"
+            android:scaleType="fitXY"
             android:src="@drawable/icon_has_combo" />
     </FrameLayout>
 
