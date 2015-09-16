@@ -39,31 +39,40 @@
         android:layout_height="0.5dp"
         android:background="#e4e4e4" />
 
-    <FrameLayout
-        android:id="@+id/red_packets_money_ly"
+    <LinearLayout
+        android:id="@+id/freight_ly"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/list_item_selector"
-        android:padding="@dimen/px30"
-        android:visibility="gone">
+        android:orientation="horizontal"
+        android:padding="@dimen/px30">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:text="@string/freight"
+            android:textColor="@color/black_444444" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:text="@string/use_discount_red_packets"
-
-            android:textColor="@color/black_444444" />
+            android:text="@string/freight_tip"
+            android:textColor="@color/gray_9a9a9a"
+            android:textSize="@dimen/font26" />
 
         <TextView
-            android:id="@+id/red_packets_money_tv"
+            android:id="@+id/freight_money_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right|center_vertical"
-            android:drawableRight="@drawable/icon_more"
+            android:layout_marginLeft="@dimen/px16"
             android:gravity="center"
+            android:text="@string/no_freight"
             android:textColor="@color/red_fe5647" />
-    </FrameLayout>
+    </LinearLayout>
 
 
     <include
