@@ -142,6 +142,12 @@ public class HomeFragment extends BaseFragment {
     private View.OnClickListener onClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+
+            if (!isLogin()) {
+                gotoFragmentByAdd(R.id.mainpage_ly, new LoginFragment(), LoginFragment.class.getName());
+                return;
+            }
+
             if (v == no_combo_iv || v == has_combo_iv) {
                 gotoFragmentByAdd(R.id.mainpage_ly, new ComboFragment(), ComboFragment.class.getName());
                 return;
@@ -390,7 +396,7 @@ public class HomeFragment extends BaseFragment {
     ExpandableHeightGridView gv;
     private FarmSpecialtyAdapter adapter;
     View no_combo_iv;
-//    View more_combo_ly;
+    //    View more_combo_ly;
     View has_combo_iv;
     //    View more_combo;//更多套餐
     ComboEntry comboEntry;
