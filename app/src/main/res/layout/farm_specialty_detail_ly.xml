@@ -16,7 +16,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <include layout="@layout/carousel_ly"></include>
+            <include layout="@layout/carousel_ly1"></include>
 
             <TextView
                 android:id="@+id/name_tv"

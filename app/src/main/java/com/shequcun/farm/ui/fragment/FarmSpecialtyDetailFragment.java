@@ -28,6 +28,7 @@ import com.shequcun.farm.datacenter.CacheManager;
 import com.shequcun.farm.db.RecommendItemKey;
 import com.shequcun.farm.ui.SqcFarmActivity;
 import com.shequcun.farm.ui.adapter.CarouselAdapter;
+import com.shequcun.farm.util.Constrants;
 import com.shequcun.farm.util.IntentUtil;
 import com.shequcun.farm.util.ShareContent;
 import com.shequcun.farm.util.ShareUtil;
@@ -154,7 +155,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
                 ShareContent shareContent = new ShareContent();
 //                shareContent.setUrlImage("drawable:///" + R.drawable.icon_share);
                 shareContent.setImageId(R.drawable.ic_launcher);
-                shareContent.setTargetUrl("https://store.shequcun.com/about/ycabout");
+                shareContent.setTargetUrl(Constrants.URL_FARM);
                 shareContent.setTitle("test");
                 shareContent.setContent("test");
                 useUmengToShare(shareContent);
@@ -166,7 +167,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
 
     private void gotoProducingPlaceFragment(int id) {
         Bundle bundle = new Bundle();
-        bundle.putString("Url", "https://store.shequcun.com/yc_farm_item/" + id);
+        bundle.putString("Url", Constrants.URL_FARM + id);
         bundle.putInt("TitleId", R.string.farm_info);
         gotoFragmentByAdd(bundle, R.id.mainpage_ly, new SetWebViewFragment(), SetWebViewFragment.class.getName());
     }
@@ -476,7 +477,6 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
                                SocializeEntity sEntity) {
             String showText = "分享成功";
             if (eCode != StatusCode.ST_CODE_SUCCESSED) {
-                Log.e("FarmSpecialty", "ecode" + eCode);
                 showText = "分享失败 [" + eCode + "]";
             }
             ToastHelper.showShort(getActivity(), showText);
