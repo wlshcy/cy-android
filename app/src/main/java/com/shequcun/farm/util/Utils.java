@@ -48,7 +48,7 @@ public class Utils {
     public static String unitPeneyToYuan(int peney) {
         double yuan = (double) peney / 100;
         DecimalFormat df = new DecimalFormat("###.00");
-        return "￥" + df.format(yuan);
+        return "￥" + (peney / 100 == 0 ? "0" + df.format(yuan) : df.format(yuan));
     }
 
     public static String unitPeneyToYuanEx(int peney) {

@@ -2,14 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/login_bg"
+    android:background="@android:color/white"
     android:orientation="vertical">
 
     <include layout="@layout/common_title_ly" />
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:scrollbars="none">
 
         <LinearLayout
@@ -19,7 +19,7 @@
 
             <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/px342"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginBottom="@dimen/px20"
                 android:src="@drawable/icon_small_logo" />
@@ -65,8 +65,8 @@
                         android:layout_marginRight="@dimen/px36"
                         android:background="@android:color/transparent"
                         android:text="@string/get_sms_code"
-                        android:textSize="@dimen/font28"
-                        android:textColor="@android:color/black" />
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/font28" />
                 </LinearLayout>
 
                 <View
@@ -89,12 +89,13 @@
             </LinearLayout>
 
 
-            <Button
+            <TextView
                 android:id="@+id/login"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/px100"
                 android:layout_margin="10dp"
                 android:background="@drawable/edit_bg"
+                android:gravity="center"
                 android:text="@string/login"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/px30" />
