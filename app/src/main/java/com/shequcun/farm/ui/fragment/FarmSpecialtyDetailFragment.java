@@ -78,6 +78,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
             ImageLoader.getInstance().displayImage(entry.detail.image, contentImgIv);
         }
         RecommendEntry localEntry = readRecommendEntryFromDisk(entry);
+        this.entry.count = 0;
         if (localEntry == null) return;
 //        if (goods_count == null) return;
         this.entry = localEntry;
@@ -261,127 +262,6 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
     }
 
 
-//    void requestAddress() {
-//        final RecommendEntry rEntry = buildRecommendEntry();
-//        if (!TextUtils.isEmpty(alipay) && !TextUtils.isEmpty(orderno)) {
-//            gotoFragmentByAdd(buildBundle(orderno, rEntry.price, alipay, R.string.pay_success), R.id.mainpage_ly, new PayFragment(), PayFragment.class.getName());
-//            return;
-//        }
-//        final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
-//        HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "user/address", new AsyncHttpResponseHandler() {
-//            @Override
-//            public void onStart() {
-//                super.onStart();
-//                pDlg.show();
-//            }
-//
-//            @Override
-//            public void onFinish() {
-//                super.onFinish();
-//                pDlg.dismiss();
-//            }
-//
-//            @Override
-//            public void onSuccess(int sCode, Header[] h, byte[] data) {
-//                if (data != null && data.length > 0) {
-//                    AddressListEntry entry = JsonUtilsParser.fromJson(new String(data), AddressListEntry.class);
-//                    if (entry != null) {
-//                        if (TextUtils.isEmpty(entry.errmsg)) {
-//                            successUserAddress(entry.aList);
-//                            return;
-//                        }
-//                        ToastHelper.showShort(getActivity(), entry.errmsg);
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
-//                if (sCode == 0) {
-//                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
-//                    return;
-//                }
-//                ToastHelper.showShort(getActivity(), "请求失败,错误码" + sCode);
-//            }
-//        });
-//    }
-
-
-//    private void successUserAddress(List<AddressEntry> list) {
-//        if (list == null || list.size() <= 0) {
-//            showFillAddressDlg();
-//            return;
-//        }
-//        int size = list.size();
-//        for (int i = 0; i < size; ++i) {
-//            AddressEntry entry = list.get(i);
-//            if (entry.isDefault) {
-//                createSingleDishesOrder(entry);
-//                break;
-//            }
-//        }
-//    }
-
-    /**
-     * 创建单品订单
-     */
-//    void createSingleDishesOrder(AddressEntry entry) {
-//        String address = null;
-//        UserLoginEntry uEntry = new CacheManager(getActivity()).getUserLoginEntry();
-//        if (uEntry != null && !TextUtils.isEmpty(uEntry.address)) {
-//            address = uEntry.address;
-//        }
-//        final RecommendEntry rEntry = buildRecommendEntry();
-//        RequestParams params = new RequestParams();
-//        params.add("type", "3");
-//        params.add("name", entry.name);
-//        params.add("mobile", entry.mobile);
-//        params.add("address", address);
-//        params.add("extras", getExtras());
-//        params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
-//
-//        final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
-//        HttpRequestUtil.httpPost(LocalParams.getBaseUrl() + "cai/order", params, new AsyncHttpResponseHandler() {
-//
-//            @Override
-//            public void onStart() {
-//                super.onStart();
-//                pDlg.show();
-//            }
-//
-//            @Override
-//            public void onFinish() {
-//                super.onFinish();
-//                pDlg.dismiss();
-//            }
-//
-//            @Override
-//            public void onSuccess(int sCode, Header[] h, byte[] data) {
-//                if (data != null && data.length > 0) {
-//                    OrderEntry entry = JsonUtilsParser.fromJson(new String(data), OrderEntry.class);
-//                    if (entry != null) {
-//                        if (TextUtils.isEmpty(entry.errmsg)) {
-//                            if (rEntry != null) {
-//                                gotoFragmentByAdd(buildBundle(orderno = entry.orderno, rEntry.price, alipay = entry.alipay, R.string.pay_success), R.id.mainpage_ly, new PayFragment(), PayFragment.class.getName());
-//                                mHandler.sendEmptyMessageDelayed(0, 30 * 60 * 1000);
-//                            }
-//                            return;
-//                        }
-//                        ToastHelper.showShort(getActivity(), entry.errmsg);
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
-//                if (sCode == 0) {
-//                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
-//                    return;
-//                }
-//                ToastHelper.showShort(getActivity(), "错误码" + sCode);
-//            }
-//        });
-//    }
     public String getExtras() {
         String result = "";
         RecommendEntry entry = buildRecommendEntry();
@@ -391,47 +271,6 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
         return result;
     }
 
-//    private android.os.Handler mHandler = new android.os.Handler() {
-//        @Override
-//        public void handleMessage(Message msg) {
-//            super.handleMessage(msg);
-//            switch (msg.what) {
-//                case 0:
-//                    alipay = null;
-//                    orderno = null;
-//                    break;
-//            }
-//        }
-//    };
-
-//    Bundle buildBundle(String orderno, int orderMoney, String alipay, int titleId) {
-//        Bundle bundle = new Bundle();
-//        PayParams payParams = new PayParams();
-//        payParams.setParams(orderno, orderMoney, alipay, false, titleId);
-//        bundle.putSerializable("PayParams", payParams);
-//        return bundle;
-//    }
-
-//    void showFillAddressDlg() {
-//        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-//        builder.setTitle("提示");
-//        builder.setMessage("亲,您还未填写您的收货地址哦!快去完善吧!");
-//        builder.setNegativeButton("完善", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                gotoFragment(R.id.mainpage_ly, new AddressFragment(), AddressFragment.class.getName());
-//            }
-//        });
-//        builder.setNeutralButton("取消", null);
-//        builder.create().show();
-//    }
-
-
-//    @Override
-//    public void onDestroyView() {
-//        super.onDestroyView();
-////        mHandler.removeCallbacksAndMessages(null);
-//    }
 
     private void alertOutOfMaxpacks() {
         String content = getResources().getString(R.string.out_of_maxpacks);

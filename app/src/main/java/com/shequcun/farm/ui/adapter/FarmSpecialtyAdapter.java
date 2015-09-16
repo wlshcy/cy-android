@@ -42,7 +42,7 @@ public class FarmSpecialtyAdapter extends ArrayAdapter<RecommendEntry> {
         }
         RecommendEntry entry = getItem(position);
         if (entry != null && vh != null) {
-            if (entry.imgs.length > 0)
+            if (entry.imgs != null && entry.imgs.length > 0)
                 ImageCacheManager.getInstance().displayImage(vh.goods_img, entry.imgs[0]);
             vh.goods_name.setText(entry.title);
             if (entry.type == 2) {

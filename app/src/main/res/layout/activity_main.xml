@@ -29,7 +29,7 @@
             android:gravity="center"
             android:minHeight="30dp"
             android:orientation="horizontal"
-            android:paddingTop="3dp">
+            android:paddingTop="5dp">
 
             <RadioButton
                 android:id="@+id/home_rb"

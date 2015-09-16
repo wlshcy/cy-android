@@ -111,13 +111,15 @@ public class ImageCacheManager implements ImageCache {
         ImageListener mListener = ImageLoader.getImageListener(mImg,
                 android.R.drawable.ic_menu_rotate,
                 android.R.drawable.ic_lock_idle_lock);
-        mImageLoader.get(requestUrl, mListener);
+        if (mImageLoader != null)
+            mImageLoader.get(requestUrl, mListener);
     }
 
     public void displayImage(String requestUrl, ImageListener mLsn) {
         if (TextUtils.isEmpty(requestUrl))
             return;
-        mImageLoader.get(requestUrl, mLsn);
+        if (mImageLoader != null)
+            mImageLoader.get(requestUrl, mLsn);
     }
 
     public void release() {

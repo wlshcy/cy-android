@@ -67,6 +67,7 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
         shop_cart_surpport_now_pay_tv = (TextView) v.findViewById(R.id.shop_cart_surpport_now_pay_tv);
         remark_ly = v.findViewById(R.id.remark_ly);
         remark_tv = (TextView) v.findViewById(R.id.remark_tv);
+        v.findViewById(R.id.freight_ly).setVisibility(View.GONE);
         entry = buildEntry();
         buildUserLoginEntry();
         showBottomWidget();

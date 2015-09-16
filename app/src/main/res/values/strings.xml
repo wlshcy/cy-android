@@ -200,4 +200,9 @@
 
     <string name="you_have_not_buy_combo">您还没有购买套餐</string>
     <string name="add_shop_cart_success">加入购物车成功.</string>
+
+    <string name="freight">运费</string>
+    <string name="freight_tip">(订单满99元包邮)</string>
+    <string name="freight_money">10元</string>
+    <string name="no_freight">免运费</string>
 </resources>

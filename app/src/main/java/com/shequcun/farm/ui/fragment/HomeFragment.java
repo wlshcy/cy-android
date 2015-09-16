@@ -70,9 +70,9 @@ public class HomeFragment extends BaseFragment {
         pView = (PullToRefreshScrollView) v.findViewById(R.id.pView);
         gv = (ExpandableHeightGridView) v.findViewById(R.id.gv);
         no_combo_iv = v.findViewById(R.id.no_combo_iv);
-        more_combo_ly = v.findViewById(R.id.more_combo_ly);
+//        more_combo_ly = v.findViewById(R.id.more_combo_ly);
         has_combo_iv = v.findViewById(R.id.has_combo_iv);
-        more_combo = v.findViewById(R.id.more_combo);
+//        more_combo = v.findViewById(R.id.more_combo);
     }
 
     @Override
@@ -85,7 +85,7 @@ public class HomeFragment extends BaseFragment {
         gv.setOnItemClickListener(onItemClk);
         no_combo_iv.setOnClickListener(onClick);
         has_combo_iv.setOnClickListener(onClick);
-        more_combo.setOnClickListener(onClick);
+//        more_combo.setOnClickListener(onClick);
         buildGridViewAdapter();
         requestHome(1);
 //        requestRecomendDishes();
@@ -142,13 +142,21 @@ public class HomeFragment extends BaseFragment {
     private View.OnClickListener onClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (v == no_combo_iv || v == more_combo) {
-                gotoFragmentByAdd(R.id.mainpage_ly, new ComboFragment(), ComboFragment.class.getName());
-                return;
-            } else if (v == has_combo_iv) {//进入选菜页
-                gotoFragmentByAdd(buildBundle_(comboEntry), R.id.mainpage_ly, new ChooseDishesFragment(), ChooseDishesFragment.class.getName());
+
+            if (!isLogin()) {
+                gotoFragmentByAdd(R.id.mainpage_ly, new LoginFragment(), LoginFragment.class.getName());
                 return;
             }
+
+            if (v == no_combo_iv || v == has_combo_iv) {
+                gotoFragmentByAdd(R.id.mainpage_ly, new ComboFragment(), ComboFragment.class.getName());
+                return;
+            }
+
+//            else if (v == has_combo_iv) {//进入选菜页
+//                gotoFragmentByAdd(buildBundle_(comboEntry), R.id.mainpage_ly, new ChooseDishesFragment(), ChooseDishesFragment.class.getName());
+//                return;
+//            }
             SlidesEntry item = (SlidesEntry) v.getTag();
             if (item == null)
                 return;
@@ -308,13 +316,13 @@ public class HomeFragment extends BaseFragment {
                     new CacheManager(getActivity()).saveUserLoginToDisk(JsonUtilsParser.toJson(uentry).getBytes());
                 }
                 no_combo_iv.setVisibility(View.GONE);
-                more_combo_ly.setVisibility(View.VISIBLE);
+                has_combo_iv.setVisibility(View.VISIBLE);
 
             }
         } else {
             comboEntry = null;
             no_combo_iv.setVisibility(View.VISIBLE);
-            more_combo_ly.setVisibility(View.GONE);
+            has_combo_iv.setVisibility(View.GONE);
         }
     }
 
@@ -388,8 +396,9 @@ public class HomeFragment extends BaseFragment {
     ExpandableHeightGridView gv;
     private FarmSpecialtyAdapter adapter;
     View no_combo_iv;
-    View more_combo_ly;
-    View has_combo_iv;//进入选菜页
-    View more_combo;//更多套餐
+    //    View more_combo_ly;
+    View has_combo_iv;
+    //    View more_combo;//更多套餐
     ComboEntry comboEntry;
+//    View has_combo_iv;
 }
