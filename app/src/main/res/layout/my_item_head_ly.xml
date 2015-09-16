@@ -30,6 +30,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|bottom"
                 android:text="@string/mobile_phone"
+                android:layout_marginTop="@dimen/px20"
                 android:textColor="@color/green_446628"
                 android:textSize="@dimen/font30" />
 
