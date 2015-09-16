@@ -90,6 +90,36 @@
 
             <include layout="@layout/common_line"></include>
 
+            <TextView
+                android:id="@+id/storage_method_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/px34"
+                android:paddingLeft="@dimen/px38"
+                android:paddingTop="@dimen/px34"
+                android:text="储藏方法：0-10度冷藏储存"
+                android:textSize="@dimen/font30"
+                android:textColor="@color/black_131313"/>
+
+            <include layout="@layout/common_line"></include>
+
+            <TextView
+                android:id="@+id/producing_place_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/px34"
+                android:paddingTop="@dimen/px34"
+                android:drawableRight="@drawable/icon_more"
+                android:paddingLeft="@dimen/px38"
+                android:paddingRight="@dimen/px38"
+                android:text="产地：北京吾优吾绿农庄"
+                android:textSize="@dimen/font30"
+                android:textColor="@color/black_131313"
+                android:background="@drawable/list_bg"/>
+
+            <include layout="@layout/common_line"></include>
+
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/px20"
@@ -117,32 +147,7 @@
 
             <include layout="@layout/common_line"></include>
 
-            <TextView
-                android:id="@+id/storage_method_tv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/px34"
-                android:paddingLeft="@dimen/px38"
-                android:paddingTop="@dimen/px34"
-                android:text="储藏方法：0-10度冷藏储存"
-                android:textSize="@dimen/font30" />
 
-            <include layout="@layout/common_line"></include>
-
-            <TextView
-                android:id="@+id/producing_place_tv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/px34"
-                android:paddingTop="@dimen/px34"
-                android:drawableRight="@drawable/icon_more"
-                android:paddingLeft="@dimen/px38"
-                android:paddingRight="@dimen/px38"
-                android:text="产地：北京吾优吾绿农庄"
-                android:textSize="@dimen/font30"
-                android:background="@drawable/list_bg"/>
-
-            <include layout="@layout/common_line"></include>
 
             <ImageView
                 android:id="@+id/content_img_iv"
