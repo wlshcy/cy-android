@@ -476,7 +476,6 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
                                SocializeEntity sEntity) {
             String showText = "分享成功";
             if (eCode != StatusCode.ST_CODE_SUCCESSED) {
-                Log.e("FarmSpecialty", "ecode" + eCode);
                 showText = "分享失败 [" + eCode + "]";
             }
             ToastHelper.showShort(getActivity(), showText);
