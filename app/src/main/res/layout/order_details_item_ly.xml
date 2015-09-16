@@ -9,7 +9,7 @@
         android:layout_width="@dimen/px170"
         android:layout_height="@dimen/px170"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/px40" />
+        android:layout_marginLeft="@dimen/px20" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -24,15 +24,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/black_444444"
-            android:textSize="@dimen/font28" />
+            android:textSize="@dimen/font30" />
 
         <TextView
             android:id="@+id/goods_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/px40"
-            android:textColor="@color/black_444444"
-            android:textSize="@dimen/font28" />
+            android:layout_marginTop="@dimen/px14"
+            android:textColor="@color/gray_9a9a9a"
+            android:textSize="@dimen/font26" />
+
     </LinearLayout>
 
     <TextView
@@ -41,7 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginRight="@dimen/px48"
+        android:layout_marginRight="@dimen/px20"
         android:textColor="@android:color/black"
         android:textSize="@dimen/font28" />
 

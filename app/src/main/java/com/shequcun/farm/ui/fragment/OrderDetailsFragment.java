@@ -58,7 +58,7 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
         mLv = (ListView) v.findViewById(R.id.mLv);
         back = v.findViewById(R.id.back);
         titleTv = (TextView) v.findViewById(R.id.title_center_text);
-        titleTv.setText(R.string.shop_cart);
+        titleTv.setText(R.string.cailanzi);
         address = (TextView) v.findViewById(R.id.address);
         rightTv = (TextView) v.findViewById(R.id.title_right_text);
         rightTv.setText(R.string.consultation);

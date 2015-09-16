@@ -89,11 +89,11 @@ public class ChooseDishesFragment extends BaseFragment {
         mBadgeViewShopCart.setWidth(ResUtil.dip2px(getActivity(), 20));
         mBadgeViewShopCart.setHeight(ResUtil.dip2px(getActivity(), 20));
         mBadgeViewShopCart.setBackgroundResource(R.drawable.red_oval);
-        int height = mBadgeViewShopCart.getHeight();
-        mBadgeViewShopCart.setCornerPx(height * 2);
+//        int height = mBadgeViewShopCart.getHeight();
+//        mBadgeViewShopCart.setCornerPx(height * 2);
         mBadgeViewShopCart.setTextSize(TypedValue.COMPLEX_UNIT_PX,
                 ResUtil.dip2px(getActivity(), 10));
-        mBadgeViewShopCart.setBadgeMargin(ResUtil.dip2px(getActivity(), 0));
+//        mBadgeViewShopCart.setBadgeMargin(ResUtil.dip2px(getActivity(), 0));
         mShopCartPriceTv = (TextView) v
                 .findViewById(R.id.shop_cart_total_price_tv);
         option_dishes_tv = (TextView) v.findViewById(R.id.option_dishes_tv);
@@ -543,7 +543,9 @@ public class ChooseDishesFragment extends BaseFragment {
     private void toggleBuyOrder(boolean buy) {
         if (buy) {
             mBuyOrderTv
-                    .setBackgroundResource(R.drawable.shopping_cart_widget_selector_1);
+                    .setBackgroundResource(R.drawable.shopping_cart_widget_selector_3);
+//            mBuyOrderTv
+//                    .setBackgroundResource(R.drawable.shopping_cart_widget_selector_1);
             mBuyOrderTv.setText(R.string.small_market_buy);
             mBuyOrderTv.setTextColor(getResources().getColor(
                     R.color.white_fefefe));

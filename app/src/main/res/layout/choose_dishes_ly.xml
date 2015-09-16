@@ -166,7 +166,10 @@
                         android:id="@+id/shop_cart_iv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="12dp"
+                        android:paddingBottom="@dimen/px14"
+                        android:paddingLeft="12dp"
+                        android:paddingRight="12dp"
+                        android:paddingTop="@dimen/px14"
                         android:src="@drawable/shop_cart_selector" />
                 </FrameLayout>
 
