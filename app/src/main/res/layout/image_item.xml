@@ -9,7 +9,7 @@
         android:id="@+id/imgView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_gravity="center"
         android:clickable="true"
         android:scaleType="fitXY" />
 </LinearLayout>
