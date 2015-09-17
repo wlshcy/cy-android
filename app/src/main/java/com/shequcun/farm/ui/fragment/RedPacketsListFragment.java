@@ -157,7 +157,7 @@ public class RedPacketsListFragment extends BaseFragment {
         RequestParams params = new RequestParams();
         /*查看优惠券时不传type，查询出所有的优惠券*/
         if (type != 0)
-            params.add("type", 2 + "");
+            params.add("type", type + "");
         params.add("lastid", lastId + "");
         params.add("length", length + "");
         HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "cai/coupon", params, new AsyncHttpResponseHandler() {
@@ -200,7 +200,6 @@ public class RedPacketsListFragment extends BaseFragment {
             addEmptyView();
             return;
         }
-        entry.list.get(0).used = true;
         if (curSize > 0 && curSize % length < length) return;
         /*选择优惠券时*/
         if (type != 0) {
