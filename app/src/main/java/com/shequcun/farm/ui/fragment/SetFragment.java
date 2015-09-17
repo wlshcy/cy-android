@@ -256,6 +256,7 @@ public class SetFragment extends BaseFragment {
                         if (jObj != null) {
                             boolean logout = jObj.optBoolean("logout");
                             if (logout) {
+                                PersistanceManager.saveCookieValue(getActivity(),"");
                                 ToastHelper.showShort(getActivity(), R.string.logout_success);
                                 new CacheManager(getActivity()).delUserLoginToDisk();
                                 IntentUtil.sendUpdateMyInfoMsg(getActivity());

@@ -18,6 +18,7 @@ import com.shequcun.farm.BaseFragmentActivity;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.VersionEntry;
 import com.shequcun.farm.datacenter.PersistanceManager;
+import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.ui.adapter.HomeViewPagerAdapter;
 import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
@@ -36,6 +37,7 @@ public class SqcFarmActivity extends BaseFragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initWidget();
+        doAuthInit();
         checkVersion();
     }
 
@@ -112,7 +114,7 @@ public class SqcFarmActivity extends BaseFragmentActivity {
         RequestParams params = new RequestParams();
         params.add("apptype", "5");
         params.add("platform", "2");
-        HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "app/version", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.getHttpClient(getApplication()).get(LocalParams.getBaseUrl() + "app/version", params, new AsyncHttpResponseHandler() {
             public void onSuccess(int sCode, Header[] h, byte[] data) {
                 if (data != null && data.length > 0) {
                     VersionEntry vEntry = JsonUtilsParser.fromJson(new String(data), VersionEntry.class);
@@ -186,6 +188,28 @@ public class SqcFarmActivity extends BaseFragmentActivity {
 //    public void onPageChanged(int pageIndex) {
 //        hVpager.setCurrentItem(pageIndex);
 //    }
+
+    /**
+     * 鉴权
+     */
+    private void doAuthInit() {
+        HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "auth/init",
+                new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int sCode, Header[] headers, byte[] data) {
+                        for (Header h : headers) {
+                            if (h.getName().equals("X-Xsrftoken")) {
+                                PersistanceManager.saveCookieValue(SqcFarmActivity.this, h.getValue());
+                                break;
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
+                    }
+                });
+    }
 
     HomeViewPager hVpager;
     HomeViewPagerAdapter hAdapter;

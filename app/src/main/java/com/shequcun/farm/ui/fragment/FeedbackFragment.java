@@ -110,6 +110,8 @@ public class FeedbackFragment extends BaseFragment {
 
                             ToastHelper.showShort(getActivity(), errmsg);
                         }
+                    } else {
+                        ToastHelper.showShort(getActivity(), "反馈失败.");
                     }
                 } catch (Exception e) {
 

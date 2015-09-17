@@ -204,7 +204,7 @@ public class LoginFragment extends BaseFragment {
         Utils.hideVirtualKeyboard(getActivity(), sms_code_et);
         RequestParams params = new RequestParams();
         params.add("mobile", mobileNumber);
-        params.add("type", 2 + "");
+        params.add("type", 5 + "");
         params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
         final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
         HttpRequestUtil.httpPost(LocalParams.getBaseUrl() + "util/smscode", params, new AsyncHttpResponseHandler() {
