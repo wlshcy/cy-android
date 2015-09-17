@@ -79,8 +79,8 @@ public class HomeFragment extends BaseFragment {
     protected void setWidgetLsn() {
 //        requestSlideFromServer();
         doRegisterRefreshBrodcast();
-//        pView.setMode(PullToRefreshBase.Mode.PULL_FROM_END);
-        pView.setMode(PullToRefreshBase.Mode.DISABLED);
+        pView.setMode(PullToRefreshBase.Mode.PULL_FROM_END);
+//        pView.setMode(PullToRefreshBase.Mode.DISABLED);
         pView.setOnRefreshListener(onRefrshLsn);
         gv.setOnItemClickListener(onItemClk);
         no_combo_iv.setOnClickListener(onClick);
@@ -189,7 +189,7 @@ public class HomeFragment extends BaseFragment {
 
         @Override
         public void onPullUpToRefresh(PullToRefreshBase refreshView) {
-//            requestRecomendDishes();
+            requestRecomendDishes();
 //            requestHome(1);
         }
     };
@@ -221,6 +221,14 @@ public class HomeFragment extends BaseFragment {
             public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
                 buildCarouselAdapter(null);
             }
+
+//            @Override
+//            public void onFinish() {
+//                super.onFinish();
+//                if (pView != null)
+//                    pView.onRefreshComplete();
+//            }
+
         });
     }
 
