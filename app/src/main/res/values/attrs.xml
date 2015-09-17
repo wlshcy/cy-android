@@ -3,7 +3,7 @@
 
     <string-array name="my_array">
         <item>我的订单</item>
-        <item>订单延期配送</item>
+        <item>延期配送蔬菜</item>
         <item>我的优惠红包</item>
         <item>拨打客服电话</item>
         <item>地址管理</item>
