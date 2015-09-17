@@ -33,7 +33,6 @@ import com.umeng.socialize.bean.StatusCode;
 import com.umeng.socialize.controller.listener.SocializeListeners;
 
 import org.apache.http.Header;
-import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -69,7 +68,7 @@ public class PayResultFragment extends BaseFragment {
 
     @Override
     protected void setWidgetLsn() {
-        buildAdapter();
+//        buildAdapter();
         back.setOnClickListener(onClick);
         IntentUtil.sendUpdateComboMsg(getActivity());
 //        if (isRecomDishes())
@@ -79,9 +78,10 @@ public class PayResultFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        String orderNo = getOrderNoFromParams();
-        if (!TextUtils.isEmpty(orderNo) && isRequesetRedPackage())
-            requestRedPacktetShareUrl(orderNo);
+        PayParams payParams = getPayParams();
+        if (payParams==null)return;
+        if (!TextUtils.isEmpty(payParams.orderno) && payParams.isSendRedPackage)
+            requestRedPacktetShareUrl(payParams.orderno);
     }
 
 
@@ -119,31 +119,31 @@ public class PayResultFragment extends BaseFragment {
         }
     };
 
-    void buildAdapter() {
-        if (adapter == null)
-            adapter = new RecommendAdapter(getActivity());
-        adapter.buildOnClickLsn(onGoodsImgLsn, onBuyLsn);
-        mLv.setAdapter(adapter);
-    }
+//    void buildAdapter() {
+//        if (adapter == null)
+//            adapter = new RecommendAdapter(getActivity());
+//        adapter.buildOnClickLsn(onGoodsImgLsn, onBuyLsn);
+//        mLv.setAdapter(adapter);
+//    }
 
 
-    AvoidDoubleClickListener onBuyLsn = new AvoidDoubleClickListener() {
-        @Override
-        public void onViewClick(View v) {
-            int position = (int) v.getTag();
-            if (adapter == null)
-                return;
-
-            RecommendEntry entry = adapter.getItem(position);
-
-            if (entry.remains <= 0) {
-                alertOutOfRemains();
-                return;
-            }
-
-            gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new SingleDishesFragment(), SingleDishesFragment.class.getName());
-        }
-    };
+//    AvoidDoubleClickListener onBuyLsn = new AvoidDoubleClickListener() {
+//        @Override
+//        public void onViewClick(View v) {
+//            int position = (int) v.getTag();
+//            if (adapter == null)
+//                return;
+//
+//            RecommendEntry entry = adapter.getItem(position);
+//
+//            if (entry.remains <= 0) {
+//                alertOutOfRemains();
+//                return;
+//            }
+//
+//            gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new SingleDishesFragment(), SingleDishesFragment.class.getName());
+//        }
+//    };
 
     /**
      * 剩余量不足
@@ -297,9 +297,10 @@ public class PayResultFragment extends BaseFragment {
                 if (entry != null) {
                     if (TextUtils.isEmpty(entry.errmsg)) {
                         alertRedPacketsShare(entry.count, entry.url, entry.title, entry.content);
-                    } else {
-                        ToastHelper.showShort(getActivity(), entry.errmsg);
                     }
+//                    else {
+//                        ToastHelper.showShort(getActivity(), entry.errmsg);
+//                    }
                 }
             }
 

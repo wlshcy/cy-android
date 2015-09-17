@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -17,6 +18,7 @@ import com.shequcun.farm.data.AddressEntry;
 import com.shequcun.farm.data.AddressListEntry;
 import com.shequcun.farm.data.ComboEntry;
 import com.shequcun.farm.data.CouponEntry;
+import com.shequcun.farm.data.ModifyOrderParams;
 import com.shequcun.farm.data.OrderEntry;
 import com.shequcun.farm.data.OtherInfo;
 import com.shequcun.farm.data.PayParams;
@@ -70,6 +72,7 @@ public class PayComboFragment extends BaseFragment {
         add_address_ly = v.findViewById(R.id.add_address_ly);
         addressLy = v.findViewById(R.id.addressee_ly);
         red_packets_money_ly = v.findViewById(R.id.red_packets_money_ly);
+        ((ImageView)v.findViewById(R.id.right_arrow_iv)).setImageResource(R.drawable.icon_more);
     }
 
     @Override
@@ -82,7 +85,7 @@ public class PayComboFragment extends BaseFragment {
         addressLy.setOnClickListener(onClick);
         red_packets_money_ly.setOnClickListener(onClick);
         OtherInfo info = buildOtherInfo();
-        red_packets_money_ly.setVisibility(info != null && info.isSckill ? View.GONE : View.VISIBLE);
+        red_packets_money_ly.setVisibility((info != null && info.isSckill) ? View.GONE : View.VISIBLE);
     }
 
     int getOrderMoney() {
@@ -351,7 +354,18 @@ public class PayComboFragment extends BaseFragment {
             if (v == back)
                 popBackStack();
             else if (v == alipay_ly) {
+//                if (payParams != null) {
+//                    requestAlipay();
+//                    return;
+//                }
+
                 OtherInfo info = buildOtherInfo();
+
+                if (info != null && info.item_type != 0) {
+                    requestAlipay();
+                    return;
+                }
+
                 if (info != null && info.type == 3) {//创建单品订单
                     createSingleOrder(info);
                     return;
@@ -364,8 +378,12 @@ public class PayComboFragment extends BaseFragment {
                 bundle.putInt(AddressListFragment.Action.KEY, AddressListFragment.Action.SELECT);
                 gotoFragmentByAdd(bundle, R.id.mainpage_ly, new AddressListFragment(), AddressListFragment.class.getName());
             } else if (red_packets_money_ly == v) {
+                OtherInfo info = buildOtherInfo();
                 Bundle bundle = new Bundle();
-                bundle.putInt(RedPacketsListFragment.KEY_TYPE, buildOtherInfo() != null && buildOtherInfo().type == 3 ? 2 : 1);
+                if (info != null && info.item_type == 0)
+                    bundle.putInt(RedPacketsListFragment.KEY_TYPE, info != null && info.type == 3 ? 2 : 1);
+                else
+                    bundle.putInt(RedPacketsListFragment.KEY_TYPE, info != null ? info.item_type : 1);
                 gotoFragmentByAdd(bundle, R.id.mainpage_ly, new RedPacketsListFragment(), RedPacketsListFragment.class.getName());
             }
         }
@@ -473,6 +491,53 @@ public class PayComboFragment extends BaseFragment {
         });
     }
 
+    void requestAlipay() {
+        RequestParams params = new RequestParams();
+        params.add("orderno", entry.orderno);
+        if (coupon_id > -1)
+            params.add("coupon_id", coupon_id + "");
+        params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
+        final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
+        HttpRequestUtil.httpPost(LocalParams.getBaseUrl() + "cai/payorder", params, new AsyncHttpResponseHandler() {
+
+            @Override
+            public void onStart() {
+                super.onStart();
+                pDlg.show();
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                pDlg.dismiss();
+            }
+
+            @Override
+            public void onSuccess(int sCode, Header[] h, byte[] data) {
+                if (data != null && data.length > 0) {
+                    OrderEntry oEntry = JsonUtilsParser.fromJson(new String(data), OrderEntry.class);
+                    if (oEntry != null) {
+                        if (TextUtils.isEmpty(oEntry.errmsg)) {
+                            aUtils.doAlipay(oEntry.alipay);
+                            return;
+                        }
+                        ToastHelper.showShort(getActivity(), oEntry.errmsg);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
+                ToastHelper.showShort(getActivity(), "获取支付内容失败");
+            }
+        });
+    }
+
+//    void buildPayParams() {
+//        Bundle bundle = getArguments();
+//        payParams = bundle != null ? ((PayParams) bundle.getSerializable("PayParams")) : null;
+//    }
+
     //优惠券id
     int coupon_id = -1;
     String alipay;
@@ -492,4 +557,5 @@ public class PayComboFragment extends BaseFragment {
     String addressStr;
     //使用优惠红包
     View red_packets_money_ly;
+//    PayParams payParams;
 }

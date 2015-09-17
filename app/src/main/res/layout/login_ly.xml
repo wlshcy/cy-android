@@ -21,18 +21,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="@dimen/px50"
                 android:layout_marginBottom="@dimen/px20"
+                android:layout_marginTop="@dimen/px50"
                 android:src="@drawable/icon_small_logo" />
 
             <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_gravity="center"-->
-                <!--android:layout_marginBottom="14dp"-->
-                <!--android:text="@string/login_tip"-->
-                <!--android:textColor="@android:color/black"-->
-                <!--android:textSize="@dimen/font26" />-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_marginBottom="14dp"-->
+            <!--android:text="@string/login_tip"-->
+            <!--android:textColor="@android:color/black"-->
+            <!--android:textSize="@dimen/font26" />-->
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -57,6 +57,8 @@
                         android:hint="@string/input_mobile_phone"
                         android:inputType="phone"
                         android:paddingLeft="13dp"
+                        android:textColor="@android:color/black"
+                        android:textColorHint="@color/gray_cecece"
                         android:textSize="@dimen/font28" />
 
                     <Button
@@ -86,6 +88,8 @@
                     android:hint="@string/sms_code"
                     android:inputType="phone"
                     android:paddingLeft="13dp"
+                    android:textColor="@android:color/black"
+                    android:textColorHint="@color/gray_cecece"
                     android:textSize="@dimen/font28" />
             </LinearLayout>
 

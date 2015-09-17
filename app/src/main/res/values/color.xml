@@ -13,6 +13,7 @@
     <color name="black_444444">#444444</color>
     <color name="black_5a5e5d">#5a5e5d</color>
     <color name="gray_c7c7c7">#c7c7c7</color>
+
     <color name="gray_999999">#999999</color>
     <color name="common_status_yellow">#ff9600</color>
     <color name="orange_a45500">#a45500</color>
@@ -30,6 +31,7 @@
     <color name="green_11C258">#11c258</color>
     <color name="green_94d6c0">#94d6c0</color>
     <color name="gray_f0f0f0">#f0f0f0</color>
+    <color name="gray_fafafa">#fafafa</color>
     <color name="gray_818181">#818181</color><!--灰色-->
     <color name="green_24c05d">#24c05d</color>
     <color name="green_32bd6f">#32bd6f</color>

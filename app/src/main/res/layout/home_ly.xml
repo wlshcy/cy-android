@@ -7,7 +7,7 @@
         android:id="@+id/pView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="@color/gray_ececec"
+        android:background="@color/gray_fafafa"
         android:descendantFocusability="beforeDescendants"
         android:fillViewport="true"
         android:focusable="true"

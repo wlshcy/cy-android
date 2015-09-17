@@ -21,6 +21,7 @@ import com.shequcun.farm.data.AlreadyPurchasedListEntry;
 import com.shequcun.farm.data.ComboEntry;
 import com.shequcun.farm.data.ModifyOrderParams;
 import com.shequcun.farm.data.OrderEntry;
+import com.shequcun.farm.data.OtherInfo;
 import com.shequcun.farm.data.PayParams;
 import com.shequcun.farm.data.UserLoginEntry;
 import com.shequcun.farm.datacenter.CacheManager;
@@ -107,7 +108,17 @@ public class ModifyOrderFragment extends BaseFragment {
                         cancelOrder();
                     }
                 } else if (getOrderStatus() == 0) {
-                    requestAlipay(hEntry);
+                    ComboEntry entry = new ComboEntry();
+                    entry.setPosition(0);
+                    entry.prices = new int[1];
+                    entry.prices[0] = hEntry.price / 100 >= 99 ? hEntry.price : hEntry.price + 10 * 10 * 10;
+                    entry.orderno = hEntry.orderno;
+                    entry.info = new OtherInfo();
+                    entry.info.isSckill = hEntry.type == 3 ? true : false;// 1.选菜菜品 2.普通单品, 3.秒杀单品
+                    entry.info.item_type = hEntry.type;
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("ComboEntry", entry);
+                    gotoFragmentByAdd(bundle, R.id.mainpage_ly, new PayComboFragment(), PayComboFragment.class.getName());
                 }
             }
         }
@@ -270,32 +281,6 @@ public class ModifyOrderFragment extends BaseFragment {
         adapter.notifyDataSetChanged();
     }
 
-    void requestAlipay(final ModifyOrderParams entry) {
-        RequestParams params = new RequestParams();
-        params.add("orderno", entry.orderno);
-        params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
-        HttpRequestUtil.httpPost(LocalParams.getBaseUrl() + "cai/payorder", params, new AsyncHttpResponseHandler() {
-            @Override
-            public void onSuccess(int sCode, Header[] h, byte[] data) {
-                if (data != null && data.length > 0) {
-                    OrderEntry oEntry = JsonUtilsParser.fromJson(new String(data), OrderEntry.class);
-                    if (oEntry != null) {
-                        if (TextUtils.isEmpty(oEntry.errmsg)) {
-                            gotoFragmentByAdd(buildBundle(entry.orderno, entry.price, oEntry.alipay, R.string.pay_success), R.id.mainpage_ly, new PayFragment(), PayFragment.class.getName());
-                            return;
-                        }
-
-                        ToastHelper.showShort(getActivity(), oEntry.errmsg);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
-                ToastHelper.showShort(getActivity(), "获取支付内容失败");
-            }
-        });
-    }
 
     Bundle buildBundle(String orderno, int orderMoney, String alipay, int titleId) {
         Bundle bundle = new Bundle();
