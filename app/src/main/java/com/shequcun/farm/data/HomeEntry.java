@@ -11,7 +11,7 @@ public class HomeEntry extends BaseEntry {
     @SerializedName("mycombo")
     public ComboEntry myCombos;//我的套餐
     @SerializedName("items")
-    public List<RecommendEntry> rList;//推荐菜品
+    public List<RecommendEntry> items;//推荐菜品
     @SerializedName("slides")
     public List<SlidesEntry> sList;//轮播图
 }

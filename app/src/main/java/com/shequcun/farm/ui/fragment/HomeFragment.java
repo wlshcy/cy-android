@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
-import com.android.volley.Request;
 import com.common.widget.CircleFlowIndicator;
 import com.common.widget.ExpandableHeightGridView;
 import com.common.widget.PullToRefreshBase;
@@ -28,7 +27,6 @@ import com.shequcun.farm.data.LinkEntry;
 import com.shequcun.farm.data.RecommendEntry;
 import com.shequcun.farm.data.RecommentListEntry;
 import com.shequcun.farm.data.SlidesEntry;
-import com.shequcun.farm.data.SlidesListEntry;
 import com.shequcun.farm.data.UserLoginEntry;
 import com.shequcun.farm.datacenter.CacheManager;
 import com.shequcun.farm.dlg.ProgressDlg;
@@ -39,7 +37,6 @@ import com.shequcun.farm.util.IntentUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.ToastHelper;
-import com.shequcun.farm.util.Utils;
 
 import org.apache.http.Header;
 
@@ -207,7 +204,7 @@ public class HomeFragment extends BaseFragment {
                         if (TextUtils.isEmpty(hEntry.errmsg)) {
                             if (mode != 2) {
                                 buildCarouselAdapter(hEntry.sList);
-                                addDataToAdapter(hEntry.rList);
+                                addDataToAdapter(hEntry.items);
                             }
                             doSaveMyComboToDisk(hEntry.myCombos);
                             return;

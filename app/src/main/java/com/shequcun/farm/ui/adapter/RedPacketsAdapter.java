@@ -69,10 +69,10 @@ public class RedPacketsAdapter extends BaseAdapter {
         }
         if (entry.type == 1) {
             vh.nameTv.setText("宅配套餐优惠红包");
-            vh.nameTv.setText("仅用于购买宅配套餐");
+            vh.targetTv.setText("仅用于购买宅配套餐");
         } else {
             vh.nameTv.setText("商品优惠红包");
-            vh.nameTv.setText("仅用于农庄优选商品");
+            vh.targetTv.setText("仅用于农庄优选商品");
         }
 
         if (entry.used || (serveTime > 0 && entry.expire <= serveTime)) {
