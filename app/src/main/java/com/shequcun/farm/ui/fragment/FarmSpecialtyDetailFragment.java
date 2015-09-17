@@ -156,7 +156,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
                 ShareContent shareContent = new ShareContent();
 //                shareContent.setUrlImage("drawable:///" + R.drawable.icon_share);
                 shareContent.setImageId(R.drawable.ic_launcher);
-                shareContent.setTargetUrl(Constrants.URL_FARM);
+                shareContent.setTargetUrl(Constrants.URL_SHARE);
                 shareContent.setTitle("万水千山总是情，有菜送你个红包行不行!");
                 shareContent.setContent("孩子的餐桌，有菜的标准。为孩子选择健康蔬菜。");
                 useUmengToShare(shareContent);
