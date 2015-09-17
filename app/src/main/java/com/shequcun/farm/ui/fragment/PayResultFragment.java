@@ -297,10 +297,9 @@ public class PayResultFragment extends BaseFragment {
                 if (entry != null) {
                     if (TextUtils.isEmpty(entry.errmsg)) {
                         alertRedPacketsShare(entry.count, entry.url, entry.title, entry.content);
+                    } else {
+                        ToastHelper.showShort(getActivity(), entry.errmsg);
                     }
-//                    else {
-//                        ToastHelper.showShort(getActivity(), entry.errmsg);
-//                    }
                 }
             }
 
