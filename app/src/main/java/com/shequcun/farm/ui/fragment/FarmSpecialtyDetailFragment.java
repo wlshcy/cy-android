@@ -157,8 +157,8 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
 //                shareContent.setUrlImage("drawable:///" + R.drawable.icon_share);
                 shareContent.setImageId(R.drawable.ic_launcher);
                 shareContent.setTargetUrl(Constrants.URL_FARM);
-                shareContent.setTitle("test");
-                shareContent.setContent("test");
+                shareContent.setTitle("万水千山总是情，有菜送你个红包行不行!");
+                shareContent.setContent("孩子的餐桌，有菜的标准。为孩子选择健康蔬菜。");
                 useUmengToShare(shareContent);
             } else if (v == producingPlaceTv) {
                 gotoProducingPlaceFragment(entry.fid);
