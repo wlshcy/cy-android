@@ -39,8 +39,8 @@
             android:layout_weight="1"
             android:background="@drawable/prompt_tv_bgcolor_shape"
             android:gravity="center"
-            android:paddingBottom="@dimen/px40"
-            android:paddingTop="@dimen/px40"
+            android:paddingBottom="@dimen/px20"
+            android:paddingTop="@dimen/px20"
             android:text="取消" />
 
         <View
@@ -56,8 +56,8 @@
             android:layout_weight="1"
             android:background="@drawable/prompt_tv_bgcolor_shape"
             android:gravity="center"
-            android:paddingBottom="@dimen/px40"
-            android:paddingTop="@dimen/px40"
+            android:paddingBottom="@dimen/px20"
+            android:paddingTop="@dimen/px20"
             android:text="确定" />
     </LinearLayout>
 

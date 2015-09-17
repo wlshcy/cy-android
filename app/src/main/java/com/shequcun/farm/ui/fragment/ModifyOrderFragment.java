@@ -398,11 +398,6 @@ public class ModifyOrderFragment extends BaseFragment {
         address.setText("地址: " + addressStr);
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-    }
-
     View addressLy;
     ModifyOrderParams hEntry;
     AlreadyPurchasedAdapter adapter;
