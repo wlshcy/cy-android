@@ -71,8 +71,9 @@ public class ModifyOrderFragment extends BaseFragment {
             int orderType = getOrderType();
             order_btn.setText(orderType == 1 || orderType == 2 ? R.string.re_choose_dishes : R.string.cancel_order);
         } else if (getOrderStatus() == 2) {//订单配送中
-            order_btn.setEnabled(false);
-            order_btn.setText(hEntry == null ? "" : hEntry.date);
+//            order_btn.setEnabled(false);
+//            order_btn.setText(hEntry == null ? "" : hEntry.date);
+            order_btn.setVisibility(View.GONE);
         } else {
             order_btn.setVisibility(View.GONE);
         }
@@ -337,7 +338,7 @@ public class ModifyOrderFragment extends BaseFragment {
     }
 
     void requestUserAddress() {
-        HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "user/address", new AsyncHttpResponseHandler() {
+        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "user/address", new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int sCode, Header[] h, byte[] data) {
                 if (data != null && data.length > 0) {
