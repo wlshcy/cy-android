@@ -7,7 +7,7 @@
     <com.common.widget.ViewFlow
         android:id="@+id/carousel_img"
         android:layout_width="fill_parent"
-        android:layout_height="300dp"
+        android:layout_height="270dp"
         android:focusable="true"
         android:focusableInTouchMode="true" />
 
