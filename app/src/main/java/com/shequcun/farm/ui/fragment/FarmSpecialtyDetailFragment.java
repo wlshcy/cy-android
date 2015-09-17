@@ -182,6 +182,8 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
         if (entry == null)
             return;
         if (entry.type == 2) {//秒杀菜品
+
+
             final View childView = LayoutInflater.from(getActivity()).inflate(R.layout.pay_widget_ly, null);
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             params.gravity = Gravity.BOTTOM;
@@ -191,6 +193,12 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
             childView.findViewById(R.id.buy_order_tv).setOnClickListener(new View.OnClickListener() {//支付
                 @Override
                 public void onClick(View view) {
+
+                    if (!isLogin()) {
+                        gotoFragmentByAdd(R.id.mainpage_ly, new LoginFragment(), LoginFragment.class.getName());
+                        return;
+                    }
+
                     ComboEntry tmpEntry = new ComboEntry();
                     tmpEntry.setPosition(0);
                     tmpEntry.prices = new int[1];
@@ -321,6 +329,16 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
             ToastHelper.showShort(getActivity(), showText);
         }
     };
+
+    /**
+     * 是否登录成功
+     *
+     * @return
+     */
+    boolean isLogin() {
+        return new CacheManager(getActivity()).getUserLoginFromDisk() != null;
+    }
+
 
     private ShareUtil shareController;
 

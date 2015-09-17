@@ -76,8 +76,8 @@ public class HomeFragment extends BaseFragment {
     protected void setWidgetLsn() {
 //        requestSlideFromServer();
         doRegisterRefreshBrodcast();
-//        pView.setMode(PullToRefreshBase.Mode.PULL_FROM_END);
-        pView.setMode(PullToRefreshBase.Mode.DISABLED);
+        pView.setMode(PullToRefreshBase.Mode.PULL_FROM_END);
+//        pView.setMode(PullToRefreshBase.Mode.DISABLED);
         pView.setOnRefreshListener(onRefrshLsn);
         gv.setOnItemClickListener(onItemClk);
         no_combo_iv.setOnClickListener(onClick);
@@ -186,7 +186,7 @@ public class HomeFragment extends BaseFragment {
 
         @Override
         public void onPullUpToRefresh(PullToRefreshBase refreshView) {
-//            requestRecomendDishes();
+            requestRecomendDishes();
 //            requestHome(1);
         }
     };
@@ -218,6 +218,14 @@ public class HomeFragment extends BaseFragment {
             public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
                 buildCarouselAdapter(null);
             }
+
+//            @Override
+//            public void onFinish() {
+//                super.onFinish();
+//                if (pView != null)
+//                    pView.onRefreshComplete();
+//            }
+
         });
     }
 
@@ -283,12 +291,12 @@ public class HomeFragment extends BaseFragment {
                 ToastHelper.showShort(getActivity(), R.string.spike_error_tip);
                 return;
             }
-
-            if (isLogin()) {
-                gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailFragment(), FarmSpecialtyDetailFragment.class.getName());
-            } else {
-                gotoFragmentByAdd(R.id.mainpage_ly, new LoginFragment(), LoginFragment.class.getName());
-            }
+            gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailFragment(), FarmSpecialtyDetailFragment.class.getName());
+//            if (isLogin()) {
+//            }
+//            else {
+//                gotoFragmentByAdd(R.id.mainpage_ly, new LoginFragment(), LoginFragment.class.getName());
+//            }
         }
     };
 
