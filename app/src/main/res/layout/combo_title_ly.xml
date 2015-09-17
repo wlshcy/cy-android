@@ -2,14 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/px16"
     android:orientation="vertical">
 
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="@dimen/px66"
-        android:background="@android:color/white"
+        android:background="@color/gray_fafafa"
         android:gravity="center"
         android:text="@string/organic_farm_combo"
         android:textColor="@android:color/black"
@@ -24,7 +23,7 @@
             android:id="@+id/no_combo_iv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scaleType="fitStart"
+            android:scaleType="fitXY"
             android:src="@drawable/icon_no_combo"
             android:visibility="gone" />
 
@@ -33,7 +32,7 @@
             android:id="@+id/has_combo_iv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scaleType="fitStart"
+            android:scaleType="fitXY"
             android:src="@drawable/icon_has_combo"
             android:visibility="gone" />
     </FrameLayout>

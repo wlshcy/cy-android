@@ -62,9 +62,9 @@ public class MyAdapter extends BaseAdapter {
             vh.tel_tv.setText(verName);
         } else {
             if ("拨打客服电话".equals(tip))
-            vh.tel_tv.setText(Constrants.Customer_Service_Phone);
+                vh.tel_tv.setText(Constrants.Customer_Service_Phone);
             else if ("我的优惠红包".equals(tip))
-            vh.tel_tv.setText("优惠券");
+                vh.tel_tv.setText("下单抵用");
 
         }
         return v;
