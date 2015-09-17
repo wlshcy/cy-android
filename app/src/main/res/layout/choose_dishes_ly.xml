@@ -52,7 +52,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:layout_marginBottom="@dimen/px120"
+                android:layout_marginBottom="@dimen/px110"
                 android:orientation="vertical">
 
                 <TextView
@@ -61,11 +61,12 @@
                     android:layout_height="@dimen/px74"
                     android:layout_gravity="right"
                     android:layout_marginRight="@dimen/px30"
-                    android:background="@drawable/shopping_cart_widget_selector_1"
+                    android:background="@drawable/shopping_cart_widget_selector_3"
                     android:gravity="center"
                     android:text="@string/option_dishes"
+                 android:visibility="gone"
                     android:textColor="@android:color/white"
-                    android:visibility="gone" />
+                  />
 
 
                 <TextView
