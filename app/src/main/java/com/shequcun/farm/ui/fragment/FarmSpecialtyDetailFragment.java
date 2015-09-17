@@ -186,21 +186,21 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             params.gravity = Gravity.BOTTOM;
             pView.addView(childView, params);
-            ((TextView) childView.findViewById(R.id.shop_cart_total_price_tv)).setText("共付:" + Utils.unitPeneyToYuan(entry.price));
+            ((TextView) childView.findViewById(R.id.shop_cart_total_price_tv)).setText("共付:" + Utils.unitPeneyToYuan(entry.price / 100 >= 99 ? entry.price : entry.price + 10 * 10 * 10));
             childView.findViewById(R.id.shop_cart_surpport_now_pay_tv).setVisibility(View.GONE);
             childView.findViewById(R.id.buy_order_tv).setOnClickListener(new View.OnClickListener() {//支付
                 @Override
                 public void onClick(View view) {
-                    ComboEntry entry = new ComboEntry();
-                    entry.setPosition(0);
-                    entry.prices = new int[1];
-                    entry.prices[0] = buildRecommendEntry().price;
-                    entry.info = new OtherInfo();
-                    entry.info.extras = getExtras();
-                    entry.info.type = 3;
-                    entry.info.isSckill = true;
+                    ComboEntry tmpEntry = new ComboEntry();
+                    tmpEntry.setPosition(0);
+                    tmpEntry.prices = new int[1];
+                    tmpEntry.prices[0] = entry.price / 100 >= 99 ? entry.price : entry.price + 10 * 10 * 10;
+                    tmpEntry.info = new OtherInfo();
+                    tmpEntry.info.extras = getExtras();
+                    tmpEntry.info.type = 3;
+                    tmpEntry.info.isSckill = true;
                     Bundle bundle = new Bundle();
-                    bundle.putSerializable("ComboEntry", entry);
+                    bundle.putSerializable("ComboEntry", tmpEntry);
                     gotoFragmentByAdd(bundle, R.id.mainpage_ly, new PayComboFragment(), PayComboFragment.class.getName());
 
                 }

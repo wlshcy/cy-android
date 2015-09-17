@@ -3,6 +3,7 @@ package com.shequcun.farm.ui.fragment;
 import android.app.AlertDialog;
 import android.graphics.Color;
 import android.graphics.PointF;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -49,6 +50,7 @@ import com.shequcun.farm.util.Utils;
 
 import org.apache.http.Header;
 
+import java.sql.Driver;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -842,7 +844,8 @@ public class ChooseDishesFragment extends BaseFragment {
             } else if (status == 2) {
                 choose_dishes_tip.setVisibility(View.VISIBLE);
                 choose_dishes_tip.setText(R.string.choose_dishes_tip);
-
+                Drawable left = getActivity().getResources().getDrawable(R.drawable.icon_sigh);
+                choose_dishes_tip.setCompoundDrawablesWithIntrinsicBounds(left, null, null, null);
                 return false;
             } else {
                 choose_dishes_tip.setVisibility(View.GONE);

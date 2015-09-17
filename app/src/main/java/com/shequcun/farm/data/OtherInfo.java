@@ -10,4 +10,6 @@ public class OtherInfo implements Serializable {
     public String memo;//备注
     public int type;
     public boolean isSckill = false;
+
+    public int item_type=0;//1.选菜菜品 2.普通单品, 3.秒杀单品
 }

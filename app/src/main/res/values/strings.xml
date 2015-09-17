@@ -143,7 +143,7 @@
     <string name="unpaid">未付款</string>
     <string name="nodelivery">待配送</string>
     <string name="choose_dishes_successful">您已选好菜品啦!</string>
-    <string name="choose_dishes_tip">抱歉本期选菜时间已过。请于两天后开始选菜!</string>
+    <string name="choose_dishes_tip">本期选菜时间已过,请于周五开始下期选菜!</string>
     <string name="has_chosen_dishes">本期菜品已选</string>
     <string name="market_price">市场价</string>
     <string name="specialty">农庄优选</string>

@@ -43,6 +43,8 @@ public class HistoryOrderEntry implements Serializable {
     public JsonObject json;
     @SerializedName("price")
     public int price;
+    @SerializedName("item_type")
+    public int item_type;
 
     public String date;
 }
