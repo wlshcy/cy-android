@@ -286,12 +286,12 @@ public class HomeFragment extends BaseFragment {
                 ToastHelper.showShort(getActivity(), R.string.spike_error_tip);
                 return;
             }
-
-            if (isLogin()) {
-                gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailFragment(), FarmSpecialtyDetailFragment.class.getName());
-            } else {
-                gotoFragmentByAdd(R.id.mainpage_ly, new LoginFragment(), LoginFragment.class.getName());
-            }
+            gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailFragment(), FarmSpecialtyDetailFragment.class.getName());
+//            if (isLogin()) {
+//            }
+//            else {
+//                gotoFragmentByAdd(R.id.mainpage_ly, new LoginFragment(), LoginFragment.class.getName());
+//            }
         }
     };
 
