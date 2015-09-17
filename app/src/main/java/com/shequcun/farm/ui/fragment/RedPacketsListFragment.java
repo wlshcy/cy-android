@@ -81,7 +81,8 @@ public class RedPacketsListFragment extends BaseFragment {
 
     @Override
     protected void setWidgetLsn() {
-        redPacketsLv.setOnItemClickListener(onItemClickListener);
+        if (type == AddressListFragment.Action.SELECT)
+            redPacketsLv.setOnItemClickListener(onItemClickListener);
         redPacketsLv.setOnRefreshListener(onRefreshListener);
         redPacketsLv.setOnRefreshingScrollToOriginal(onRefreshingScrollToOriginal);
         leftIv.setOnClickListener(onClickListener);
@@ -93,13 +94,13 @@ public class RedPacketsListFragment extends BaseFragment {
         public void onClick(View v) {
             if (v == rightTv) {
                 gotoRuleFragment();
-                } else if (v == leftIv) {
+            } else if (v == leftIv) {
                 popBackStack();
             }
         }
     };
 
-    private void gotoRuleFragment(){
+    private void gotoRuleFragment() {
         Bundle bundle = new Bundle();
         bundle.putString("Url", "https://store.shequcun.com/coupon/yc_info");
         bundle.putInt("TitleId", R.string.red_packets_rule);
@@ -202,10 +203,10 @@ public class RedPacketsListFragment extends BaseFragment {
         entry.list.get(0).used = true;
         if (curSize > 0 && curSize % length < length) return;
         /*选择优惠券时*/
-        if (type!=0){
+        if (type != 0) {
             /*过滤出无效优惠券*/
-            filterExpire(entry.list,entry.time);
-        }else {
+            filterExpire(entry.list, entry.time);
+        } else {
             adapter.setServeTime(entry.time);
         }
         adapter.addAll(entry.list);
