@@ -160,6 +160,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/px120"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
                 />
         </LinearLayout>
     </ScrollView>
