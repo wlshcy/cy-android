@@ -17,21 +17,49 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="@dimen/px290">
 
-        <ImageView
+        <FrameLayout
             android:id="@+id/no_combo_iv"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/icon_no_combo"
-            android:visibility="gone" />
+            android:layout_height="match_parent"
+            android:background="#e1f1e0"
+            android:visibility="gone">
 
-        <ImageView
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icon_no_combo" />
+        </FrameLayout>
+
+
+        <RelativeLayout
             android:id="@+id/has_combo_iv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/icon_has_combo"
-            android:visibility="gone" />
+            android:background="#f6ecdb"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icon_has_combo" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/icon_my_combo"
+                android:gravity="center"
+                android:text="@string/my_combo"
+                android:textColor="@android:color/white" />
+        </RelativeLayout>
+
+
     </FrameLayout>
 
 

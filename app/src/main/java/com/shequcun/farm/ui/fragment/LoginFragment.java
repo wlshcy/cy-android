@@ -61,11 +61,11 @@ public class LoginFragment extends BaseFragment {
      */
     private void doAuthInit() {
 
-        String cookieValue = PersistanceManager.getCookieValue(getActivity());
-        if (!TextUtils.isEmpty(cookieValue)) {
-            doGetSnsCode();
-            return;
-        }
+//        String cookieValue = PersistanceManager.getCookieValue(getActivity());
+//        if (!TextUtils.isEmpty(cookieValue)) {
+//            doGetSnsCode();
+//            return;
+//        }
 
         final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
         HttpRequestUtil.httpGet(

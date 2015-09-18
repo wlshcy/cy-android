@@ -57,7 +57,7 @@ public class OrderDelayFragment extends BaseFragment {
         delayTv = (TextView) v.findViewById(R.id.delay_tv);
         titleTv.setText(R.string.order_delay_delivery);
         leftIv = v.findViewById(R.id.back);
-        orderNo = readOrderNoFromDisk();
+//        orderNo = readOrderNoFromDisk();
         requestMycombo();
 //        if (TextUtils.isEmpty(orderNo)) {
 //            disableDelayView(R.string.you_have_not_buy_combo);
@@ -161,6 +161,7 @@ public class OrderDelayFragment extends BaseFragment {
     }
 
     private void requestGetDelayState(String orderNo) {
+        this.orderNo = orderNo;
         RequestParams params = new RequestParams();
         params.add("orderno", orderNo);
         final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");

@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/px92"
         android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginBottom="@dimen/px74"
+        android:layout_marginBottom="@dimen/px80"
         android:layout_marginLeft="@dimen/px98"
         android:layout_marginRight="@dimen/px98"
         android:background="@drawable/shopping_cart_widget_selector_1"

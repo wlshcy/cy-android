@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
+import com.android.volley.Request;
 import com.common.widget.CircleFlowIndicator;
 import com.common.widget.ExpandableHeightGridView;
 import com.common.widget.PullToRefreshBase;
@@ -164,6 +165,7 @@ public class HomeFragment extends BaseFragment {
                 if (link.type == 1) {//1.套餐详情,
                     requestComboDetail(link.id);
                 } else if (link.type == 2) {//2.菜品详情
+                    requestSingleDishDetail(link.id);
                 }
                 return;
             }
@@ -206,7 +208,7 @@ public class HomeFragment extends BaseFragment {
                                 buildCarouselAdapter(hEntry.sList);
                                 addDataToAdapter(hEntry.items);
                             }
-                            doSaveMyComboToDisk(hEntry.myCombos);
+                            updateMyComboStatus(hEntry.has_combo);
                             return;
                         }
                         ToastHelper.showShort(getActivity(), hEntry.errmsg);
@@ -216,16 +218,9 @@ public class HomeFragment extends BaseFragment {
 
             @Override
             public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
+                ToastHelper.showShort(getActivity(), "请求失败.错误码" + sCode);
                 buildCarouselAdapter(null);
             }
-
-//            @Override
-//            public void onFinish() {
-//                super.onFinish();
-//                if (pView != null)
-//                    pView.onRefreshComplete();
-//            }
-
         });
     }
 
@@ -234,6 +229,11 @@ public class HomeFragment extends BaseFragment {
      * 请求特产
      */
     void requestRecomendDishes() {
+        RequestParams params = new RequestParams();
+        params.add("length", 15 + "");
+        if (adapter != null && adapter.getCount() >= 1) {
+            params.add("lastid", adapter.getItem(adapter.getCount() - 1).id + "");
+        }
         HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "cai/itemlist", new AsyncHttpResponseHandler() {
             @Override
             public void onFinish() {
@@ -308,28 +308,59 @@ public class HomeFragment extends BaseFragment {
     }
 
 
-    void doSaveMyComboToDisk(ComboEntry entry) {
-        if (entry != null) {
-            byte[] data = new CacheManager(getActivity()).getUserLoginFromDisk();
-            if (data != null && data.length > 0) {
-                UserLoginEntry uentry = JsonUtilsParser.fromJson(new String(data), UserLoginEntry.class);
-                if (uentry != null) {
-                    uentry.mycomboids = new int[1];
-                    comboEntry = entry;
-                    uentry.mycomboids[0] = comboEntry.id;
-                    uentry.orderno = comboEntry.con;
-                    new CacheManager(getActivity()).saveUserLoginToDisk(JsonUtilsParser.toJson(uentry).getBytes());
-                }
-                no_combo_iv.setVisibility(View.GONE);
-                has_combo_iv.setVisibility(View.VISIBLE);
-
-            }
+    void updateMyComboStatus(boolean isShow) {
+        if (isShow) {
+            no_combo_iv.setVisibility(View.GONE);
+            has_combo_iv.setVisibility(View.VISIBLE);
         } else {
             comboEntry = null;
             no_combo_iv.setVisibility(View.VISIBLE);
             has_combo_iv.setVisibility(View.GONE);
         }
     }
+
+
+    void requestSingleDishDetail(int id) {
+        final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
+        RequestParams params = new RequestParams();
+        params.add("id", "" + id);
+
+        HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "cai/itemdtl", params, new AsyncHttpResponseHandler() {
+
+            @Override
+            public void onStart() {
+                super.onStart();
+                pDlg.show();
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                pDlg.dismiss();
+            }
+
+            @Override
+            public void onSuccess(int sCode, Header[] h, byte[] data) {
+                if (data != null && data.length > 0) {
+                    RecommendEntry entry = JsonUtilsParser.fromJson(new String(data), RecommendEntry.class);
+                    if (entry != null) {
+                        if (TextUtils.isEmpty(entry.errmsg)) {
+                            gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailFragment(), FarmSpecialtyDetailFragment.class.getName());
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
+
+            }
+        });
+
+
+//
+    }
+
 
     void requestComboDetail(int id) {
         final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");

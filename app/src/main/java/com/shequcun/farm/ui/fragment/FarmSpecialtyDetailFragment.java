@@ -84,7 +84,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
             contentTv.setText(entry.detail.content);
         }
         RecommendEntry localEntry = readRecommendEntryFromDisk(entry);
-        this.entry.count = 0;
+        this.entry.count = 1;
         if (localEntry == null) return;
 //        if (goods_count == null) return;
         this.entry = localEntry;

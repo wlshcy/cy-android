@@ -17,9 +17,12 @@ import com.loopj.android.http.RequestParams;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.HistoryOrderEntry;
 import com.shequcun.farm.data.ModifyOrderParams;
+import com.shequcun.farm.data.MyComboOrderListEntry;
 import com.shequcun.farm.data.OrderListEntry;
+import com.shequcun.farm.data.RecommendEntry;
 import com.shequcun.farm.data.UserLoginEntry;
 import com.shequcun.farm.datacenter.CacheManager;
+import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.ui.adapter.MyOrderAdapter;
 import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
@@ -60,7 +63,56 @@ public class DishesFragment extends BaseFragment {
         scroll_view.setMode(PullToRefreshBase.Mode.DISABLED);
 //        scroll_view.setOnRefreshListener(onRefrshLsn);
         mLv.setOnItemClickListener(onItemLsn);
-        requestOrderEntry();
+//        requestOrderEntry();
+        requestOrderNo();
+    }
+
+
+    void requestOrderNo() {
+        final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
+
+        HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "cai/mycombo", new AsyncHttpResponseHandler() {
+
+            @Override
+            public void onStart() {
+                super.onStart();
+                pDlg.show();
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                pDlg.dismiss();
+                if (pBar != null) {
+                    pBar.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onSuccess(int sCode, Header[] h, byte[] data) {
+                if (data != null && data.length > 0) {
+//                    RecommendEntry entry = JsonUtilsParser.fromJson(new String(data), RecommendEntry.class);
+//                    if (entry != null) {
+//                        if (TextUtils.isEmpty(entry.errmsg)) {
+////                            gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailFragment(), FarmSpecialtyDetailFragment.class.getName());
+//                        }
+//                    }
+
+                    MyComboOrderListEntry entry = JsonUtilsParser.fromJson(new String(data), MyComboOrderListEntry.class);
+
+                    if (entry != null && entry.aList != null && entry.aList.size() > 0) {
+                        requestOrderEntry(entry.aList.get(0).con);
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
+
+            }
+        });
+
     }
 
 
@@ -89,16 +141,16 @@ public class DishesFragment extends BaseFragment {
         }
     };
 
-    PullToRefreshScrollView.OnRefreshListener2 onRefrshLsn = new PullToRefreshBase.OnRefreshListener2() {
-        @Override
-        public void onPullDownToRefresh(PullToRefreshBase refreshView) {
-        }
-
-        @Override
-        public void onPullUpToRefresh(PullToRefreshBase refreshView) {
-            requestOrderEntry();
-        }
-    };
+//    PullToRefreshScrollView.OnRefreshListener2 onRefrshLsn = new PullToRefreshBase.OnRefreshListener2() {
+//        @Override
+//        public void onPullDownToRefresh(PullToRefreshBase refreshView) {
+//        }
+//
+//        @Override
+//        public void onPullUpToRefresh(PullToRefreshBase refreshView) {
+//            requestOrderEntry();
+//        }
+//    };
 
 
     void buidlAdapter() {
@@ -130,16 +182,16 @@ public class DishesFragment extends BaseFragment {
     }
 
 
-    public void requestOrderEntry() {
-        UserLoginEntry uentry = new CacheManager(getActivity()).getUserLoginEntry();
-        if (uentry == null || TextUtils.isEmpty(uentry.orderno)) {
-            if (pBar != null) {
-                pBar.setVisibility(View.GONE);
-            }
-            return;
-        }
+    public void requestOrderEntry(String orderno) {
+//        UserLoginEntry uentry = new CacheManager(getActivity()).getUserLoginEntry();
+//        if (uentry == null || TextUtils.isEmpty(uentry.orderno)) {
+//            if (pBar != null) {
+//                pBar.setVisibility(View.GONE);
+//            }
+//            return;
+//        }
         RequestParams params = new RequestParams();
-        params.add("orderno", uentry.orderno);
+        params.add("orderno", orderno);
         HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "cai/choose", params, new AsyncHttpResponseHandler() {
             @Override
             public void onFinish() {
