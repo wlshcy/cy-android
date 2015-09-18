@@ -41,9 +41,13 @@ public class RedPacketsListFragment extends BaseFragment {
     private RedPacketsAdapter adapter;
     private View emptyView, leftIv;
     public static final String KEY_TYPE = "type";
+    public static final String KEY_ACTION = "action";
+    /*1、2 选择红包(1.套餐优惠券, 2.单品优惠券)*/
     private int type = 0;
+    private int action = 0;
     private int length = 10;
     private int curSize = 0;
+    public static final int ACTION_LOOK = 1;
 
     @Nullable
     @Override
@@ -81,7 +85,8 @@ public class RedPacketsListFragment extends BaseFragment {
 
     @Override
     protected void setWidgetLsn() {
-        if (type == AddressListFragment.Action.SELECT)
+        action = getActionFromParams();
+        if (action != ACTION_LOOK)
             redPacketsLv.setOnItemClickListener(onItemClickListener);
         redPacketsLv.setOnRefreshListener(onRefreshListener);
         redPacketsLv.setOnRefreshingScrollToOriginal(onRefreshingScrollToOriginal);
@@ -202,7 +207,7 @@ public class RedPacketsListFragment extends BaseFragment {
         }
         if (curSize > 0 && curSize % length < length) return;
         /*选择优惠券时*/
-        if (type != 0) {
+        if (action != ACTION_LOOK) {
             /*过滤出无效优惠券*/
             filterExpire(entry.list, entry.time);
         } else {
@@ -232,5 +237,10 @@ public class RedPacketsListFragment extends BaseFragment {
         Bundle bundle = getArguments();
         if (bundle == null) return 0;
         return bundle.getInt(KEY_TYPE);
+    }
+    private int getActionFromParams() {
+        Bundle bundle = getArguments();
+        if (bundle == null) return 0;
+        return bundle.getInt(KEY_ACTION);
     }
 }

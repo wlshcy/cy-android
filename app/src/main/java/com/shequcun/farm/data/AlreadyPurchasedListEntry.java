@@ -10,4 +10,6 @@ import java.util.List;
 public class AlreadyPurchasedListEntry extends BaseEntry{
     @SerializedName("items")
     public List<AlreadyPurchasedEntry> aList;
+    @SerializedName("cpflag")
+    public boolean cpflag;
 }

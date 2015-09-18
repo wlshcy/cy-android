@@ -23,17 +23,15 @@
             android:id="@+id/no_combo_iv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scaleType="fitXY"
-            android:src="@drawable/icon_no_combo"
-            android:visibility="gone" />
+            android:background="@drawable/icon_no_combo"
+            android:visibility="visible" />
 
 
         <ImageView
             android:id="@+id/has_combo_iv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scaleType="fitXY"
-            android:src="@drawable/icon_has_combo"
+            android:background="@drawable/icon_has_combo"
             android:visibility="gone" />
     </FrameLayout>
 

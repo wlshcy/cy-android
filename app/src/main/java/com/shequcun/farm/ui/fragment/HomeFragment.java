@@ -320,14 +320,14 @@ public class HomeFragment extends BaseFragment {
                     uentry.orderno = comboEntry.con;
                     new CacheManager(getActivity()).saveUserLoginToDisk(JsonUtilsParser.toJson(uentry).getBytes());
                 }
-                no_combo_iv.setVisibility(View.GONE);
-                has_combo_iv.setVisibility(View.VISIBLE);
+//                no_combo_iv.setVisibility(View.GONE);
+//                has_combo_iv.setVisibility(View.VISIBLE);
 
             }
         } else {
             comboEntry = null;
-            no_combo_iv.setVisibility(View.VISIBLE);
-            has_combo_iv.setVisibility(View.GONE);
+//            no_combo_iv.setVisibility(View.VISIBLE);
+//            has_combo_iv.setVisibility(View.GONE);
         }
     }
 

@@ -19,6 +19,7 @@ import com.shequcun.farm.data.AddressListEntry;
 import com.shequcun.farm.data.AlreadyPurchasedEntry;
 import com.shequcun.farm.data.AlreadyPurchasedListEntry;
 import com.shequcun.farm.data.ComboEntry;
+import com.shequcun.farm.data.CouponShareEntry;
 import com.shequcun.farm.data.ModifyOrderParams;
 import com.shequcun.farm.data.OrderEntry;
 import com.shequcun.farm.data.OtherInfo;
@@ -32,7 +33,13 @@ import com.shequcun.farm.util.AvoidDoubleClickListener;
 import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
+import com.shequcun.farm.util.ShareContent;
+import com.shequcun.farm.util.ShareUtil;
 import com.shequcun.farm.util.ToastHelper;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.bean.SocializeEntity;
+import com.umeng.socialize.bean.StatusCode;
+import com.umeng.socialize.controller.listener.SocializeListeners;
 
 import org.apache.http.Header;
 import org.json.JSONObject;
@@ -58,6 +65,7 @@ public class ModifyOrderFragment extends BaseFragment {
     @Override
     protected void initWidget(View v) {
         back = v.findViewById(R.id.back);
+        redPacketsIv = v.findViewById(R.id.redPacketsIv);
         order_btn = (TextView) v.findViewById(R.id.order_btn);
         mLv = (ListView) v.findViewById(R.id.mLv);
         hEntry = buildModifyOrderObj();
@@ -85,6 +93,7 @@ public class ModifyOrderFragment extends BaseFragment {
         requestUserAddress();
         back.setOnClickListener(onClick);
         order_btn.setOnClickListener(onClick);
+        redPacketsIv.setOnClickListener(onClick);
         requestOrderDetails();
     }
 
@@ -120,6 +129,10 @@ public class ModifyOrderFragment extends BaseFragment {
                     bundle.putSerializable("ComboEntry", entry);
                     gotoFragmentByAdd(bundle, R.id.mainpage_ly, new PayComboFragment(), PayComboFragment.class.getName());
                 }
+            } else if (v == redPacketsIv) {
+                if (hEntry == null) return;
+                if (TextUtils.isEmpty(hEntry.orderno)) return;
+                requestRedPacktetShareUrl(hEntry.orderno);
             }
         }
     };
@@ -209,6 +222,7 @@ public class ModifyOrderFragment extends BaseFragment {
                     AlreadyPurchasedListEntry entry = JsonUtilsParser.fromJson(new String(data), AlreadyPurchasedListEntry.class);
                     if (entry != null) {
                         if (TextUtils.isEmpty(entry.errmsg)) {
+                            setRedPacketsView(entry.cpflag);
                             buildAdapter(entry.aList);
                             return;
                         }
@@ -281,6 +295,10 @@ public class ModifyOrderFragment extends BaseFragment {
         adapter.notifyDataSetChanged();
     }
 
+    private void setRedPacketsView(boolean visible) {
+        if (visible)
+            redPacketsIv.setVisibility(View.VISIBLE);
+    }
 
     Bundle buildBundle(String orderno, int orderMoney, String alipay, int titleId) {
         Bundle bundle = new Bundle();
@@ -383,7 +401,74 @@ public class ModifyOrderFragment extends BaseFragment {
         address.setText("地址: " + addressStr);
     }
 
+    private void requestRedPacktetShareUrl(String orderNo) {
+        RequestParams params = new RequestParams();
+        params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
+        params.add("orderno", orderNo);
+        HttpRequestUtil.httpPost(LocalParams.getBaseUrl() + "cai/coupon", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onFinish() {
+                super.onFinish();
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String result = new String(responseBody);
+                CouponShareEntry entry = JsonUtilsParser.fromJson(result, CouponShareEntry.class);
+                if (entry != null) {
+                    if (TextUtils.isEmpty(entry.errmsg)) {
+                        useUmengToShare(entry.url, entry.title, entry.content);
+                    } else {
+                        ToastHelper.showShort(getActivity(), entry.errmsg);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+//                if (statusCode == 0) {
+//                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
+//                    return;
+//                }
+//                ToastHelper.showShort(getActivity(), "请求失败,错误码" + statusCode);
+            }
+        });
+    }
+
+    private void useUmengToShare(String url, String title, String content) {
+        if (shareController == null)
+            shareController = new ShareUtil(getActivity());
+        ShareContent shareContent = new ShareContent();
+        shareContent.setUrlImage("drawable:///" + R.drawable.icon_share_redpackets_logo);
+        shareContent.setTargetUrl(url);
+        shareContent.setTitle(title);
+        shareContent.setContent(content);
+        shareController.wxShareContent(shareContent);
+        shareController.circleShareContent(shareContent);
+        shareController.postShare(mSnsPostListener);
+    }
+
+    private SocializeListeners.SnsPostListener mSnsPostListener = new SocializeListeners.SnsPostListener() {
+
+        @Override
+        public void onStart() {
+        }
+
+        @Override
+        public void onComplete(SHARE_MEDIA sm, int eCode,
+                               SocializeEntity sEntity) {
+            String showText = "分享成功";
+            if (eCode != StatusCode.ST_CODE_SUCCESSED) {
+                showText = "分享失败 [" + eCode + "]";
+            }
+            ToastHelper.showShort(getActivity(), showText);
+        }
+    };
+
+    private ShareUtil shareController;
+
     View addressLy;
+    View redPacketsIv;
     ModifyOrderParams hEntry;
     AlreadyPurchasedAdapter adapter;
     View back;
