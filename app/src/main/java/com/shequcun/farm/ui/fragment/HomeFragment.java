@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
+import com.android.volley.Request;
 import com.common.widget.CircleFlowIndicator;
 import com.common.widget.ExpandableHeightGridView;
 import com.common.widget.PullToRefreshBase;
@@ -216,6 +217,7 @@ public class HomeFragment extends BaseFragment {
 
             @Override
             public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
+                ToastHelper.showShort(getActivity(), "请求失败.错误码" + sCode);
                 buildCarouselAdapter(null);
             }
 
@@ -234,6 +236,11 @@ public class HomeFragment extends BaseFragment {
      * 请求特产
      */
     void requestRecomendDishes() {
+        RequestParams params = new RequestParams();
+        params.add("length", 15 + "");
+        if (adapter != null && adapter.getCount() >= 1) {
+            params.add("lastid", adapter.getItem(adapter.getCount() - 1).id + "");
+        }
         HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "cai/itemlist", new AsyncHttpResponseHandler() {
             @Override
             public void onFinish() {
