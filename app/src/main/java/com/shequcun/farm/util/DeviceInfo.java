@@ -1,10 +1,12 @@
 package com.shequcun.farm.util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.telephony.TelephonyManager;
+import android.view.WindowManager;
 
 import java.util.UUID;
 
@@ -65,5 +67,10 @@ public class DeviceInfo {
             deviceId = "null";
         }
         return deviceId;
+    }
+
+    public static int getDeviceWidth(Activity context){
+        WindowManager wm = context.getWindowManager();
+        return wm.getDefaultDisplay().getWidth();
     }
 }

@@ -150,6 +150,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/px34"
                 android:paddingTop="@dimen/px22"
+                android:paddingBottom="@dimen/px22"
                 android:text="有菜安心直采蜂蜜"
                 android:textColor="@color/black_8e8e8e"
                 android:textSize="@dimen/font36" />
@@ -157,7 +158,9 @@
             <ImageView
                 android:id="@+id/content_img_iv"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/px22"
+                android:scaleType="centerCrop"/>
         </LinearLayout>
     </ScrollView>
 

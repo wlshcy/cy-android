@@ -29,7 +29,9 @@ import com.shequcun.farm.db.RecommendItemKey;
 import com.shequcun.farm.ui.SqcFarmActivity;
 import com.shequcun.farm.ui.adapter.CarouselAdapter;
 import com.shequcun.farm.util.Constrants;
+import com.shequcun.farm.util.DeviceInfo;
 import com.shequcun.farm.util.IntentUtil;
+import com.shequcun.farm.util.ResUtil;
 import com.shequcun.farm.util.ShareContent;
 import com.shequcun.farm.util.ShareUtil;
 import com.shequcun.farm.util.ToastHelper;
@@ -75,7 +77,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
         if (entry.detail != null && !TextUtils.isEmpty(entry.detail.image)) {
             if (!ImageLoader.getInstance().isInited())
                 ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(getActivity()));
-            ImageLoader.getInstance().displayImage(entry.detail.image, contentImgIv);
+            ImageLoader.getInstance().displayImage(entry.detail.image+"?imageView2/2/h/"+ DeviceInfo.getDeviceWidth(this.getActivity()), contentImgIv);
         }
         RecommendEntry localEntry = readRecommendEntryFromDisk(entry);
         this.entry.count = 0;
