@@ -77,11 +77,11 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
         if (entry.detail != null && !TextUtils.isEmpty(entry.detail.image)) {
             if (!ImageLoader.getInstance().isInited())
                 ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(getActivity()));
-            String url = entry.detail.image+"?imageView2/2/w/"+ DeviceInfo.getDeviceWidth(this.getActivity());
+            String url = entry.detail.image + "?imageView2/2/w/" + DeviceInfo.getDeviceWidth(this.getActivity());
             ImageLoader.getInstance().displayImage(url, contentImgIv);
         }
         RecommendEntry localEntry = readRecommendEntryFromDisk(entry);
-        this.entry.count = 0;
+        this.entry.count = 1;
         if (localEntry == null) return;
 //        if (goods_count == null) return;
         this.entry = localEntry;
