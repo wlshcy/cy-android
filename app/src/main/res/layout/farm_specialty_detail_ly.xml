@@ -159,8 +159,8 @@
                 android:id="@+id/content_img_iv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/px22"
-                android:scaleType="centerCrop"/>
+                android:layout_marginBottom="@dimen/px120"
+                />
         </LinearLayout>
     </ScrollView>
 
