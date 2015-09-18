@@ -1270,7 +1270,7 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout
 		FLIP;
 
 		static AnimationStyle getDefault() {
-			return ROTATE;
+			return FLIP;
 		}
 
 		/**
