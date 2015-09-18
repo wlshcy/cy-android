@@ -8,7 +8,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="@dimen/px50"
+        android:paddingBottom="@dimen/px20"
         android:scrollbars="none">
 
         <LinearLayout
@@ -148,9 +148,9 @@
                 android:id="@+id/desc_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/px22"
                 android:paddingLeft="@dimen/px34"
                 android:paddingTop="@dimen/px22"
-                android:paddingBottom="@dimen/px22"
                 android:text="有菜安心直采蜂蜜"
                 android:textColor="@color/black_8e8e8e"
                 android:textSize="@dimen/font36" />
@@ -160,9 +160,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/px120"
-                android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
-                />
+                android:scaleType="fitCenter" />
         </LinearLayout>
     </ScrollView>
 
