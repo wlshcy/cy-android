@@ -8,8 +8,8 @@ import java.util.List;
  * Created by mac on 15/9/7.
  */
 public class HomeEntry extends BaseEntry {
-    @SerializedName("mycombo")
-    public ComboEntry myCombos;//我的套餐
+    @SerializedName("has_combo")
+    public boolean has_combo;//我的套餐
     @SerializedName("items")
     public List<RecommendEntry> items;//推荐菜品
     @SerializedName("slides")

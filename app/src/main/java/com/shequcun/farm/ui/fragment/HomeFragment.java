@@ -207,7 +207,7 @@ public class HomeFragment extends BaseFragment {
                                 buildCarouselAdapter(hEntry.sList);
                                 addDataToAdapter(hEntry.items);
                             }
-                            doSaveMyComboToDisk(hEntry.myCombos);
+                            updateMyComboStatus(hEntry.has_combo);
                             return;
                         }
                         ToastHelper.showShort(getActivity(), hEntry.errmsg);
@@ -220,14 +220,6 @@ public class HomeFragment extends BaseFragment {
                 ToastHelper.showShort(getActivity(), "请求失败.错误码" + sCode);
                 buildCarouselAdapter(null);
             }
-
-//            @Override
-//            public void onFinish() {
-//                super.onFinish();
-//                if (pView != null)
-//                    pView.onRefreshComplete();
-//            }
-
         });
     }
 
@@ -315,28 +307,17 @@ public class HomeFragment extends BaseFragment {
     }
 
 
-    void doSaveMyComboToDisk(ComboEntry entry) {
-        if (entry != null) {
-            byte[] data = new CacheManager(getActivity()).getUserLoginFromDisk();
-            if (data != null && data.length > 0) {
-                UserLoginEntry uentry = JsonUtilsParser.fromJson(new String(data), UserLoginEntry.class);
-                if (uentry != null) {
-                    uentry.mycomboids = new int[1];
-                    comboEntry = entry;
-                    uentry.mycomboids[0] = comboEntry.id;
-                    uentry.orderno = comboEntry.con;
-                    new CacheManager(getActivity()).saveUserLoginToDisk(JsonUtilsParser.toJson(uentry).getBytes());
-                }
-                no_combo_iv.setVisibility(View.GONE);
-                has_combo_iv.setVisibility(View.VISIBLE);
-
-            }
+    void updateMyComboStatus(boolean isShow) {
+        if (isShow) {
+            no_combo_iv.setVisibility(View.GONE);
+            has_combo_iv.setVisibility(View.VISIBLE);
         } else {
             comboEntry = null;
             no_combo_iv.setVisibility(View.VISIBLE);
             has_combo_iv.setVisibility(View.GONE);
         }
     }
+
 
     void requestComboDetail(int id) {
         final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
