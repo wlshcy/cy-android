@@ -382,6 +382,8 @@ public class AddressFragment extends BaseFragment {
                     setWidgetContent(zEntry);
                 String details_address = intent.getStringExtra("details_address");
                 if (!TextUtils.isEmpty(details_address)) {
+                    if (entry == null)
+                        entry = new AddressEntry();
                     entry.zname = details_address;
                     entry.zid = 0;
                     entry.city = null;

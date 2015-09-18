@@ -78,7 +78,14 @@ public class ModifyOrderFragment extends BaseFragment {
             order_btn.setText(R.string.pay_immediately);
         } else if (getOrderStatus() == 1) {//待配送
             int orderType = getOrderType();
-            order_btn.setText(orderType == 1 || orderType == 2 ? R.string.re_choose_dishes : R.string.cancel_order);
+//            if (orderType == 3) {
+//                order_btn.setVisibility(View.GONE);
+//            } else {
+//            }
+            if (orderType == 2) {
+                order_btn.setVisibility(View.GONE);
+            }
+            order_btn.setText(orderType == 1 ? R.string.re_choose_dishes : R.string.cancel_order);
         } else if (getOrderStatus() == 2) {//订单配送中
 //            order_btn.setEnabled(false);
 //            order_btn.setText(hEntry == null ? "" : hEntry.date);
@@ -86,6 +93,10 @@ public class ModifyOrderFragment extends BaseFragment {
         } else {
             order_btn.setVisibility(View.GONE);
         }
+
+//        if (getOrderType() == 3) {
+//            order_btn.setVisibility(View.GONE);
+//        }
     }
 
     @Override
@@ -268,7 +279,10 @@ public class ModifyOrderFragment extends BaseFragment {
         } else if (getOrderStatus() == 2) {
             ((TextView) footerView.findViewById(R.id.distribution_date)).setText("配送中");
         } else {
-            ((TextView) footerView.findViewById(R.id.distribution_date)).setText("配送日期:本周五配送");
+            if (getOrderType() == 1) {
+                //1.套餐订单 2.选菜订单, 3.单品订单, 4.自动选菜订单
+                ((TextView) footerView.findViewById(R.id.distribution_date)).setText("配送日期:本周五配送");
+            }
         }
 
         ((TextView) footerView.findViewById(R.id.number_copies)).setText("共" + part + "份");

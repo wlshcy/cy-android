@@ -70,7 +70,7 @@ public class PayResultFragment extends BaseFragment {
     protected void setWidgetLsn() {
 //        buildAdapter();
         back.setOnClickListener(onClick);
-        IntentUtil.sendUpdateComboMsg(getActivity());
+//        IntentUtil.sendUpdateComboMsg(getActivity());
 //        if (isRecomDishes())
 //            requestRecomendDishes();
     }
@@ -79,7 +79,7 @@ public class PayResultFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         PayParams payParams = getPayParams();
-        if (payParams==null)return;
+        if (payParams == null) return;
         if (!TextUtils.isEmpty(payParams.orderno) && payParams.isSendRedPackage)
             requestRedPacktetShareUrl(payParams.orderno);
     }

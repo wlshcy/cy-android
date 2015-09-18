@@ -30,6 +30,7 @@ import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.util.AlipayUtils;
 import com.shequcun.farm.util.Constrants;
 import com.shequcun.farm.util.HttpRequestUtil;
+import com.shequcun.farm.util.IntentUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.ToastHelper;
@@ -256,6 +257,7 @@ public class PayComboFragment extends BaseFragment {
                         OtherInfo info = buildOtherInfo();
                         if (info != null && info.type == 3) {
                             new CacheManager(getActivity()).delRecommendToDisk();
+                            IntentUtil.sendUpdateFarmShoppingCartMsg(getActivity());
                         }
                         gotoFragmentByAdd(buildBundle(entry.orderno, getOrderMoney(), alipay, true, R.string.order_result), R.id.mainpage_ly, new PayResultFragment(), PayResultFragment.class.getName());
                     } else {
@@ -466,16 +468,17 @@ public class PayComboFragment extends BaseFragment {
             @Override
             public void onSuccess(int sCode, Header[] h, byte[] data) {
                 if (data != null && data.length > 0) {
-                    OrderEntry entry = JsonUtilsParser.fromJson(new String(data), OrderEntry.class);
-                    if (entry != null) {
-                        if (TextUtils.isEmpty(entry.errmsg)) {
-                            alipay = entry.alipay;
+                    OrderEntry orderEntry = JsonUtilsParser.fromJson(new String(data), OrderEntry.class);
+                    if (orderEntry != null) {
+                        if (TextUtils.isEmpty(orderEntry.errmsg)) {
+                            alipay = orderEntry.alipay;
+                            entry.orderno=orderEntry.orderno;
                             if (!TextUtils.isEmpty(alipay))
                                 aUtils.doAlipay(alipay);
                             mHandler.sendEmptyMessageDelayed(0, 30 * 60 * 1000);
                             return;
                         }
-                        ToastHelper.showShort(getActivity(), entry.errmsg);
+                        ToastHelper.showShort(getActivity(), orderEntry.errmsg);
                     }
                 }
             }
