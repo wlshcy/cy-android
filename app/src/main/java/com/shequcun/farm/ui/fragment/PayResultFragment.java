@@ -319,7 +319,8 @@ public class PayResultFragment extends BaseFragment {
         if (shareController == null)
             shareController = new ShareUtil(getActivity());
         ShareContent shareContent = new ShareContent();
-        shareContent.setUrlImage("drawable:///" + R.drawable.icon_share_redpackets_logo);
+//        shareContent.setUrlImage("drawable:///" + R.drawable.icon_share_redpackets_logo);
+        shareContent.setImageId(R.drawable.icon_share_redpackets_logo);
         shareContent.setTargetUrl(url);
         shareContent.setTitle(title);
         shareContent.setContent(content);

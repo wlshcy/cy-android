@@ -71,9 +71,9 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
         else
             storageMethodTv.setText("储存方法：无");
         if (!TextUtils.isEmpty(entry.farm))
-            producingPlaceTv.setText("农庄：" + entry.farm);
+            producingPlaceTv.setText("来自农庄：" + entry.farm);
         else
-            producingPlaceTv.setText("农庄：无");
+            producingPlaceTv.setText("来自农庄：无");
         if (entry.detail != null) {
             if (!TextUtils.isEmpty(entry.detail.image)){
                 if (!ImageLoader.getInstance().isInited())
@@ -162,10 +162,10 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
             else if (v == shareIv) {
                 ShareContent shareContent = new ShareContent();
 //                shareContent.setUrlImage("drawable:///" + R.drawable.icon_share);
-                shareContent.setImageId(R.drawable.ic_launcher);
-                shareContent.setTargetUrl(Constrants.URL_SHARE);
-                shareContent.setTitle("万水千山总是情，有菜送你个红包行不行!");
-                shareContent.setContent("孩子的餐桌，有菜的标准。为孩子选择健康蔬菜。");
+                shareContent.setImageId(R.drawable.icon_share_logo);
+                shareContent.setTargetUrl(Constrants.URL_SHARE+entry.id);
+                shareContent.setTitle("有菜，不能说的秘密！");
+                shareContent.setContent("孩子的餐桌，有菜的标准。为孩子的健康，走心，连蔬菜都这么有bigger！");
                 useUmengToShare(shareContent);
             } else if (v == producingPlaceTv) {
                 gotoProducingPlaceFragment(entry.fid);
@@ -331,7 +331,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
                                SocializeEntity sEntity) {
             String showText = "分享成功";
             if (eCode != StatusCode.ST_CODE_SUCCESSED) {
-                showText = "分享失败 [" + eCode + "]";
+                showText = "分享失败";
             }
             ToastHelper.showShort(getActivity(), showText);
         }
