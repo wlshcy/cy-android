@@ -12,7 +12,9 @@ import android.widget.TextView;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.shequcun.farm.R;
+import com.shequcun.farm.data.ComboEntry;
 import com.shequcun.farm.data.DelayEntry;
+import com.shequcun.farm.data.MyComboEntry;
 import com.shequcun.farm.data.UserLoginEntry;
 import com.shequcun.farm.datacenter.CacheManager;
 import com.shequcun.farm.datacenter.PersistanceManager;
@@ -56,11 +58,12 @@ public class OrderDelayFragment extends BaseFragment {
         titleTv.setText(R.string.order_delay_delivery);
         leftIv = v.findViewById(R.id.back);
         orderNo = readOrderNoFromDisk();
-        if (TextUtils.isEmpty(orderNo)){
-            disableDelayView(R.string.you_have_not_buy_combo);
-        }else{
-            requestGetDelayState(orderNo);
-        }
+        requestMycombo();
+//        if (TextUtils.isEmpty(orderNo)) {
+//            disableDelayView(R.string.you_have_not_buy_combo);
+//        } else {
+//            requestGetDelayState(orderNo);
+//        }
     }
 
     @Override
@@ -116,6 +119,47 @@ public class OrderDelayFragment extends BaseFragment {
         return userLoginEntry == null ? null : userLoginEntry.orderno;
     }
 
+    private void requestMycombo() {
+        HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "cai/mycombo", new AsyncHttpResponseHandler() {
+
+            @Override
+            public void onStart() {
+                super.onStart();
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String result = new String(responseBody);
+                MyComboEntry entry = JsonUtilsParser.fromJson(result, MyComboEntry.class);
+                if (entry != null) {
+                    if (TextUtils.isEmpty(entry.errcode)) {
+                        if (entry.combos != null && !entry.combos.isEmpty())
+                            requestGetDelayState(entry.combos.get(0).con);
+                        else
+                            disableDelayView(R.string.you_have_not_buy_combo);
+                    } else {
+                        ToastHelper.showShort(getActivity(), entry.errmsg);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                disableDelayView(R.string.btn_delay_a_week_delivery);
+                if (statusCode == 0) {
+                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
+                    return;
+                }
+                ToastHelper.showShort(getActivity(), "请求失败,错误码" + statusCode);
+            }
+        });
+    }
+
     private void requestGetDelayState(String orderNo) {
         RequestParams params = new RequestParams();
         params.add("orderno", orderNo);
@@ -139,7 +183,11 @@ public class OrderDelayFragment extends BaseFragment {
                 String result = new String(responseBody);
                 DelayEntry entry = JsonUtilsParser.fromJson(result, DelayEntry.class);
                 if (entry != null) {
-                    successDelay(entry.delayed);
+                    if (TextUtils.isEmpty(entry.errcode)){
+                        successDelay(entry.delayed);
+                    }else {
+                        disableDelayView(R.string.you_have_not_buy_combo);
+                    }
                 }
             }
 

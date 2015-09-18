@@ -74,11 +74,14 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
             producingPlaceTv.setText("农庄：" + entry.farm);
         else
             producingPlaceTv.setText("农庄：无");
-        if (entry.detail != null && !TextUtils.isEmpty(entry.detail.image)) {
-            if (!ImageLoader.getInstance().isInited())
-                ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(getActivity()));
-            String url = entry.detail.image+"?imageView2/2/w/"+ DeviceInfo.getDeviceWidth(this.getActivity());
-            ImageLoader.getInstance().displayImage(url, contentImgIv);
+        if (entry.detail != null) {
+            if (!TextUtils.isEmpty(entry.detail.image)){
+                if (!ImageLoader.getInstance().isInited())
+                    ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(getActivity()));
+                String url = entry.detail.image+"?imageView2/2/w/"+ DeviceInfo.getDeviceWidth(this.getActivity());
+                ImageLoader.getInstance().displayImage(url, contentImgIv);
+            }
+            contentTv.setText(entry.detail.content);
         }
         RecommendEntry localEntry = readRecommendEntryFromDisk(entry);
         this.entry.count = 0;
@@ -111,6 +114,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
 
         nameTv = (TextView) v.findViewById(R.id.name_tv);
         descTv = (TextView) v.findViewById(R.id.desc_tv);
+        contentTv = (TextView) v.findViewById(R.id.content_tv);
         priceNowTv = (TextView) v.findViewById(R.id.price_now_tv);
         priceOriginTv = (TextView) v.findViewById(R.id.price_origin_tv);
         /*删除线*/
@@ -365,6 +369,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
     TextView standardTv;//产品规格
     TextView storageMethodTv;//产品冷藏方法
     TextView producingPlaceTv;//产品产地
+    TextView contentTv;//产品详情
     ImageView contentImgIv;//产品图片
     ImageView shareIv;
     ImageView backIv;

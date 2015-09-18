@@ -28,10 +28,20 @@
                 android:textColor="@color/black_131313"
                 android:textSize="@dimen/font36" />
 
+            <TextView
+                android:id="@+id/desc_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/px34"
+                android:paddingTop="@dimen/px16"
+                android:text=""
+                android:textColor="@color/black_8e8e8e"
+                android:textSize="@dimen/font32" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/px18"
+                android:paddingTop="@dimen/px16"
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/px34">
 
@@ -145,7 +155,7 @@
             <include layout="@layout/common_line"></include>
 
             <TextView
-                android:id="@+id/desc_tv"
+                android:id="@+id/content_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/px34"
@@ -160,7 +170,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/px120"
-                android:scaleType="fitCenter"
+                android:scaleType="centerCrop"
                 android:adjustViewBounds="true"
                 />
         </LinearLayout>
