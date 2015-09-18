@@ -165,6 +165,7 @@ public class HomeFragment extends BaseFragment {
                 if (link.type == 1) {//1.套餐详情,
                     requestComboDetail(link.id);
                 } else if (link.type == 2) {//2.菜品详情
+                    requestSingleDishDetail(link.id);
                 }
                 return;
             }
@@ -316,6 +317,48 @@ public class HomeFragment extends BaseFragment {
             no_combo_iv.setVisibility(View.VISIBLE);
             has_combo_iv.setVisibility(View.GONE);
         }
+    }
+
+
+    void requestSingleDishDetail(int id) {
+        final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
+        RequestParams params = new RequestParams();
+        params.add("id", "" + id);
+
+        HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "cai/itemdtl", params, new AsyncHttpResponseHandler() {
+
+            @Override
+            public void onStart() {
+                super.onStart();
+                pDlg.show();
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                pDlg.dismiss();
+            }
+
+            @Override
+            public void onSuccess(int sCode, Header[] h, byte[] data) {
+                if (data != null && data.length > 0) {
+                    RecommendEntry entry = JsonUtilsParser.fromJson(new String(data), RecommendEntry.class);
+                    if (entry != null) {
+                        if (TextUtils.isEmpty(entry.errmsg)) {
+                            gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailFragment(), FarmSpecialtyDetailFragment.class.getName());
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
+
+            }
+        });
+
+
+//
     }
 
 
