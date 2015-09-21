@@ -171,7 +171,7 @@ public class DishesFragment extends BaseFragment {
 
     ModifyOrderParams buildOrderParams(HistoryOrderEntry entry) {
         ModifyOrderParams params = new ModifyOrderParams();
-        params.setParams(entry.id, entry.orderno, entry.type, entry.combo_id, entry.price, entry.combo_idx, entry.status, entry.date);
+        params.setParams(entry.id, entry.orderno, 1, entry.combo_id, entry.price, entry.combo_idx, entry.status, entry.date);
         return params;
     }
 
