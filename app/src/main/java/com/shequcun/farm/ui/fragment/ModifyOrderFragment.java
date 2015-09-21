@@ -162,7 +162,7 @@ public class ModifyOrderFragment extends BaseFragment {
         RequestParams params = new RequestParams();
         params.add("id", hEntry.id + "");
         params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
-        HttpRequestUtil.httpPost(LocalParams.getBaseUrl() + "cai/delorder", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.getHttpClient(getActivity()).post(LocalParams.getBaseUrl() + "cai/delorder", params, new AsyncHttpResponseHandler() {
 
             @Override
             public void onStart() {
@@ -230,7 +230,7 @@ public class ModifyOrderFragment extends BaseFragment {
         final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
         RequestParams params = new RequestParams();
         params.add("orderno", getOrderNumber());
-        HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "cai/orderdtl", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "cai/orderdtl", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] h, byte[] data) {
                 if (data != null && data.length > 0) {
@@ -424,7 +424,7 @@ public class ModifyOrderFragment extends BaseFragment {
         RequestParams params = new RequestParams();
         params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
         params.add("orderno", orderNo);
-        HttpRequestUtil.httpPost(LocalParams.getBaseUrl() + "cai/coupon", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.getHttpClient(getActivity()).post(LocalParams.getBaseUrl() + "cai/coupon", params, new AsyncHttpResponseHandler() {
             @Override
             public void onFinish() {
                 super.onFinish();

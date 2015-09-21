@@ -37,7 +37,7 @@ public class SplashActivity extends BaseFragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_ly);
 //        LocalParams.INSTANCE.initData(getApplicationContext());
-        HttpRequestUtil.setContext(getApplicationContext());
+//        HttpRequestUtil.setContext(getApplicationContext());
         initViewPager();
         setOnclick();
     }

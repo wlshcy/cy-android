@@ -159,7 +159,7 @@ public class SearchFragment extends BaseFragment implements AMapLocationListener
         params.add("cid", "1");
         params.add("kw", keyword);
 
-        HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "zone/search", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "zone/search", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] data) {
                 if (data != null && data.length > 0) {
@@ -229,7 +229,7 @@ public class SearchFragment extends BaseFragment implements AMapLocationListener
         RequestParams params = new RequestParams();
         params.add("lng", "" + lon);
         params.add("lat", "" + lat);
-        HttpRequestUtil.httpGet(LocalParams.getBaseUrl()
+        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl()
                 + "zone/v2/list", params, new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {

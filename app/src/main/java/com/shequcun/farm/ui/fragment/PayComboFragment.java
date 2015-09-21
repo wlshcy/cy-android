@@ -146,7 +146,7 @@ public class PayComboFragment extends BaseFragment {
         }
         params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
         final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
-        HttpRequestUtil.httpPost(LocalParams.getBaseUrl() + "cai/order", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.getHttpClient(getActivity()).post(LocalParams.getBaseUrl() + "cai/order", params, new AsyncHttpResponseHandler() {
 
             @Override
             public void onStart() {
@@ -286,7 +286,7 @@ public class PayComboFragment extends BaseFragment {
 
 
     void requestUserAddress() {
-        HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "user/v2/address", new AsyncHttpResponseHandler() {
+        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "user/v2/address", new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int sCode, Header[] h, byte[] data) {
                 if (data != null && data.length > 0) {
@@ -451,7 +451,7 @@ public class PayComboFragment extends BaseFragment {
             params.add("coupon_id", coupon_id + "");
 
         final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
-        HttpRequestUtil.httpPost(LocalParams.getBaseUrl() + "cai/order", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.getHttpClient(getActivity()).post(LocalParams.getBaseUrl() + "cai/order", params, new AsyncHttpResponseHandler() {
 
             @Override
             public void onStart() {
@@ -501,7 +501,7 @@ public class PayComboFragment extends BaseFragment {
             params.add("coupon_id", coupon_id + "");
         params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
         final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
-        HttpRequestUtil.httpPost(LocalParams.getBaseUrl() + "cai/payorder", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.getHttpClient(getActivity()).post(LocalParams.getBaseUrl() + "cai/payorder", params, new AsyncHttpResponseHandler() {
 
             @Override
             public void onStart() {

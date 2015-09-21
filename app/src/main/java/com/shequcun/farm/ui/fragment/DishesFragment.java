@@ -71,7 +71,7 @@ public class DishesFragment extends BaseFragment {
     void requestOrderNo() {
         final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
 
-        HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "cai/mycombo", new AsyncHttpResponseHandler() {
+        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "cai/mycombo", new AsyncHttpResponseHandler() {
 
             @Override
             public void onStart() {

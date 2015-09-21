@@ -120,7 +120,7 @@ public class OrderDelayFragment extends BaseFragment {
     }
 
     private void requestMycombo() {
-        HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "cai/mycombo", new AsyncHttpResponseHandler() {
+        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "cai/mycombo", new AsyncHttpResponseHandler() {
 
             @Override
             public void onStart() {
@@ -165,7 +165,7 @@ public class OrderDelayFragment extends BaseFragment {
         RequestParams params = new RequestParams();
         params.add("orderno", orderNo);
         final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
-        HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "cai/delay", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "cai/delay", params, new AsyncHttpResponseHandler() {
 
             @Override
             public void onStart() {
@@ -209,7 +209,7 @@ public class OrderDelayFragment extends BaseFragment {
         params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
         params.add("orderno", orderNo);
         final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
-        HttpRequestUtil.httpPost(LocalParams.getBaseUrl() + "cai/delay", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.getHttpClient(getActivity()).post(LocalParams.getBaseUrl() + "cai/delay", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String result = new String(responseBody);

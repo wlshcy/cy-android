@@ -165,7 +165,7 @@ public class RedPacketsListFragment extends BaseFragment {
             params.add("type", type + "");
         params.add("lastid", lastId + "");
         params.add("length", length + "");
-        HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "cai/coupon", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "cai/coupon", params, new AsyncHttpResponseHandler() {
             @Override
             public void onFinish() {
                 super.onFinish();

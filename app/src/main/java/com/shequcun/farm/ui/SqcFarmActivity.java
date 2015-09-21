@@ -193,7 +193,7 @@ public class SqcFarmActivity extends BaseFragmentActivity {
      * 鉴权
      */
     private void doAuthInit() {
-        HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "auth/init",
+        HttpRequestUtil.getHttpClient(this).get(LocalParams.getBaseUrl() + "auth/init",
                 new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int sCode, Header[] headers, byte[] data) {

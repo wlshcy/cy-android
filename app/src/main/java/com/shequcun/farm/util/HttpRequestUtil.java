@@ -20,14 +20,14 @@ public class HttpRequestUtil {
     private static PersistentCookieStore myCookieStore = null;
     private static Context mContext;
 
-    public static void setContext(Context context) {
-        if (mContext == null) {
-            mContext = context;
-        }
-        if (hClient == null) {
-            initHttpClient();
-        }
-    }
+//    public static void setContext(Context context) {
+//        if (mContext == null) {
+//            mContext = context;
+//        }
+//        if (hClient == null) {
+//            initHttpClient();
+//        }
+//    }
 
     public static void initHttpClient() {
         hClient = new AsyncHttpClient();
@@ -42,37 +42,37 @@ public class HttpRequestUtil {
         hClient.setCookieStore(myCookieStore);
     }
 
-    public static void httpGet(String urlString, AsyncHttpResponseHandler res) {
-        if (hClient != null)
-            hClient.get(urlString, res);
-
-    }
-
-    public static void httpGet(String urlString, RequestParams params,
-                               AsyncHttpResponseHandler res) {
-        if (hClient != null)
-            hClient.get(urlString, params, res);
-    }
-
-    public static void httpGet(String urlString, JsonHttpResponseHandler res) {
-        if (hClient != null)
-            hClient.get(urlString, res);
-    }
-
-    public static void httpGet(String urlString, RequestParams params,
-                               JsonHttpResponseHandler res) {
-        if (hClient != null)
-            hClient.get(urlString, params, res);
-
-    }
-
-    public static void httpGet(String uString,
-                               BinaryHttpResponseHandler bHandler) {
-
-        if (hClient != null)
-            hClient.get(uString, bHandler);
-
-    }
+//    public static void httpGet(String urlString, AsyncHttpResponseHandler res) {
+//        if (hClient != null)
+//            hClient.get(urlString, res);
+//
+//    }
+//
+//    public static void httpGet(String urlString, RequestParams params,
+//                               AsyncHttpResponseHandler res) {
+//        if (hClient != null)
+//            hClient.get(urlString, params, res);
+//    }
+//
+//    public static void httpGet(String urlString, JsonHttpResponseHandler res) {
+//        if (hClient != null)
+//            hClient.get(urlString, res);
+//    }
+//
+//    public static void httpGet(String urlString, RequestParams params,
+//                               JsonHttpResponseHandler res) {
+//        if (hClient != null)
+//            hClient.get(urlString, params, res);
+//
+//    }
+//
+//    public static void httpGet(String uString,
+//                               BinaryHttpResponseHandler bHandler) {
+//
+//        if (hClient != null)
+//            hClient.get(uString, bHandler);
+//
+//    }
 
     public static void httpPost(String urlString, AsyncHttpResponseHandler res) {
         if (hClient != null)
@@ -91,9 +91,9 @@ public class HttpRequestUtil {
             hClient.post(urlString, res);
     }
 
-    public static AsyncHttpClient getClient() {
-        return hClient;
-    }
+//    public static AsyncHttpClient getClient() {
+//        return hClient;
+//    }
 
     public static PersistentCookieStore getCookieObj() {
         if (myCookieStore == null) {

@@ -202,7 +202,7 @@ public class AddressFragment extends BaseFragment {
 ////            params.put("room", house_NO);
 //        }
         final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
-        HttpRequestUtil.httpPost(LocalParams.getBaseUrl() + "user/v2/address", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.getHttpClient(getActivity()).post(LocalParams.getBaseUrl() + "user/v2/address", params, new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {
                 super.onStart();

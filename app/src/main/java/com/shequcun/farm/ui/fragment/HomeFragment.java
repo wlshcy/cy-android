@@ -325,7 +325,7 @@ public class HomeFragment extends BaseFragment {
         RequestParams params = new RequestParams();
         params.add("id", "" + id);
 
-        HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "cai/itemdtl", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "cai/itemdtl", params, new AsyncHttpResponseHandler() {
 
             @Override
             public void onStart() {
@@ -366,7 +366,7 @@ public class HomeFragment extends BaseFragment {
         final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
         RequestParams params = new RequestParams();
         params.add("id", "" + id);
-        HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "cai/combodtl", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "cai/combodtl", params, new AsyncHttpResponseHandler() {
 
             @Override
             public void onStart() {

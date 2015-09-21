@@ -123,7 +123,7 @@ public class SetFragment extends BaseFragment {
         RequestParams params = new RequestParams();
         params.add("apptype", "5");
         params.add("platform", "2");
-        HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "app/version", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "app/version", params, new AsyncHttpResponseHandler() {
             public void onSuccess(int sCode, Header[] h, byte[] data) {
                 if (data != null && data.length > 0) {
                     VersionEntry vEntry = JsonUtilsParser.fromJson(new String(data), VersionEntry.class);
@@ -233,7 +233,7 @@ public class SetFragment extends BaseFragment {
         params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
 
         final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
-        HttpRequestUtil.httpPost(LocalParams.getBaseUrl() + "auth/logout", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.getHttpClient(getActivity()).post(LocalParams.getBaseUrl() + "auth/logout", params, new AsyncHttpResponseHandler() {
 
             @Override
             public void onStart() {

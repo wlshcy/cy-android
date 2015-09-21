@@ -278,7 +278,7 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
         params.add("spares", mOrderController.getOrderOptionItemString());
         params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
         final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
-        HttpRequestUtil.httpPost(LocalParams.getBaseUrl() + "cai/altorder", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.getHttpClient(getActivity()).post(LocalParams.getBaseUrl() + "cai/altorder", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int sCode, Header[] h, byte[] data) {
                 try {
@@ -371,7 +371,7 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
         params.add("memo", remark_tv.getText().toString());
         params.add("orderno", buildOrderCon());
         final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
-        HttpRequestUtil.httpPost(LocalParams.getBaseUrl() + "cai/choose", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.getHttpClient(getActivity()).post(LocalParams.getBaseUrl() + "cai/choose", params, new AsyncHttpResponseHandler() {
 
             @Override
             public void onStart() {

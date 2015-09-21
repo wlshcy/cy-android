@@ -178,7 +178,7 @@ public class AddressListFragment extends BaseFragment {
 
     private void requestAddress() {
         final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
-        HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "user/v2/address", new AsyncHttpResponseHandler() {
+        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "user/v2/address", new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {
                 super.onStart();
@@ -240,7 +240,7 @@ public class AddressListFragment extends BaseFragment {
         RequestParams params = new RequestParams();
         params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
         params.add("id", id + "");
-        HttpRequestUtil.httpPost(LocalParams.getBaseUrl() + "user/v2/address", params,
+        HttpRequestUtil.getHttpClient(getActivity()).post(LocalParams.getBaseUrl() + "user/v2/address", params,
                 new AsyncHttpResponseHandler() {
                     @Override
                     public void onStart() {

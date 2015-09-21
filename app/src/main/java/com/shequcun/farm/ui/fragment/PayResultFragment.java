@@ -286,7 +286,7 @@ public class PayResultFragment extends BaseFragment {
         RequestParams params = new RequestParams();
         params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
         params.add("orderno", orderNo);
-        HttpRequestUtil.httpPost(LocalParams.getBaseUrl() + "cai/coupon", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.getHttpClient(getActivity()).post(LocalParams.getBaseUrl() + "cai/coupon", params, new AsyncHttpResponseHandler() {
             @Override
             public void onFinish() {
                 super.onFinish();
