@@ -56,18 +56,23 @@ public class ShoppingOrderAdapter extends ArrayAdapter<HistoryOrderEntry> {
 //                vh.order_status_ly.setTag(position);
 //                vh.order_status_ly.setOnClickListener(payOnClickLsn);
                 vh.order_status.setText("配送完成");
+                vh.order_status.setBackgroundResource(R.drawable.gray_f0f0f0_corner_bg);
             } else if (entry.status == 0) {
 //                vh.order_status_ly.setTag(position);
 //                vh.order_status_ly.setOnClickListener(payOnClickLsn);
                 vh.order_status.setText(R.string.unpaid);
+                vh.order_status.setBackgroundResource(R.drawable.red_f36043_corner_bg);
             } else if (entry.status == 1) {
 //                vh.order_status_ly.setTag(position);
 //                vh.order_status_ly.setOnClickListener(payOnClickLsn);
                 vh.order_status.setText("未配送");
+                vh.order_status.setBackgroundResource(R.drawable.green_94d6c0_corner_bg);
             } else if (entry.status == 2) {
                 vh.order_status.setText("配送中");
+                vh.order_status.setBackgroundResource(R.drawable.green_94d6c0_corner_bg);
             } else if (entry.status == 4) {
                 vh.order_status.setText("订单取消");
+                vh.order_status.setBackgroundResource(R.drawable.gray_f0f0f0_corner_bg);
             }
 
             if (entry.status == 0) {

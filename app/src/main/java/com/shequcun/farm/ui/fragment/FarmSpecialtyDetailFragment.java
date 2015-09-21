@@ -2,6 +2,7 @@ package com.shequcun.farm.ui.fragment;
 
 import android.app.AlertDialog;
 import android.graphics.Paint;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -75,10 +76,10 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
         else
             producingPlaceTv.setText("来自农庄：无");
         if (entry.detail != null) {
-            if (!TextUtils.isEmpty(entry.detail.image)){
+            if (!TextUtils.isEmpty(entry.detail.image)) {
                 if (!ImageLoader.getInstance().isInited())
                     ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(getActivity()));
-                String url = entry.detail.image+"?imageView2/2/w/"+ DeviceInfo.getDeviceWidth(this.getActivity());
+                String url = entry.detail.image + "?imageView2/2/w/" + DeviceInfo.getDeviceWidth(this.getActivity());
                 ImageLoader.getInstance().displayImage(url, contentImgIv);
             }
             contentTv.setText(entry.detail.content);
@@ -160,13 +161,13 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
             if (v == back)
                 popBackStack();
             else if (v == shareIv) {
-                ShareContent shareContent = new ShareContent();
-//                shareContent.setUrlImage("drawable:///" + R.drawable.icon_share);
-                shareContent.setImageId(R.drawable.icon_share_logo);
-                shareContent.setTargetUrl(Constrants.URL_SHARE+entry.id);
-                shareContent.setTitle("有菜，不能说的秘密！");
-                shareContent.setContent("孩子的餐桌，有菜的标准。为孩子的健康，走心，连蔬菜都这么有bigger！");
-                useUmengToShare(shareContent);
+                ShareContent sharecontent = new ShareContent();
+//                sharecontent.seturlimage("drawable:///" + r.drawable.icon_share);
+                sharecontent.setImageId(R.drawable.icon_share_logo);
+                sharecontent.setTargetUrl(Constrants.URL_SHARE + entry.id);
+                sharecontent.setTitle("有菜，不能说的秘密！");
+                sharecontent.setContent("孩子的餐桌我们的标准，走心，连蔬菜都这么有bigger！");
+                useUmengToShare(sharecontent);
             } else if (v == producingPlaceTv) {
                 gotoProducingPlaceFragment(entry.fid);
             }

@@ -98,20 +98,20 @@
                     android:textColor="@color/red_fe786b"
                     android:textSize="11sp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/px20"
-                    android:text="@string/use_for_app_off_line_pay"
-                    android:textColor="@color/common_text"
-                    android:textSize="11sp" />
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="@dimen/px20"-->
+                    <!--android:text="@string/use_for_app_off_line_pay"-->
+                    <!--android:textColor="@color/common_text"-->
+                    <!--android:textSize="11sp" />-->
 
                 <TextView
                     android:id="@+id/target_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/px20"
-                    android:text="@string/use_for_app_off_line_pay"
+                    android:text=""
                     android:textColor="@color/common_text"
                     android:textSize="11sp" />
             </LinearLayout>

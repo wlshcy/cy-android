@@ -1,6 +1,7 @@
 package com.shequcun.farm.ui.fragment;
 
 import android.app.AlertDialog;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -168,6 +169,7 @@ public class PayResultFragment extends BaseFragment {
         final AlertDialog alert = new AlertDialog.Builder(getActivity()).create();
         alert.show();
         alert.setCancelable(false);
+        alert.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         alert.getWindow().setContentView(R.layout.alert_dialog);
         TextView tv = (TextView) alert.getWindow().findViewById(R.id.content_tv);
         tv.setText(content);

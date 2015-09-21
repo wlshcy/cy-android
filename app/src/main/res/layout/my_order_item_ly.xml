@@ -25,8 +25,8 @@
             android:id="@+id/distribution_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/px16"
-            android:textColor="@color/black_444444"
+            android:layout_marginTop="@dimen/px6"
+            android:textColor="#bbbbbb"
             android:textSize="@dimen/font28" />
 
         <TextView
