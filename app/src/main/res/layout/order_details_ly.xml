@@ -29,6 +29,9 @@
         android:textSize="@dimen/px30"
         android:visibility="gone" />
 
+
     <include layout="@layout/farm_shopping_cart_footer_ly" />
+
+
 
 </LinearLayout>

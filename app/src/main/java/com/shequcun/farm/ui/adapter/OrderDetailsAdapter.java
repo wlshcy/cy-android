@@ -18,11 +18,9 @@ import com.shequcun.farm.util.Utils;
  * Created by apple on 15/8/10.
  */
 public class OrderDetailsAdapter extends ArrayAdapter<DishesItemEntry> {
-    Context mContext;
 
     public OrderDetailsAdapter(Context context) {
         super(context, R.layout.order_details_item_ly);
-        mContext = context;
     }
 
     @Override
@@ -30,7 +28,7 @@ public class OrderDetailsAdapter extends ArrayAdapter<DishesItemEntry> {
         ViewHolder vh;
         if (v == null) {
             vh = new ViewHolder();
-            v = LayoutInflater.from(mContext).inflate(R.layout.order_details_item_ly, null);
+            v = LayoutInflater.from(getContext()).inflate(R.layout.order_details_item_ly, null);
             vh.goods_img = (NetworkImageView) v.findViewById(R.id.goods_img);
             vh.goods_name = (TextView) v.findViewById(R.id.goods_name);
             vh.goods_price = (TextView) v.findViewById(R.id.goods_price);
@@ -43,7 +41,14 @@ public class OrderDetailsAdapter extends ArrayAdapter<DishesItemEntry> {
         if (entry != null) {
             vh.goods_img.setImageUrl(entry.imgs[0], ImageCacheManager.getInstance().getImageLoader());
             vh.goods_name.setText(entry.title);
-            vh.goods_count.setText("x" + entry.getCount());
+            int count = entry.getCount();
+            if (count <= 0) {
+                vh.goods_count.setVisibility(View.GONE);
+            } else {
+                vh.goods_count.setVisibility(View.VISIBLE);
+                vh.goods_count.setText("x" + count);
+            }
+
             vh.goods_price.setText(Utils.unitConversion(entry.packw) + "/份");
         }
         return v;

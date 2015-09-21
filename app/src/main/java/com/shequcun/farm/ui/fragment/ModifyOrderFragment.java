@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.android.volley.toolbox.NetworkImageView;
+import com.bitmap.cache.ImageCacheManager;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.shequcun.farm.R;
@@ -20,6 +22,7 @@ import com.shequcun.farm.data.AlreadyPurchasedEntry;
 import com.shequcun.farm.data.AlreadyPurchasedListEntry;
 import com.shequcun.farm.data.ComboEntry;
 import com.shequcun.farm.data.CouponShareEntry;
+import com.shequcun.farm.data.DishesItemEntry;
 import com.shequcun.farm.data.ModifyOrderParams;
 import com.shequcun.farm.data.OrderEntry;
 import com.shequcun.farm.data.OtherInfo;
@@ -36,6 +39,7 @@ import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.ShareContent;
 import com.shequcun.farm.util.ShareUtil;
 import com.shequcun.farm.util.ToastHelper;
+import com.shequcun.farm.util.Utils;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.bean.SocializeEntity;
 import com.umeng.socialize.bean.StatusCode;
@@ -235,6 +239,7 @@ public class ModifyOrderFragment extends BaseFragment {
                         if (TextUtils.isEmpty(entry.errmsg)) {
                             setRedPacketsView(entry.cpflag);
                             buildAdapter(entry.aList);
+                            addSparesFooter(entry.dIe);
                             return;
                         }
                         ToastHelper.showShort(getActivity(), entry.errmsg);
@@ -478,6 +483,24 @@ public class ModifyOrderFragment extends BaseFragment {
             ToastHelper.showShort(getActivity(), showText);
         }
     };
+
+
+    /**
+     * 添加备选菜
+     */
+    void addSparesFooter(List<AlreadyPurchasedEntry> aList) {
+        if (aList != null && aList.size() > 0) {
+            mLv.addFooterView(LayoutInflater.from(getActivity()).inflate(R.layout.remark_footer_ly, null), null, false);
+            for (int i = 0; i < aList.size(); i++) {
+                View footerView = LayoutInflater.from(getActivity()).inflate(R.layout.order_details_item_ly, null);
+                ((NetworkImageView) footerView.findViewById(R.id.goods_img)).setImageUrl(aList.get(i).img, ImageCacheManager.getInstance().getImageLoader());
+                ((TextView) footerView.findViewById(R.id.goods_name)).setText(aList.get(i).title);
+                (footerView.findViewById(R.id.goods_price)).setVisibility(View.GONE);
+                footerView.findViewById(R.id.goods_count).setVisibility(View.GONE);
+                mLv.addFooterView(footerView, null, false);
+            }
+        }
+    }
 
     private ShareUtil shareController;
 

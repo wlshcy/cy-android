@@ -38,6 +38,9 @@ public class DisheDataCenter {
         return mOrder.getOptionItemsString();
     }
 
+    public List<DishesItemEntry> getOptionItems(){
+        return mOrder.getOptionItems();
+    }
 
     public void addOptionItem(DishesItemEntry item) {
         mOrder.addOptionItem(item);

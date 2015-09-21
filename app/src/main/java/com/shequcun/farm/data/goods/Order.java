@@ -126,6 +126,10 @@ public class Order {
         return result;
     }
 
+    public List<DishesItemEntry> getOptionItems(){
+        return optionItems;
+    }
+
 
     public List<DishesItemEntry> getItems() {
         return items;

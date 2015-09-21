@@ -9,13 +9,12 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.android.volley.toolbox.NetworkImageView;
+import com.bitmap.cache.ImageCacheManager;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.shequcun.farm.R;
-import com.shequcun.farm.data.AddressEntry;
-import com.shequcun.farm.data.AddressListEntry;
 import com.shequcun.farm.data.ComboEntry;
-import com.shequcun.farm.data.CouponShareEntry;
 import com.shequcun.farm.data.OrderEntry;
 import com.shequcun.farm.data.OtherInfo;
 import com.shequcun.farm.data.PayParams;
@@ -30,19 +29,11 @@ import com.shequcun.farm.util.AvoidDoubleClickListener;
 import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
-import com.shequcun.farm.util.ShareContent;
-import com.shequcun.farm.util.ShareUtil;
 import com.shequcun.farm.util.ToastHelper;
 import com.shequcun.farm.util.Utils;
-import com.umeng.socialize.bean.SHARE_MEDIA;
-import com.umeng.socialize.bean.SocializeEntity;
-import com.umeng.socialize.bean.StatusCode;
-import com.umeng.socialize.controller.listener.SocializeListeners;
 
 import org.apache.http.Header;
 import org.json.JSONObject;
-
-import java.util.List;
 
 /**
  * 订单详情页
@@ -158,7 +149,6 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
                     return;
                 }
                 if (isCreateOrder()) {
-//                    requestUserAddress();
                     createOrder();
                 } else {
                     modifyOrder(buildOrederno());
@@ -184,6 +174,25 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
         int part = mOrderController.getItemsCount();
         ((TextView) footerView.findViewById(R.id.number_copies)).setText("共" + part + "份");
         mLv.addFooterView(footerView, null, false);
+
+        addSparesFooter();
+    }
+
+    /**
+     * 添加备选菜
+     */
+    void addSparesFooter() {
+        if (mOrderController != null && mOrderController.getOptionItems() != null && mOrderController.getOptionItems().size() > 0) {
+            mLv.addFooterView(LayoutInflater.from(getActivity()).inflate(R.layout.remark_footer_ly, null), null, false);
+            for (int i = 0; i < mOrderController.getOptionItems().size(); i++) {
+                View footerView = LayoutInflater.from(getActivity()).inflate(R.layout.order_details_item_ly, null);
+                ((NetworkImageView) footerView.findViewById(R.id.goods_img)).setImageUrl(mOrderController.getOptionItems().get(i).imgs[0], ImageCacheManager.getInstance().getImageLoader());
+                ((TextView) footerView.findViewById(R.id.goods_name)).setText(mOrderController.getOptionItems().get(i).title);
+                ((TextView) footerView.findViewById(R.id.goods_price)).setText(Utils.unitConversion(mOrderController.getOptionItems().get(i).packw) + "/份");
+                footerView.findViewById(R.id.goods_count).setVisibility(View.GONE);
+                mLv.addFooterView(footerView, null, false);
+            }
+        }
     }
 
 
