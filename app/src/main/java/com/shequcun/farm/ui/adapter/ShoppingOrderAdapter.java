@@ -61,7 +61,7 @@ public class ShoppingOrderAdapter extends ArrayAdapter<HistoryOrderEntry> {
 //                vh.order_status_ly.setTag(position);
 //                vh.order_status_ly.setOnClickListener(payOnClickLsn);
                 vh.order_status.setText(R.string.unpaid);
-                vh.order_status.setBackgroundResource(R.drawable.red_f36043_corner_bg);
+                vh.order_status.setBackgroundResource(R.drawable.red_F36043_corner_bg);
             } else if (entry.status == 1) {
 //                vh.order_status_ly.setTag(position);
 //                vh.order_status_ly.setOnClickListener(payOnClickLsn);
