@@ -66,7 +66,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
         priceNowTv.setText(Utils.unitPeneyToYuan(entry.price));
         priceOriginTv.setText(Utils.unitPeneyToYuan(entry.mprice));//"¥" + ((float) entry.mprice) / 100
         personSelectTv.setText(entry.sales + "人选择");
-        standardTv.setText("规格：" + entry.packw + "g/份");
+        standardTv.setText("商品规格：" + entry.packw + "g/份");
         if (entry.detail != null && !TextUtils.isEmpty(entry.detail.storage))
             storageMethodTv.setText("储存方法：" + entry.detail.storage);
         else
