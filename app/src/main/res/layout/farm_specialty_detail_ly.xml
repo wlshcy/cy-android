@@ -92,7 +92,7 @@
                 android:paddingBottom="@dimen/px34"
                 android:paddingLeft="@dimen/px38"
                 android:paddingTop="@dimen/px34"
-                android:text="规格："
+                android:text="商品规格："
                 android:textColor="@color/black_131313"
                 android:textSize="@dimen/font30" />
 
