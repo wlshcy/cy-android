@@ -259,9 +259,7 @@ public class AddressFragment extends BaseFragment {
             return true;
         if (!TextUtils.isEmpty(entry.zname) && znameDiff)
             return true;
-        if (!TextUtils.isEmpty(entry.bur) && !entry.bur.equals(detailAddr))
-            return true;
-        return false;
+        return !TextUtils.isEmpty(entry.bur) && !entry.bur.equals(detailAddr);
     }
 
     private void setInputToFiled() {

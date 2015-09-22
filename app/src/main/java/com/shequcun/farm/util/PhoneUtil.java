@@ -34,12 +34,8 @@ public class PhoneUtil {
     }
 
     public static boolean hasSdcard() {
-        if (Environment.getExternalStorageState().equals(
-                Environment.MEDIA_MOUNTED)) {
-            return true;
-        } else {
-            return false;
-        }
+        return Environment.getExternalStorageState().equals(
+                Environment.MEDIA_MOUNTED);
     }
 
     public static boolean isPhone(String str) {

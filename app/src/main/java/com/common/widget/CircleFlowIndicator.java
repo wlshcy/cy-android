@@ -175,7 +175,7 @@ public class CircleFlowIndicator extends View implements FlowIndicator,
     }
 
     @Override
-    public void onScrolled(int h, int v, int oldh, int oldv) {
+    public void onScrolled(int h) {
         setVisibility(View.VISIBLE);
         resetTimer();
         currentScroll = h;

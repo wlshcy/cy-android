@@ -94,7 +94,7 @@ public class RemarkFragment extends BaseFragment {
     }
 
     public interface CallBackLsn {
-        public void updateRemarkWidget(String remark);
+        void updateRemarkWidget(String remark);
     }
 
     View back;

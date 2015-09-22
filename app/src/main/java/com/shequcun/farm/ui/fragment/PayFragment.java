@@ -184,7 +184,7 @@ public class PayFragment extends BaseFragment {
                                 gotoFragmentByAdd(buildBundle(orderEntry.orderno, getOrderMoney(), orderEntry.alipay, true, R.string.order_result), R.id.mainpage_ly, new PayResultFragment(), PayResultFragment.class.getName());
                                 return;
                             }
-                            doPay(alipay,null);
+                            doPay(alipay, null);
 //                            aUtils.doAlipay(alipay);
                             mHandler.sendEmptyMessageDelayed(0, 30 * 60 * 1000);
                         } else {
@@ -292,7 +292,6 @@ public class PayFragment extends BaseFragment {
             }
         }
 
-        ;
     };
 
 
@@ -486,7 +485,7 @@ public class PayFragment extends BaseFragment {
 //                            if (!TextUtils.isEmpty(alipay))
 //                                aUtils.doAlipay(alipay);
 
-                            doPay(alipay,null);
+                            doPay(alipay, null);
 
                             mHandler.sendEmptyMessageDelayed(0, 30 * 60 * 1000);
                             return;
@@ -539,7 +538,7 @@ public class PayFragment extends BaseFragment {
 //                            }
 
 
-                            doPay(oEntry.alipay,null);
+                            doPay(oEntry.alipay, null);
 
                             return;
                         }
@@ -603,9 +602,9 @@ public class PayFragment extends BaseFragment {
 
     void doPay(String alipay,WxPayResEntry payRes){
         if(isAlipayPay){
-
+            aUtils.doAlipay(alipay);
         }else{
-
+            wxPayUtils.doWxPay(payRes);
         }
     }
 
