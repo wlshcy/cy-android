@@ -305,8 +305,8 @@ public class AddressFragment extends BaseFragment {
                 int length = aList.size();
                 for (int i = 1; i < length; i++) {
                     Fragment fragment = aList.get(i);
-                    if (fragment != null && fragment instanceof PayComboFragment) {
-                        ((PayComboFragment) fragment).setAddressWidgetContent(entry);
+                    if (fragment != null && fragment instanceof PayFragment) {
+                        ((PayFragment) fragment).setAddressWidgetContent(entry);
                         break;
                     }
                 }

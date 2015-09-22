@@ -145,7 +145,7 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
                 ConsultationDlg.showCallTelDlg(getActivity());
             else if (v == commitOrderTv) {
                 if (commitOrderTv.getText().toString().equals(getResources().getString(R.string.pay_immediately))) {
-                    gotoFragmentByAdd(getArguments(), R.id.mainpage_ly, new PayComboFragment(), PayComboFragment.class.getName());
+                    gotoFragmentByAdd(getArguments(), R.id.mainpage_ly, new PayFragment(), PayFragment.class.getName());
                     return;
                 }
                 if (isCreateOrder()) {

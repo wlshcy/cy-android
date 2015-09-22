@@ -1,5 +1,9 @@
 package com.shequcun.farm.ui.fragment;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -23,6 +27,7 @@ import com.shequcun.farm.data.OrderEntry;
 import com.shequcun.farm.data.OtherInfo;
 import com.shequcun.farm.data.PayParams;
 import com.shequcun.farm.data.UserLoginEntry;
+import com.shequcun.farm.data.WxPayResEntry;
 import com.shequcun.farm.datacenter.CacheManager;
 import com.shequcun.farm.datacenter.DisheDataCenter;
 import com.shequcun.farm.datacenter.PersistanceManager;
@@ -35,6 +40,7 @@ import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.ToastHelper;
 import com.shequcun.farm.util.Utils;
+import com.shequcun.farm.util.WxPayUtils;
 
 import org.apache.http.Header;
 
@@ -44,7 +50,7 @@ import java.util.List;
  * 套餐支付界面
  * Created by mac on 15/9/11.
  */
-public class PayComboFragment extends BaseFragment {
+public class PayFragment extends BaseFragment {
 
     @Nullable
     @Override
@@ -73,7 +79,8 @@ public class PayComboFragment extends BaseFragment {
         add_address_ly = v.findViewById(R.id.add_address_ly);
         addressLy = v.findViewById(R.id.addressee_ly);
         red_packets_money_ly = v.findViewById(R.id.red_packets_money_ly);
-        ((ImageView)v.findViewById(R.id.right_arrow_iv)).setImageResource(R.drawable.icon_more);
+        ((ImageView) v.findViewById(R.id.right_arrow_iv)).setImageResource(R.drawable.icon_more);
+        wx_pay_ly = v.findViewById(R.id.wx_pay_ly);
     }
 
     @Override
@@ -81,6 +88,7 @@ public class PayComboFragment extends BaseFragment {
         initAlipay();
         back.setOnClickListener(onClick);
         alipay_ly.setOnClickListener(onClick);
+        wx_pay_ly.setOnClickListener(onClick);
         add_address_ly.setOnClickListener(onClick);
         addressLy.setOnClickListener(onClick);
         addressLy.setOnClickListener(onClick);
@@ -127,7 +135,8 @@ public class PayComboFragment extends BaseFragment {
         }
 
         if (!TextUtils.isEmpty(alipay)) {
-            aUtils.doAlipay(alipay);
+//            aUtils.doAlipay(alipay);
+            doPay(alipay,null);
             return;
         }
         RequestParams params = new RequestParams();
@@ -175,7 +184,8 @@ public class PayComboFragment extends BaseFragment {
                                 gotoFragmentByAdd(buildBundle(orderEntry.orderno, getOrderMoney(), orderEntry.alipay, true, R.string.order_result), R.id.mainpage_ly, new PayResultFragment(), PayResultFragment.class.getName());
                                 return;
                             }
-                            aUtils.doAlipay(alipay);
+                            doPay(alipay,null);
+//                            aUtils.doAlipay(alipay);
                             mHandler.sendEmptyMessageDelayed(0, 30 * 60 * 1000);
                         } else {
                             ToastHelper.showShort(getActivity(), orderEntry.errmsg);
@@ -237,6 +247,12 @@ public class PayComboFragment extends BaseFragment {
     }
 
 
+    void initWxPay() {
+        if (wxPayUtils == null)
+            wxPayUtils = new WxPayUtils();
+        wxPayUtils.initWxAPI(getActivity());
+    }
+
     private Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
             switch (msg.what) {
@@ -254,12 +270,7 @@ public class PayComboFragment extends BaseFragment {
                     // 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
                     if (TextUtils.equals(resultStatus, "9000")) {
                         ToastHelper.showShort(getActivity(), "支付成功");
-                        OtherInfo info = buildOtherInfo();
-                        if (info != null && info.type == 3) {
-                            new CacheManager(getActivity()).delRecommendToDisk();
-                            IntentUtil.sendUpdateFarmShoppingCartMsg(getActivity());
-                        }
-                        gotoFragmentByAdd(buildBundle(entry.orderno, getOrderMoney(), alipay, true, R.string.order_result), R.id.mainpage_ly, new PayResultFragment(), PayResultFragment.class.getName());
+                        doPaySuccessful();
                     } else {
                         // 判断resultStatus 为非“9000”则代表可能支付失败
                         // “8000”代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认，最终交易是否成功以服务端异步通知为准（小概率状态）
@@ -355,19 +366,17 @@ public class PayComboFragment extends BaseFragment {
         public void onClick(View v) {
             if (v == back)
                 popBackStack();
-            else if (v == alipay_ly) {
-//                if (payParams != null) {
-//                    requestAlipay();
-//                    return;
-//                }
-
+            else if (v == alipay_ly || v == wx_pay_ly) {
+                isAlipayPay = v == alipay_ly ? true : false;
+                if (!isAlipayPay) {
+                    doWxPayResultRegister();
+                    initWxPay();
+                }
                 OtherInfo info = buildOtherInfo();
-
                 if (info != null && info.item_type != 0) {
                     requestAlipay();
                     return;
                 }
-
                 if (info != null && info.type == 3) {//创建单品订单
                     createSingleOrder(info);
                     return;
@@ -416,6 +425,7 @@ public class PayComboFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         mHandler.removeCallbacksAndMessages(null);
+        doUnWxPayResultRegister();
     }
 
     private OtherInfo buildOtherInfo() {
@@ -472,9 +482,12 @@ public class PayComboFragment extends BaseFragment {
                     if (orderEntry != null) {
                         if (TextUtils.isEmpty(orderEntry.errmsg)) {
                             alipay = orderEntry.alipay;
-                            entry.orderno=orderEntry.orderno;
-                            if (!TextUtils.isEmpty(alipay))
-                                aUtils.doAlipay(alipay);
+                            entry.orderno = orderEntry.orderno;
+//                            if (!TextUtils.isEmpty(alipay))
+//                                aUtils.doAlipay(alipay);
+
+                            doPay(alipay,null);
+
                             mHandler.sendEmptyMessageDelayed(0, 30 * 60 * 1000);
                             return;
                         }
@@ -521,7 +534,13 @@ public class PayComboFragment extends BaseFragment {
                     OrderEntry oEntry = JsonUtilsParser.fromJson(new String(data), OrderEntry.class);
                     if (oEntry != null) {
                         if (TextUtils.isEmpty(oEntry.errmsg)) {
-                            aUtils.doAlipay(oEntry.alipay);
+//                            if (isAlipayPay) {
+//                                aUtils.doAlipay(oEntry.alipay);
+//                            }
+
+
+                            doPay(oEntry.alipay,null);
+
                             return;
                         }
                         ToastHelper.showShort(getActivity(), oEntry.errmsg);
@@ -536,11 +555,65 @@ public class PayComboFragment extends BaseFragment {
         });
     }
 
-//    void buildPayParams() {
-//        Bundle bundle = getArguments();
-//        payParams = bundle != null ? ((PayParams) bundle.getSerializable("PayParams")) : null;
-//    }
+    void doWxPayResultRegister() {
+        if (!mIsBind) {
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(IntentUtil.UPDATE_WX_PAY_RESULT_MSG);
+            getActivity().registerReceiver(mUpdateReceiver, intentFilter);
+            mIsBind = true;
+        }
+    }
 
+
+    private BroadcastReceiver mUpdateReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (TextUtils.isEmpty(action)) {
+                return;
+            }
+            if (action.equals(IntentUtil.UPDATE_WX_PAY_RESULT_MSG)) {
+                int payCode = intent.getIntExtra("PayCode", -5);
+                if (payCode == 0) {//表示支付成功
+                    doPaySuccessful();
+                } else if (payCode == -1) {//表示支付失败
+
+                } else if (payCode == -2) {//取消支付
+
+                }
+            }
+        }
+    };
+
+    void doUnWxPayResultRegister() {
+        if (mIsBind) {
+            getActivity().unregisterReceiver(mUpdateReceiver);
+            mIsBind = false;
+        }
+    }
+
+    void doPaySuccessful() {
+        OtherInfo info = buildOtherInfo();
+        if (info != null && info.type == 3) {
+            new CacheManager(getActivity()).delRecommendToDisk();
+            IntentUtil.sendUpdateFarmShoppingCartMsg(getActivity());
+        }
+        gotoFragmentByAdd(buildBundle(entry.orderno, getOrderMoney(), alipay, true, R.string.order_result), R.id.mainpage_ly, new PayResultFragment(), PayResultFragment.class.getName());
+    }
+
+    void doPay(String alipay,WxPayResEntry payRes){
+        if(isAlipayPay){
+
+        }else{
+
+        }
+    }
+
+    boolean mIsBind = false;
+    /**
+     * 微信支付
+     */
+    View wx_pay_ly;
     //优惠券id
     int coupon_id = -1;
     String alipay;
@@ -560,5 +633,9 @@ public class PayComboFragment extends BaseFragment {
     String addressStr;
     //使用优惠红包
     View red_packets_money_ly;
-//    PayParams payParams;
+    /**
+     * true,支付宝支付  false 微信支付
+     */
+    boolean isAlipayPay = false;
+    WxPayUtils wxPayUtils;
 }

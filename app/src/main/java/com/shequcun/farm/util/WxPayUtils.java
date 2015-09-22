@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import com.shequcun.farm.R;
+import com.shequcun.farm.data.WxPayResEntry;
 import com.shequcun.farm.dlg.ProgressDlg;
 import com.tencent.mm.sdk.constants.Build;
 import com.tencent.mm.sdk.modelpay.PayReq;
@@ -28,7 +29,6 @@ public class WxPayUtils {
     /**
      * 应用唯一标识,在微信开放平台提交应用审核通
      */
-    private String app_id;
     /**
      * 应用密钥,在微信开放平台提交应用审核通过后获得
      */
@@ -51,8 +51,7 @@ public class WxPayUtils {
      */
     public void initWxAPI(Context mContext) {
         this.mContext = mContext;
-        app_id = LocalParams.getBaseUrl();
-        iwxapi = WXAPIFactory.createWXAPI(mContext, app_id);
+        iwxapi = WXAPIFactory.createWXAPI(mContext, LocalParams.getWxAppId());
     }
 
     /**
@@ -68,20 +67,20 @@ public class WxPayUtils {
         new GetAccessTokenTask().execute();
     }
 
+    public void doWxPay(WxPayResEntry wxPay) {
+        iwxapi.sendReq(wxPay);
+    }
+
     /**
      * 获取 Token
      */
     private class GetAccessTokenTask extends AsyncTask<Void, Void, GetAccessTokenResult> {
-        //        private ProgressDialog dialog;
-//        private ProgressBar pBar;
         private ProgressDlg pDlg;
 
         @Override
         protected void onPreExecute() {
             pDlg = new ProgressDlg(mContext, "加载中...");
             pDlg.show();
-//            pBar=new ProgressBar(mContext,null,android.R.attr.progressBarStyleSmall);//小圆
-//            dialog = ProgressDialog.show(mContext, mContext.getString(R.string.app_tip), mContext.getString(R.string.getting_access_token));
         }
 
         @Override
@@ -92,9 +91,6 @@ public class WxPayUtils {
 
 
             if (result.localRetCode == LocalRetCode.ERR_OK) {
-                // ToastHelper.showShort(mContext, R.string.get_access_token_succ);
-                //   Toast.makeText(mContext, mContext.R.string.get_access_token_succ, Toast.LENGTH_LONG).show();
-//                Log.d(TAG, "onPostExecute, accessToken = " + result.accessToken);
                 GetPrepayIdTask getPrepayId = new GetPrepayIdTask(result.accessToken);
                 getPrepayId.execute();
             } else {
@@ -108,7 +104,7 @@ public class WxPayUtils {
             GetAccessTokenResult result = new GetAccessTokenResult();
 
             String url = String.format("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s",
-                    app_id, app_secret);
+                    LocalParams.getWxAppId(), app_secret);
             //Log.d(TAG, "get access token, url = " + url);
 
             byte[] buf = Util.httpGet(url);
@@ -160,6 +156,10 @@ public class WxPayUtils {
         }
     }
 
+
+    /**
+     * 生成预支付订单
+     */
     private class GetPrepayIdTask extends AsyncTask<Void, Void, GetPrepayIdResult> {
 
         //        private ProgressDialog dialog;
@@ -258,7 +258,7 @@ public class WxPayUtils {
         JSONObject json = new JSONObject();
 
         try {
-            json.put("appid", app_id);
+            json.put("appid", LocalParams.getWxAppId());
             String traceId = getTraceId();  // traceId
             json.put("traceid", traceId);
             nonceStr = genNonceStr();
@@ -285,7 +285,7 @@ public class WxPayUtils {
             timeStamp = genTimeStamp();
             json.put("timestamp", timeStamp);
             List<NameValuePair> signParams = new LinkedList<NameValuePair>();
-            signParams.add(new BasicNameValuePair("appid", app_id));
+            signParams.add(new BasicNameValuePair("appid", LocalParams.getWxAppId()));
             signParams.add(new BasicNameValuePair("appkey", app_key));
             signParams.add(new BasicNameValuePair("noncestr", nonceStr));
             signParams.add(new BasicNameValuePair("package", packageValue));
@@ -349,7 +349,7 @@ public class WxPayUtils {
 
     private void sendPayReq(GetPrepayIdResult result) {
         PayReq req = new PayReq();
-        req.appId = app_id;
+        req.appId = LocalParams.getWxAppId();
         req.partnerId = partner_id;
         req.prepayId = result.prepayId;
         req.nonceStr = nonceStr;

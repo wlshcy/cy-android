@@ -206,4 +206,6 @@
     <string name="freight_tip">(订单满99元包邮)</string>
     <string name="freight_money">10元</string>
     <string name="no_freight">免运费</string>
+
+    <string name="wx_pay">微信支付</string>
 </resources>

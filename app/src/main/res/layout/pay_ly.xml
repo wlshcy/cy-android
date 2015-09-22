@@ -117,6 +117,39 @@
             android:layout_height="1dp"
             android:background="@color/common_bg_color" />
 
+
+        <FrameLayout
+            android:id="@+id/wx_pay_ly"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/px150"
+            android:background="@drawable/list_item_selector">
+
+            <ImageView
+                android:layout_width="@dimen/px100"
+                android:layout_height="@dimen/px100"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/px40"
+                android:src="@drawable/icon_alipay" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center_vertical"
+                android:layout_marginRight="@dimen/px40"
+                android:drawablePadding="@dimen/px40"
+                android:drawableRight="@drawable/icon_more"
+                android:gravity="center"
+                android:text="@string/wx_pay"
+                android:textColor="@color/gray_676767"
+                android:textSize="@dimen/font28" />
+        </FrameLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/common_bg_color" />
+
     </LinearLayout>
 
 

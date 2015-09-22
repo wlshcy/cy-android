@@ -20,7 +20,6 @@ import com.shequcun.farm.R;
 import com.shequcun.farm.data.ComboEntry;
 import com.shequcun.farm.data.CouponEntry;
 import com.shequcun.farm.data.OtherInfo;
-import com.shequcun.farm.data.PayParams;
 import com.shequcun.farm.data.RecommendEntry;
 import com.shequcun.farm.datacenter.CacheManager;
 import com.shequcun.farm.db.RecommendItemKey;
@@ -327,7 +326,7 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment implements R
                     entry.info.type = 3;
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("ComboEntry", entry);
-                    gotoFragmentByAdd(bundle, R.id.mainpage_ly, new PayComboFragment(), PayComboFragment.class.getName());
+                    gotoFragmentByAdd(bundle, R.id.mainpage_ly, new PayFragment(), PayFragment.class.getName());
                 }
             });
 
