@@ -189,7 +189,7 @@ public class WxPayUtils {
                 //Toast.makeText(mContext, R.string.get_prepayid_succ, Toast.LENGTH_LONG).show();
                 sendPayReq(result);
             } else {
-                ToastHelper.showShort(mContext, mContext.getString(R.string.get_prepayid_fail, result.localRetCode.name()));
+                //ToastHelper.showShort(mContext, mContext.getString(R.string.get_prepayid_fail, result.localRetCode.name()));
                 //Toast.makeText(mContext, getString(R.string.get_prepayid_fail, result.localRetCode.name()), Toast.LENGTH_LONG).show();
             }
         }
