@@ -66,7 +66,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
         priceNowTv.setText(Utils.unitPeneyToYuan(entry.price));
         priceOriginTv.setText(Utils.unitPeneyToYuan(entry.mprice));//"¥" + ((float) entry.mprice) / 100
         personSelectTv.setText(entry.sales + "人选择");
-        standardTv.setText("商品规格：" + entry.packw + "g/份");
+        standardTv.setText("商品规格：" + Utils.unitConversion(entry.packw) + "/份");
         if (entry.detail != null && !TextUtils.isEmpty(entry.detail.storage))
             storageMethodTv.setText("储存方法：" + entry.detail.storage);
         else
@@ -303,6 +303,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
         alert.show();
         alert.setCancelable(false);
         alert.getWindow().setContentView(R.layout.alert_dialog);
+        alert.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         TextView tv = (TextView) alert.getWindow().findViewById(R.id.content_tv);
         tv.setText(content);
         alert.getWindow().findViewById(R.id.ok_btn)
@@ -317,8 +318,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
     private void useUmengToShare(ShareContent shareContent) {
         if (shareController == null)
             shareController = new ShareUtil(getActivity());
-        shareController.shareAll(shareContent);
-        shareController.postShare(mSnsPostListener);
+        shareController.popShareFrame(getActivity(),shareContent);
     }
 
     private SocializeListeners.SnsPostListener mSnsPostListener = new SocializeListeners.SnsPostListener() {

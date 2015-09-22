@@ -21,6 +21,7 @@ import com.shequcun.farm.data.RecommentListEntry;
 import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.ui.adapter.RecommendAdapter;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
+import com.shequcun.farm.util.Constrants;
 import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.IntentUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
@@ -264,13 +265,14 @@ public class PayResultFragment extends BaseFragment {
         alert.show();
         alert.setCancelable(false);
         alert.getWindow().setContentView(R.layout.prompt_redpackets_share);
+        alert.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         TextView countTv = (TextView) alert.getWindow().findViewById(R.id.red_packets_count_tv);
         countTv.setText(countTv.getText().toString().replace("A", count > 0 ? count + "" : "N"));
         alert.getWindow().findViewById(R.id.share_tv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                alert.dismiss();
                 useUmengToShare(url, title, content);
+                alert.dismiss();
             }
         });
         alert.getWindow().findViewById(R.id.close_iv)
@@ -321,14 +323,11 @@ public class PayResultFragment extends BaseFragment {
         if (shareController == null)
             shareController = new ShareUtil(getActivity());
         ShareContent shareContent = new ShareContent();
-//        shareContent.setUrlImage("drawable:///" + R.drawable.icon_share_redpackets_logo);
         shareContent.setImageId(R.drawable.icon_share_redpackets_logo);
         shareContent.setTargetUrl(url);
         shareContent.setTitle(title);
         shareContent.setContent(content);
-        shareController.wxShareContent(shareContent);
-        shareController.circleShareContent(shareContent);
-        shareController.postShare(mSnsPostListener);
+        shareController.popShareFrame(getActivity(),shareContent);
     }
 
     private SocializeListeners.SnsPostListener mSnsPostListener = new SocializeListeners.SnsPostListener() {
