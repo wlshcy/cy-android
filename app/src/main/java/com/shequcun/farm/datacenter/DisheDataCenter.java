@@ -95,10 +95,7 @@ public class DisheDataCenter {
 
     public boolean reachReqWeight() {
         int weight = mOrder.getItemsWeight();
-        if (weight >= reqWeight) {
-            return true;
-        }
-        return false;
+        return weight >= reqWeight;
     }
 
     public int outOfReqWeight(int lastWeight) {
@@ -128,10 +125,7 @@ public class DisheDataCenter {
     /*超过剩余份数*/
     public boolean outOfRemainWeight(int id) {
         /*未超过剩余份数*/
-        if (mOrder.getItemsWeight() < mOrder.getRemainsById(id)) {
-            return false;
-        }
-        return true;
+        return mOrder.getItemsWeight() >= mOrder.getRemainsById(id);
     }
 
     public void clear() {

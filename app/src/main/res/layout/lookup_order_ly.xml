@@ -43,10 +43,10 @@
         android:id="@+id/order_btn"
         android:layout_width="match_parent"
         android:layout_height="@dimen/px110"
-        android:background="@drawable/list_item_selector"
+        android:background="@drawable/shopping_cart_widget_selector_1"
         android:gravity="center"
         android:text="@string/cancel_order"
-        android:textColor="@color/green_24c05d"
+        android:textColor="@android:color/white"
         android:textSize="@dimen/px30" />
 
 

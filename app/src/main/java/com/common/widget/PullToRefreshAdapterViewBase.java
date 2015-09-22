@@ -154,7 +154,7 @@ public abstract class PullToRefreshAdapterViewBase<T extends AbsListView>
 	 *            - Adapter to set
 	 */
 	public void setAdapter(ListAdapter adapter) {
-		((AdapterView<ListAdapter>) mRefreshableView).setAdapter(adapter);
+		mRefreshableView.setAdapter(adapter);
 	}
 
 	/**
@@ -252,8 +252,6 @@ public abstract class PullToRefreshAdapterViewBase<T extends AbsListView>
 		}
 	}
 
-	;
-
 	@Override
 	protected void onPullToRefresh() {
 		super.onPullToRefresh();
@@ -337,8 +335,8 @@ public abstract class PullToRefreshAdapterViewBase<T extends AbsListView>
 		}
 	}
 
-	public static interface OnRefreshingScrollToOriginal {
-		public void onScrollToOriginal();
+	public interface OnRefreshingScrollToOriginal {
+		void onScrollToOriginal();
 	}
 
 	@Override
@@ -526,7 +524,7 @@ public abstract class PullToRefreshAdapterViewBase<T extends AbsListView>
 		this.mOnRefreshingScrollToOriginal = mOnRefreshingScrollToOriginal;
 	}
 
-	public static interface OnScrollDirectionListener {
-		public void onScrollDirection(Direction dir);
+	public interface OnScrollDirectionListener {
+		void onScrollDirection(Direction dir);
 	}
 }

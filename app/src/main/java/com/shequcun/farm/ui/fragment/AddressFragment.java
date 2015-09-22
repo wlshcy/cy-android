@@ -259,9 +259,7 @@ public class AddressFragment extends BaseFragment {
             return true;
         if (!TextUtils.isEmpty(entry.zname) && znameDiff)
             return true;
-        if (!TextUtils.isEmpty(entry.bur) && !entry.bur.equals(detailAddr))
-            return true;
-        return false;
+        return !TextUtils.isEmpty(entry.bur) && !entry.bur.equals(detailAddr);
     }
 
     private void setInputToFiled() {
@@ -305,8 +303,8 @@ public class AddressFragment extends BaseFragment {
                 int length = aList.size();
                 for (int i = 1; i < length; i++) {
                     Fragment fragment = aList.get(i);
-                    if (fragment != null && fragment instanceof PayComboFragment) {
-                        ((PayComboFragment) fragment).setAddressWidgetContent(entry);
+                    if (fragment != null && fragment instanceof PayFragment) {
+                        ((PayFragment) fragment).setAddressWidgetContent(entry);
                         break;
                     }
                 }

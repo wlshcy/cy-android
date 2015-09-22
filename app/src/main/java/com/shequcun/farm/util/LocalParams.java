@@ -69,6 +69,10 @@ public class LocalParams {
 //        return "http://192.168.1.100:9100/";
     }
 
+    public static String getWxAppId(){
+        return "wxedddf5c468bfd955";
+    }
+
 //    public String getAlipayPid() {
 //        return getKeyValue(Alipay_Pid);
 //    }

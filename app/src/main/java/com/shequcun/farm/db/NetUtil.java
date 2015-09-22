@@ -107,7 +107,7 @@ public class NetUtil {
 	}
 
 	public static Bitmap getBitmapByUrl(String urlString)
-			throws MalformedURLException, IOException {
+			throws IOException {
 		URL url = new URL(urlString);
 		URLConnection connection = url.openConnection();
 		connection.setConnectTimeout(25000);
@@ -210,7 +210,7 @@ public class NetUtil {
 		Iterator<Entry<String, String>> iter = httpParams.entrySet().iterator();
 		boolean first = true;
 		while (iter.hasNext()) {
-			Map.Entry<String, String> entry = (Map.Entry<String, String>) iter
+			Map.Entry<String, String> entry = iter
 					.next();
 			String key = entry.getKey();
 			String value = entry.getValue().toString();
@@ -242,7 +242,7 @@ public class NetUtil {
 				first = false;
 			else
 				buf.append(",");
-			Map.Entry<String, String> entry = (Map.Entry<String, String>) iter
+			Map.Entry<String, String> entry = iter
 					.next();
 			String key = entry.getKey();
 			String value = entry.getValue().toString();
@@ -649,11 +649,6 @@ public class NetUtil {
 		ConnectivityManager cManager = (ConnectivityManager) context
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo info = cManager.getActiveNetworkInfo();
-		if (info == null || !info.isAvailable()) {
-			// do something
-			// 不能联网
-			return false;
-		}
-		return true;
+		return !(info == null || !info.isAvailable());
 	}
 }

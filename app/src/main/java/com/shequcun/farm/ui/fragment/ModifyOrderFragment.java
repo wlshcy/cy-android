@@ -22,9 +22,7 @@ import com.shequcun.farm.data.AlreadyPurchasedEntry;
 import com.shequcun.farm.data.AlreadyPurchasedListEntry;
 import com.shequcun.farm.data.ComboEntry;
 import com.shequcun.farm.data.CouponShareEntry;
-import com.shequcun.farm.data.DishesItemEntry;
 import com.shequcun.farm.data.ModifyOrderParams;
-import com.shequcun.farm.data.OrderEntry;
 import com.shequcun.farm.data.OtherInfo;
 import com.shequcun.farm.data.PayParams;
 import com.shequcun.farm.data.UserLoginEntry;
@@ -39,7 +37,6 @@ import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.ShareContent;
 import com.shequcun.farm.util.ShareUtil;
 import com.shequcun.farm.util.ToastHelper;
-import com.shequcun.farm.util.Utils;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.bean.SocializeEntity;
 import com.umeng.socialize.bean.StatusCode;
@@ -142,7 +139,7 @@ public class ModifyOrderFragment extends BaseFragment {
                     entry.info.item_type = hEntry.type;
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("ComboEntry", entry);
-                    gotoFragmentByAdd(bundle, R.id.mainpage_ly, new PayComboFragment(), PayComboFragment.class.getName());
+                    gotoFragmentByAdd(bundle, R.id.mainpage_ly, new PayFragment(), PayFragment.class.getName());
                 }
             } else if (v == redPacketsIv) {
                 if (hEntry == null) return;

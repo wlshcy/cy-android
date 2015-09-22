@@ -5,19 +5,10 @@
     <string name="pull_to_refresh_release_label" translatable="false">松开可以刷新</string>
     <string name="pull_to_refresh_refreshing_label" translatable="false">加载中&#8230;</string>
     <string name="get_access_token_fail" formatted="false">获取access token失败，原因%s</string>
-    <string name="getting_prepayid">正在获取预支付订单...</string>
-    <string name="paying">支付中</string>
-    <string name="get_prepayid_succ">获取prepayid成功</string>
-    <string name="get_prepayid_fail" formatted="false">获取prepayid失败，原因%s</string>
     <string name="name">姓名</string>
     <string name="mobile_phone">手机号</string>
-    <string name="building_number">楼号</string>
-    <string name="unit_number">单元号</string>
-    <string name="house_number">门牌号</string>
-    <string name="required">必填</string>
     <string name="community">小区</string>
     <string name="nearby_community">附近的小区</string>
-    <string name="commit">提交</string>
     <string name="ok">好的</string>
     <string name="receiveing_address">收货地址</string>
     <string name="community_name">小区名称</string>
@@ -40,16 +31,13 @@
     <string name="mobile_phone_error">请输入合法的手机号</string>
     <string name="sns_code_error">请输入合法的验证码</string>
     <string name="re_get_sms_code">重新获取验证码</string>
-    <string name="no_combo_tip">您还未选择套餐,请先选择套餐</string>
     <string name="choose_combo">选择套餐</string>
     <string name="choose_dishes">选择菜品</string>
     <string name="login_fail">登录失败</string>
-    <string name="login_tip">登录后,可以购买套餐和选品</string>
     <string name="look_combo_detail">查看套餐详情</string>
     <string name="shopping_order">购买订单</string>
     <string name="dishes_order">菜品订单</string>
     <string name="my_order">我的订单</string>
-    <string name="login_msg_tip">亲,使用此功能需要登录哦!</string>
     <string name="consultation">咨询</string>
     <string name="call_message_unknow">您的设备不支持拨打电话的功能</string>
     <string name="tel_message_absent">请插入SIM卡</string>
@@ -64,39 +52,18 @@
     <string name="add_shop_cart">加入购物车</string>
     <string name="cailanzi">菜篮子</string>
     <string name="small_market_buy">选好了</string>
-    <string name="small_market_buy_not">满A元起送</string>
     <string name="small_market_buy_not_enough">还差A</string>
-    <string name="small_market_shop_cart_price">共A元</string>
     <string name="small_market_shop_cart_null">购物车是空的</string>
-    <string name="search_community_error_tip">搜索不到小区,填写我的小区</string>
-    <string name="detail_address">详细地址</string>
-    <string name="fill_in_address">填写地址</string>
     <string name="go_choose_dishes">去选菜</string>
-    <string name="pay_by_year">年付:</string>
     <string name="now_pay">立即支付</string>
-    <string name="supported_pay_by_year">本套餐只支持年付</string>
     <string name="out_of_required_weight">亲,您已选满A啦!^^</string>
     <string name="out_of_maxpacks">亲,该菜品库存不足,请选其他菜品吧</string>
     <string name="out_of_remains">亲,该菜品剩余不足,请选其他菜品吧</string>
     <string name="out_of_required_weight1">亲,选该菜品会超过A的,\n换换其他的吧！^^</string>
     <!-- 收货地址 -->
-    <string name="title_receive_address">收货地址</string>
     <string name="address">地址</string>
     <string name="my_address">我的地址</string>
-    <string name="title_edit_address">编辑收货地址</string>
-    <string name="common_required_buiding_num">请输入楼号</string>
-    <string name="common_required_door_num">请输入门牌号</string>
-    <string name="common_update_submit">请修改信息后再提交</string>
     <string name="common_phone_format_error">请输入正确的手机格式</string>
-    <string name="common_phone_required">请输入手机号码</string>
-    <string name="common_zone">小区</string>
-    <string name="common_num_building">号楼</string>
-    <string name="common_unit">单元</string>
-    <string name="common_building_num">楼号</string>
-    <string name="common_unit_num">单元号</string>
-    <string name="common_door_num">门牌号</string>
-    <string name="common_required_input">必填</string>
-    <string name="common_option_input">选填</string>
     <string name="combo_introduce">套餐介绍</string>
     <string name="shopping_combo">购买套餐</string>
     <string name="add_address">单击此处添加您的收货地址!</string>
@@ -105,7 +72,6 @@
     <string name="pay_immediately">立即支付</string>
     <string name="pay_success">支付成功</string>
     <string name="order_result">订单结果</string>
-    <string name="pay_fail">支付失败</string>
     <string name="order_pay_success">订单支付成功</string>
     <string name="order_submit_success">订单提交成功</string>
     <string name="pay_success_tip">我们会按时为您配送订单.</string>
@@ -131,31 +97,23 @@
     <string name="logout_success">退出成功</string>
     <string name="logout_fail">退出失败</string>
     <string name="has_choosen_dishes_tip">您已选过本期菜品,如需更改请点击.</string>
-    <string name="has_choosen_next_dishes_tip">您如需选择下期菜品,请单击此处.</string>
-    <string name="deliverying">您选择的套餐正在配送中,请耐心等待.</string>
     <string name="delievery_success">您的上期菜品已经配送完成.</string>
-    <string name="discount_price">优惠价</string>
-    <string name="discount_limit_time">限时特惠</string>
     <string name="about">关于有菜</string>
     <string name="company_name">北京爱乐守一网络科技有限公司</string>
     <string name="copyright">有菜版权所有</string>
     <string name="help">帮助</string>
     <string name="unpaid">未付款</string>
-    <string name="nodelivery">待配送</string>
     <string name="choose_dishes_successful">您已选好菜品啦!</string>
     <string name="choose_dishes_tip">本期选菜时间已过,请于周五开始下期选菜!</string>
     <string name="has_chosen_dishes">本期菜品已选</string>
-    <string name="market_price">市场价</string>
     <string name="specialty">农庄优选</string>
     <string name="farm_info">农庄详情</string>
     <string name="spike">秒杀</string>
     <string name="spike_error_tip">您已购买过该产品,不能重复购买!</string>
     <string name="organic_farm_combo">有机农庄宅配套餐</string>
-    <string name="more_combo">更多营养套餐</string>
     <!--红包-->
     <string name="use_favorable_red_packets">使用优惠红包</string>
     <string name="pay_red_packets">支付红包</string>
-    <string name="use_for_app_off_line_pay">App下单在线支付使用</string>
     <string name="use_rule">使用规则</string>
     <string name="empty_red_packets">您还没有红包唉～\n让朋友分享给您个红包吧</string>
     <string name="share_red_packets">发红包</string>
@@ -180,7 +138,6 @@
     <string name="sample_building_room">例：12号楼1501室</string>
     <string name="click_to_choose">点击选择</string>
     <string name="hint_input_street_and_zone_name">请输入：街道，小区名称</string>
-    <string name="duplicate_address_content">请修改地址后保存</string>
     <string name="prompt_delete_address">您确定删除该地址？</string>
 
     <string name="shopping_cart_empty">您的购物车是空的哦.</string>
@@ -189,7 +146,6 @@
     <string name="add_remark">添加备注</string>
     <string name="back_dishes">备选蔬菜</string>
     <string name="use_discount_red_packets">使用优惠红包</string>
-    <string name="red_packets_money">X元可用</string>
     <string name="has_choosen_dishes">您已选好菜品了!</string>
     <string name="leave_msg_to_farm">留言给农庄</string>
     <string name="option_dishes">备选菜</string>
@@ -206,4 +162,6 @@
     <string name="freight_tip">(订单满99元包邮)</string>
     <string name="freight_money">10元</string>
     <string name="no_freight">免运费</string>
+
+    <string name="wx_pay">微信支付</string>
 </resources>

@@ -17,7 +17,7 @@ public class DBRecordItem {
 		java.io.ByteArrayOutputStream bout = new java.io.ByteArrayOutputStream();
 		bout.write(Convert.convertInt(id));
 		while (eles.hasMoreElements()) {
-			bout.write(((DBRecordField) eles.nextElement()).getData());
+			bout.write(eles.nextElement().getData());
 		}
 		byte[] data = bout.toByteArray();
 		bout.close();
@@ -25,7 +25,7 @@ public class DBRecordItem {
 	}
 
 	public String getStringValue(String key, String defaultValue) {
-		DBRecordField obj = (DBRecordField) fields.get(key);
+		DBRecordField obj = fields.get(key);
 		if (obj == null)
 			return defaultValue;
 		return (String) obj.value;

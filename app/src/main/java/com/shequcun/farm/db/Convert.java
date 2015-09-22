@@ -30,11 +30,7 @@ public class Convert {
 		d = d << (32 - index);
 		d = d >>> (32 - index);
 		d = d >>> (index - 1);
-		if (d > 0) {
-			return true;
-		} else {
-			return false;
-		}
+		return d > 0;
 	}
 
 	public static byte[] copyString(byte[] b, int index, int length) {

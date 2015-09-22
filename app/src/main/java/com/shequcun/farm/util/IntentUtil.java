@@ -6,6 +6,7 @@ import android.content.Intent;
 import com.shequcun.farm.data.AddressEntry;
 import com.shequcun.farm.data.ComboEntry;
 import com.shequcun.farm.data.ZoneEntry;
+import com.tencent.mm.sdk.modelbase.BaseResp;
 
 /**
  * Created by apple on 15/8/8.
@@ -101,6 +102,16 @@ public class IntentUtil {
     public static void sendUpdateAddressRequest(Context mContext) {
         Intent intent = new Intent();
         intent.setAction(UPDATE_ADDRESS_REQUEST);
+        mContext.sendBroadcast(intent);
+    }
+
+
+    public static final String UPDATE_WX_PAY_RESULT_MSG = "";
+
+    public static void sendWxPayResultMsg(Context mContext,int payCode) {
+        Intent intent = new Intent();
+        intent.setAction(UPDATE_WX_PAY_RESULT_MSG);
+        intent.putExtra("PayCode",payCode);
         mContext.sendBroadcast(intent);
     }
 }

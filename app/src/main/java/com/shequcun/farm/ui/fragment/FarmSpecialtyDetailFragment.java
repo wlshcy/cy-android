@@ -2,11 +2,9 @@ package com.shequcun.farm.ui.fragment;
 
 import android.app.AlertDialog;
 import android.graphics.Paint;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,17 +20,14 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.ComboEntry;
 import com.shequcun.farm.data.OtherInfo;
-import com.shequcun.farm.data.RecommendDetailEntry;
 import com.shequcun.farm.data.RecommendEntry;
 import com.shequcun.farm.data.SlidesEntry;
 import com.shequcun.farm.datacenter.CacheManager;
 import com.shequcun.farm.db.RecommendItemKey;
-import com.shequcun.farm.ui.SqcFarmActivity;
 import com.shequcun.farm.ui.adapter.CarouselAdapter;
 import com.shequcun.farm.util.Constrants;
 import com.shequcun.farm.util.DeviceInfo;
 import com.shequcun.farm.util.IntentUtil;
-import com.shequcun.farm.util.ResUtil;
 import com.shequcun.farm.util.ShareContent;
 import com.shequcun.farm.util.ShareUtil;
 import com.shequcun.farm.util.ToastHelper;
@@ -217,7 +212,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
                     tmpEntry.info.isSckill = true;
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("ComboEntry", tmpEntry);
-                    gotoFragmentByAdd(bundle, R.id.mainpage_ly, new PayComboFragment(), PayComboFragment.class.getName());
+                    gotoFragmentByAdd(bundle, R.id.mainpage_ly, new PayFragment(), PayFragment.class.getName());
 
                 }
             });

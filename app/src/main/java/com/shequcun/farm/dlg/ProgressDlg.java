@@ -15,8 +15,8 @@ public class ProgressDlg extends Dialog {
 	private TextView tvMsg;
 	OnSearchKeyEvent mOnSearchKeyEvent = null;
 
-	public static interface OnSearchKeyEvent {
-		public void onSearchKeyEvent();
+	public interface OnSearchKeyEvent {
+		void onSearchKeyEvent();
 	}
 
 	public void setOnSearchKeyEvent(OnSearchKeyEvent osEvent) {

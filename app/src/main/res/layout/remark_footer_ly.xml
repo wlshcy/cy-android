@@ -10,8 +10,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="@dimen/px8"
-        android:padding="@dimen/px22"
+        android:padding="@dimen/px18"
         android:text="@string/back_dishes"
+        android:textSize="@dimen/font24"
         android:textColor="@color/black_444444" />
 
 </LinearLayout>
