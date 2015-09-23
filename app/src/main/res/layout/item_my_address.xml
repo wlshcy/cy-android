@@ -55,7 +55,7 @@
             android:textColor="@color/common_text" />
 
     </RelativeLayout>
-    <TextView
+    <ImageView
         android:id="@+id/update_address_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -65,7 +65,7 @@
         android:paddingLeft="@dimen/px24"
         android:paddingRight="@dimen/px48"
         android:paddingTop="@dimen/px48"
-        android:text="修改"
-        android:textColor="@color/gray_9a9a9a" />
+        android:src="@drawable/address_edit_selector"
+         />
 </LinearLayout>
 

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white_fefefe"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/px20"
+        android:gravity="center"
+        android:text="分享到"
+        android:textSize="15sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/px30"
+        android:paddingTop="@dimen/px30">
+
+        <TextView
+            android:id="@+id/wxTv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/umeng_socialize_wechat"
+            android:gravity="center"
+            android:text="微信"
+            android:textColor="#a2a2a2"
+            android:textSize="12sp" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#dddddd"></View>
+
+        <TextView
+            android:id="@+id/wxCircleTv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/umeng_socialize_wxcircle"
+            android:gravity="center"
+            android:text="微信朋友圈"
+            android:textColor="#a2a2a2"
+            android:textSize="12sp" />
+    </LinearLayout>
+</LinearLayout>

@@ -53,7 +53,7 @@ public class MyAddressAdapter extends BaseAdapter {
             vh.name = (TextView) convertView.findViewById(R.id.name_tv);
             vh.mobile = (TextView) convertView.findViewById(R.id.mobile_tv);
             vh.address = (TextView) convertView.findViewById(R.id.address_tv);
-            vh.update = (TextView) convertView.findViewById(R.id.update_address_tv);
+            vh.update = (ImageView) convertView.findViewById(R.id.update_address_tv);
             vh.addressRl = convertView.findViewById(R.id.address_rl);
             vh.choose = (ImageView) convertView.findViewById(R.id.choose_iv);
             convertView.setTag(vh);
@@ -109,7 +109,7 @@ public class MyAddressAdapter extends BaseAdapter {
         TextView name;
         TextView mobile;
         TextView address;
-        TextView update;
+        ImageView update;
         View addressRl;
         ImageView choose;
     }

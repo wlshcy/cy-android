@@ -1,5 +1,6 @@
 package com.shequcun.farm.ui.fragment;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -56,7 +57,7 @@ public class FeedbackFragment extends BaseFragment {
         @Override
         public void onViewClick(View v) {
             if (v == back)
-                popBackStack();
+                checkQuit();
             else if (v == feedback_btn)
                 uploadFeedbackToServer();
         }
@@ -66,6 +67,44 @@ public class FeedbackFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         Utils.hideVirtualKeyboard(getActivity(), feedback_btn);
+    }
+
+    private void checkQuit(){
+        if (checkInput())
+            alertQuitEdit();
+        else
+            popBackStack();
+    }
+
+    private boolean checkInput(){
+        String content = feedback_et.getText().toString();
+        return !TextUtils.isEmpty(content);
+    }
+
+    private void alertQuitEdit() {
+        final AlertDialog alert = new AlertDialog.Builder(getActivity()).create();
+        alert.show();
+        alert.setCancelable(false);
+        alert.getWindow().setContentView(R.layout.prompt_dialog);
+        ((TextView) alert.getWindow().findViewById(R.id.content_tv))
+                .setText("确定退出编辑？");
+        alert.getWindow().findViewById(R.id.no)
+                .setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        alert.dismiss();
+                    }
+                });
+        alert.getWindow().findViewById(R.id.yes)
+                .setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        alert.dismiss();
+                        popBackStack();
+                    }
+                });
     }
 
     void uploadFeedbackToServer() {

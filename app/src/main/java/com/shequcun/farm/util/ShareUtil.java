@@ -1,10 +1,19 @@
 package com.shequcun.farm.util;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
+import android.view.View;
+import android.widget.TextView;
 
+import com.shequcun.farm.R;
 import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.bean.SocializeEntity;
+import com.umeng.socialize.bean.StatusCode;
 import com.umeng.socialize.controller.UMServiceFactory;
 import com.umeng.socialize.controller.UMSocialService;
+import com.umeng.socialize.controller.listener.SocializeListeners;
 import com.umeng.socialize.controller.listener.SocializeListeners.SnsPostListener;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.weixin.controller.UMWXHandler;
@@ -95,9 +104,60 @@ public class ShareUtil {
                 SHARE_MEDIA.WEIXIN_CIRCLE);
         mController.openShare(act, snsPostListener);
     }
+
     public void postShareAll(SnsPostListener snsPostListener) {
         mController.getConfig().setPlatforms(SHARE_MEDIA.WEIXIN,
-                SHARE_MEDIA.WEIXIN_CIRCLE,SHARE_MEDIA.QZONE);
+                SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QZONE);
         mController.openShare(act, snsPostListener);
     }
+
+    private void post(Context context, SHARE_MEDIA share_media, SnsPostListener snsPostListener) {
+        mController.postShare(context, share_media, snsPostListener);
+    }
+
+    /**
+     * 自定义分享面板
+     * @param context
+     * @param shareContent
+     */
+    public void popShareFrame(final Context context, final ShareContent shareContent) {
+        final AlertDialog alert = new AlertDialog.Builder(context).create();
+        alert.show();
+//        alert.setCancelable(false);
+        alert.setCanceledOnTouchOutside(true);
+        alert.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        alert.getWindow().setContentView(R.layout.prompt_share_frame);
+        alert.getWindow().findViewById(R.id.wxTv).setOnClickListener(new AvoidDoubleClickListener() {
+            @Override
+            public void onViewClick(View v) {
+                wxShareContent(shareContent);
+                post(context, SHARE_MEDIA.WEIXIN, mSnsPostListener);
+                alert.dismiss();
+            }
+        });
+        alert.getWindow().findViewById(R.id.wxCircleTv).setOnClickListener(new AvoidDoubleClickListener() {
+            @Override
+            public void onViewClick(View v) {
+                circleShareContent(shareContent);
+                post(context, SHARE_MEDIA.WEIXIN_CIRCLE, mSnsPostListener);
+                alert.dismiss();
+            }
+        });
+    }
+
+    private SocializeListeners.SnsPostListener mSnsPostListener = new SocializeListeners.SnsPostListener() {
+        @Override
+        public void onStart() {
+        }
+
+        @Override
+        public void onComplete(SHARE_MEDIA sm, int eCode,
+                               SocializeEntity sEntity) {
+            String showText = "分享成功";
+            if (eCode != StatusCode.ST_CODE_SUCCESSED) {
+                showText = "分享失败";
+            }
+            ToastHelper.showShort(act, showText);
+        }
+    };
 }
