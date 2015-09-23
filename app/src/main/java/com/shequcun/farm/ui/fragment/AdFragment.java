@@ -19,6 +19,8 @@ import android.widget.TextView;
 import com.shequcun.farm.R;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
 
+import butterknife.Bind;
+
 /**
  * 广告页
  * Created by apple check_turn_on 15/7/24.
@@ -33,10 +35,7 @@ public class AdFragment extends BaseFragment {
 
     @Override
     protected void initWidget(View v) {
-        mWebView = (WebView) v.findViewById(R.id.mWebView);
-        back = v.findViewById(R.id.back);
         ((TextView) v.findViewById(R.id.title_center_text)).setText(R.string.app_name);
-        mProgressBar = (SeekBar) v.findViewById(R.id.seekbar);
     }
 
     @Override
@@ -55,7 +54,6 @@ public class AdFragment extends BaseFragment {
         }
     };
 
-    View back;
 
     @Override
     public boolean onBackPressed() {
@@ -80,7 +78,6 @@ public class AdFragment extends BaseFragment {
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                // TODO Auto-generated method stub
                 return super.shouldOverrideUrlLoading(view, url);
             }
 
@@ -93,7 +90,6 @@ public class AdFragment extends BaseFragment {
 
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                // TODO Auto-generated method stub
                 super.onPageStarted(view, url, favicon);
                 mProgressBar.setVisibility(View.VISIBLE);
             }
@@ -116,8 +112,8 @@ public class AdFragment extends BaseFragment {
         });
     }
 
-    private static final int PROGRESS_LOADING = 1;
-    private static final int PROGRESS_SUCCESS = 2;
+    final int PROGRESS_LOADING = 1;
+    final int PROGRESS_SUCCESS = 2;
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
 
@@ -141,6 +137,10 @@ public class AdFragment extends BaseFragment {
         return bundle != null ? bundle.getString("AdUrl") : null;
     }
 
+    @Bind(R.id.mWebView)
     WebView mWebView;
+    @Bind(R.id.back)
+    View back;
+    @Bind(R.id.seekbar)
     SeekBar mProgressBar;
 }

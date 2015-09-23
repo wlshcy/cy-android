@@ -12,6 +12,8 @@ import android.view.View;
 import com.shequcun.farm.R;
 import com.shequcun.farm.util.HttpRequestUtil;
 
+import butterknife.ButterKnife;
+
 /**
  * Created by apple on 15/8/3.
  */
@@ -30,6 +32,7 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ButterKnife.bind(this, view);
         initWidget(view);
         setWidgetLsn();
         view.setOnTouchListener(onRootViewTouchListener);
@@ -137,17 +140,13 @@ public abstract class BaseFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         HttpRequestUtil.cancelHttpRequest();
+        ButterKnife.unbind(this);
     }
-
-    /**
-     * 初始化各个控件
-     *
-     * @param v
-     */
-    protected abstract void initWidget(View v);
 
     /**
      * 设置各个控制的监听
      */
     protected abstract void setWidgetLsn();
+
+    protected abstract void initWidget(View v);
 }

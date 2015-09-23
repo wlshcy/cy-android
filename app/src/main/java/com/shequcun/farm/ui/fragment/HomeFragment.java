@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
-import com.android.volley.Request;
 import com.common.widget.CircleFlowIndicator;
 import com.common.widget.ExpandableHeightGridView;
 import com.common.widget.PullToRefreshBase;
@@ -28,7 +27,6 @@ import com.shequcun.farm.data.LinkEntry;
 import com.shequcun.farm.data.RecommendEntry;
 import com.shequcun.farm.data.RecommentListEntry;
 import com.shequcun.farm.data.SlidesEntry;
-import com.shequcun.farm.data.UserLoginEntry;
 import com.shequcun.farm.datacenter.CacheManager;
 import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.ui.adapter.CarouselAdapter;
@@ -43,6 +41,9 @@ import org.apache.http.Header;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * 有菜首页
@@ -61,16 +62,7 @@ public class HomeFragment extends BaseFragment {
         return false;
     }
 
-    @Override
     protected void initWidget(View v) {
-        carousel_img = (ViewFlow) v.findViewById(R.id.carousel_img);
-        carousel_point = (CircleFlowIndicator) v.findViewById(R.id.carousel_point);
-        pView = (PullToRefreshScrollView) v.findViewById(R.id.pView);
-        gv = (ExpandableHeightGridView) v.findViewById(R.id.gv);
-        no_combo_iv = v.findViewById(R.id.no_combo_iv);
-//        more_combo_ly = v.findViewById(R.id.more_combo_ly);
-        has_combo_iv = v.findViewById(R.id.has_combo_iv);
-//        more_combo = v.findViewById(R.id.more_combo);
     }
 
     @Override
@@ -424,17 +416,21 @@ public class HomeFragment extends BaseFragment {
     /**
      * 轮播的图片
      */
+    @Bind(R.id.carousel_img)
     ViewFlow carousel_img;
+    @Bind(R.id.carousel_point)
     CircleFlowIndicator carousel_point;
+    @Bind(R.id.pView)
+    PullToRefreshScrollView pView;
+    @Bind(R.id.gv)
+    ExpandableHeightGridView gv;
+    @Bind(R.id.no_combo_iv)
+    View no_combo_iv;
+    @Bind(R.id.has_combo_iv)
+    View has_combo_iv;
+
+    ComboEntry comboEntry;
     CarouselAdapter cAdapter;
     boolean mIsBind = false;
-    PullToRefreshScrollView pView;
-    ExpandableHeightGridView gv;
     private FarmSpecialtyAdapter adapter;
-    View no_combo_iv;
-    //    View more_combo_ly;
-    View has_combo_iv;
-    //    View more_combo;//更多套餐
-    ComboEntry comboEntry;
-//    View has_combo_iv;
 }

@@ -14,19 +14,26 @@ import com.shequcun.farm.util.IntentUtil;
 import com.shequcun.farm.util.ToastHelper;
 import com.shequcun.farm.util.Utils;
 
+import butterknife.Bind;
+
 /**
  * Created by cong on 15/9/7.
  */
 public class AddressZoneFragment extends BaseFragment {
-    private EditText zoneEt;
-    private View saveTv, back;
+    @Bind(R.id.zone_edit)
+    EditText zoneEt;
+    @Bind(R.id.save_tv)
+    View saveTv;
+    @Bind(R.id.back)
+    View back;
     private String zone;
-    private TextView titleTv;
+    @Bind(R.id.title_center_text)
+    TextView titleTv;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_address_zone,null);
+        return inflater.inflate(R.layout.fragment_address_zone, null);
     }
 
     @Override
@@ -36,15 +43,11 @@ public class AddressZoneFragment extends BaseFragment {
 
     @Override
     protected void initWidget(View v) {
-        zoneEt = (EditText) v.findViewById(R.id.zone_edit);
-        saveTv = v.findViewById(R.id.save_tv);
-        back = v.findViewById(R.id.back);
-        titleTv = (TextView)v.findViewById(R.id.title_center_text);
-        titleTv.setText(R.string.input_zone_address);
     }
 
     @Override
     protected void setWidgetLsn() {
+        titleTv.setText(R.string.input_zone_address);
         saveTv.setOnClickListener(onClickListener);
         back.setOnClickListener(onClickListener);
     }
@@ -57,7 +60,7 @@ public class AddressZoneFragment extends BaseFragment {
             } else if (v == saveTv) {
                 if (checkInput()) {
                     Utils.hideVirtualKeyboard(getActivity(), v);
-                    IntentUtil.sendUpdateMyAddressMsg(getActivity(),zone);
+                    IntentUtil.sendUpdateMyAddressMsg(getActivity(), zone);
                     popBackStack();
                     popBackStack();
 //                    clearStack();

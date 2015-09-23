@@ -37,6 +37,8 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+import butterknife.Bind;
+
 /**
  * 管理收获地址
  * Created by apple on 15/8/5.
@@ -53,22 +55,7 @@ public class AddressFragment extends BaseFragment {
         return inflater.inflate(R.layout.address_ly, container, false);
     }
 
-    @Override
     protected void initWidget(View v) {
-        name_edit = (EditText) v.findViewById(R.id.name_edit);
-        mobile_phone_edit = (EditText) v.findViewById(R.id.mobile_phone_edit);
-        choose_zone_tv = (TextView) v.findViewById(R.id.choose_zone_tv);
-//        choose_zone_tv = (TextView) v.findViewById(R.id.choose_zone_tv);
-        choose_zone_ll = v.findViewById(R.id.choose_zone_ll);
-        addressDetailEt = (EditText) v.findViewById(R.id.building_number_edit);
-//        house_number_edit = (EditText) v.findViewById(R.id.house_number_edit);
-//        unit_number_edit = (EditText) v.findViewById(R.id.unit_number_edit);
-        back = v.findViewById(R.id.back);
-        ((TextView) v.findViewById(R.id.title_center_text)).setText(R.string.receiveing_address);
-        commit = (TextView) v.findViewById(R.id.title_right_text);
-        commit.setTextColor(getResources().getColor(R.color.green_2bc36c));
-        commit.setText(R.string.save);
-        doRegisterRefreshBrodcast();
     }
 
     @Override
@@ -85,12 +72,13 @@ public class AddressFragment extends BaseFragment {
 
     @Override
     protected void setWidgetLsn() {
-//        choose_zone_tv.setOnClickListener(onClick);
+        title_center_text.setText(R.string.receiveing_address);
+        commit.setTextColor(getResources().getColor(R.color.green_2bc36c));
+        commit.setText(R.string.save);
+        doRegisterRefreshBrodcast();
         back.setOnClickListener(onClick);
         commit.setOnClickListener(onClick);
-//        choose_zone_tv.setOnClickListener(onClick);
         choose_zone_ll.setOnClickListener(onClick);
-//        requestUserAddress();
     }
 
     @Override
@@ -430,32 +418,41 @@ public class AddressFragment extends BaseFragment {
                 });
     }
 
+
+
     private AddressEntry entry = null;
     /**
      * 门牌号
      */
 //    EditText house_number_edit;
     /**
-     * 姓名
-     */
-    EditText name_edit;
-    /**
      * 手机号
      */
+    @Bind(R.id.mobile_phone_edit)
     EditText mobile_phone_edit;
+    @Bind(R.id.choose_zone_tv)
     TextView choose_zone_tv;
-    //    TextView choose_zone_tv;
+    /**
+     * 姓名
+     */
+    @Bind(R.id.name_edit)
+    EditText name_edit;
+    @Bind(R.id.choose_zone_ll)
     View choose_zone_ll;
     /**
      * 楼号
      */
+    @Bind(R.id.building_number_edit)
     EditText addressDetailEt;
     /**
      * 单元号
      */
-//    EditText unit_number_edit;
+    @Bind(R.id.back)
     View back;
+    @Bind(R.id.title_right_text)
     TextView commit;
+    @Bind(R.id.title_center_text)
+    TextView title_center_text;
     private boolean znameDiff;
     private String name, mobile, community, detailAddr;
 }

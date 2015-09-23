@@ -37,14 +37,19 @@ import org.apache.http.Header;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
+
 /**
  * Created by cong on 15/9/7.
  */
 public class AddressListFragment extends BaseFragment {
-    private ListView addressLv;
-    private TextView titleTv;
+    @Bind(R.id.address_lv)
+    ListView addressLv;
+    @Bind(R.id.title_center_text)
+    TextView titleTv;
     private MyAddressAdapter adapter;
-    private View back;
+    @Bind(R.id.back)
+    View back;
     private View addAddress;
     private int maxLen = 5;
     private int action = Action.SELECT;
@@ -93,25 +98,13 @@ public class AddressListFragment extends BaseFragment {
 
     @Override
     protected void initWidget(View v) {
-        addressLv = (ListView) v.findViewById(R.id.address_lv);
-        titleTv = (TextView) v.findViewById(R.id.title_center_text);
-        back = v.findViewById(R.id.back);
-        titleTv.setText(R.string.my_address);
-        addAddress = LayoutInflater.from(getActivity()).inflate(R.layout.item_add_address, null);
-        addAddress.setVisibility(View.GONE);
-        addressLv.addHeaderView(addAddress);
-        adapter = new MyAddressAdapter(getActivity());
-        if (action == Action.SELECT){
-            adapter.setShowDefaultIcon(true);
-        }
-        adapter.setOnUpdateAddressListener(onUpdateAddressListener);
-        addressLv.setAdapter(adapter);
+
     }
 
     private MyAddressAdapter.OnUpdateAddressListener onUpdateAddressListener = new MyAddressAdapter.OnUpdateAddressListener() {
         @Override
         public void onUpdate(AddressEntry entry) {
-            if (entry==null)return;
+            if (entry == null) return;
             Bundle bundle = new Bundle();
             bundle.putSerializable("AddressEntry", entry);
             gotoAddressFragment(bundle);
@@ -129,7 +122,19 @@ public class AddressListFragment extends BaseFragment {
 
     @Override
     protected void setWidgetLsn() {
-        if (action == Action.SELECT){
+
+        addAddress = LayoutInflater.from(getActivity()).inflate(R.layout.item_add_address, null);
+        addAddress.setVisibility(View.GONE);
+        addressLv.addHeaderView(addAddress);
+        adapter = new MyAddressAdapter(getActivity());
+        if (action == Action.SELECT) {
+            adapter.setShowDefaultIcon(true);
+        }
+        adapter.setOnUpdateAddressListener(onUpdateAddressListener);
+        addressLv.setAdapter(adapter);
+
+        titleTv.setText(R.string.my_address);
+        if (action == Action.SELECT) {
             adapter.setOnChooseAddressListener(onChooseAddressListener);
         }
 //        addressLv.setOnItemClickListener(onItemClickListener);

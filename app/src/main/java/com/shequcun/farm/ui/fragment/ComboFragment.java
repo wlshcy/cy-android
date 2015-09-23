@@ -28,6 +28,8 @@ import org.apache.http.Header;
 
 import java.util.List;
 
+import butterknife.Bind;
+
 /**
  * 套餐页面
  * Created by apple on 15/8/3.
@@ -46,8 +48,6 @@ public class ComboFragment extends BaseFragment {
 
     @Override
     protected void initWidget(View v) {
-        mListView = (ListView) v.findViewById(R.id.mListView);
-        back = v.findViewById(R.id.back);
         ((TextView) v.findViewById(R.id.title_center_text)).setText(R.string.choose_combo);
     }
 
@@ -57,8 +57,6 @@ public class ComboFragment extends BaseFragment {
         back.setOnClickListener(onClick);
         buildAdapter();
         requestComboList();
-//        requestSlideFromServer();
-//        doRegisterRefreshBrodcast();
     }
 
 
@@ -243,7 +241,8 @@ public class ComboFragment extends BaseFragment {
 
     //    boolean mIsBind = false;
     ComboAdapter adapter;
+    @Bind(R.id.mListView)
     ListView mListView;
-
+    @Bind(R.id.back)
     View back;
 }

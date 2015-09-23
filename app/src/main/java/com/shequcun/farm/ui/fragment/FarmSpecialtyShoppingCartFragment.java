@@ -32,6 +32,9 @@ import com.shequcun.farm.util.Utils;
 
 import java.util.ArrayList;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 /**
  * 农庄特产购物车
  * Created by mac on 15/9/7.
@@ -51,17 +54,13 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment implements R
 
     @Override
     protected void initWidget(View v) {
-        pView = (RelativeLayout) v.findViewById(R.id.pView);
         v.findViewById(R.id.back).setVisibility(View.GONE);
-        ((TextView) v.findViewById(R.id.title_center_text)).setText(R.string.shop_cart);
-        rightTv = (TextView) v.findViewById(R.id.title_right_text);
-        rightTv.setText(R.string.consultation);
-        mLv = (ExpandableHeightListView) v.findViewById(R.id.mLv);
-        pScrollView = (ScrollView) v.findViewById(R.id.pScrollView);
     }
 
     @Override
     protected void setWidgetLsn() {
+        title_center_text.setText(R.string.shop_cart);
+        rightTv.setText(R.string.consultation);
         addWidgetToView();
         rightTv.setOnClickListener(onClick);
         doRegisterRefreshBrodcast();
@@ -379,12 +378,16 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment implements R
     boolean mIsBind = false;
     FarmSpecialtyShopCartAdapter adapter;
     View shopCartView;
+    @Bind(R.id.pView)
     RelativeLayout pView;
+    @Bind(R.id.title_right_text)
     TextView rightTv;
     TextView shop_cart_total_price_tv;
+    @Bind(R.id.mLv)
     ExpandableHeightListView mLv;
+    @Bind(R.id.title_center_text)
+    TextView title_center_text;
     TextView number_copies;
-
     TextView remark_tv;
     TextView freight_money_tv;
     //    View addressLy;
@@ -394,9 +397,8 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment implements R
     //总价格
     private int allMoney = 0;
     View sChilidView;
+    @Bind(R.id.pScrollView)
     ScrollView pScrollView;
-    //    String orderno;
-//    String alipay;
     String memo;
     CouponEntry cEntry;
     View noLoginView;

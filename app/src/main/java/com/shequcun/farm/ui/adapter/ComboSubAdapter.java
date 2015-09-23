@@ -76,7 +76,7 @@ public class ComboSubAdapter extends BaseAdapter {
         }
 
         if (vh != null) {
-            if (vh.combo_img != null)
+            if (vh.combo_img != null && entry.wimgs != null && entry.wimgs.length > 0)
                 ImageCacheManager.getInstance().displayImage(vh.combo_img, TextUtils.isEmpty(entry.wimgs[position]) ? entry.img : entry.wimgs[position]);
 
             if (vh.combo_name != null) {

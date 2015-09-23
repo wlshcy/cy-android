@@ -14,6 +14,8 @@ import com.shequcun.farm.data.ComboEntry;
 import com.shequcun.farm.ui.adapter.ComboSubAdapter;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
 
+import butterknife.Bind;
+
 
 /**
  * 二级套餐页
@@ -34,8 +36,6 @@ public class ComboSecondFragment extends BaseFragment {
     @Override
     protected void initWidget(View v) {
         buildComboEntry();
-        back = v.findViewById(R.id.back);
-        mLv = (ListView) v.findViewById(R.id.mLv);
         ((TextView) v.findViewById(R.id.title_center_text)).setText(entry.title + "详情");
     }
 
@@ -87,8 +87,10 @@ public class ComboSecondFragment extends BaseFragment {
         return bundle;
     }
 
+    @Bind(R.id.mLv)
     ListView mLv;
     ComboEntry entry;
+    @Bind(R.id.back)
     View back;
     ComboSubAdapter adapter;
 }
