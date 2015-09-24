@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.shequcun.farm"
-    android:versionCode="1"
-    android:versionName="2.0.0">
-
+    android:versionCode="2"
+    android:versionName="2.0.1">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -19,9 +18,9 @@
         android:resizeable="true"
         android:smallScreens="true" />
 
+    <!--android:debuggable="true"-->
     <application
         android:allowBackup="true"
-        android:debuggable="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
@@ -32,8 +31,6 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-
         </activity>
 
         <!--<meta-data-->
@@ -50,13 +47,11 @@
             android:allowTaskReparenting="false"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize">
-
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:scheme="wxedddf5c468bfd955" />
             </intent-filter>
-
         </activity>
         <!-- alipay sdk begin -->
         <activity
@@ -73,26 +68,17 @@
             android:exported="true"
             android:theme="@android:style/Theme.Translucent" />
         <!--wx sdk end-->
-
-        <!-- umeng-->
-        <meta-data
-            android:name="UMENG_APPKEY"
-            android:value="55c870b067e58ec5440030b5"></meta-data>
-
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:exported="true"
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.Translucent"></activity>
 
-
         <receiver android:name=".AppRegister">
             <intent-filter>
                 <action android:name="com.tencent.mm.plugin.openapi.Intent.ACTION_REFRESH_WXAPP" />
             </intent-filter>
         </receiver>
-
-
     </application>
 
 </manifest>

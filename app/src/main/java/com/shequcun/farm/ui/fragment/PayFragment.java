@@ -563,10 +563,11 @@ public class PayFragment extends BaseFragment {
                 if (payCode == 0) {//表示支付成功
                     doPaySuccessful();
                 } else if (payCode == -1) {//表示支付失败
-
-                } else if (payCode == -2) {//取消支付
-
+                    ToastHelper.showShort(getActivity(), "微信支付失败,请稍后重试...");
                 }
+//                else if (payCode == -2) {//取消支付
+//
+//                }
             }
         }
     };
