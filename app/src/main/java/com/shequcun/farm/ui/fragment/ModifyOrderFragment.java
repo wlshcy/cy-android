@@ -34,7 +34,6 @@ import com.shequcun.farm.util.AvoidDoubleClickListener;
 import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
-import com.shequcun.farm.util.ShareContent;
 //import com.shequcun.farm.util.ShareUtil;
 import com.shequcun.farm.util.ToastHelper;
 //import com.umeng.socialize.bean.SHARE_MEDIA;

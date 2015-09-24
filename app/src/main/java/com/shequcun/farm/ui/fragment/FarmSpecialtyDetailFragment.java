@@ -25,11 +25,12 @@ import com.shequcun.farm.data.RecommendEntry;
 import com.shequcun.farm.data.SlidesEntry;
 import com.shequcun.farm.datacenter.CacheManager;
 import com.shequcun.farm.db.RecommendItemKey;
+import com.shequcun.farm.platform.ShareManager;
 import com.shequcun.farm.ui.adapter.CarouselAdapter;
 import com.shequcun.farm.util.Constrants;
 import com.shequcun.farm.util.DeviceInfo;
 import com.shequcun.farm.util.IntentUtil;
-import com.shequcun.farm.util.ShareContent;
+import com.shequcun.farm.platform.ShareContent;
 //import com.shequcun.farm.util.ShareUtil;
 import com.shequcun.farm.util.ToastHelper;
 import com.shequcun.farm.util.Utils;
@@ -146,7 +147,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
                 sharecontent.setTargetUrl(Constrants.URL_SHARE + entry.id);
                 sharecontent.setTitle("有菜，不能说的秘密！");
                 sharecontent.setContent("孩子的餐桌我们的标准，走心，连蔬菜都这么有bigger！");
-                useUmengToShare(sharecontent);
+                ShareManager.shareByFrame(getActivity(),sharecontent);
             } else if (v == producingPlaceTv) {
                 gotoProducingPlaceFragment(entry.fid);
             }
@@ -292,29 +293,6 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
                 });
     }
 
-    private void useUmengToShare(ShareContent shareContent) {
-//        if (shareController == null)
-//            shareController = new ShareUtil(getActivity());
-//        shareController.popShareFrame(getActivity(), shareContent);
-    }
-
-//    private SocializeListeners.SnsPostListener mSnsPostListener = new SocializeListeners.SnsPostListener() {
-//
-//        @Override
-//        public void onStart() {
-//        }
-//
-//        @Override
-//        public void onComplete(SHARE_MEDIA sm, int eCode,
-//                               SocializeEntity sEntity) {
-//            String showText = "分享成功";
-//            if (eCode != StatusCode.ST_CODE_SUCCESSED) {
-//                showText = "分享失败";
-//            }
-//            ToastHelper.showShort(getActivity(), showText);
-//        }
-//    };
-
     /**
      * 是否登录成功
      *
@@ -323,9 +301,6 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
     boolean isLogin() {
         return new CacheManager(getActivity()).getUserLoginFromDisk() != null;
     }
-
-
-//    private ShareUtil shareController;
 
     /**
      * 轮播的图片

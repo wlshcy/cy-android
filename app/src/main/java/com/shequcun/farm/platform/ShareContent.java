@@ -1,4 +1,4 @@
-package com.shequcun.farm.util;
+package com.shequcun.farm.platform;
 
 public class ShareContent {
 	private String title;

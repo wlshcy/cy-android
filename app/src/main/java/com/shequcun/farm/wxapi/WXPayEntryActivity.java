@@ -4,6 +4,7 @@ package com.shequcun.farm.wxapi;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.shequcun.farm.BaseFragmentActivity;
 import com.shequcun.farm.util.IntentUtil;
@@ -21,6 +22,7 @@ public class WXPayEntryActivity extends BaseFragmentActivity implements IWXAPIEv
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Toast.makeText(this, "WXPayEntryActivity onCreate", Toast.LENGTH_LONG).show();
         api = WXAPIFactory.createWXAPI(this, LocalParams.getWxAppId());
         //api.registerApp(LocalParams.getWxAppId());
         api.handleIntent(getIntent(), this);
@@ -28,6 +30,7 @@ public class WXPayEntryActivity extends BaseFragmentActivity implements IWXAPIEv
 
     @Override
     protected void onNewIntent(Intent intent) {
+        Toast.makeText(this, "onNewIntent", Toast.LENGTH_LONG).show();
         super.onNewIntent(intent);
         setIntent(intent);
         api.handleIntent(intent, this);
@@ -35,10 +38,27 @@ public class WXPayEntryActivity extends BaseFragmentActivity implements IWXAPIEv
 
     @Override
     public void onReq(BaseReq req) {
+        Toast.makeText(this, "onReq", Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onResp(BaseResp resp) {
+        String result = "";
+        switch (resp.errCode) {
+            case BaseResp.ErrCode.ERR_OK:
+                result = "发送成功";
+                break;
+            case BaseResp.ErrCode.ERR_USER_CANCEL:
+                result = "发送失败";
+                break;
+            case BaseResp.ErrCode.ERR_AUTH_DENIED:
+                result = "发送被拒绝";
+                break;
+            default:
+                result = "发送被返回";
+                break;
+        }
+        Toast.makeText(this, result, Toast.LENGTH_LONG).show();
         Log.e("WXPayEntryActivity----","onResp--"+resp.errCode);
         IntentUtil.sendWxPayResultMsg(WXPayEntryActivity.this, resp.errCode);
         finish();

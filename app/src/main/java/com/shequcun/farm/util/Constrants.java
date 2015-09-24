@@ -9,4 +9,5 @@ public class Constrants {
     public static final int SDK_CHECK_FLAG = 2;
     public static final String URL_FARM = "http://store.shequcun.com/yc_farm/";
     public static final String URL_SHARE = "http://store.shequcun.com/yc_recom_item/";
+    public static final String APP_ID = "wxedddf5c468bfd955";
 }
