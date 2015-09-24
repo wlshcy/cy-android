@@ -23,6 +23,7 @@ import com.shequcun.farm.R;
 import com.shequcun.farm.data.AddressEntry;
 import com.shequcun.farm.data.AddressListEntry;
 import com.shequcun.farm.data.BaseEntry;
+import com.shequcun.farm.datacenter.CacheManager;
 import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.ui.adapter.MyAddressAdapter;
@@ -267,6 +268,7 @@ public class AddressListFragment extends BaseFragment {
                             BaseEntry entry = JsonUtilsParser.fromJson(new String(data), BaseEntry.class);
                             if (entry != null) {
                                 if (TextUtils.isEmpty(entry.errmsg)) {
+                                    new CacheManager(getActivity()).saveUserReceivingAddress(JsonUtilsParser.toJson(addressEntry).getBytes());
                                     goback(addressEntry);
                                     return;
                                 } else {

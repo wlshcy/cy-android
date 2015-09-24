@@ -74,12 +74,7 @@ public class MyFragment extends BaseFragment {
             mLv.removeHeaderView(hView_1);
         if (hView_2 != null)
             mLv.removeHeaderView(hView_2);
-        byte[] data = new CacheManager(getActivity()).getUserLoginFromDisk();
-        if (data != null && data.length > 0) {
-            uEntry = JsonUtilsParser.fromJson(new String(data), UserLoginEntry.class);
-        } else {
-            uEntry = null;
-        }
+        uEntry = new CacheManager(getActivity()).getUserLoginEntry();
         hView_1 = LayoutInflater.from(getActivity()).inflate(R.layout.my_item_head_ly, null);
         ((TextView) hView_1.findViewById(R.id.mobile_phone)).setText(uEntry != null ? uEntry.mobile : "");
         ((CircleImageView) hView_1.findViewById(R.id.my_head)).setImageUrl(uEntry != null ? uEntry.headimg : null, ImageCacheManager.getInstance().getImageLoader());

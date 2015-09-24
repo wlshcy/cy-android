@@ -345,7 +345,7 @@ public class ModifyOrderFragment extends BaseFragment {
     }
 
     void requestUserAddress() {
-        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "user/address", new AsyncHttpResponseHandler() {
+        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "user/v2/address", new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int sCode, Header[] h, byte[] data) {
                 if (data != null && data.length > 0) {
@@ -363,20 +363,13 @@ public class ModifyOrderFragment extends BaseFragment {
 
             @Override
             public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
-                if (sCode == 0) {
-                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
-                    return;
-                }
-                ToastHelper.showShort(getActivity(), "请求失败,错误码" + sCode);
+                setAddressWidgetContent(new CacheManager(getActivity()).getUserReceivingAddress());
             }
         });
     }
 
     private void successUserAddress(List<AddressEntry> list) {
         if (list == null || list.size() <= 0)
-            return;
-        UserLoginEntry uEntry = new CacheManager(getActivity()).getUserLoginEntry();
-        if (uEntry == null)
             return;
         int size = list.size();
         for (int i = 0; i < size; ++i) {
@@ -487,7 +480,7 @@ public class ModifyOrderFragment extends BaseFragment {
         }
     }
 
-//    private ShareUtil shareController;
+    //    private ShareUtil shareController;
     @Bind(R.id.addressee_ly)
     View addressLy;
     @Bind(R.id.redPacketsIv)

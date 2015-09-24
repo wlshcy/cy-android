@@ -3,6 +3,7 @@ package com.shequcun.farm.datacenter;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.shequcun.farm.data.AddressEntry;
 import com.shequcun.farm.data.RecommendEntry;
 import com.shequcun.farm.data.UserLoginEntry;
 import com.shequcun.farm.db.DBLite;
@@ -39,15 +40,6 @@ public class CacheManager {
         }
     }
 
-    public byte[] getUserLoginFromDisk() {
-        try {
-            DBLite dblite = new DBLite(mContext, null, KeyWord_UserLoginCacheTag);
-            return dblite.getZoneData();
-        } catch (Exception e) {
-        }
-        return null;
-    }
-
     public void saveUserReceivingAddress(byte[] data) {
         try {
             DBLite dblite = new DBLite(mContext, null, KeyWord_UserReceivingAddressTag);
@@ -57,38 +49,16 @@ public class CacheManager {
         }
     }
 
-//    public void saveZoneCacheToDisk(byte[] data) {
-//        try {
-//            DBLite dblite = new DBLite(mContext, null,
-//                    KeyWord_UserZoneCacheTag);
-//            dblite.deleteData();
-//            dblite.saveToDisk(data);
-//        } catch (Exception e) {
-//        }
-//    }
-//
-//    public byte[] getZoneCacheFromDisk() {
-//        try {
-//            DBLite dblite = new DBLite(mContext, null, KeyWord_UserZoneCacheTag);
-//            return dblite.getZoneData();
-//        } catch (Exception e) {
-//        }
-//        return null;
-//    }
-
-    public void saveAddressCacheToDisk(byte[] data) {
-        try {
-            DBLite dblite = new DBLite(mContext, null,
-                    KeyWord_UserAddressTag);
-            dblite.deleteData();
-            dblite.saveToDisk(data);
-        } catch (Exception e) {
-        }
+    public AddressEntry getUserReceivingAddress() {
+        byte[] data = getData(KeyWord_UserReceivingAddressTag);
+        if (data == null && data.length <= 0)
+            return null;
+        return JsonUtilsParser.fromJson(new String(data), AddressEntry.class);
     }
 
-    public byte[] getAddressCacheFromDisk() {
+    public byte[] getData(String keyWord) {
         try {
-            DBLite dblite = new DBLite(mContext, null, KeyWord_UserAddressTag);
+            DBLite dblite = new DBLite(mContext, null, keyWord);
             return dblite.getZoneData();
         } catch (Exception e) {
         }
@@ -96,7 +66,7 @@ public class CacheManager {
     }
 
     public UserLoginEntry getUserLoginEntry() {
-        byte[] data = getUserLoginFromDisk();
+        byte[] data = getData(KeyWord_UserLoginCacheTag);
         if (data == null || data.length <= 0)
             return null;
         UserLoginEntry uEntry = JsonUtilsParser.fromJson(new String(data), UserLoginEntry.class);
@@ -211,10 +181,7 @@ public class CacheManager {
         }
     }
 
-
-    final String KeyWord_UserZoneCacheTag = "UserZoneCacheTag";
     final String KeyWord_UserLoginCacheTag = "UserLoginCacheTag";
-    final String KeyWord_UserAddressTag = "UserAddressTag";
     final String KeyWord_RecommendTag = "UserRecommendTag";
     final String KeyWord_UserReceivingAddressTag = "UserReceivingAddressTag";
     final int MAX_COUNT = 100;

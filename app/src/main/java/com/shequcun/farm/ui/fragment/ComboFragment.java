@@ -166,17 +166,14 @@ public class ComboFragment extends BaseFragment {
             adapter.addAll(aList);
             adapter.notifyDataSetChanged();
             Utils.setListViewHeightBasedOnChildren(mListView);
-            byte[] data = new CacheManager(getActivity()).getUserLoginFromDisk();
-            if (data != null && data.length > 0) {
-                int size = aList.size();
-                UserLoginEntry entry = JsonUtilsParser.fromJson(new String(data), UserLoginEntry.class);
-                if (entry != null) {
-                    entry.mycomboids = new int[size];
-                    for (int i = 0; i < size; ++i) {
-                        entry.mycomboids[i] = aList.get(i).id;
-                    }
-                    new CacheManager(getActivity()).saveUserLoginToDisk(JsonUtilsParser.toJson(entry).getBytes());
+            int size = aList.size();
+            UserLoginEntry entry = new CacheManager(getActivity()).getUserLoginEntry();
+            if (entry != null) {
+                entry.mycomboids = new int[size];
+                for (int i = 0; i < size; ++i) {
+                    entry.mycomboids[i] = aList.get(i).id;
                 }
+                new CacheManager(getActivity()).saveUserLoginToDisk(JsonUtilsParser.toJson(entry).getBytes());
             }
 //            IntentUtil.sendUpdateMyInfoMsg(getActivity(), aList.get(0));
         }
