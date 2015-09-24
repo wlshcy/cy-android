@@ -152,7 +152,7 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment implements R
      * @return
      */
     boolean isLogin() {
-        return new CacheManager(getActivity()).getUserLoginFromDisk() != null;
+        return new CacheManager(getActivity()).getUserLoginEntry() != null;
     }
 
     void buildAdapter() {

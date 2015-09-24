@@ -22,7 +22,6 @@ public abstract class BaseFragment extends Fragment {
     protected FragmentMgrInterface fMgrInterface;
 //    protected FragmentActivity mfragmentActivity;
 
-    public abstract boolean onBackPressed();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -99,15 +98,6 @@ public abstract class BaseFragment extends Fragment {
         gotoFragment(id, fragment, tag);
     }
 
-//    protected FragmentActivity getFragmentActivity() {
-//        FragmentActivity baseFragmentActivity = (FragmentActivity) getActivity();
-//        if (baseFragmentActivity == null) {
-////            activity被回收
-//            return mfragmentActivity;
-//        }
-//        return baseFragmentActivity;
-//    }
-
     /**
      * 出栈
      */
@@ -144,22 +134,12 @@ public abstract class BaseFragment extends Fragment {
         ButterKnife.unbind(this);
     }
 
-
-//    public  final ButterKnife.Action<View> ALPHA_FADE = new ButterKnife.Action<View>() {
-//        @Override
-//        public void apply(View view, int index) {
-//            AlphaAnimation alphaAnimation = new AlphaAnimation(0, 1);
-//            alphaAnimation.setFillBefore(true);
-//            alphaAnimation.setDuration(500);
-//            alphaAnimation.setStartOffset(index * 100);
-//            view.startAnimation(alphaAnimation);
-//        }
-//    };
-
     /**
      * 设置各个控制的监听
      */
     protected abstract void setWidgetLsn();
 
     protected abstract void initWidget(View v);
+
+    public abstract boolean onBackPressed();
 }

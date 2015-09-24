@@ -78,12 +78,7 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
 
 
     void buildUserLoginEntry() {
-        byte[] data = new CacheManager(getActivity()).getUserLoginFromDisk();
-        if (data != null && data.length > 0) {
-            uEntry = JsonUtilsParser.fromJson(new String(data), UserLoginEntry.class);
-        } else {
-            uEntry = null;
-        }
+        uEntry=new CacheManager(getActivity()).getUserLoginEntry();
     }
 
     /**

@@ -299,7 +299,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
      * @return
      */
     boolean isLogin() {
-        return new CacheManager(getActivity()).getUserLoginFromDisk() != null;
+        return new CacheManager(getActivity()).getUserLoginEntry() != null;
     }
 
     /**

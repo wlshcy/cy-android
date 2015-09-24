@@ -249,6 +249,11 @@ public class HomeFragment extends BaseFragment {
 
             @Override
             public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
+                if (sCode == 0) {
+                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
+                    return;
+                }
+                ToastHelper.showShort(getActivity(), "哇,刷新失败了.请稍后重试.");
             }
         });
     }
@@ -283,12 +288,8 @@ public class HomeFragment extends BaseFragment {
                 ToastHelper.showShort(getActivity(), R.string.spike_error_tip);
                 return;
             }
-            gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailFragment(), FarmSpecialtyDetailFragment.class.getName());
-//            if (isLogin()) {
-//            }
-//            else {
-//                gotoFragmentByAdd(R.id.mainpage_ly, new LoginFragment(), LoginFragment.class.getName());
-//            }
+
+            gotoFragmentByAnimation(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailFragment(), FarmSpecialtyDetailFragment.class.getName());
         }
     };
 
@@ -348,9 +349,6 @@ public class HomeFragment extends BaseFragment {
 
             }
         });
-
-
-//
     }
 
 
@@ -410,7 +408,7 @@ public class HomeFragment extends BaseFragment {
      * @return
      */
     boolean isLogin() {
-        return new CacheManager(getActivity()).getUserLoginFromDisk() != null;
+        return new CacheManager(getActivity()).getUserLoginEntry() != null;
     }
 
     /**

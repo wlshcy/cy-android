@@ -10,6 +10,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.common.widget.PullToRefreshBase;
+import com.common.widget.PullToRefreshScrollView;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.ComboEntry;
@@ -55,6 +57,9 @@ public class ComboFragment extends BaseFragment {
     protected void setWidgetLsn() {
         mListView.setOnItemClickListener(onItemClick);
         back.setOnClickListener(onClick);
+        pView.setMode(PullToRefreshBase.Mode.PULL_FROM_END);
+//        pView.setMode(PullToRefreshBase.Mode.DISABLED);
+        pView.setOnRefreshListener(onRefrshLsn);
         buildAdapter();
         requestComboList();
     }
@@ -98,16 +103,6 @@ public class ComboFragment extends BaseFragment {
     }
 
     /**
-     * 是否登录成功
-     *
-     * @return
-     */
-//    boolean isLogin() {
-//        return new CacheManager(getActivity()).getUserLoginFromDisk() != null;
-//    }
-
-
-    /**
      * 请求套餐列表
      */
     void requestComboList() {
@@ -126,6 +121,8 @@ public class ComboFragment extends BaseFragment {
                 super.onFinish();
                 if (pDlg != null)
                     pDlg.dismiss();
+                if (pView != null)
+                    pView.onRefreshComplete();
             }
 
             @Override
@@ -166,17 +163,14 @@ public class ComboFragment extends BaseFragment {
             adapter.addAll(aList);
             adapter.notifyDataSetChanged();
             Utils.setListViewHeightBasedOnChildren(mListView);
-            byte[] data = new CacheManager(getActivity()).getUserLoginFromDisk();
-            if (data != null && data.length > 0) {
-                int size = aList.size();
-                UserLoginEntry entry = JsonUtilsParser.fromJson(new String(data), UserLoginEntry.class);
-                if (entry != null) {
-                    entry.mycomboids = new int[size];
-                    for (int i = 0; i < size; ++i) {
-                        entry.mycomboids[i] = aList.get(i).id;
-                    }
-                    new CacheManager(getActivity()).saveUserLoginToDisk(JsonUtilsParser.toJson(entry).getBytes());
+            int size = aList.size();
+            UserLoginEntry entry = new CacheManager(getActivity()).getUserLoginEntry();
+            if (entry != null) {
+                entry.mycomboids = new int[size];
+                for (int i = 0; i < size; ++i) {
+                    entry.mycomboids[i] = aList.get(i).id;
                 }
+                new CacheManager(getActivity()).saveUserLoginToDisk(JsonUtilsParser.toJson(entry).getBytes());
             }
 //            IntentUtil.sendUpdateMyInfoMsg(getActivity(), aList.get(0));
         }
@@ -207,42 +201,22 @@ public class ComboFragment extends BaseFragment {
         return pView.findViewById(R.id.my_combo).getVisibility() == View.VISIBLE;
     }
 
-//    void doRegisterRefreshBrodcast() {
-//        if (!mIsBind) {
-//            IntentFilter intentFilter = new IntentFilter();
-//            intentFilter.addAction(IntentUtil.UPDATE_COMBO_PAGE);
-//            getActivity().registerReceiver(mUpdateReceiver, intentFilter);
-//            mIsBind = true;
-//        }
-//    }
+    PullToRefreshScrollView.OnRefreshListener2 onRefrshLsn = new PullToRefreshBase.OnRefreshListener2() {
+        @Override
+        public void onPullDownToRefresh(PullToRefreshBase refreshView) {
+        }
 
-//    private BroadcastReceiver mUpdateReceiver = new BroadcastReceiver() {
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-//            String action = intent.getAction();
-//            if (TextUtils.isEmpty(action)) {
-//                return;
-//            }
-//            if (action.equals(IntentUtil.UPDATE_COMBO_PAGE)) {
-//                if (adapter != null)
-//                    adapter.clear();
-//                requestComboList();
-//            }
-//        }
-//    };
+        @Override
+        public void onPullUpToRefresh(PullToRefreshBase refreshView) {
+            requestComboList();
+        }
+    };
 
-//    private void doUnRegisterReceiver() {
-//        if (mIsBind) {
-//            getActivity().unregisterReceiver(mUpdateReceiver);
-//            mIsBind = false;
-//        }
-//    }
-
-
-    //    boolean mIsBind = false;
     ComboAdapter adapter;
     @Bind(R.id.mListView)
     ListView mListView;
     @Bind(R.id.back)
     View back;
+    @Bind(R.id.pView)
+    PullToRefreshScrollView pView;
 }
