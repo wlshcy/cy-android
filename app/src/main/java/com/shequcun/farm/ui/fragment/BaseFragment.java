@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
 
 import com.shequcun.farm.R;
 import com.shequcun.farm.util.HttpRequestUtil;
@@ -142,6 +143,18 @@ public abstract class BaseFragment extends Fragment {
         HttpRequestUtil.cancelHttpRequest();
         ButterKnife.unbind(this);
     }
+
+
+//    public  final ButterKnife.Action<View> ALPHA_FADE = new ButterKnife.Action<View>() {
+//        @Override
+//        public void apply(View view, int index) {
+//            AlphaAnimation alphaAnimation = new AlphaAnimation(0, 1);
+//            alphaAnimation.setFillBefore(true);
+//            alphaAnimation.setDuration(500);
+//            alphaAnimation.setStartOffset(index * 100);
+//            view.startAnimation(alphaAnimation);
+//        }
+//    };
 
     /**
      * 设置各个控制的监听

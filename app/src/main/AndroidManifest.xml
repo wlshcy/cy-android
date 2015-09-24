@@ -21,6 +21,7 @@
 
     <application
         android:allowBackup="true"
+        android:debuggable="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
@@ -32,11 +33,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:scheme="wxedddf5c468bfd955" />
-            </intent-filter>
+
         </activity>
 
         <!--<meta-data-->
@@ -52,7 +49,15 @@
             android:name=".ui.SqcFarmActivity"
             android:allowTaskReparenting="false"
             android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="wxedddf5c468bfd955" />
+            </intent-filter>
+
+        </activity>
         <!-- alipay sdk begin -->
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"
@@ -77,11 +82,9 @@
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:exported="true"
+            android:launchMode="singleTop"
             android:theme="@android:style/Theme.Translucent"></activity>
-        <activity
-            android:name=".wxapi.WXPayEntryActivity"
-            android:exported="true"
-            android:theme="@android:style/Theme.Translucent"></activity>
+
 
         <receiver android:name=".AppRegister">
             <intent-filter>

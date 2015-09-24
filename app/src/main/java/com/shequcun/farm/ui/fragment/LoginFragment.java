@@ -29,6 +29,8 @@ import com.shequcun.farm.util.Utils;
 
 import org.apache.http.Header;
 
+import butterknife.Bind;
+
 /**
  * 登录页面
  * Created by apple on 15/8/6.
@@ -48,12 +50,7 @@ public class LoginFragment extends BaseFragment {
 
     @Override
     protected void initWidget(View v) {
-        back = v.findViewById(R.id.back);
-        obtain_verification_code = (Button) v.findViewById(R.id.obtain_verification_code);
         ((TextView) v.findViewById(R.id.title_center_text)).setText(R.string.login);
-        login = v.findViewById(R.id.login);
-        sms_code_et = (EditText) v.findViewById(R.id.sms_code_et);
-        input_mobile_tel = (EditText) v.findViewById(R.id.input_mobile_tel);
     }
 
     /**
@@ -258,9 +255,14 @@ public class LoginFragment extends BaseFragment {
     }
 
     TimeCount tCount;
+    @Bind(R.id.back)
     View back;
+    @Bind(R.id.obtain_verification_code)
     Button obtain_verification_code;
+    @Bind(R.id.login)
     View login;
+    @Bind(R.id.sms_code_et)
     EditText sms_code_et;
+    @Bind(R.id.input_mobile_tel)
     EditText input_mobile_tel;
 }

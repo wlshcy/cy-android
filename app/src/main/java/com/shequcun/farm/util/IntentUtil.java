@@ -66,18 +66,7 @@ public class IntentUtil {
 
     public static final String UPDATE_ADDRESS_MSG = "com.youcai.refresh.orderdetails.address";
 
-    public static void sendUpdateAddressMsg(Context mContext) {
-        Intent intent = new Intent();
-        intent.setAction(UPDATE_ADDRESS_MSG);
-        mContext.sendBroadcast(intent);
-    }
 
-    public static void sendUpdateAddressMsg(Context mContext, AddressEntry entry) {
-        Intent intent = new Intent();
-        intent.setAction(UPDATE_ADDRESS_MSG);
-        intent.putExtra("AddressEntry", entry);
-        mContext.sendBroadcast(intent);
-    }
 
     /**
      * 刷新农庄特产购物车界面
@@ -91,12 +80,6 @@ public class IntentUtil {
         mContext.sendBroadcast(intent);
     }
 
-    public static void sendUpdateFarmShoppingCartMsg(Context mContext, String subAction) {
-        Intent intent = new Intent();
-        intent.setAction(UPDATE_FARM_SHOPPING_CART_MEMO);
-        intent.putExtra("MEMO", subAction);
-        mContext.sendBroadcast(intent);
-    }
 
 
     public static void sendUpdateAddressRequest(Context mContext) {

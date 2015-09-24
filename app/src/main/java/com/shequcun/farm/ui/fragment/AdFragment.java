@@ -20,6 +20,7 @@ import com.shequcun.farm.R;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 
 /**
  * 广告页
@@ -40,19 +41,13 @@ public class AdFragment extends BaseFragment {
 
     @Override
     protected void setWidgetLsn() {
-        back.setOnClickListener(onClick);
         setWebViewValue();
     }
 
-
-    AvoidDoubleClickListener onClick = new AvoidDoubleClickListener() {
-        @Override
-        public void onViewClick(View v) {
-            if (v == back) {
-                popBackStack();
-            }
-        }
-    };
+    @OnClick(R.id.back)
+    void back() {
+        popBackStack();
+    }
 
 
     @Override

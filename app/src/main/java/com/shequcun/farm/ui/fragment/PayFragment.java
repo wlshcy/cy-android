@@ -22,9 +22,9 @@ import com.shequcun.farm.data.AddressEntry;
 import com.shequcun.farm.data.AddressListEntry;
 import com.shequcun.farm.data.ComboEntry;
 import com.shequcun.farm.data.CouponEntry;
-import com.shequcun.farm.data.ModifyOrderParams;
 import com.shequcun.farm.data.OrderEntry;
 import com.shequcun.farm.data.OtherInfo;
+import com.shequcun.farm.data.PayEntry;
 import com.shequcun.farm.data.PayParams;
 import com.shequcun.farm.data.UserLoginEntry;
 import com.shequcun.farm.data.WxPayResEntry;
@@ -45,6 +45,8 @@ import com.shequcun.farm.util.WxPayUtils;
 import org.apache.http.Header;
 
 import java.util.List;
+
+import butterknife.Bind;
 
 /**
  * 套餐支付界面
@@ -68,19 +70,9 @@ public class PayFragment extends BaseFragment {
         entry = buildEntry();
         buildUserLoginEntry();
         requestUserAddress();
-        back = v.findViewById(R.id.back);
-        alipay_ly = v.findViewById(R.id.alipay_ly);
-        pay_money = (TextView) v.findViewById(R.id.pay_money);
         ((TextView) v.findViewById(R.id.title_center_text)).setText(R.string.pay);
         pay_money.setText(Utils.unitPeneyToYuan(getOrderMoney()));
-        addressee_info = (TextView) v.findViewById(R.id.addressee_info);
-        address = (TextView) v.findViewById(R.id.address);
-        red_packets_money_tv = (TextView) v.findViewById(R.id.red_packets_money_tv);
-        add_address_ly = v.findViewById(R.id.add_address_ly);
-        addressLy = v.findViewById(R.id.addressee_ly);
-        red_packets_money_ly = v.findViewById(R.id.red_packets_money_ly);
         ((ImageView) v.findViewById(R.id.right_arrow_iv)).setImageResource(R.drawable.icon_more);
-        wx_pay_ly = v.findViewById(R.id.wx_pay_ly);
     }
 
     @Override
@@ -134,9 +126,8 @@ public class PayFragment extends BaseFragment {
             return;
         }
 
-        if (!TextUtils.isEmpty(alipay)) {
-//            aUtils.doAlipay(alipay);
-            doPay(alipay,null);
+        if (!TextUtils.isEmpty(alipay) || payRes != null) {
+            doPay(alipay, payRes);
             return;
         }
         RequestParams params = new RequestParams();
@@ -148,6 +139,7 @@ public class PayFragment extends BaseFragment {
         params.add("mobile", addressEntry.mobile);
         params.add("address", addressStr);
         params.add("spares", mOrderController.getOrderOptionItemString());
+        params.add("paytype", isAlipayPay ? "2" : "3");
         if (coupon_id >= 0)
             params.add("coupon_id", coupon_id + "");
         if (entry != null && entry.info != null) {
@@ -173,19 +165,18 @@ public class PayFragment extends BaseFragment {
             public void onSuccess(int sCode, Header[] headers, byte[] data) {
                 if (sCode == 200) {
                     String result = new String(data);
-                    OrderEntry orderEntry = JsonUtilsParser.fromJson(result, OrderEntry.class);
+                    PayEntry orderEntry = JsonUtilsParser.fromJson(result, PayEntry.class);
                     if (orderEntry != null) {
                         if (TextUtils.isEmpty(orderEntry.errmsg)) {
                             alipay = orderEntry.alipay;
                             if (entry != null && !TextUtils.isEmpty(orderEntry.orderno)) {
                                 entry.orderno = orderEntry.orderno;
                             }
-                            if (TextUtils.isEmpty(orderEntry.alipay)) {
+                            if (isAlipayPay && TextUtils.isEmpty(orderEntry.alipay)) {
                                 gotoFragmentByAdd(buildBundle(orderEntry.orderno, getOrderMoney(), orderEntry.alipay, true, R.string.order_result), R.id.mainpage_ly, new PayResultFragment(), PayResultFragment.class.getName());
                                 return;
                             }
-                            doPay(alipay, null);
-//                            aUtils.doAlipay(alipay);
+                            doPay(alipay, orderEntry.wxpay);
                             mHandler.sendEmptyMessageDelayed(0, 30 * 60 * 1000);
                         } else {
                             ToastHelper.showShort(getActivity(), orderEntry.errmsg);
@@ -258,6 +249,7 @@ public class PayFragment extends BaseFragment {
             switch (msg.what) {
                 case 0:
                     alipay = null;
+                    payRes = null;
                     break;
                 case Constrants.SDK_PAY_FLAG: {
                     AlipayUtils.PayResult payResult = new AlipayUtils.PayResult((String) msg.obj);
@@ -443,8 +435,8 @@ public class PayFragment extends BaseFragment {
             return;
         }
 
-        if (!TextUtils.isEmpty(alipay)) {
-            aUtils.doAlipay(alipay);
+        if (!TextUtils.isEmpty(alipay) || payRes != null) {
+            doPay(alipay, payRes);
             return;
         }
 
@@ -456,6 +448,7 @@ public class PayFragment extends BaseFragment {
         params.add("extras", info.extras);
         params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
         params.add("memo", info.memo);
+        params.add("paytype", isAlipayPay ? "2" : "3");
         if (coupon_id > -1)
             params.add("coupon_id", coupon_id + "");
 
@@ -482,11 +475,7 @@ public class PayFragment extends BaseFragment {
                         if (TextUtils.isEmpty(orderEntry.errmsg)) {
                             alipay = orderEntry.alipay;
                             entry.orderno = orderEntry.orderno;
-//                            if (!TextUtils.isEmpty(alipay))
-//                                aUtils.doAlipay(alipay);
-
-                            doPay(alipay, null);
-
+                            doPay(alipay, orderEntry.wxpay);
                             mHandler.sendEmptyMessageDelayed(0, 30 * 60 * 1000);
                             return;
                         }
@@ -512,6 +501,7 @@ public class PayFragment extends BaseFragment {
         if (coupon_id > -1)
             params.add("coupon_id", coupon_id + "");
         params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
+        params.add("paytype", isAlipayPay ? "2" : "3");
         final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
         HttpRequestUtil.getHttpClient(getActivity()).post(LocalParams.getBaseUrl() + "cai/payorder", params, new AsyncHttpResponseHandler() {
 
@@ -536,10 +526,7 @@ public class PayFragment extends BaseFragment {
 //                            if (isAlipayPay) {
 //                                aUtils.doAlipay(oEntry.alipay);
 //                            }
-
-
-                            doPay(oEntry.alipay, null);
-
+                            doPay(oEntry.alipay, oEntry.wxpay);
                             return;
                         }
                         ToastHelper.showShort(getActivity(), oEntry.errmsg);
@@ -600,19 +587,48 @@ public class PayFragment extends BaseFragment {
         gotoFragmentByAdd(buildBundle(entry.orderno, getOrderMoney(), alipay, true, R.string.order_result), R.id.mainpage_ly, new PayResultFragment(), PayResultFragment.class.getName());
     }
 
-    void doPay(String alipay,WxPayResEntry payRes){
-        if(isAlipayPay){
+    void doPay(String alipay, WxPayResEntry payRes) {
+        if (isAlipayPay) {
             aUtils.doAlipay(alipay);
-        }else{
+        } else {
+            if (payRes != null) {
+                payRes.appId = LocalParams.getWxAppId();
+            }
+            this.payRes = payRes;
             wxPayUtils.doWxPay(payRes);
         }
     }
 
-    boolean mIsBind = false;
+    WxPayResEntry payRes;
     /**
      * 微信支付
      */
+    @Bind(R.id.wx_pay_ly)
     View wx_pay_ly;
+    @Bind(R.id.back)
+    View back;
+    @Bind(R.id.alipay_ly)
+    View alipay_ly;
+    @Bind(R.id.pay_money)
+    TextView pay_money;
+    @Bind(R.id.red_packets_money_tv)
+    TextView red_packets_money_tv;
+    @Bind(R.id.addressee_info)
+    TextView addressee_info;
+    @Bind(R.id.addressee_ly)
+    View addressLy;
+    @Bind(R.id.add_address_ly)
+    View add_address_ly;
+    @Bind(R.id.address)
+    TextView address;
+    //使用优惠红包
+    @Bind(R.id.red_packets_money_ly)
+    View red_packets_money_ly;
+    /**
+     * true,支付宝支付  false 微信支付
+     */
+    boolean isAlipayPay = false;
+    WxPayUtils wxPayUtils;
     //优惠券id
     int coupon_id = -1;
     String alipay;
@@ -621,20 +637,6 @@ public class PayFragment extends BaseFragment {
     UserLoginEntry uEntry;
     AddressEntry addressEntry;
     AlipayUtils aUtils;
-    View back;
-    View alipay_ly;
-    TextView pay_money;
-    TextView red_packets_money_tv;
-    TextView addressee_info;
-    View addressLy;
-    View add_address_ly;
-    TextView address;
+    boolean mIsBind = false;
     String addressStr;
-    //使用优惠红包
-    View red_packets_money_ly;
-    /**
-     * true,支付宝支付  false 微信支付
-     */
-    boolean isAlipayPay = false;
-    WxPayUtils wxPayUtils;
 }

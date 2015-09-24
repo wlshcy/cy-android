@@ -11,6 +11,8 @@ import com.shequcun.farm.data.ComboEntry;
 import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
 
+import butterknife.Bind;
+
 /**
  * 产品介绍
  * Created by apple on 15/8/7.
@@ -30,8 +32,6 @@ public class ComboMongoliaLayerFragment extends BaseFragment {
 
     @Override
     protected void initWidget(View v) {
-        look_combo_detail_tv = v.findViewById(R.id.look_combo_detail_tv);
-        close = v.findViewById(R.id.close);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class ComboMongoliaLayerFragment extends BaseFragment {
     AvoidDoubleClickListener onClick = new AvoidDoubleClickListener() {
         @Override
         public void onViewClick(View v) {
-            PersistanceManager.saveIsShowLookupComboDetails(getActivity(),buildKey(), false);
+            PersistanceManager.saveIsShowLookupComboDetails(getActivity(), buildKey(), false);
             if (look_combo_detail_tv == v) {
                 popBackStack();
                 gotoFragmentByAdd(getArguments(), R.id.mainpage_ly, new WebViewFragment(), WebViewFragment.class.getName());
@@ -69,7 +69,8 @@ public class ComboMongoliaLayerFragment extends BaseFragment {
     /**
      * 查看详情
      */
+    @Bind(R.id.look_combo_detail_tv)
     View look_combo_detail_tv;
-
+    @Bind(R.id.close)
     View close;
 }

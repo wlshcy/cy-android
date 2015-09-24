@@ -30,13 +30,13 @@ import com.shequcun.farm.util.Constrants;
 import com.shequcun.farm.util.DeviceInfo;
 import com.shequcun.farm.util.IntentUtil;
 import com.shequcun.farm.util.ShareContent;
-import com.shequcun.farm.util.ShareUtil;
+//import com.shequcun.farm.util.ShareUtil;
 import com.shequcun.farm.util.ToastHelper;
 import com.shequcun.farm.util.Utils;
-import com.umeng.socialize.bean.SHARE_MEDIA;
-import com.umeng.socialize.bean.SocializeEntity;
-import com.umeng.socialize.bean.StatusCode;
-import com.umeng.socialize.controller.listener.SocializeListeners;
+//import com.umeng.socialize.bean.SHARE_MEDIA;
+//import com.umeng.socialize.bean.SocializeEntity;
+//import com.umeng.socialize.bean.StatusCode;
+//import com.umeng.socialize.controller.listener.SocializeListeners;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,9 +85,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
         RecommendEntry localEntry = readRecommendEntryFromDisk(entry);
         this.entry.count = 1;
         if (localEntry == null) return;
-//        if (goods_count == null) return;
         this.entry = localEntry;
-//        goods_count.setText(entry.count + "");
     }
 
     private RecommendEntry readRecommendEntryFromDisk(RecommendEntry pEntry) {
@@ -207,11 +205,9 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             params.gravity = Gravity.BOTTOM;
             pView.addView(childView, params);
-
-            goods_count = (TextView) childView.findViewById(R.id.goods_count);
+            final TextView goods_count = (TextView) childView.findViewById(R.id.goods_count);
             View goods_sub = childView.findViewById(R.id.goods_sub);
             View goods_add = childView.findViewById(R.id.goods_add);
-
             goods_count.setText(entry.count + "");
 
             goods_add.setOnClickListener(new View.OnClickListener() {
@@ -297,27 +293,27 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
     }
 
     private void useUmengToShare(ShareContent shareContent) {
-        if (shareController == null)
-            shareController = new ShareUtil(getActivity());
-        shareController.popShareFrame(getActivity(), shareContent);
+//        if (shareController == null)
+//            shareController = new ShareUtil(getActivity());
+//        shareController.popShareFrame(getActivity(), shareContent);
     }
 
-    private SocializeListeners.SnsPostListener mSnsPostListener = new SocializeListeners.SnsPostListener() {
-
-        @Override
-        public void onStart() {
-        }
-
-        @Override
-        public void onComplete(SHARE_MEDIA sm, int eCode,
-                               SocializeEntity sEntity) {
-            String showText = "分享成功";
-            if (eCode != StatusCode.ST_CODE_SUCCESSED) {
-                showText = "分享失败";
-            }
-            ToastHelper.showShort(getActivity(), showText);
-        }
-    };
+//    private SocializeListeners.SnsPostListener mSnsPostListener = new SocializeListeners.SnsPostListener() {
+//
+//        @Override
+//        public void onStart() {
+//        }
+//
+//        @Override
+//        public void onComplete(SHARE_MEDIA sm, int eCode,
+//                               SocializeEntity sEntity) {
+//            String showText = "分享成功";
+//            if (eCode != StatusCode.ST_CODE_SUCCESSED) {
+//                showText = "分享失败";
+//            }
+//            ToastHelper.showShort(getActivity(), showText);
+//        }
+//    };
 
     /**
      * 是否登录成功
@@ -329,7 +325,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
     }
 
 
-    private ShareUtil shareController;
+//    private ShareUtil shareController;
 
     /**
      * 轮播的图片
@@ -366,5 +362,4 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
     ImageView contentImgIv;//产品图片
     @Bind(R.id.share_iv)
     ImageView shareIv;
-    TextView goods_count;
 }

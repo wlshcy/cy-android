@@ -35,12 +35,12 @@ import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.ShareContent;
-import com.shequcun.farm.util.ShareUtil;
+//import com.shequcun.farm.util.ShareUtil;
 import com.shequcun.farm.util.ToastHelper;
-import com.umeng.socialize.bean.SHARE_MEDIA;
-import com.umeng.socialize.bean.SocializeEntity;
-import com.umeng.socialize.bean.StatusCode;
-import com.umeng.socialize.controller.listener.SocializeListeners;
+//import com.umeng.socialize.bean.SHARE_MEDIA;
+//import com.umeng.socialize.bean.SocializeEntity;
+//import com.umeng.socialize.bean.StatusCode;
+//import com.umeng.socialize.controller.listener.SocializeListeners;
 
 import org.apache.http.Header;
 import org.json.JSONObject;
@@ -48,6 +48,7 @@ import org.json.JSONObject;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 
 /**
  * 修改订单
@@ -87,11 +88,16 @@ public class ModifyOrderFragment extends BaseFragment {
     @Override
     protected void setWidgetLsn() {
         requestUserAddress();
-        back.setOnClickListener(onClick);
         order_btn.setOnClickListener(onClick);
         redPacketsIv.setOnClickListener(onClick);
         requestOrderDetails();
     }
+
+    @OnClick(R.id.back)
+    void back() {
+        popBackStack();
+    }
+
 
     private ModifyOrderParams buildModifyOrderObj() {
         Bundle bundle = getArguments();
@@ -101,9 +107,7 @@ public class ModifyOrderFragment extends BaseFragment {
     AvoidDoubleClickListener onClick = new AvoidDoubleClickListener() {
         @Override
         public void onViewClick(View v) {
-            if (v == back)
-                popBackStack();
-            else if (v == order_btn) {
+            if (v == order_btn) {
                 int orderType = getOrderType();
                 if (getOrderStatus() == 1) {//待配送
                     order_btn.setText(orderType == 1 || orderType == 2 ? R.string.re_choose_dishes : R.string.cancel_order);
@@ -436,34 +440,34 @@ public class ModifyOrderFragment extends BaseFragment {
     }
 
     private void useUmengToShare(String url, String title, String content) {
-        if (shareController == null)
-            shareController = new ShareUtil(getActivity());
-        ShareContent shareContent = new ShareContent();
-        shareContent.setUrlImage("drawable:///" + R.drawable.icon_share_redpackets_logo);
-        shareContent.setTargetUrl(url);
-        shareContent.setTitle(title);
-        shareContent.setContent(content);
-        shareController.wxShareContent(shareContent);
-        shareController.circleShareContent(shareContent);
-        shareController.postShare(mSnsPostListener);
+//        if (shareController == null)
+//            shareController = new ShareUtil(getActivity());
+//        ShareContent shareContent = new ShareContent();
+//        shareContent.setUrlImage("drawable:///" + R.drawable.icon_share_redpackets_logo);
+//        shareContent.setTargetUrl(url);
+//        shareContent.setTitle(title);
+//        shareContent.setContent(content);
+//        shareController.wxShareContent(shareContent);
+//        shareController.circleShareContent(shareContent);
+//        shareController.postShare(mSnsPostListener);
     }
 
-    private SocializeListeners.SnsPostListener mSnsPostListener = new SocializeListeners.SnsPostListener() {
-
-        @Override
-        public void onStart() {
-        }
-
-        @Override
-        public void onComplete(SHARE_MEDIA sm, int eCode,
-                               SocializeEntity sEntity) {
-            String showText = "分享成功";
-            if (eCode != StatusCode.ST_CODE_SUCCESSED) {
-                showText = "分享失败 [" + eCode + "]";
-            }
-            ToastHelper.showShort(getActivity(), showText);
-        }
-    };
+//    private SocializeListeners.SnsPostListener mSnsPostListener = new SocializeListeners.SnsPostListener() {
+//
+//        @Override
+//        public void onStart() {
+//        }
+//
+//        @Override
+//        public void onComplete(SHARE_MEDIA sm, int eCode,
+//                               SocializeEntity sEntity) {
+//            String showText = "分享成功";
+//            if (eCode != StatusCode.ST_CODE_SUCCESSED) {
+//                showText = "分享失败 [" + eCode + "]";
+//            }
+//            ToastHelper.showShort(getActivity(), showText);
+//        }
+//    };
 
 
     /**
@@ -483,7 +487,7 @@ public class ModifyOrderFragment extends BaseFragment {
         }
     }
 
-    private ShareUtil shareController;
+//    private ShareUtil shareController;
     @Bind(R.id.addressee_ly)
     View addressLy;
     @Bind(R.id.redPacketsIv)

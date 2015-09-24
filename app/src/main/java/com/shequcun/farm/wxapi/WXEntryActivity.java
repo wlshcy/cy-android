@@ -1,7 +1,7 @@
 package com.shequcun.farm.wxapi;
 
-import com.umeng.socialize.weixin.view.WXCallbackActivity;
+import com.shequcun.farm.BaseFragmentActivity;
 
-public class WXEntryActivity extends WXCallbackActivity {
+public class WXEntryActivity extends BaseFragmentActivity {
 
 }

@@ -3,6 +3,7 @@ package com.shequcun.farm.wxapi;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.shequcun.farm.BaseFragmentActivity;
 import com.shequcun.farm.util.IntentUtil;
@@ -38,6 +39,7 @@ public class WXPayEntryActivity extends BaseFragmentActivity implements IWXAPIEv
 
     @Override
     public void onResp(BaseResp resp) {
+        Log.e("WXPayEntryActivity----","onResp--"+resp.errCode);
         IntentUtil.sendWxPayResultMsg(WXPayEntryActivity.this, resp.errCode);
         finish();
 

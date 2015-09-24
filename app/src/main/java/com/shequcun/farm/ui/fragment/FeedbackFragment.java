@@ -24,6 +24,8 @@ import com.shequcun.farm.util.Utils;
 import org.apache.http.Header;
 import org.json.JSONObject;
 
+import butterknife.Bind;
+
 /**
  * Created by apple on 15/8/22.
  */
@@ -41,10 +43,7 @@ public class FeedbackFragment extends BaseFragment {
 
     @Override
     protected void initWidget(View v) {
-        back = v.findViewById(R.id.back);
         ((TextView) v.findViewById(R.id.title_center_text)).setText(R.string.feedback);
-        feedback_et = (EditText) v.findViewById(R.id.feedback_et);
-        feedback_btn = v.findViewById(R.id.feedback_btn);
     }
 
     @Override
@@ -69,14 +68,14 @@ public class FeedbackFragment extends BaseFragment {
         Utils.hideVirtualKeyboard(getActivity(), feedback_btn);
     }
 
-    private void checkQuit(){
+    private void checkQuit() {
         if (checkInput())
             alertQuitEdit();
         else
             popBackStack();
     }
 
-    private boolean checkInput(){
+    private boolean checkInput() {
         String content = feedback_et.getText().toString();
         return !TextUtils.isEmpty(content);
     }
@@ -169,7 +168,10 @@ public class FeedbackFragment extends BaseFragment {
         });
     }
 
+    @Bind(R.id.back)
     View back;
+    @Bind(R.id.feedback_et)
     EditText feedback_et;
+    @Bind(R.id.feedback_btn)
     View feedback_btn;
 }

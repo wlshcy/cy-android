@@ -48,25 +48,33 @@ public class CacheManager {
         return null;
     }
 
-
-    public void saveZoneCacheToDisk(byte[] data) {
+    public void saveUserReceivingAddress(byte[] data) {
         try {
-            DBLite dblite = new DBLite(mContext, null,
-                    KeyWord_UserZoneCacheTag);
+            DBLite dblite = new DBLite(mContext, null, KeyWord_UserReceivingAddressTag);
             dblite.deleteData();
             dblite.saveToDisk(data);
         } catch (Exception e) {
         }
     }
 
-    public byte[] getZoneCacheFromDisk() {
-        try {
-            DBLite dblite = new DBLite(mContext, null, KeyWord_UserZoneCacheTag);
-            return dblite.getZoneData();
-        } catch (Exception e) {
-        }
-        return null;
-    }
+//    public void saveZoneCacheToDisk(byte[] data) {
+//        try {
+//            DBLite dblite = new DBLite(mContext, null,
+//                    KeyWord_UserZoneCacheTag);
+//            dblite.deleteData();
+//            dblite.saveToDisk(data);
+//        } catch (Exception e) {
+//        }
+//    }
+//
+//    public byte[] getZoneCacheFromDisk() {
+//        try {
+//            DBLite dblite = new DBLite(mContext, null, KeyWord_UserZoneCacheTag);
+//            return dblite.getZoneData();
+//        } catch (Exception e) {
+//        }
+//        return null;
+//    }
 
     public void saveAddressCacheToDisk(byte[] data) {
         try {
@@ -203,9 +211,11 @@ public class CacheManager {
         }
     }
 
+
     final String KeyWord_UserZoneCacheTag = "UserZoneCacheTag";
     final String KeyWord_UserLoginCacheTag = "UserLoginCacheTag";
     final String KeyWord_UserAddressTag = "UserAddressTag";
     final String KeyWord_RecommendTag = "UserRecommendTag";
+    final String KeyWord_UserReceivingAddressTag = "UserReceivingAddressTag";
     final int MAX_COUNT = 100;
 }

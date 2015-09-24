@@ -34,11 +34,17 @@ import org.apache.http.Header;
 
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnItemClick;
+import butterknife.OnItemSelected;
+
 /**
  * 菜品订单
  * Created by apple on 15/8/8.
  */
 public class DishesFragment extends BaseFragment {
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -52,18 +58,26 @@ public class DishesFragment extends BaseFragment {
 
     @Override
     protected void initWidget(View v) {
-        mLv = (ListView) v.findViewById(R.id.mLv);
-        pBar = (ProgressBar) v.findViewById(R.id.progress_bar);
-        scroll_view = (PullToRefreshScrollView) v.findViewById(R.id.pView);
         buidlAdapter();
+    }
+
+    @OnItemClick(R.id.mLv)
+    void onItemClick(int position) {
+        if (adapter == null)
+            return;
+        HistoryOrderEntry entry = adapter.getItem(position);
+        if (entry != null) {
+            if (entry.status == 1 || entry.status == 3 || entry.status == 0 || entry.status == 2) {
+                gotoFragmentByAdd(buildBundle(buildOrderParams(entry)), R.id.mainpage_ly, new ModifyOrderFragment(), ModifyOrderFragment.class.getName());
+            } else if (entry.status == 4) {
+                ToastHelper.showShort(getActivity(), "您的订单已取消!");
+            }
+        }
     }
 
     @Override
     protected void setWidgetLsn() {
         scroll_view.setMode(PullToRefreshBase.Mode.DISABLED);
-//        scroll_view.setOnRefreshListener(onRefrshLsn);
-        mLv.setOnItemClickListener(onItemLsn);
-//        requestOrderEntry();
         requestOrderNo();
     }
 
@@ -112,34 +126,7 @@ public class DishesFragment extends BaseFragment {
 
             }
         });
-
     }
-
-
-    AdapterView.OnItemClickListener onItemLsn = new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-            if (adapter == null)
-                return;
-            HistoryOrderEntry entry = adapter.getItem(position);
-
-            if (entry != null) {
-
-                if (entry.status == 1 || entry.status == 3 || entry.status == 0 || entry.status == 2) {
-                    gotoFragmentByAdd(buildBundle(buildOrderParams(entry)), R.id.mainpage_ly, new ModifyOrderFragment(), ModifyOrderFragment.class.getName());
-                }
-//                else if (entry.status == 0) {
-//                    requestAlipay(entry);
-//                }
-//                else if (entry.status == 2) {
-//                    ToastHelper.showShort(getActivity(), "您的订单正在配送中,请耐心等待!");
-//                }
-                else if (entry.status == 4) {
-                    ToastHelper.showShort(getActivity(), "您的订单已取消!");
-                }
-            }
-        }
-    };
 
 //    PullToRefreshScrollView.OnRefreshListener2 onRefrshLsn = new PullToRefreshBase.OnRefreshListener2() {
 //        @Override
@@ -231,8 +218,12 @@ public class DishesFragment extends BaseFragment {
         });
     }
 
+    @Bind(R.id.progress_bar)
     ProgressBar pBar;
-    MyOrderAdapter adapter;
+    @Bind(R.id.mLv)
     ListView mLv;
+    @Bind(R.id.pView)
     PullToRefreshScrollView scroll_view;
+
+    MyOrderAdapter adapter;
 }

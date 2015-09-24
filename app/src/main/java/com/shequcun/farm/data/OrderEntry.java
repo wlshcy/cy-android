@@ -33,19 +33,7 @@ public class OrderEntry extends BaseEntry {
     public int price;
     @SerializedName("times")
     public int times;
-    //    id	int	订单id	自增主键	10
-//    orderno	int	订单号	1537749250347349
-//    uid	int	用户ID	用户的ID	100
-//    combo_id	int	套餐id		10
-//    combo_idx	int	子套餐序号		2
-//    title	string	订单标题		鸡蛋套餐
-//    img	string	订单图片		https://img.shequcun.com/1508/14171/5d0cbc4ff61e4b188b4410096b0a088c.png
-//    year	int	年份		2015
-//    issue_no	int	期数	套餐/单品订单的期数为0	10
-//    type	int	订单类型	1.套餐订单 2.选菜订单, 3.单品订单, 4.自动选菜订单	1
-//    price	int	订单价格，单位：分		0
-//    times	int	第n次配送	表示选菜订单或自动选菜订单的配送次数	12
-//    name	string	用户名称	订单要配送的用户名称	张三
+
     @SerializedName("mobile")
     public String mobile;
     @SerializedName("address")
@@ -63,4 +51,18 @@ public class OrderEntry extends BaseEntry {
     public long created;//	int	添加时间	1970年1月1日至今的毫秒数	1423458933975
     @SerializedName("modified")
     public long modified;//int	修改时间	1970年1月1日至今的毫秒数	1423458933975
+    @SerializedName("wxpay")
+    public WxPayResEntry wxpay;
+
+//    "fee":59800,
+//            "orderno":1587496832633814,
+//            "freight":0,
+//            "wxpay":{
+//        "partnerid":"1269547101",
+//                "noncestr":"d795152df98f423aaa417bcb9f49b5d5",
+//                "sign":"2BAF1E66D57F41A9B623F328907456EC",
+//                "prepayid":"wx20150923193503d0c85683ae0027600808",
+//                "package":"Sign=WXPay",
+//                "timestamp":1443008104
+//    }
 }

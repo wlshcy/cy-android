@@ -2,7 +2,9 @@ package com.shequcun.farm.util;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
+import com.google.gson.annotations.SerializedName;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.WxPayResEntry;
 import com.shequcun.farm.dlg.ProgressDlg;
@@ -68,7 +70,31 @@ public class WxPayUtils {
     }
 
     public void doWxPay(WxPayResEntry wxPay) {
-        iwxapi.sendReq(wxPay);
+
+        PayReq req = new PayReq();
+        req.appId = wxPay.appId;
+        req.partnerId = wxPay.partnerid;
+        req.prepayId = wxPay.prepayid;
+        req.nonceStr = wxPay.noncestr;
+        req.timeStamp = wxPay.timestamp;
+        req.packageValue = wxPay.packagestr;
+
+        req.sign = wxPay.sign;
+        // IWXMsg.registerApp
+
+
+        Log.e("req.appId--->>>", "" + req.appId);
+        Log.e("req.partnerId--->>>", "" + req.partnerId);
+        Log.e("req.prepayId--->>>", "" + req.prepayId);
+        Log.e("req.packageValue--->>>",""+req.packageValue);
+        Log.e("req.nonceStr--->>>",""+req.nonceStr);
+        Log.e("req.timeStamp--->>>",""+req.timeStamp);
+        Log.e("req.sign--->>>",""+req.sign);
+
+
+        iwxapi.registerApp(LocalParams.getWxAppId());
+
+        iwxapi.sendReq(req);
     }
 
     /**
