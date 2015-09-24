@@ -54,6 +54,8 @@ import java.sql.Driver;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
+
 /**
  * 选择菜品页
  * Created by apple on 15/8/10.
@@ -73,33 +75,15 @@ public class ChooseDishesFragment extends BaseFragment {
     @Override
     protected void initWidget(View v) {
         entry = buildEntry();
-        mLv = (ListView) v.findViewById(R.id.mLv);
         ((TextView) v.findViewById(R.id.title_center_text)).setText(R.string.choose_dishes);
-        back = v.findViewById(R.id.back);
-        rightTv = (TextView) v.findViewById(R.id.title_right_text);
         rightTv.setText(R.string.combo_introduce);
         rightTv.setVisibility(isShowComboIntroduce() ? View.VISIBLE : View.GONE);
-        rootView = (FrameLayout) v.findViewById(R.id.root_view);
-        footShopCartLl = (LinearLayout) v.findViewById(R.id.foot_shop_cart_ll);
-        option_ll = (LinearLayout) v.findViewById(R.id.option_ll);
-        mShopCartClearTv = (TextView) v.findViewById(R.id.shop_cart_clear_tv);
-        emptyView = v.findViewById(R.id.empty_view);
         mOrderController = DisheDataCenter.getInstance();
-        mBuyOrderTv = (TextView) v.findViewById(R.id.buy_order_tv);
-        mShopCartIv = (ImageView) v.findViewById(R.id.shop_cart_iv);
         mBadgeViewShopCart = new BadgeView(getActivity(), mShopCartIv);
         mBadgeViewShopCart.setWidth(ResUtil.dip2px(getActivity(), 20));
         mBadgeViewShopCart.setHeight(ResUtil.dip2px(getActivity(), 20));
         mBadgeViewShopCart.setBackgroundResource(R.drawable.red_oval);
-//        int height = mBadgeViewShopCart.getHeight();
-//        mBadgeViewShopCart.setCornerPx(height * 2);
-        mBadgeViewShopCart.setTextSize(TypedValue.COMPLEX_UNIT_PX,
-                ResUtil.dip2px(getActivity(), 10));
-//        mBadgeViewShopCart.setBadgeMargin(ResUtil.dip2px(getActivity(), 0));
-        mShopCartPriceTv = (TextView) v
-                .findViewById(R.id.shop_cart_total_price_tv);
-        option_dishes_tv = (TextView) v.findViewById(R.id.option_dishes_tv);
-        option_dishes_tip = (TextView) v.findViewById(R.id.option_dishes_tip);
+        mBadgeViewShopCart.setTextSize(TypedValue.COMPLEX_UNIT_PX, ResUtil.dip2px(getActivity(), 10));
         option_dishes_tip.setText(Utils.getSpanableSpan(getResources().getString(R.string.option_dishes_tip), getResources().getString(R.string.option_dishes_tip_1), ResUtil.dipToPixel(getActivity(), 14), ResUtil.dipToPixel(getActivity(), 14)));
         enabled = setChooseDishesContent(v);
         buildAdapter(enabled);
@@ -893,26 +877,34 @@ public class ChooseDishesFragment extends BaseFragment {
         }
     }
 
+    @Bind(R.id.option_dishes_tv)
     TextView option_dishes_tv;
     boolean enabled;
     ComboEntry entry;
-    private TextView mBuyOrderTv;
-    private TextView mShopCartPriceTv;
-    private TextView option_dishes_tip;
-    private LinearLayout footShopCartLl;
-    private LinearLayout containerLl;
-    private LinearLayout option_ll;
-    private FrameLayout rootView;
+    @Bind(R.id.buy_order_tv)
+    TextView mBuyOrderTv;
+    @Bind(R.id.shop_cart_total_price_tv)
+    TextView mShopCartPriceTv;
+    @Bind(R.id.option_dishes_tip)
+    TextView option_dishes_tip;
+    @Bind(R.id.foot_shop_cart_ll)
+    LinearLayout footShopCartLl;
+    LinearLayout containerLl;
+    @Bind(R.id.root_view)
+    FrameLayout rootView;
+    @Bind(R.id.mLv)
     ListView mLv;
     ChooseDishesAdapter adapter;
+    @Bind(R.id.back)
     View back;
+    @Bind(R.id.title_right_text)
     TextView rightTv;
+    @Bind(R.id.shop_cart_clear_tv)
     TextView mShopCartClearTv;//清空购物车
+    @Bind(R.id.empty_view)
     View emptyView;
-    /**
-     * 已选择菜品数据中心
-     */
     DisheDataCenter mOrderController;
     BadgeView mBadgeViewShopCart;
+    @Bind(R.id.shop_cart_iv)
     ImageView mShopCartIv;
 }

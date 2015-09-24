@@ -41,6 +41,8 @@ import com.umeng.socialize.controller.listener.SocializeListeners;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
+
 /**
  * 农庄特产详情
  * Created by mac on 15/9/6.
@@ -101,26 +103,9 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
 
     @Override
     protected void initWidget(View v) {
-        backIv = (ImageView) v.findViewById(R.id.back);
-        shareIv = (ImageView) v.findViewById(R.id.share_iv);
         entry = buildRecommendEntry();
-        carousel_img = (ViewFlow) v.findViewById(R.id.carousel_img);
-        carousel_point = (CircleFlowIndicator) v.findViewById(R.id.carousel_point);
-        back = v.findViewById(R.id.back);
-        pView = (FrameLayout) v.findViewById(R.id.pView);
-
-        nameTv = (TextView) v.findViewById(R.id.name_tv);
-        descTv = (TextView) v.findViewById(R.id.desc_tv);
-        contentTv = (TextView) v.findViewById(R.id.content_tv);
-        priceNowTv = (TextView) v.findViewById(R.id.price_now_tv);
-        priceOriginTv = (TextView) v.findViewById(R.id.price_origin_tv);
         /*删除线*/
         priceOriginTv.setPaintFlags(priceOriginTv.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-        personSelectTv = (TextView) v.findViewById(R.id.person_select_tv);
-        standardTv = (TextView) v.findViewById(R.id.standard_tv);
-        storageMethodTv = (TextView) v.findViewById(R.id.storage_method_tv);
-        producingPlaceTv = (TextView) v.findViewById(R.id.producing_place_tv);
-        contentImgIv = (ImageView) v.findViewById(R.id.content_img_iv);
     }
 
     @Override
@@ -314,7 +299,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
     private void useUmengToShare(ShareContent shareContent) {
         if (shareController == null)
             shareController = new ShareUtil(getActivity());
-        shareController.popShareFrame(getActivity(),shareContent);
+        shareController.popShareFrame(getActivity(), shareContent);
     }
 
     private SocializeListeners.SnsPostListener mSnsPostListener = new SocializeListeners.SnsPostListener() {
@@ -349,26 +334,37 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
     /**
      * 轮播的图片
      */
+    @Bind(R.id.carousel_img)
     ViewFlow carousel_img;
+    @Bind(R.id.carousel_point)
     CircleFlowIndicator carousel_point;
     CarouselAdapter cAdapter;
     RecommendEntry entry;
+    @Bind(R.id.back)
     View back;
+    @Bind(R.id.pView)
     FrameLayout pView;
-//    String alipay;
-//    String orderno;
-
+    @Bind(R.id.name_tv)
     TextView nameTv;//产品名称
+    @Bind(R.id.desc_tv)
     TextView descTv;//产品描述
+    @Bind(R.id.price_now_tv)
     TextView priceNowTv;//产品现价
+    @Bind(R.id.price_origin_tv)
     TextView priceOriginTv;//产品原价
+    @Bind(R.id.person_select_tv)
     TextView personSelectTv;//产品已选人数
+    @Bind(R.id.standard_tv)
     TextView standardTv;//产品规格
+    @Bind(R.id.storage_method_tv)
     TextView storageMethodTv;//产品冷藏方法
+    @Bind(R.id.producing_place_tv)
     TextView producingPlaceTv;//产品产地
+    @Bind(R.id.content_tv)
     TextView contentTv;//产品详情
+    @Bind(R.id.content_img_iv)
     ImageView contentImgIv;//产品图片
+    @Bind(R.id.share_iv)
     ImageView shareIv;
-    ImageView backIv;
     TextView goods_count;
 }

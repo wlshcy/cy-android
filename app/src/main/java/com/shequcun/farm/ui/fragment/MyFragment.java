@@ -27,6 +27,8 @@ import com.shequcun.farm.util.AvoidDoubleClickListener;
 import com.shequcun.farm.util.IntentUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
 
+import butterknife.Bind;
+
 /**
  * Created by apple on 15/8/3.
  */
@@ -45,7 +47,6 @@ public class MyFragment extends BaseFragment {
 
     @Override
     protected void initWidget(View v) {
-        mLv = (ListView) v.findViewById(R.id.mLv);
     }
 
     @Override
@@ -118,8 +119,8 @@ public class MyFragment extends BaseFragment {
                     break;
                 case 2://我的优惠红包
                     Bundle bundle1 = new Bundle();
-                    bundle1.putInt(RedPacketsListFragment.KEY_ACTION,RedPacketsListFragment.ACTION_LOOK);
-                    gotoFragment(bundle1,R.id.mainpage_ly, new RedPacketsListFragment(), RedPacketsListFragment.class.getName());
+                    bundle1.putInt(RedPacketsListFragment.KEY_ACTION, RedPacketsListFragment.ACTION_LOOK);
+                    gotoFragment(bundle1, R.id.mainpage_ly, new RedPacketsListFragment(), RedPacketsListFragment.class.getName());
                     break;
                 case 3://拨打客服电话
                     ConsultationDlg.showCallTelDlg(getActivity());
@@ -183,10 +184,10 @@ public class MyFragment extends BaseFragment {
 
 
     boolean mIsBind = false;
+    @Bind(R.id.mLv)
     ListView mLv;
     MyAdapter adapter;
     UserLoginEntry uEntry;
-
     View hView_1;
     View hView_2;
 }

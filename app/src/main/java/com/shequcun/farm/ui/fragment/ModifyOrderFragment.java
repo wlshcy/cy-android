@@ -47,6 +47,8 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+import butterknife.Bind;
+
 /**
  * 修改订单
  * Created by apple on 15/8/20.
@@ -65,39 +67,21 @@ public class ModifyOrderFragment extends BaseFragment {
 
     @Override
     protected void initWidget(View v) {
-        back = v.findViewById(R.id.back);
-        redPacketsIv = v.findViewById(R.id.redPacketsIv);
-        order_btn = (TextView) v.findViewById(R.id.order_btn);
-        mLv = (ListView) v.findViewById(R.id.mLv);
         hEntry = buildModifyOrderObj();
-        address = (TextView) v.findViewById(R.id.address);
-        addressee_info = (TextView) v.findViewById(R.id.addressee_info);
-        addressLy = v.findViewById(R.id.addressee_ly);
         ((TextView) v.findViewById(R.id.title_center_text)).setText(R.string.order_details);
-//        order_btn.setVisibility(isShowFooteWgt() ? View.VISIBLE : View.GONE);
         if (getOrderStatus() == 0) {//未付款
             order_btn.setText(R.string.pay_immediately);
         } else if (getOrderStatus() == 1) {//待配送
             int orderType = getOrderType();
-//            if (orderType == 3) {
-//                order_btn.setVisibility(View.GONE);
-//            } else {
-//            }
             if (orderType == 2) {
                 order_btn.setVisibility(View.GONE);
             }
             order_btn.setText(orderType == 1 ? R.string.re_choose_dishes : R.string.cancel_order);
         } else if (getOrderStatus() == 2) {//订单配送中
-//            order_btn.setEnabled(false);
-//            order_btn.setText(hEntry == null ? "" : hEntry.date);
             order_btn.setVisibility(View.GONE);
         } else {
             order_btn.setVisibility(View.GONE);
         }
-
-//        if (getOrderType() == 3) {
-//            order_btn.setVisibility(View.GONE);
-//        }
     }
 
     @Override
@@ -500,14 +484,20 @@ public class ModifyOrderFragment extends BaseFragment {
     }
 
     private ShareUtil shareController;
-
+    @Bind(R.id.addressee_ly)
     View addressLy;
+    @Bind(R.id.redPacketsIv)
     View redPacketsIv;
     ModifyOrderParams hEntry;
     AlreadyPurchasedAdapter adapter;
+    @Bind(R.id.back)
     View back;
+    @Bind(R.id.order_btn)
     TextView order_btn;
+    @Bind(R.id.addressee_info)
     TextView addressee_info;
+    @Bind(R.id.address)
     TextView address;
+    @Bind(R.id.mLv)
     ListView mLv;
 }
