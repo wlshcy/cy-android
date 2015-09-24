@@ -12,7 +12,7 @@
         android:focusable="true"
         android:focusableInTouchMode="true"
         ptr:ptrAnimationStyle="flip"
-        ptr:ptrMode="disabled">
+       >
 
         <LinearLayout
             android:layout_width="match_parent"
