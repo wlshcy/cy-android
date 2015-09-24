@@ -283,12 +283,8 @@ public class HomeFragment extends BaseFragment {
                 ToastHelper.showShort(getActivity(), R.string.spike_error_tip);
                 return;
             }
-            gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailFragment(), FarmSpecialtyDetailFragment.class.getName());
-//            if (isLogin()) {
-//            }
-//            else {
-//                gotoFragmentByAdd(R.id.mainpage_ly, new LoginFragment(), LoginFragment.class.getName());
-//            }
+
+            gotoFragmentByAnimation(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailFragment(), FarmSpecialtyDetailFragment.class.getName());
         }
     };
 
@@ -348,9 +344,6 @@ public class HomeFragment extends BaseFragment {
 
             }
         });
-
-
-//
     }
 
 
