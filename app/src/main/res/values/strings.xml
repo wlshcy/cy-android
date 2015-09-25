@@ -48,6 +48,7 @@
     <string name="shop_cart_clear">清空全部</string>
     <string name="shop_cart">购物车</string>
     <string name="add_shop_cart">加入购物车</string>
+    <string name="go_to_shop_cart">去购物车</string>
     <string name="cailanzi">菜篮子</string>
     <string name="small_market_buy">选好了</string>
     <string name="small_market_buy_not_enough">还差A</string>

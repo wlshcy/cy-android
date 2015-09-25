@@ -13,6 +13,7 @@ import com.bitmap.cache.ImageCacheManager;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.SlidesEntry;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
+import com.shequcun.farm.util.DeviceInfo;
 
 import java.util.List;
 
@@ -25,6 +26,7 @@ public class CarouselAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     private List<SlidesEntry> mImageList;
     private View.OnClickListener onClick;
+    private int width;
 
     public CarouselAdapter(Context context, List<SlidesEntry> list) {
         this.mInflater = (LayoutInflater) context
@@ -67,7 +69,7 @@ public class CarouselAdapter extends BaseAdapter {
         if (TextUtils.isEmpty(item.img)) {
             holder.coverView.setImageResource(R.drawable.icon_combo_default);
         } else {
-            ImageCacheManager.getInstance().displayImage(holder.coverView, item.img);
+            ImageCacheManager.getInstance().displayImage(holder.coverView , item.img+ "?imageView2/2/w/" + width);
         }
 //        holder.coverView.setImageUrl(item.img, ImageCacheManager.getInstance()
 //                .getImageLoader());
@@ -80,5 +82,9 @@ public class CarouselAdapter extends BaseAdapter {
 
     class ViewHolder {
         public ImageView coverView;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
     }
 }

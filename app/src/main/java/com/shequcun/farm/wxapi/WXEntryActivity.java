@@ -64,7 +64,7 @@ public class WXEntryActivity extends BaseFragmentActivity implements IWXAPIEvent
                 result = "发送被返回";
                 break;
         }
-        Toast.makeText(this, result, Toast.LENGTH_LONG).show();
+//        Toast.makeText(this, result, Toast.LENGTH_LONG).show();
     }
 
     private void goToGetMsg() {

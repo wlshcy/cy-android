@@ -115,6 +115,8 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
         buildCarouselAdapter();
         setDataToView(entry);
         addChildViewToParent();
+        if (go_to_shop_cart_tv!=null)
+            go_to_shop_cart_tv.setOnClickListener(onClick);
     }
 
     void buildCarouselAdapter() {
@@ -131,6 +133,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
         }
 
         cAdapter = new CarouselAdapter(getActivity(), aList);
+        cAdapter.setWidth(DeviceInfo.getDeviceWidth(getActivity()));
         carousel_img.setAdapter(cAdapter, 0);
         carousel_img.setFlowIndicator(carousel_point);
     }
@@ -147,12 +150,18 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
                 sharecontent.setTargetUrl(Constrants.URL_SHARE + entry.id);
                 sharecontent.setTitle("有菜，不能说的秘密！");
                 sharecontent.setContent("孩子的餐桌我们的标准，走心，连蔬菜都这么有bigger！");
-                ShareManager.shareByFrame(getActivity(),sharecontent);
+                ShareManager.shareByFrame(getActivity(), sharecontent);
             } else if (v == producingPlaceTv) {
                 gotoProducingPlaceFragment(entry.fid);
+            }else if (v==go_to_shop_cart_tv){
+                gotoShoppingCart();
             }
         }
     };
+
+    private void gotoShoppingCart(){
+
+    }
 
     private void gotoProducingPlaceFragment(int id) {
         Bundle bundle = new Bundle();
@@ -209,6 +218,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
             final TextView goods_count = (TextView) childView.findViewById(R.id.goods_count);
             View goods_sub = childView.findViewById(R.id.goods_sub);
             View goods_add = childView.findViewById(R.id.goods_add);
+            go_to_shop_cart_tv = childView.findViewById(R.id.go_to_shop_cart_tv);
             goods_count.setText(entry.count + "");
 
             goods_add.setOnClickListener(new View.OnClickListener() {
@@ -337,4 +347,5 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
     ImageView contentImgIv;//产品图片
     @Bind(R.id.share_iv)
     ImageView shareIv;
+    View go_to_shop_cart_tv;
 }
