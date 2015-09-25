@@ -278,7 +278,6 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
         return result;
     }
 
-
     private void alertOutOfMaxpacks() {
         String content = getResources().getString(R.string.out_of_maxpacks);
         alertDialog(content);

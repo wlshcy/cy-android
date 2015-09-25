@@ -283,13 +283,17 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment implements R
     private BroadcastReceiver mUpdateReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            if (TextUtils.isEmpty(action)) {
-                return;
-            }
+            try {
+                String action = intent.getAction();
+                if (TextUtils.isEmpty(action)) {
+                    return;
+                }
 
-            if (action.equals(IntentUtil.UPDATE_FARM_SHOPPING_CART_MSG)) {
-                addWidgetToView();
+                if (action.equals(IntentUtil.UPDATE_FARM_SHOPPING_CART_MSG)) {
+                    addWidgetToView();
+                }
+            } catch (Exception e) {
+
             }
 
         }
