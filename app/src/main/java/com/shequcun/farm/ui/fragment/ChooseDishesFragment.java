@@ -845,7 +845,7 @@ public class ChooseDishesFragment extends BaseFragment {
 
     ModifyOrderParams buildOrderParams(ComboEntry entry) {
         ModifyOrderParams params = new ModifyOrderParams();
-        params.setParams(entry.id, entry.orderno, 1, entry.id, entry.prices[entry.getPosition()], entry.combo_idx, entry.status, "下单日期:" + Utils.getTime(entry.json.get(entry.status + "").getAsLong()), null, null, null);
+        params.setParams(entry.id, entry.orderno, 1, entry.id, entry.prices[entry.getPosition()], entry.combo_idx, entry.status, "下单日期:" + Utils.getTime(entry.json.get(entry.status + "").getAsLong()), null, null, null,1);
         return params;
     }
 
