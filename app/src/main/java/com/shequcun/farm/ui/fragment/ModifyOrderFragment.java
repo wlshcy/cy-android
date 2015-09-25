@@ -95,7 +95,6 @@ public class ModifyOrderFragment extends BaseFragment {
             String addressStr = hEntry.address;
             address.setText("地址: " + addressStr);
         }
-
         order_btn.setOnClickListener(onClick);
         redPacketsIv.setOnClickListener(onClick);
         requestOrderDetails();
@@ -140,6 +139,7 @@ public class ModifyOrderFragment extends BaseFragment {
             } else if (v == redPacketsIv) {
                 if (hEntry == null) return;
                 if (TextUtils.isEmpty(hEntry.orderno)) return;
+                if (hEntry.type == 1) return;
                 requestRedPacktetShareUrl(hEntry.orderno);
             }
         }
@@ -230,7 +230,9 @@ public class ModifyOrderFragment extends BaseFragment {
                     AlreadyPurchasedListEntry entry = JsonUtilsParser.fromJson(new String(data), AlreadyPurchasedListEntry.class);
                     if (entry != null) {
                         if (TextUtils.isEmpty(entry.errmsg)) {
-                            setRedPacketsView(entry.cpflag);
+                            /*菜品订单不显示红包*/
+                            if (hEntry.type != 1)
+                                setRedPacketsView(entry.cpflag);
                             buildAdapter(entry.aList);
                             addSparesFooter(entry.dIe);
                             return;

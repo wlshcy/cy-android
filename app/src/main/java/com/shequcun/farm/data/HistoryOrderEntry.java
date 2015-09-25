@@ -47,5 +47,6 @@ public class HistoryOrderEntry implements Serializable {
     public int item_type;//	int	菜品类型	1.选菜菜品 2.普通单品, 3.秒杀单品
     @SerializedName("mobile")
     public String mobile;
+
     public String date;
 }
