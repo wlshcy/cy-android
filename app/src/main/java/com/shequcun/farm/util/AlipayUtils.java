@@ -32,6 +32,10 @@ public class AlipayUtils {
 //        // 完整的符合支付宝参数规范的订单信息
 //        final String payInfo = orderInfo + "&sign=\"" + sign + "\"&"
 //                + getSignType();
+        if (TextUtils.isEmpty(payInfo)) {
+            ToastHelper.showShort(mAct, "获取支付信息失败,请稍后重试...");
+            return;
+        }
 
         Runnable payRunnable = new Runnable() {
 

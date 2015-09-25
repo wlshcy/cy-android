@@ -435,20 +435,16 @@ public class ChooseDishesFragment extends BaseFragment {
 
             @Override
             public void onAnimationStart(Animation animation) {
-                // TODO Auto-generated method stub
             }
 
             @Override
             public void onAnimationRepeat(Animation animation) {
-                // TODO Auto-generated method stub
             }
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                // TODO Auto-generated method stub
 //                移除飞红球
                 rootView.removeView(flyTv);
-
             }
         });
         flyTv.startAnimation(arcAnim);
@@ -828,6 +824,12 @@ public class ChooseDishesFragment extends BaseFragment {
             } else if (status == 2) {
                 choose_dishes_tip.setVisibility(View.VISIBLE);
                 choose_dishes_tip.setText(R.string.choose_dishes_tip);
+//                choose_dishes_tip.setOnClickListener(new AvoidDoubleClickListener() {
+//                    @Override
+//                    public void onViewClick(View v) {
+//                        gotoFragmentByAdd(buildBundle(buildOrderParams(entry)), R.id.mainpage_ly, new ModifyOrderFragment(), ModifyOrderFragment.class.getName());
+//                    }
+//                });
                 Drawable left = getActivity().getResources().getDrawable(R.drawable.icon_sigh);
                 choose_dishes_tip.setCompoundDrawablesWithIntrinsicBounds(left, null, null, null);
                 return false;
@@ -849,7 +851,7 @@ public class ChooseDishesFragment extends BaseFragment {
 
     ModifyOrderParams buildOrderParams(ComboEntry entry) {
         ModifyOrderParams params = new ModifyOrderParams();
-        params.setParams(entry.id, entry.orderno, 1, entry.id, entry.prices[entry.getPosition()], entry.combo_idx, entry.status, "下单日期:" + Utils.getTime(entry.json.get(entry.status + "").getAsLong()));
+        params.setParams(entry.id, entry.orderno, 1, entry.id, entry.prices[entry.getPosition()], entry.combo_idx, entry.status, "下单日期:" + Utils.getTime(entry.json.get(entry.status + "").getAsLong()), null, null, null);
         return params;
     }
 
