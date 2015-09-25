@@ -50,6 +50,7 @@ public class RedPacketsAdapter extends BaseAdapter {
             vh = new ViewHolder();
             vh.count = (TextView) convertView.findViewById(R.id.money_count_tv);
             vh.expiryDate = (TextView) convertView.findViewById(R.id.expiry_date_tv);
+            vh.requiredCountTv = (TextView) convertView.findViewById(R.id.required_count_tv);
             vh.moneySymbolTv = (TextView) convertView.findViewById(R.id.money_symbol_tv);
             vh.zheTv = (TextView) convertView.findViewById(R.id.zhe_tv);
             vh.nameTv = (TextView) convertView.findViewById(R.id.red_packets_name_tv);
@@ -75,11 +76,16 @@ public class RedPacketsAdapter extends BaseAdapter {
             vh.targetTv.setText("仅用于农庄优选商品");
         }
 
+        if (entry.charge>0)
+            vh.requiredCountTv.setText("满"+entry.charge/100+"元使用");
+        else
+            vh.requiredCountTv.setVisibility(View.GONE);
         if (entry.used || (serveTime > 0 && entry.expire <= serveTime)) {
             vh.count.setTextColor(context.getResources().getColor(R.color.gray_cccccc));
             vh.moneySymbolTv.setTextColor(context.getResources().getColor(R.color.gray_cccccc));
             vh.zheTv.setTextColor(context.getResources().getColor(R.color.gray_cccccc));
             vh.expiryDate.setTextColor(context.getResources().getColor(R.color.gray_cccccc));
+            vh.requiredCountTv.setTextColor(context.getResources().getColor(R.color.gray_cccccc));
             vh.flowerIv.setBackgroundResource(R.drawable.flower_stroke_gray);
         } else {
             vh.flowerIv.setBackgroundResource(R.drawable.flower_stroke);
@@ -101,6 +107,7 @@ public class RedPacketsAdapter extends BaseAdapter {
     static class ViewHolder {
         TextView count;
         TextView expiryDate;
+        TextView requiredCountTv;
         TextView moneySymbolTv;
         TextView zheTv;
         TextView nameTv;
