@@ -126,10 +126,16 @@ public class PayFragment extends BaseFragment {
             return;
         }
 
-        if (!TextUtils.isEmpty(alipay) || payRes != null) {
+        if (!TextUtils.isEmpty(alipay) && isAlipayPay) {
             doPay(alipay, payRes);
             return;
         }
+
+        if (payRes != null && !isAlipayPay) {
+            doPay(alipay, payRes);
+            return;
+        }
+
         RequestParams params = new RequestParams();
         params.add("combo_id", mOrderController.getItems().get(0).combo_id + "");
         params.add("type", String.valueOf(isMyCombo() ? 2 : 1));
@@ -222,7 +228,7 @@ public class PayFragment extends BaseFragment {
 
 
     void buildUserLoginEntry() {
-        uEntry= new CacheManager(getActivity()).getUserLoginEntry();
+        uEntry = new CacheManager(getActivity()).getUserLoginEntry();
     }
 
 
@@ -431,7 +437,12 @@ public class PayFragment extends BaseFragment {
             return;
         }
 
-        if (!TextUtils.isEmpty(alipay) || payRes != null) {
+        if (!TextUtils.isEmpty(alipay) && isAlipayPay) {
+            doPay(alipay, payRes);
+            return;
+        }
+
+        if (payRes != null && !isAlipayPay) {
             doPay(alipay, payRes);
             return;
         }

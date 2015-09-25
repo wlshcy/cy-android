@@ -109,8 +109,8 @@ public class ImageCacheManager implements ImageCache {
         if (TextUtils.isEmpty(requestUrl))
             return;
         ImageListener mListener = ImageLoader.getImageListener(mImg,
-                android.R.drawable.ic_menu_rotate,
-                android.R.drawable.ic_lock_idle_lock);
+                0,
+                0);
         if (mImageLoader != null)
             mImageLoader.get(requestUrl, mListener);
     }

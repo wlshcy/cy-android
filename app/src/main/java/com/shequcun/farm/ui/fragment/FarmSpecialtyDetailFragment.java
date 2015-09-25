@@ -26,6 +26,7 @@ import com.shequcun.farm.data.SlidesEntry;
 import com.shequcun.farm.datacenter.CacheManager;
 import com.shequcun.farm.db.RecommendItemKey;
 import com.shequcun.farm.platform.ShareManager;
+import com.shequcun.farm.ui.SqcFarmActivity;
 import com.shequcun.farm.ui.adapter.CarouselAdapter;
 import com.shequcun.farm.util.Constrants;
 import com.shequcun.farm.util.DeviceInfo;
@@ -34,10 +35,6 @@ import com.shequcun.farm.platform.ShareContent;
 //import com.shequcun.farm.util.ShareUtil;
 import com.shequcun.farm.util.ToastHelper;
 import com.shequcun.farm.util.Utils;
-//import com.umeng.socialize.bean.SHARE_MEDIA;
-//import com.umeng.socialize.bean.SocializeEntity;
-//import com.umeng.socialize.bean.StatusCode;
-//import com.umeng.socialize.controller.listener.SocializeListeners;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -115,8 +112,6 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
         buildCarouselAdapter();
         setDataToView(entry);
         addChildViewToParent();
-        if (go_to_shop_cart_tv!=null)
-            go_to_shop_cart_tv.setOnClickListener(onClick);
     }
 
     void buildCarouselAdapter() {
@@ -153,14 +148,20 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
                 ShareManager.shareByFrame(getActivity(), sharecontent);
             } else if (v == producingPlaceTv) {
                 gotoProducingPlaceFragment(entry.fid);
-            }else if (v==go_to_shop_cart_tv){
-                gotoShoppingCart();
             }
         }
     };
 
-    private void gotoShoppingCart(){
-
+    private void gotoShoppingCart() {
+        popBackStack();
+        if (entry != null && entry.count > 0) {
+            RecommendItemKey itemKey = new RecommendItemKey();
+            itemKey.object = entry;
+            new CacheManager(getActivity()).saveRecommendToDisk(itemKey);
+            IntentUtil.sendUpdateFarmShoppingCartMsg(getActivity());
+        }
+        SqcFarmActivity mAct = (SqcFarmActivity) getActivity();
+        mAct.buildRadioButtonStatus(1);
     }
 
     private void gotoProducingPlaceFragment(int id) {
@@ -179,8 +180,6 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
         if (entry == null)
             return;
         if (entry.type == 2) {//秒杀菜品
-
-
             final View childView = LayoutInflater.from(getActivity()).inflate(R.layout.pay_widget_ly, null);
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             params.gravity = Gravity.BOTTOM;
@@ -218,7 +217,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
             final TextView goods_count = (TextView) childView.findViewById(R.id.goods_count);
             View goods_sub = childView.findViewById(R.id.goods_sub);
             View goods_add = childView.findViewById(R.id.goods_add);
-            go_to_shop_cart_tv = childView.findViewById(R.id.go_to_shop_cart_tv);
+            View go_to_shop_cart_tv = childView.findViewById(R.id.go_to_shop_cart_tv);
             goods_count.setText(entry.count + "");
 
             goods_add.setOnClickListener(new View.OnClickListener() {
@@ -257,9 +256,13 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
                         IntentUtil.sendUpdateFarmShoppingCartMsg(getActivity());
                         ToastHelper.showShort(getActivity(), R.string.add_shop_cart_success);
                     }
-//
-//                    ((SqcFarmActivity) getActivity()).buildRadioButtonStatus(1);
-//                    popBackStack();
+                }
+            });
+
+            go_to_shop_cart_tv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    gotoShoppingCart();
                 }
             });
         }
@@ -347,5 +350,5 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
     ImageView contentImgIv;//产品图片
     @Bind(R.id.share_iv)
     ImageView shareIv;
-    View go_to_shop_cart_tv;
+
 }

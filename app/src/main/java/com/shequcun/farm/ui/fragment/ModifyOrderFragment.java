@@ -82,12 +82,19 @@ public class ModifyOrderFragment extends BaseFragment {
         } else {
             order_btn.setVisibility(View.GONE);
         }
-        setAddressDataToView(hEntry);
     }
 
     @Override
     protected void setWidgetLsn() {
-//        requestUserAddress();
+        if (TextUtils.isEmpty(hEntry.name) || TextUtils.isEmpty(hEntry.address) || TextUtils.isEmpty(hEntry.mobile)) {
+//            requestUserAddress();
+            pAddressView.setVisibility(View.GONE);
+        } else {
+            addressLy.setVisibility(View.VISIBLE);
+            addressee_info.setText(hEntry.name + "  " + hEntry.mobile);
+            String addressStr = hEntry.address;
+            address.setText("地址: " + addressStr);
+        }
         order_btn.setOnClickListener(onClick);
         redPacketsIv.setOnClickListener(onClick);
         requestOrderDetails();
@@ -102,13 +109,6 @@ public class ModifyOrderFragment extends BaseFragment {
     private ModifyOrderParams buildModifyOrderObj() {
         Bundle bundle = getArguments();
         return bundle != null ? (ModifyOrderParams) bundle.getSerializable("HistoryOrderEntry") : null;
-    }
-
-    private void setAddressDataToView(ModifyOrderParams entry){
-        if (entry==null)return;
-        addressLy.setVisibility(View.VISIBLE);
-        addressee_info.setText(entry.name + "  " + entry.mobile);
-        address.setText("地址: " + entry.address);
     }
 
     AvoidDoubleClickListener onClick = new AvoidDoubleClickListener() {
@@ -354,59 +354,59 @@ public class ModifyOrderFragment extends BaseFragment {
         dialog.show();
     }
 
-    void requestUserAddress() {
-        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "user/v2/address", new AsyncHttpResponseHandler() {
-            @Override
-            public void onSuccess(int sCode, Header[] h, byte[] data) {
-                if (data != null && data.length > 0) {
-                    AddressListEntry entry = JsonUtilsParser.fromJson(new String(data), AddressListEntry.class);
-                    if (entry != null) {
-                        if (TextUtils.isEmpty(entry.errmsg)) {
-                            successUserAddress(entry.aList);
-                            return;
-                        } else {
-                            ToastHelper.showShort(getActivity(), entry.errmsg);
-                        }
-                    }
-                }
-            }
+//    void requestUserAddress() {
+//        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "user/v2/address", new AsyncHttpResponseHandler() {
+//            @Override
+//            public void onSuccess(int sCode, Header[] h, byte[] data) {
+//                if (data != null && data.length > 0) {
+//                    AddressListEntry entry = JsonUtilsParser.fromJson(new String(data), AddressListEntry.class);
+//                    if (entry != null) {
+//                        if (TextUtils.isEmpty(entry.errmsg)) {
+//                            successUserAddress(entry.aList);
+//                            return;
+//                        } else {
+//                            ToastHelper.showShort(getActivity(), entry.errmsg);
+//                        }
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
+//                setAddressWidgetContent(new CacheManager(getActivity()).getUserReceivingAddress());
+//            }
+//        });
+//    }
 
-            @Override
-            public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
-                setAddressWidgetContent(new CacheManager(getActivity()).getUserReceivingAddress());
-            }
-        });
-    }
+//    private void successUserAddress(List<AddressEntry> list) {
+//        if (list == null || list.size() <= 0)
+//            return;
+//        int size = list.size();
+//        for (int i = 0; i < size; ++i) {
+//            AddressEntry entry = list.get(i);
+//            if (entry.isDefault) {
+//                setAddressWidgetContent(entry);
+//                return;
+//            }
+//        }
+//    }
 
-    private void successUserAddress(List<AddressEntry> list) {
-        if (list == null || list.size() <= 0)
-            return;
-        int size = list.size();
-        for (int i = 0; i < size; ++i) {
-            AddressEntry entry = list.get(i);
-            if (entry.isDefault) {
-                setAddressWidgetContent(entry);
-                return;
-            }
-        }
-    }
-
-    public void setAddressWidgetContent(AddressEntry entry) {
-        if (entry == null)
-            return;
-        addressLy.setVisibility(View.VISIBLE);
-        addressee_info.setText(entry.name + "  " + entry.mobile);
-        String addressStr = entry.address;
-        if (TextUtils.isEmpty(addressStr)) {
-            StringBuilder builder = new StringBuilder();
-            builder.append(!TextUtils.isEmpty(entry.city) ? entry.city : "");
-            builder.append(!TextUtils.isEmpty(entry.region) ? entry.region : "");
-            builder.append(!TextUtils.isEmpty(entry.zname) ? entry.zname : "");
-            builder.append(!TextUtils.isEmpty(entry.bur) ? entry.bur : "");
-            addressStr = builder.toString();
-        }
-        address.setText("地址: " + addressStr);
-    }
+//    public void setAddressWidgetContent(AddressEntry entry) {
+//        if (entry == null)
+//            return;
+//        addressLy.setVisibility(View.VISIBLE);
+//        addressee_info.setText(entry.name + "  " + entry.mobile);
+//        String addressStr = entry.address;
+//        if (TextUtils.isEmpty(addressStr)) {
+//            StringBuilder builder = new StringBuilder();
+//            builder.append(!TextUtils.isEmpty(entry.city) ? entry.city : "");
+//            builder.append(!TextUtils.isEmpty(entry.region) ? entry.region : "");
+//            builder.append(!TextUtils.isEmpty(entry.zname) ? entry.zname : "");
+//            builder.append(!TextUtils.isEmpty(entry.bur) ? entry.bur : "");
+//            addressStr = builder.toString();
+//        }
+//        address.setText("地址: " + addressStr);
+//    }
 
     private void requestRedPacktetShareUrl(String orderNo) {
         RequestParams params = new RequestParams();
@@ -507,4 +507,6 @@ public class ModifyOrderFragment extends BaseFragment {
     TextView address;
     @Bind(R.id.mLv)
     ListView mLv;
+    @Bind(R.id.pAddressView)
+    View pAddressView;
 }
