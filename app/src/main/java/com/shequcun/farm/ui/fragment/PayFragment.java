@@ -1,5 +1,6 @@
 package com.shequcun.farm.ui.fragment;
 
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -605,12 +606,44 @@ public class PayFragment extends BaseFragment {
         if (isAlipayPay) {
             aUtils.doAlipay(alipay);
         } else {
+            if(payRes==null){
+                alertWxPayDlg();
+                return;
+            }
+
             if (payRes != null) {
                 payRes.appId = LocalParams.getWxAppId();
             }
             this.payRes = payRes;
             wxPayUtils.doWxPay(payRes);
         }
+    }
+
+    private void alertWxPayDlg() {
+        final AlertDialog alert = new AlertDialog.Builder(getActivity()).create();
+        alert.show();
+        alert.setCancelable(false);
+        alert.getWindow().setContentView(R.layout.prompt_dialog);
+        ((TextView) alert.getWindow().findViewById(R.id.content_tv))
+                .setText("微信支付失败.请改用支付宝试试吧!");
+        alert.getWindow().findViewById(R.id.no)
+                .setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        alert.dismiss();
+                    }
+                });
+        alert.getWindow().findViewById(R.id.yes)
+                .setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        alert.dismiss();
+                        isAlipayPay=true;
+                        requestAlipay();
+                    }
+                });
     }
 
     WxPayResEntry payRes;
