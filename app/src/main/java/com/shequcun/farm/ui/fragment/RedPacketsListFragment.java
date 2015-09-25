@@ -28,6 +28,7 @@ import com.shequcun.farm.util.ToastHelper;
 
 import org.apache.http.Header;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -49,6 +50,8 @@ public class RedPacketsListFragment extends BaseFragment {
     private int curSize = 0;
     public static final int ACTION_LOOK = 1;
 
+    int payMoney = 0;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -59,6 +62,7 @@ public class RedPacketsListFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         type = getTypeFromParams();
+        payMoney = getPayMoney();
         reuqestRedPacketsList(type, 0);
     }
 
@@ -201,19 +205,37 @@ public class RedPacketsListFragment extends BaseFragment {
     }
 
     private void successRedPacketsList(RedPacketsEntry entry) {
-        if (entry.list == null || entry.list.isEmpty()) {
+        if (entry == null)
+            return;
+        List<CouponEntry> list = entry.list;
+
+        if (list == null || list.isEmpty()) {
             addEmptyView();
             return;
         }
+
+        ArrayList<CouponEntry> aList = new ArrayList<CouponEntry>();
+
+
+        for (int i = 0; i < list.size(); ++i) {
+            CouponEntry cEntry = list.get(i);
+            if (payMoney >= cEntry.charge) {
+                aList.add(cEntry);
+            }
+        }
+
+
         if (curSize > 0 && curSize % length < length) return;
         /*选择优惠券时*/
         if (action != ACTION_LOOK) {
             /*过滤出无效优惠券*/
-            filterExpire(entry.list, entry.time);
+//            filterExpire(entry.list, entry.time);
+            filterExpire(aList != null && aList.size() > 0 ? aList : list, entry.time);
         } else {
             adapter.setServeTime(entry.time);
         }
-        adapter.addAll(entry.list);
+//        adapter.addAll(entry.list);
+        adapter.addAll(aList != null && aList.size() > 0 ? aList : list);
         curSize = adapter.getCount();
     }
 
@@ -238,6 +260,13 @@ public class RedPacketsListFragment extends BaseFragment {
         if (bundle == null) return 0;
         return bundle.getInt(KEY_TYPE);
     }
+
+    private int getPayMoney() {
+        Bundle bundle = getArguments();
+        if (bundle == null) return 0;
+        return bundle.getInt("PayMoney");
+    }
+
     private int getActionFromParams() {
         Bundle bundle = getArguments();
         if (bundle == null) return 0;

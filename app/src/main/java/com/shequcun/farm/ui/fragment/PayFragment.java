@@ -388,6 +388,8 @@ public class PayFragment extends BaseFragment {
                     bundle.putInt(RedPacketsListFragment.KEY_TYPE, info != null && info.type == 3 ? 2 : 1);
                 else
                     bundle.putInt(RedPacketsListFragment.KEY_TYPE, info != null ? info.item_type : 1);
+
+                bundle.putInt("PayMoney",getOrderMoney());
                 gotoFragmentByAdd(bundle, R.id.mainpage_ly, new RedPacketsListFragment(), RedPacketsListFragment.class.getName());
             }
         }
