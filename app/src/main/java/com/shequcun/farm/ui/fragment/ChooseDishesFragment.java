@@ -824,12 +824,6 @@ public class ChooseDishesFragment extends BaseFragment {
             } else if (status == 2) {
                 choose_dishes_tip.setVisibility(View.VISIBLE);
                 choose_dishes_tip.setText(R.string.choose_dishes_tip);
-//                choose_dishes_tip.setOnClickListener(new AvoidDoubleClickListener() {
-//                    @Override
-//                    public void onViewClick(View v) {
-//                        gotoFragmentByAdd(buildBundle(buildOrderParams(entry)), R.id.mainpage_ly, new ModifyOrderFragment(), ModifyOrderFragment.class.getName());
-//                    }
-//                });
                 Drawable left = getActivity().getResources().getDrawable(R.drawable.icon_sigh);
                 choose_dishes_tip.setCompoundDrawablesWithIntrinsicBounds(left, null, null, null);
                 return false;
