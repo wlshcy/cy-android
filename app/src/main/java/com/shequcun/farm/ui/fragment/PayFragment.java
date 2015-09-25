@@ -401,6 +401,8 @@ public class PayFragment extends BaseFragment {
     public void updateRedPackets(CouponEntry entry) {
         if (entry == null)
             return;
+        alipay = null;
+        payRes = null;
         int money = 0;
         if (red_packets_money_tv != null) {
             if (entry.distype == 1) {
