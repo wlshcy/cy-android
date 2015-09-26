@@ -77,7 +77,10 @@
                     android:paddingLeft="@dimen/px24"
                     android:paddingRight="@dimen/px24"
                     android:paddingTop="@dimen/px10"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    android:lineSpacingMultiplier="1.2"
+                    android:lineSpacingExtra="3dp"
+                    android:textSize="@dimen/font28"/>
 
                 <LinearLayout
                     android:id="@+id/option_container_ll"
