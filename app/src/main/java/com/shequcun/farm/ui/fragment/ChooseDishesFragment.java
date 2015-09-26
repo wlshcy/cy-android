@@ -154,7 +154,6 @@ public class ChooseDishesFragment extends BaseFragment {
                 hideOptionWidget();
             } else if (v == option_dishes_tv) {
                 if (option_dishes_tip.getVisibility() == View.GONE) {
-//                    mOrderController.clearOptionItems();
                     popUpOptionsWidget();
                 } else
                     hideOptionWidget();
