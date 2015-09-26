@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginLeft="@dimen/px8"
+        android:layout_marginLeft="@dimen/px18"
         android:padding="@dimen/px22"
         android:textColor="@color/black_444444" />
 
