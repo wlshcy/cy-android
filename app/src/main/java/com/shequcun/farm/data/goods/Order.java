@@ -58,6 +58,7 @@ public class Order {
             it.setCount(0);
         }
 
+        clearOptionItems();
         items.clear();
     }
 
