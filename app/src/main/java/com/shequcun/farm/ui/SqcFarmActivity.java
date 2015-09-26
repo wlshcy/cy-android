@@ -165,6 +165,10 @@ public class SqcFarmActivity extends BaseFragmentActivity {
                 Uri content_url = Uri.parse(vEntry.url);
                 intent.setData(content_url);
                 startActivity(intent);
+                if (vEntry.status == 2) {
+                    finish();
+                }
+
             }
         });
         builder.setNeutralButton(vEntry.status == 1 ? R.string.ignore : R.string.exit, new DialogInterface.OnClickListener() {

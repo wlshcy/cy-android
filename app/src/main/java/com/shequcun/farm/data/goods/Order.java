@@ -182,8 +182,8 @@ public class Order {
         List<DishesItemEntry> aaList = new ArrayList<DishesItemEntry>();
         Random random = new Random();
         int max = aList.size();
-        int min = random.nextInt(max - 4);
-        for (int i = 0; i < 3; ++i) {
+        int min = random.nextInt(max - 7);
+        for (int i = 0; i < 6; ++i) {
 //            int ran = random.nextInt(max) % (max - min) + min;
             if (!aaList.contains(aList.get(min + i)))
                 aaList.add(aList.get(min + i));
