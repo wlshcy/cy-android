@@ -43,7 +43,7 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/px20"
-        android:background="@drawable/choose_dishes_selector"
+        android:background="@drawable/edit_bg"
         android:gravity="center"
         android:text="@string/go_to_shop_cart"
         android:textColor="@color/black_131313"

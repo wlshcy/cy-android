@@ -487,6 +487,13 @@ public class PayFragment extends BaseFragment {
                     OrderEntry orderEntry = JsonUtilsParser.fromJson(new String(data), OrderEntry.class);
                     if (orderEntry != null) {
                         if (TextUtils.isEmpty(orderEntry.errmsg)) {
+
+                            OtherInfo info = buildOtherInfo();
+                            if (info != null && info.type == 3) {
+                                new CacheManager(getActivity()).delRecommendToDisk();
+                                IntentUtil.sendUpdateFarmShoppingCartMsg(getActivity());
+                            }
+
                             alipay = orderEntry.alipay;
                             entry.orderno = orderEntry.orderno;
                             doPay(alipay, orderEntry.wxpay);
@@ -594,11 +601,6 @@ public class PayFragment extends BaseFragment {
     }
 
     void doPaySuccessful() {
-        OtherInfo info = buildOtherInfo();
-        if (info != null && info.type == 3) {
-            new CacheManager(getActivity()).delRecommendToDisk();
-            IntentUtil.sendUpdateFarmShoppingCartMsg(getActivity());
-        }
         gotoFragmentByAdd(buildBundle(entry.orderno, getOrderMoney(), alipay, true, R.string.order_result), R.id.mainpage_ly, new PayResultFragment(), PayResultFragment.class.getName());
     }
 
@@ -606,7 +608,7 @@ public class PayFragment extends BaseFragment {
         if (isAlipayPay) {
             aUtils.doAlipay(alipay);
         } else {
-            if(payRes==null){
+            if (payRes == null) {
                 alertWxPayDlg();
                 return;
             }
@@ -640,7 +642,7 @@ public class PayFragment extends BaseFragment {
                     @Override
                     public void onClick(View v) {
                         alert.dismiss();
-                        isAlipayPay=true;
+                        isAlipayPay = true;
                         requestAlipay();
                     }
                 });
