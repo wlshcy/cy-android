@@ -14,6 +14,9 @@ import com.shequcun.farm.R;
 import com.shequcun.farm.data.ComboEntry;
 import com.shequcun.farm.util.Utils;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 /**
  * 套餐介绍 Adapter
  * Created by apple on 15/8/10.
@@ -36,17 +39,8 @@ public class ComboAdapter extends ArrayAdapter<ComboEntry> {
     public View getView(int position, View v, ViewGroup parent) {
         ViewHolder vh;
         if (v == null) {
-            vh = new ViewHolder();
             v = LayoutInflater.from(getContext()).inflate(R.layout.combo_item_ly, null);
-            vh.my_combo = (TextView) v.findViewById(R.id.my_combo);
-            vh.combo_name = (TextView) v.findViewById(R.id.combo_name);
-            vh.per_weight = (TextView) v.findViewById(R.id.per_weight);
-            vh.times = (TextView) v.findViewById(R.id.times);
-            vh.dis_cycle = (TextView) v.findViewById(R.id.dis_cycle);
-            vh.farm_tv = (TextView) v.findViewById(R.id.farm_tv);
-            vh.combo_price = (TextView) v.findViewById(R.id.combo_price);
-            vh.combo_img = (ImageView) v.findViewById(R.id.combo_img);
-            vh.combo_mprice = (TextView) v.findViewById(R.id.combo_mprice);
+            vh = new ViewHolder(v);
             v.setTag(vh);
         } else {
             vh = (ViewHolder) v.getTag();
@@ -84,41 +78,48 @@ public class ComboAdapter extends ArrayAdapter<ComboEntry> {
     }
 
     class ViewHolder {
+        public ViewHolder(View v) {
+            ButterKnife.bind(this, v);
+        }
+
         /**
          * 我的套餐
          */
+        @Bind(R.id.my_combo)
         TextView my_combo;
         /**
          * 套餐名称
          */
+        @Bind(R.id.combo_name)
         TextView combo_name;
         /**
          * 配送斤数例如每次6斤次
          */
+        @Bind(R.id.per_weight)
         TextView per_weight;
         /**
          * 配送周期例如每周配送1次
          */
+        @Bind(R.id.dis_cycle)
         TextView dis_cycle;
         /**
          * 4次/月
          */
+        @Bind(R.id.times)
         TextView times;
-        /**
-         * 套餐斤数
-         */
-//        TextView all_weight;
         /**
          * 套餐价格
          */
+        @Bind(R.id.combo_price)
         TextView combo_price;
-
+        @Bind(R.id.combo_mprice)
         TextView combo_mprice;
         /**
          * 套餐图片
          */
+        @Bind(R.id.combo_img)
         ImageView combo_img;
-
+        @Bind(R.id.farm_tv)
         TextView farm_tv;
     }
 }

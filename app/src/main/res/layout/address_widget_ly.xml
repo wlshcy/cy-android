@@ -72,7 +72,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/px20"
+            android:layout_marginRight="@dimen/px40"
+            android:src="@drawable/icon_more"
              />
 
     </RelativeLayout>
