@@ -126,7 +126,7 @@ public class Order {
         return result;
     }
 
-    public List<DishesItemEntry> getOptionItems(){
+    public List<DishesItemEntry> getOptionItems() {
         return optionItems;
     }
 
@@ -174,7 +174,8 @@ public class Order {
             if (isAdd)
                 aList.add(pItemEntry);
         }
-        return buildRandomNoChooseItem(aList);
+//        return buildRandomNoChooseItem(aList);
+        return aList;
     }
 
 

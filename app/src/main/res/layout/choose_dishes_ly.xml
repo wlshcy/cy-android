@@ -46,13 +46,13 @@
                 android:background="@color/transparent_8000"
                 android:visibility="gone"></View>
 
-
             <LinearLayout
                 android:id="@+id/option_ll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_marginBottom="@dimen/px110"
+                android:layout_marginTop="@dimen/px208"
                 android:orientation="vertical">
 
                 <TextView
@@ -66,7 +66,6 @@
                     android:text="@string/option_dishes"
                     android:textColor="@android:color/white"
                     android:visibility="gone" />
-
 
                 <TextView
                     android:id="@+id/option_dishes_tip"
@@ -84,7 +83,8 @@
                     android:id="@+id/option_container_ll"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"></LinearLayout>
+                    android:orientation="vertical">
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -143,6 +143,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left|bottom"
+
                 android:orientation="vertical">
 
                 <FrameLayout

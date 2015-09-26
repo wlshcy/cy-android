@@ -69,6 +69,11 @@ public class ChooseDishesFragment extends BaseFragment {
 
     @Override
     public boolean onBackPressed() {
+        if (option_dishes_tip.getVisibility() == View.VISIBLE || mShopCartClearTv.getVisibility() == View.VISIBLE) {
+            hideShopCart();
+            hideOptionWidget();
+            return true;
+        }
         return false;
     }
 
@@ -119,6 +124,13 @@ public class ChooseDishesFragment extends BaseFragment {
         @Override
         public void onClick(View v) {
             if (v == back) {
+                if (option_dishes_tip.getVisibility() == View.VISIBLE || mShopCartClearTv.getVisibility() == View.VISIBLE) {
+                    hideShopCart();
+                    hideOptionWidget();
+                    return;
+                }
+
+
                 popBackStack();
             } else if (v == rightTv) {
                 gotoFragmentByAdd(getArguments(), R.id.mainpage_ly, new WebViewFragment(), WebViewFragment.class.getName());
@@ -142,7 +154,7 @@ public class ChooseDishesFragment extends BaseFragment {
                 hideOptionWidget();
             } else if (v == option_dishes_tv) {
                 if (option_dishes_tip.getVisibility() == View.GONE) {
-                    mOrderController.clearOptionItems();
+//                    mOrderController.clearOptionItems();
                     popUpOptionsWidget();
                 } else
                     hideOptionWidget();
@@ -273,18 +285,47 @@ public class ChooseDishesFragment extends BaseFragment {
     private void popUpOptionsWidget() {
         option_dishes_tip.setVisibility(View.VISIBLE);
         emptyView.setVisibility(View.VISIBLE);
-        LinearLayout option_container_ll = (LinearLayout) rootView
-                .findViewById(R.id.option_container_ll);
-        ScrollView scrollView = (ScrollView) LayoutInflater.from(getActivity())
-                .inflate(R.layout.shop_cart_popup, null);
-        LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(
-                AbsListView.LayoutParams.MATCH_PARENT, AbsListView.LayoutParams.WRAP_CONTENT);
+        LinearLayout option_container_ll = (LinearLayout) rootView.findViewById(R.id.option_container_ll);
+        ScrollView scrollView = (ScrollView) LayoutInflater.from(getActivity()).inflate(R.layout.shop_cart_popup, null);
+        LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, AbsListView.LayoutParams.WRAP_CONTENT);
         option_container_ll.addView(scrollView, lp1);
         containerLl = (LinearLayout) scrollView.findViewById(R.id.container_ll);
+
+//        if(mOrderController.getOptionItems()!=null && mOrderController.getOptionItems().size()>0){
+//
+//        }
+
         List<DishesItemEntry> aList = new ArrayList<DishesItemEntry>();
         for (int i = 0; i < adapter.getCount(); ++i) {
             aList.add(adapter.getItem(i));
         }
+
+//        aList
+
+
+//        for (DishesItemEntry it : aList) {
+//            View v = LayoutInflater.from(getActivity()).inflate(R.layout.option_item_ly, null);
+//            ImageView goods_img = (ImageView) v.findViewById(R.id.goods_img);
+//            ImageCacheManager.getInstance().displayImage(goods_img, it.imgs[0]);
+//            ((TextView) v.findViewById(R.id.goods_name)).setText(it.title);
+//            ((TextView) v.findViewById(R.id.goods_price)).setText(Utils.unitConversion(it.packw) + "/份");
+//            final CheckBox option_cb = (CheckBox) v.findViewById(R.id.option_cb);
+//            option_cb.setTag(it);
+//            option_cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//                @Override
+//                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+//                    if (b) {
+//                        mOrderController.addOptionItem((DishesItemEntry) option_cb.getTag());
+//                    } else {
+//                        mOrderController.removeOptionItem((DishesItemEntry) option_cb.getTag());
+//                    }
+//                }
+//            });
+//            containerLl.addView(v);
+//            containerLl.addView(LayoutInflater.from(getActivity()).inflate(R.layout.common_line, null));
+//        }
+
+
         for (DishesItemEntry it : mOrderController.getNoChooseDishesItems(aList)) {
             View v = LayoutInflater.from(getActivity()).inflate(R.layout.option_item_ly, null);
             ImageView goods_img = (ImageView) v.findViewById(R.id.goods_img);
@@ -303,6 +344,17 @@ public class ChooseDishesFragment extends BaseFragment {
                     }
                 }
             });
+
+            List<DishesItemEntry> aaList = mOrderController.getOptionItems();
+            if (aaList != null && aaList.size() > 0) {
+                for (DishesItemEntry iit : aaList) {
+                    if (it.id == iit.id) {
+                        option_cb.setChecked(true);
+                        break;
+                    }
+                }
+            }
+
             containerLl.addView(v);
             containerLl.addView(LayoutInflater.from(getActivity()).inflate(R.layout.common_line, null));
         }
@@ -845,7 +897,7 @@ public class ChooseDishesFragment extends BaseFragment {
 
     ModifyOrderParams buildOrderParams(ComboEntry entry) {
         ModifyOrderParams params = new ModifyOrderParams();
-        params.setParams(entry.id, entry.orderno, 1, entry.id, entry.prices[entry.getPosition()], entry.combo_idx, entry.status, "下单日期:" + Utils.getTime(entry.json.get(entry.status + "").getAsLong()), null, null, null,1);
+        params.setParams(entry.id, entry.orderno, 1, entry.id, entry.prices[entry.getPosition()], entry.combo_idx, entry.status, "下单日期:" + Utils.getTime(entry.json.get(entry.status + "").getAsLong()), null, null, null, 1);
         return params;
     }
 
