@@ -29,6 +29,8 @@ import com.shequcun.farm.data.UserLoginEntry;
 import com.shequcun.farm.datacenter.CacheManager;
 import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.dlg.ProgressDlg;
+import com.shequcun.farm.platform.ShareContent;
+import com.shequcun.farm.platform.ShareManager;
 import com.shequcun.farm.ui.adapter.AlreadyPurchasedAdapter;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
 import com.shequcun.farm.util.HttpRequestUtil;
@@ -139,7 +141,6 @@ public class ModifyOrderFragment extends BaseFragment {
             } else if (v == redPacketsIv) {
                 if (hEntry == null) return;
                 if (TextUtils.isEmpty(hEntry.orderno)) return;
-                if (hEntry.type == 1) return;
                 requestRedPacktetShareUrl(hEntry.orderno);
             }
         }
@@ -230,9 +231,7 @@ public class ModifyOrderFragment extends BaseFragment {
                     AlreadyPurchasedListEntry entry = JsonUtilsParser.fromJson(new String(data), AlreadyPurchasedListEntry.class);
                     if (entry != null) {
                         if (TextUtils.isEmpty(entry.errmsg)) {
-                            /*菜品订单不显示红包*/
-                            if (hEntry.type != 1)
-                                setRedPacketsView(entry.cpflag);
+                            setRedPacketsView(entry.cpflag);
                             buildAdapter(entry.aList);
                             addSparesFooter(entry.dIe);
                             return;
@@ -445,14 +444,12 @@ public class ModifyOrderFragment extends BaseFragment {
     private void useUmengToShare(String url, String title, String content) {
 //        if (shareController == null)
 //            shareController = new ShareUtil(getActivity());
-//        ShareContent shareContent = new ShareContent();
-//        shareContent.setUrlImage("drawable:///" + R.drawable.icon_share_redpackets_logo);
-//        shareContent.setTargetUrl(url);
-//        shareContent.setTitle(title);
-//        shareContent.setContent(content);
-//        shareController.wxShareContent(shareContent);
-//        shareController.circleShareContent(shareContent);
-//        shareController.postShare(mSnsPostListener);
+        ShareContent shareContent = new ShareContent();
+        shareContent.setImageId(R.drawable.icon_share_redpackets_logo);
+        shareContent.setTargetUrl(url);
+        shareContent.setTitle(title);
+        shareContent.setContent(content);
+        ShareManager.shareByFrame(getActivity(), shareContent);
     }
 
 //    private SocializeListeners.SnsPostListener mSnsPostListener = new SocializeListeners.SnsPostListener() {
