@@ -76,10 +76,12 @@ public class RedPacketsAdapter extends BaseAdapter {
             vh.targetTv.setText("仅用于农庄优选商品");
         }
 
-        if (entry.charge > 0 && entry.type != 1)
+        if (entry.charge > 0 && entry.type != 1){
+            vh.requiredCountTv.setVisibility(View.VISIBLE);
             vh.requiredCountTv.setText("满" + entry.charge / 100 + "元使用");
-        else
+        }else{
             vh.requiredCountTv.setVisibility(View.GONE);
+        }
         if (entry.used || (serveTime > 0 && entry.expire <= serveTime)) {
             vh.count.setTextColor(context.getResources().getColor(R.color.gray_cccccc));
             vh.moneySymbolTv.setTextColor(context.getResources().getColor(R.color.gray_cccccc));
