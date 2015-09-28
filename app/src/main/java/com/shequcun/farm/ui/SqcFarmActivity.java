@@ -27,6 +27,9 @@ import com.shequcun.farm.util.ToastHelper;
 
 import org.apache.http.Header;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 /**
  * farm home
  * Created by apple on 15/8/3.
@@ -42,15 +45,13 @@ public class SqcFarmActivity extends BaseFragmentActivity {
     }
 
     private void initWidget() {
-        hVpager = (HomeViewPager) findViewById(R.id.hVpager);
-        radiogroup = (RadioGroup) findViewById(R.id.radiogroup);
+        ButterKnife.bind(this);
         buildAdapter();
         setWidgetLsn();
     }
 
     void setWidgetLsn() {
         radiogroup.setOnCheckedChangeListener(checkedChangeListener);
-        // mHomeViewPager.clearAnimation();
         hVpager.addOnPageChangeListener(pageChangeLsn);
         hVpager.setOffscreenPageLimit(3);
         buildRadioButtonStatus(0);
@@ -188,11 +189,6 @@ public class SqcFarmActivity extends BaseFragmentActivity {
         dialog.setCancelable(false);
         dialog.show();
     }
-
-//    public void onPageChanged(int pageIndex) {
-//        hVpager.setCurrentItem(pageIndex);
-//    }
-
     /**
      * 鉴权
      */
@@ -215,7 +211,9 @@ public class SqcFarmActivity extends BaseFragmentActivity {
                 });
     }
 
+    @Bind(R.id.hVpager)
     HomeViewPager hVpager;
-    HomeViewPagerAdapter hAdapter;
+    @Bind(R.id.radiogroup)
     RadioGroup radiogroup;
+    HomeViewPagerAdapter hAdapter;
 }

@@ -24,6 +24,9 @@ import android.widget.TextView;
 
 import com.shequcun.farm.R;
 
+import butterknife.Bind;
+import butterknife.OnClick;
+
 /**
  * Created by apple on 15/8/25.
  */
@@ -42,26 +45,19 @@ public class SetWebViewFragment extends BaseFragment {
 
     @Override
     protected void initWidget(View v) {
-        mWebView = (WebView) v.findViewById(R.id.mWebView);
-        mProgressBar = (SeekBar) v.findViewById(R.id.seekbar);
-        back = v.findViewById(R.id.back);
         ((TextView) v.findViewById(R.id.title_center_text)).setText(buildTitleId());
+    }
+
+
+    @OnClick(R.id.back)
+    void back() {
+        popBackStack();
     }
 
     @Override
     protected void setWidgetLsn() {
-        back.setOnClickListener(onClick);
         setWebViewValue();
     }
-
-    View.OnClickListener onClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if (v == back)
-                popBackStack();
-        }
-    };
-
 
     String buildUrl() {
         Bundle bundle = getArguments();
@@ -80,10 +76,6 @@ public class SetWebViewFragment extends BaseFragment {
         // 如果访问的页面中有Javascript，则webview必须设置支持Javascript
         settings.setJavaScriptEnabled(true);
         settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
-//        settings.setBuiltInZoomControls(true);
-//        settings.setLoadsImagesAutomatically(true);
-//        settings.setLoadWithOverviewMode(true);
-//        settings.setUseWideViewPort(true);
         String htmlUrl = buildUrl();
         if (htmlUrl == null) return;
 //      mWebView.loadData(htmlUrl, "text/html", "UTF-8");
@@ -99,7 +91,7 @@ public class SetWebViewFragment extends BaseFragment {
                     Intent intent = new Intent(Intent.ACTION_DIAL,
                             Uri.parse(url));
                     startActivity(intent);
-                }else if(url.startsWith("http:") || url.startsWith("https:")) {
+                } else if (url.startsWith("http:") || url.startsWith("https:")) {
                     view.loadUrl(url);
                 }
                 return true;
@@ -154,10 +146,10 @@ public class SetWebViewFragment extends BaseFragment {
             }
         }
     };
-
-    WebView mWebView;
     final int PROGRESS_LOADING = 1;
     final int PROGRESS_SUCCESS = 2;
+    @Bind(R.id.mWebView)
+    WebView mWebView;
+    @Bind(R.id.seekbar)
     SeekBar mProgressBar;
-    View back;
 }

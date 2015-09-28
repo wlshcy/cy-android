@@ -10,7 +10,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 
 import com.common.widget.CircleFlowIndicator;
 import com.common.widget.ExpandableHeightGridView;
@@ -43,7 +42,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.OnItemClick;
 
 /**
  * 有菜首页
@@ -67,18 +67,34 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     protected void setWidgetLsn() {
-//        requestSlideFromServer();
         doRegisterRefreshBrodcast();
         pView.setMode(PullToRefreshBase.Mode.PULL_FROM_END);
-//        pView.setMode(PullToRefreshBase.Mode.DISABLED);
         pView.setOnRefreshListener(onRefrshLsn);
-        gv.setOnItemClickListener(onItemClk);
-        no_combo_iv.setOnClickListener(onClick);
-        has_combo_iv.setOnClickListener(onClick);
-//        more_combo.setOnClickListener(onClick);
         buildGridViewAdapter();
         requestHome(1);
-//        requestRecomendDishes();
+    }
+
+    @OnClick({R.id.no_combo_iv, R.id.has_combo_iv})
+    void doClick() {
+        if (!isLogin()) {
+            gotoFragmentByAdd(R.id.mainpage_ly, new LoginFragment(), LoginFragment.class.getName());
+            return;
+        }
+        gotoFragmentByAdd(R.id.mainpage_ly, new ComboFragment(), ComboFragment.class.getName());
+    }
+
+    @OnItemClick(R.id.gv)
+    void onItemClick(int position) {
+        if (adapter == null)
+            return;
+        RecommendEntry entry = adapter.getItem(position);
+        if (entry == null)
+            return;
+        if (entry.type == 2 && entry.bought) {
+            ToastHelper.showShort(getActivity(), R.string.spike_error_tip);
+            return;
+        }
+        gotoFragmentByAnimation(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailFragment(), FarmSpecialtyDetailFragment.class.getName());
     }
 
 
@@ -137,16 +153,6 @@ public class HomeFragment extends BaseFragment {
                 gotoFragmentByAdd(R.id.mainpage_ly, new LoginFragment(), LoginFragment.class.getName());
                 return;
             }
-
-            if (v == no_combo_iv || v == has_combo_iv) {
-                gotoFragmentByAdd(R.id.mainpage_ly, new ComboFragment(), ComboFragment.class.getName());
-                return;
-            }
-
-//            else if (v == has_combo_iv) {//进入选菜页
-//                gotoFragmentByAdd(buildBundle_(comboEntry), R.id.mainpage_ly, new ChooseDishesFragment(), ChooseDishesFragment.class.getName());
-//                return;
-//            }
             SlidesEntry item = (SlidesEntry) v.getTag();
             if (item == null)
                 return;
@@ -274,25 +280,6 @@ public class HomeFragment extends BaseFragment {
             adapter.notifyDataSetChanged();
         }
     }
-
-
-    AdapterView.OnItemClickListener onItemClk = new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            if (adapter == null)
-                return;
-            RecommendEntry entry = adapter.getItem(i);
-            if (entry == null)
-                return;
-            if (entry.type == 2 && entry.bought) {
-                ToastHelper.showShort(getActivity(), R.string.spike_error_tip);
-                return;
-            }
-
-            gotoFragmentByAnimation(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailFragment(), FarmSpecialtyDetailFragment.class.getName());
-        }
-    };
-
 
     Bundle buildBundle(RecommendEntry entry) {
         Bundle bundle = new Bundle();
@@ -426,7 +413,6 @@ public class HomeFragment extends BaseFragment {
     View no_combo_iv;
     @Bind(R.id.has_combo_iv)
     View has_combo_iv;
-
     ComboEntry comboEntry;
     CarouselAdapter cAdapter;
     boolean mIsBind = false;

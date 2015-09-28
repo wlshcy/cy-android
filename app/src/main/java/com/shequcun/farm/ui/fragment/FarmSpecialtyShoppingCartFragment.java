@@ -34,6 +34,7 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * 农庄特产购物车
@@ -62,8 +63,12 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment implements R
         title_center_text.setText(R.string.shop_cart);
         rightTv.setText(R.string.consultation);
         addWidgetToView();
-        rightTv.setOnClickListener(onClick);
         doRegisterRefreshBrodcast();
+    }
+
+    @OnClick(R.id.title_right_text)
+    void doClick() {
+        ConsultationDlg.showCallTelDlg(getActivity());
     }
 
     void addWidgetToView() {
@@ -113,22 +118,11 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment implements R
         memo = null;
     }
 
-    View.OnClickListener onClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if (v == rightTv) {
-                ConsultationDlg.showCallTelDlg(getActivity());
-            }
-        }
-    };
-
     void addFooter(final int part) {
         if (footerView == null) {
             footerView = LayoutInflater.from(getActivity()).inflate(R.layout.order_details_footer_ly, null);
-//            ((TextView) footerView.findViewById(R.id.distribution_date)).setText("配送日期:  本周五配送");
             number_copies = (TextView) footerView.findViewById(R.id.number_copies);
             mLv.addFooterView(footerView, null, false);
-//            requestUserAddress();
             addSchildView();
         }
         updateWidget(part, allMoney);
@@ -168,7 +162,6 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment implements R
         allPart = 0;
         allMoney = 0;
         cEntry = null;
-
 
         for (int i = 0; i < rEntryArray.length; ++i) {
             allPart += rEntryArray[i].count;
@@ -222,8 +215,6 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment implements R
                 - mLv.getFirstVisiblePosition());
         if (pView == null)
             return;
-//        alipay = null;
-//        orderno = null;
         TextView tvCount = (TextView) pView.findViewById(R.id.goods_count);// 显示数量
         if (tvCount.getVisibility() == View.GONE) {
             tvCount.setVisibility(View.VISIBLE);
