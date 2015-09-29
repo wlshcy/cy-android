@@ -15,6 +15,9 @@ import com.shequcun.farm.data.RedPacketsEntry;
 
 import java.util.ArrayList;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 /**
  * Created by cong on 15/9/7.
  */
@@ -49,13 +52,7 @@ public class MyAddressAdapter extends BaseAdapter {
         ViewHolder vh = null;
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.item_my_address, null);
-            vh = new ViewHolder();
-            vh.name = (TextView) convertView.findViewById(R.id.name_tv);
-            vh.mobile = (TextView) convertView.findViewById(R.id.mobile_tv);
-            vh.address = (TextView) convertView.findViewById(R.id.address_tv);
-            vh.update = (ImageView) convertView.findViewById(R.id.update_address_tv);
-            vh.addressRl = convertView.findViewById(R.id.address_rl);
-            vh.choose = (ImageView) convertView.findViewById(R.id.choose_iv);
+            vh = new ViewHolder(convertView);
             convertView.setTag(vh);
         } else {
             vh = (ViewHolder) convertView.getTag();
@@ -66,8 +63,8 @@ public class MyAddressAdapter extends BaseAdapter {
         vh.address.setText(entry.city + entry.region + entry.zname + entry.bur);
         if (entry.isDefault && showDefaultIcon) {
             vh.choose.setImageResource(R.drawable.icon_choose);
-        }else {
-            if (!showDefaultIcon){
+        } else {
+            if (!showDefaultIcon) {
                 vh.choose.setVisibility(View.GONE);
             }
         }
@@ -106,12 +103,22 @@ public class MyAddressAdapter extends BaseAdapter {
     }
 
     static class ViewHolder {
+        @Bind(R.id.name_tv)
         TextView name;
+        @Bind(R.id.mobile_tv)
         TextView mobile;
+        @Bind(R.id.address_tv)
         TextView address;
+        @Bind(R.id.update_address_tv)
         ImageView update;
+        @Bind(R.id.address_rl)
         View addressRl;
+        @Bind(R.id.choose_iv)
         ImageView choose;
+
+        public ViewHolder(View convertView) {
+            ButterKnife.bind(this, convertView);
+        }
     }
 
     public void setShowDefaultIcon(boolean showDefaultIcon) {

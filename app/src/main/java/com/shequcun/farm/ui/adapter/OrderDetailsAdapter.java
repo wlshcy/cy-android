@@ -13,6 +13,9 @@ import com.shequcun.farm.R;
 import com.shequcun.farm.data.DishesItemEntry;
 import com.shequcun.farm.util.Utils;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 /**
  * 订单详情页
  * Created by apple on 15/8/10.
@@ -27,18 +30,14 @@ public class OrderDetailsAdapter extends ArrayAdapter<DishesItemEntry> {
     public View getView(int position, View v, ViewGroup parent) {
         ViewHolder vh;
         if (v == null) {
-            vh = new ViewHolder();
             v = LayoutInflater.from(getContext()).inflate(R.layout.order_details_item_ly, null);
-            vh.goods_img = (NetworkImageView) v.findViewById(R.id.goods_img);
-            vh.goods_name = (TextView) v.findViewById(R.id.goods_name);
-            vh.goods_price = (TextView) v.findViewById(R.id.goods_price);
-            vh.goods_count = (TextView) v.findViewById(R.id.goods_count);
+            vh = new ViewHolder(v);
             v.setTag(vh);
         } else {
             vh = (ViewHolder) v.getTag();
         }
         DishesItemEntry entry = getItem(position);
-        if (entry != null) {
+        if (entry != null && entry.imgs != null && entry.imgs.length > 0) {
             vh.goods_img.setImageUrl(entry.imgs[0], ImageCacheManager.getInstance().getImageLoader());
             vh.goods_name.setText(entry.title);
             int count = entry.getCount();
@@ -55,10 +54,18 @@ public class OrderDetailsAdapter extends ArrayAdapter<DishesItemEntry> {
     }
 
     class ViewHolder {
+        @Bind(R.id.goods_img)
         NetworkImageView goods_img;
+        @Bind(R.id.goods_name)
         TextView goods_name;
+        @Bind(R.id.goods_price)
         TextView goods_price;
+        @Bind(R.id.goods_count)
         TextView goods_count;
+
+        public ViewHolder(View v) {
+            ButterKnife.bind(this, v);
+        }
     }
 
 }

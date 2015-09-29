@@ -14,6 +14,9 @@ import com.shequcun.farm.data.RecommendEntry;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
 import com.shequcun.farm.util.Utils;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 /**
  * Created by apple on 15/8/18.
  */
@@ -33,11 +36,7 @@ public class RecommendAdapter extends ArrayAdapter<RecommendEntry> {
         ViewHolder vh;
         if (v == null) {
             v = LayoutInflater.from(getContext()).inflate(R.layout.recomend_dishes_item_ly, null);
-            vh = new ViewHolder();
-            vh.goods_img = (NetworkImageView) v.findViewById(R.id.goods_img);
-            vh.goods_name = (TextView) v.findViewById(R.id.goods_name);
-            vh.goods_price = (TextView) v.findViewById(R.id.goods_price);
-            vh.buy_tv = v.findViewById(R.id.buy_tv);
+            vh = new ViewHolder(v);
             v.setTag(vh);
         } else {
             vh = (ViewHolder) v.getTag();
@@ -56,10 +55,18 @@ public class RecommendAdapter extends ArrayAdapter<RecommendEntry> {
     }
 
     class ViewHolder {
-        public NetworkImageView goods_img;
-        public TextView goods_name;
-        public TextView goods_price;
-        public View buy_tv;
+        @Bind(R.id.goods_img)
+        NetworkImageView goods_img;
+        @Bind(R.id.goods_name)
+        TextView goods_name;
+        @Bind(R.id.goods_price)
+        TextView goods_price;
+        @Bind(R.id.buy_tv)
+        View buy_tv;
+
+        public ViewHolder(View v) {
+            ButterKnife.bind(this, v);
+        }
     }
 
     AvoidDoubleClickListener onGoodsImgLsn;

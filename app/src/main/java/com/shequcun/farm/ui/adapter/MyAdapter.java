@@ -10,6 +10,9 @@ import android.widget.TextView;
 import com.shequcun.farm.R;
 import com.shequcun.farm.util.Constrants;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 /**
  * Created by apple on 15/8/6.
  */
@@ -49,9 +52,7 @@ public class MyAdapter extends BaseAdapter {
         ViewHolder vh;
         if (v == null) {
             v = LayoutInflater.from(mContext).inflate(R.layout.my_item_ly, null);
-            vh = new ViewHolder();
-            vh.my_title = (TextView) v.findViewById(R.id.my_title);
-            vh.tel_tv = (TextView) v.findViewById(R.id.tel_tv);
+            vh = new ViewHolder(v);
             v.setTag(vh);
         } else {
             vh = (ViewHolder) v.getTag();
@@ -64,13 +65,19 @@ public class MyAdapter extends BaseAdapter {
             if ("拨打客服电话".equals(tip))
                 vh.tel_tv.setText(Constrants.Customer_Service_Phone);
             else if ("我的优惠红包".equals(tip))
-            vh.tel_tv.setText("下单抵用");
+                vh.tel_tv.setText("下单抵用");
         }
         return v;
     }
 
     class ViewHolder {
+        @Bind(R.id.my_title)
         TextView my_title;
+        @Bind(R.id.tel_tv)
         TextView tel_tv;
+
+        public ViewHolder(View v) {
+            ButterKnife.bind(this, v);
+        }
     }
 }
