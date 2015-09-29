@@ -17,7 +17,6 @@ import android.widget.TextView;
 import com.common.widget.CircleFlowIndicator;
 import com.common.widget.ViewFlow;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.ComboEntry;
 import com.shequcun.farm.data.OtherInfo;
@@ -73,10 +72,8 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
             producingPlaceTv.setText("来自农庄：无");
         if (entry.detail != null) {
             if (!TextUtils.isEmpty(entry.detail.image)) {
-                if (!ImageLoader.getInstance().isInited())
-                    ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(getActivity()));
                 String url = entry.detail.image + "?imageView2/2/w/" + DeviceInfo.getDeviceWidth(this.getActivity());
-                ImageLoader.getInstance().displayImage(url, contentImgIv);
+                ImageLoader.getInstance().displayImage(url, contentImgIv, Constrants.image_display_options_disc);
             }
             contentTv.setText(entry.detail.content);
         }
@@ -117,6 +114,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
     void buildCarouselAdapter() {
         if (entry == null || entry.imgs == null || entry.imgs.length <= 0) {
             carousel_img.setVisibility(View.GONE);
+            dismissImgProgress();
             return;
         }
         List<SlidesEntry> aList = new ArrayList<>();
@@ -130,6 +128,8 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
         cAdapter = new CarouselAdapter(getActivity(), aList);
         cAdapter.setWidth(DeviceInfo.getDeviceWidth(getActivity()));
         carousel_img.setAdapter(cAdapter, 0);
+        carousel_img.setOnViewSwitchListener(viewSwitchListener);
+        cAdapter.setImageLoaderListener(imageLoaderListener);
         carousel_img.setFlowIndicator(carousel_point);
     }
 
@@ -314,6 +314,50 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
         return new CacheManager(getActivity()).getUserLoginEntry() != null;
     }
 
+    private CarouselAdapter.ImageLoaderListener imageLoaderListener = new CarouselAdapter.ImageLoaderListener() {
+        @Override
+        public void loadFinish() {
+            dismissImgProgress();
+        }
+
+        @Override
+        public void loadStart() {
+            popImgProgress();
+        }
+    };
+
+    private ViewFlow.ViewSwitchListener viewSwitchListener = new ViewFlow.ViewSwitchListener() {
+        @Override
+        public void onSwitched(View view, int position) {
+            if (cAdapter != null)
+                cAdapter.setCurVisibleIndex(position);
+            ViewFlow viewFlow = (ViewFlow) view.getParent();
+            View view1 = viewFlow.getChildAt(position);
+            View img = view1.findViewById(R.id.imgView);
+            if (img == null) return;
+            if (img.getTag() == null) {
+                popImgProgress();
+            } else {
+                if (img.getTag() instanceof String) {
+                    String s = (String) img.getTag();
+                }
+                dismissImgProgress();
+            }
+        }
+    };
+
+    private void dismissImgProgress() {
+        if (imgProgress == null) return;
+        if (imgProgress.getVisibility() == View.VISIBLE)
+            imgProgress.setVisibility(View.GONE);
+    }
+
+    private void popImgProgress() {
+        if (imgProgress == null) return;
+        if (imgProgress.getVisibility() == View.GONE)
+            imgProgress.setVisibility(View.VISIBLE);
+    }
+
     /**
      * 轮播的图片
      */
@@ -349,5 +393,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
     ImageView contentImgIv;//产品图片
     @Bind(R.id.share_iv)
     ImageView shareIv;
+    @Bind(R.id.imgProgress)
+    View imgProgress;
 
 }

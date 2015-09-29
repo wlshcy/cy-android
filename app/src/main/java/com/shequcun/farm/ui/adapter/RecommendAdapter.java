@@ -5,10 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.volley.toolbox.NetworkImageView;
-import com.bitmap.cache.ImageCacheManager;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.RecommendEntry;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
@@ -34,7 +34,7 @@ public class RecommendAdapter extends ArrayAdapter<RecommendEntry> {
         if (v == null) {
             v = LayoutInflater.from(getContext()).inflate(R.layout.recomend_dishes_item_ly, null);
             vh = new ViewHolder();
-            vh.goods_img = (NetworkImageView) v.findViewById(R.id.goods_img);
+            vh.goods_img = (ImageView) v.findViewById(R.id.goods_img);
             vh.goods_name = (TextView) v.findViewById(R.id.goods_name);
             vh.goods_price = (TextView) v.findViewById(R.id.goods_price);
             vh.buy_tv = v.findViewById(R.id.buy_tv);
@@ -48,7 +48,7 @@ public class RecommendAdapter extends ArrayAdapter<RecommendEntry> {
             vh.goods_img.setOnClickListener(onGoodsImgLsn);
             vh.buy_tv.setTag(position);
             vh.buy_tv.setOnClickListener(onBuyLsn);
-            vh.goods_img.setImageUrl(entry.imgs[0], ImageCacheManager.getInstance().getImageLoader());
+            ImageLoader.getInstance().displayImage(entry.imgs[0]+"?imageview2/2/w/180",vh.goods_img);
             vh.goods_name.setText(entry.title);
             vh.goods_price.setText(Utils.unitConversion(entry.packw) + "/份");
         }
@@ -56,7 +56,7 @@ public class RecommendAdapter extends ArrayAdapter<RecommendEntry> {
     }
 
     class ViewHolder {
-        public NetworkImageView goods_img;
+        public ImageView goods_img;
         public TextView goods_name;
         public TextView goods_price;
         public View buy_tv;

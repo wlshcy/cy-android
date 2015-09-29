@@ -5,12 +5,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.volley.toolbox.NetworkImageView;
-import com.bitmap.cache.ImageCacheManager;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.AlreadyPurchasedEntry;
+import com.shequcun.farm.util.Constrants;
 import com.shequcun.farm.util.Utils;
 
 /**
@@ -27,7 +28,7 @@ public class AlreadyPurchasedAdapter extends ArrayAdapter<AlreadyPurchasedEntry>
         if (v == null) {
             vh = new ViewHolder();
             v = LayoutInflater.from(getContext()).inflate(R.layout.order_details_item_ly, null);
-            vh.goods_img = (NetworkImageView) v.findViewById(R.id.goods_img);
+            vh.goods_img = (ImageView) v.findViewById(R.id.goods_img);
             vh.goods_name = (TextView) v.findViewById(R.id.goods_name);
             vh.goods_price = (TextView) v.findViewById(R.id.goods_price);
             vh.goods_count = (TextView) v.findViewById(R.id.goods_count);
@@ -37,7 +38,7 @@ public class AlreadyPurchasedAdapter extends ArrayAdapter<AlreadyPurchasedEntry>
         }
         AlreadyPurchasedEntry entry = getItem(position);
         if (entry != null) {
-            vh.goods_img.setImageUrl(entry.img, ImageCacheManager.getInstance().getImageLoader());
+            ImageLoader.getInstance().displayImage(entry.img+"?imageView2/1/w/"+180,vh.goods_img,Constrants.image_display_options_disc);
             vh.goods_name.setText(entry.title);
             vh.goods_count.setText("x" + entry.packs);
             vh.goods_price.setText(Utils.unitConversion(entry.packw) + "/份");
@@ -46,7 +47,7 @@ public class AlreadyPurchasedAdapter extends ArrayAdapter<AlreadyPurchasedEntry>
     }
 
     class ViewHolder {
-        NetworkImageView goods_img;
+        ImageView goods_img;
         TextView goods_name;
         TextView goods_price;
         TextView goods_count;

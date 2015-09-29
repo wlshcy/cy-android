@@ -9,7 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bitmap.cache.ImageCacheManager;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.RecommendEntry;
 import com.shequcun.farm.util.Utils;
@@ -43,7 +43,7 @@ public class FarmSpecialtyAdapter extends ArrayAdapter<RecommendEntry> {
         RecommendEntry entry = getItem(position);
         if (entry != null && vh != null) {
             if (entry.imgs != null && entry.imgs.length > 0)
-                ImageCacheManager.getInstance().displayImage(vh.goods_img, entry.imgs[0]);
+                ImageLoader.getInstance().displayImage(entry.imgs[0]+"?imageview2/2/w/400",vh.goods_img);
             vh.goods_name.setText(entry.title);
             if (entry.type == 2) {
                 vh.spike_tv.setVisibility(View.VISIBLE);

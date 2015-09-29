@@ -11,9 +11,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bitmap.cache.ImageCacheManager;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.ComboEntry;
 import com.shequcun.farm.data.FixedComboEntry;
@@ -76,8 +76,10 @@ public class ComboSubAdapter extends BaseAdapter {
         }
 
         if (vh != null) {
-            if (vh.combo_img != null && entry.wimgs != null && entry.wimgs.length > 0)
-                ImageCacheManager.getInstance().displayImage(vh.combo_img, TextUtils.isEmpty(entry.wimgs[position]) ? entry.img : entry.wimgs[position]);
+            if (vh.combo_img != null && entry.wimgs != null && entry.wimgs.length > 0) {
+                String url = TextUtils.isEmpty(entry.wimgs[position]) ? entry.img : entry.wimgs[position];
+                ImageLoader.getInstance().displayImage(url+"?imageview2/2/w/180", vh.combo_img);
+            }
 
             if (vh.combo_name != null) {
                 String splits[] = entry.title.split("套餐");

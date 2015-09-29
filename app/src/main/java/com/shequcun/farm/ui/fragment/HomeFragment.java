@@ -31,6 +31,7 @@ import com.shequcun.farm.datacenter.CacheManager;
 import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.ui.adapter.CarouselAdapter;
 import com.shequcun.farm.ui.adapter.FarmSpecialtyAdapter;
+import com.shequcun.farm.util.DeviceInfo;
 import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.IntentUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
@@ -43,7 +44,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
 /**
  * 有菜首页
@@ -122,11 +122,14 @@ public class HomeFragment extends BaseFragment {
             aList = new ArrayList<SlidesEntry>();
             SlidesEntry s = new SlidesEntry();
             aList.add(s);
+            dismissImgProgress();
         }
         cAdapter = new CarouselAdapter(getActivity(), aList);
         cAdapter.buildOnClick(onClick);
         carousel_img.setAdapter(cAdapter, 0);
         carousel_img.setFlowIndicator(carousel_point);
+        cAdapter.setImageLoaderListener(imageLoaderListener);
+        cAdapter.setWidth(DeviceInfo.getDeviceWidth(getActivity()));
     }
 
     private View.OnClickListener onClick = new View.OnClickListener() {
@@ -411,6 +414,50 @@ public class HomeFragment extends BaseFragment {
         return new CacheManager(getActivity()).getUserLoginEntry() != null;
     }
 
+    private CarouselAdapter.ImageLoaderListener imageLoaderListener = new CarouselAdapter.ImageLoaderListener() {
+        @Override
+        public void loadFinish() {
+            dismissImgProgress();
+        }
+
+        @Override
+        public void loadStart() {
+            popImgProgress();
+        }
+    };
+
+    private ViewFlow.ViewSwitchListener viewSwitchListener = new ViewFlow.ViewSwitchListener() {
+        @Override
+        public void onSwitched(View view, int position) {
+            if (cAdapter != null)
+                cAdapter.setCurVisibleIndex(position);
+            ViewFlow viewFlow = (ViewFlow) view.getParent();
+            View view1 = viewFlow.getChildAt(position);
+            View img = view1.findViewById(R.id.imgView);
+            if (img == null) return;
+            if (img.getTag() == null) {
+                popImgProgress();
+            } else {
+                if (img.getTag() instanceof String) {
+                    String s = (String) img.getTag();
+                }
+                dismissImgProgress();
+            }
+        }
+    };
+
+    private void dismissImgProgress() {
+        if (imgProgress == null) return;
+        if (imgProgress.getVisibility() == View.VISIBLE)
+            imgProgress.setVisibility(View.GONE);
+    }
+
+    private void popImgProgress() {
+        if (imgProgress == null) return;
+        if (imgProgress.getVisibility() == View.GONE)
+            imgProgress.setVisibility(View.VISIBLE);
+    }
+
     /**
      * 轮播的图片
      */
@@ -426,6 +473,8 @@ public class HomeFragment extends BaseFragment {
     View no_combo_iv;
     @Bind(R.id.has_combo_iv)
     View has_combo_iv;
+    @Bind(R.id.imgProgress)
+    View imgProgress;
 
     ComboEntry comboEntry;
     CarouselAdapter cAdapter;

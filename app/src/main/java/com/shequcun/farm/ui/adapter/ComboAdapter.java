@@ -9,9 +9,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bitmap.cache.ImageCacheManager;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.ComboEntry;
+import com.shequcun.farm.util.Constrants;
 import com.shequcun.farm.util.Utils;
 
 import butterknife.Bind;
@@ -56,7 +57,7 @@ public class ComboAdapter extends ArrayAdapter<ComboEntry> {
             }
 
             vh.combo_name.setText(entry.title);
-            ImageCacheManager.getInstance().displayImage(vh.combo_img, entry.img);
+            ImageLoader.getInstance().displayImage(entry.img+"?imageview2/2/w/180",vh.combo_img, Constrants.image_display_options_disc);
 
             if (entry.shipday != null) {
                 vh.dis_cycle.setText(entry.shipday.length + "次/周");//"每周配送" +

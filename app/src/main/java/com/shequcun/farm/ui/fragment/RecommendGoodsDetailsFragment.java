@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bitmap.cache.ImageCacheManager;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.RecommendEntry;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
@@ -53,7 +53,7 @@ public class RecommendGoodsDetailsFragment extends BaseFragment {
     private void setWidgetContent() {
         RecommendEntry entry = buildRecommendEntry();
         if (entry != null) {
-            ImageCacheManager.getInstance().displayImage(goods_img, entry.imgs[0]);
+            ImageLoader.getInstance().displayImage(entry.imgs[0]+"?imageview2/2/w/180",goods_img);
             goods_name.setText(entry.title);
             goods_prce.setText((double) entry.price / 100 + "元/份");
             goods_desc.setText(entry.descr);

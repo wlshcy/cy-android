@@ -5,10 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.volley.toolbox.NetworkImageView;
-import com.bitmap.cache.ImageCacheManager;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.DishesItemEntry;
 import com.shequcun.farm.util.Utils;
@@ -29,7 +29,7 @@ public class OrderDetailsAdapter extends ArrayAdapter<DishesItemEntry> {
         if (v == null) {
             vh = new ViewHolder();
             v = LayoutInflater.from(getContext()).inflate(R.layout.order_details_item_ly, null);
-            vh.goods_img = (NetworkImageView) v.findViewById(R.id.goods_img);
+            vh.goods_img = (ImageView) v.findViewById(R.id.goods_img);
             vh.goods_name = (TextView) v.findViewById(R.id.goods_name);
             vh.goods_price = (TextView) v.findViewById(R.id.goods_price);
             vh.goods_count = (TextView) v.findViewById(R.id.goods_count);
@@ -39,7 +39,7 @@ public class OrderDetailsAdapter extends ArrayAdapter<DishesItemEntry> {
         }
         DishesItemEntry entry = getItem(position);
         if (entry != null) {
-            vh.goods_img.setImageUrl(entry.imgs[0], ImageCacheManager.getInstance().getImageLoader());
+            ImageLoader.getInstance().displayImage(entry.imgs[0]+"?imageview2/2/w/180",vh.goods_img);
             vh.goods_name.setText(entry.title);
             int count = entry.getCount();
             if (count <= 0) {
@@ -55,7 +55,7 @@ public class OrderDetailsAdapter extends ArrayAdapter<DishesItemEntry> {
     }
 
     class ViewHolder {
-        NetworkImageView goods_img;
+        ImageView goods_img;
         TextView goods_name;
         TextView goods_price;
         TextView goods_count;
