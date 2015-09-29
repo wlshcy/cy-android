@@ -182,7 +182,7 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
             for (int i = 0; i < mOrderController.getOptionItems().size(); i++) {
                 View footerView = LayoutInflater.from(getActivity()).inflate(R.layout.order_details_item_ly, null);
                 ImageView goodImg =  (ImageView) footerView.findViewById(R.id.goods_img);
-                ImageLoader.getInstance().displayImage(mOrderController.getOptionItems().get(i).imgs[0]+"?imageview2/2/w/180",goodImg);
+                ImageLoader.getInstance().displayImage(mOrderController.getOptionItems().get(i).imgs[0] + "?imageview2/2/w/180", goodImg);
                 ((TextView) footerView.findViewById(R.id.goods_name)).setText(mOrderController.getOptionItems().get(i).title);
                 ((TextView) footerView.findViewById(R.id.goods_price)).setText(Utils.unitConversion(mOrderController.getOptionItems().get(i).packw) + "/份");
                 footerView.findViewById(R.id.goods_count).setVisibility(View.GONE);
