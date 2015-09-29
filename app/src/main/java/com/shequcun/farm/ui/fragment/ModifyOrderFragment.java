@@ -8,16 +8,14 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.android.volley.toolbox.NetworkImageView;
-import com.bitmap.cache.ImageCacheManager;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.shequcun.farm.R;
-import com.shequcun.farm.data.AddressEntry;
-import com.shequcun.farm.data.AddressListEntry;
 import com.shequcun.farm.data.AlreadyPurchasedEntry;
 import com.shequcun.farm.data.AlreadyPurchasedListEntry;
 import com.shequcun.farm.data.ComboEntry;
@@ -478,7 +476,8 @@ public class ModifyOrderFragment extends BaseFragment {
             mLv.addFooterView(LayoutInflater.from(getActivity()).inflate(R.layout.remark_footer_ly, null), null, false);
             for (int i = 0; i < aList.size(); i++) {
                 View footerView = LayoutInflater.from(getActivity()).inflate(R.layout.order_details_item_ly, null);
-                ((NetworkImageView) footerView.findViewById(R.id.goods_img)).setImageUrl(aList.get(i).img, ImageCacheManager.getInstance().getImageLoader());
+                ImageView goodsImg = (ImageView)footerView.findViewById(R.id.goods_img);
+                ImageLoader.getInstance().displayImage(aList.get(i).img+"?imageview2/2/w/180",goodsImg);
                 ((TextView) footerView.findViewById(R.id.goods_name)).setText(aList.get(i).title);
                 (footerView.findViewById(R.id.goods_price)).setVisibility(View.GONE);
                 footerView.findViewById(R.id.goods_count).setVisibility(View.GONE);

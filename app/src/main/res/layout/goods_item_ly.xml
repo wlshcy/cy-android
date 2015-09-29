@@ -4,7 +4,7 @@
     android:layout_height="@dimen/px230"
     android:background="@android:color/white">
 
-    <com.android.volley.toolbox.NetworkImageView
+    <ImageView
         android:id="@+id/goods_img"
         android:layout_width="@dimen/px170"
         android:layout_height="@dimen/px170"

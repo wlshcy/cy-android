@@ -28,6 +28,7 @@ import com.nostra13.universalimageloader.utils.StorageUtils;
 import com.shequcun.farm.R;
 import com.shequcun.farm.model.PhotoModel;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
+import com.shequcun.farm.util.Constrants;
 
 import java.util.List;
 
@@ -66,8 +67,8 @@ public class BrowseImageFragment extends BaseFragment {
         }
         index = bundle.getInt(KEY_INDEX);
 //        cancel = bundle.getBoolean(KEY_CANCEL);
-        if (!ImageLoader.getInstance().isInited())
-            initImageLoader(getActivity());
+//        if (!ImageLoader.getInstance().isInited())
+//            initImageLoader(getActivity());
     }
 
     @Override
@@ -116,10 +117,10 @@ public class BrowseImageFragment extends BaseFragment {
             String url = "";
             if (model.isFromNetwork()) {
                 url = model.getUrl();
-                ImageLoader.getInstance().displayImage(url, img, image_display_options_cache, new MyImageLoadingListener(img, true));
+                ImageLoader.getInstance().displayImage(url, img, Constrants.image_display_options_cache, new MyImageLoadingListener(img, true));
             } else {
                 url = "file://" + model.getOriginalPath();
-                ImageLoader.getInstance().displayImage(url, img, image_display_options_disc, new MyImageLoadingListener(img));
+                ImageLoader.getInstance().displayImage(url, img, Constrants.image_display_options_disc, new MyImageLoadingListener(img));
             }
             img.setOnClickListener(mOnClickListener);
 //            img.setOnLongClickListener(new MyOnLongClickListener(
@@ -267,57 +268,6 @@ public class BrowseImageFragment extends BaseFragment {
             mProgressBar.setVisibility(View.GONE);
         }
     }
-
-    void initImageLoader(Context context) {
-        DisplayImageOptions imageOptions = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.grey_def_bg)
-                .showImageOnFail(R.drawable.ic_loading_failure)
-                .cacheInMemory(true).cacheOnDisk(true)
-                .resetViewBeforeLoading(true).considerExifParams(false)
-                .bitmapConfig(Bitmap.Config.RGB_565).build();
-
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
-                context)
-                .memoryCacheExtraOptions(400, 400)
-                        // default = device screen dimensions
-                .diskCacheExtraOptions(400, 400, null)
-                .threadPoolSize(5)
-                        // default Thread.NORM_PRIORITY - 1
-                .threadPriority(Thread.NORM_PRIORITY)
-                        // default FIFO
-                .tasksProcessingOrder(QueueProcessingType.LIFO)
-                        // default
-                .denyCacheImageMultipleSizesInMemory()
-                .memoryCache(new LruMemoryCache(2 * 1024 * 1024))
-                .memoryCacheSize(2 * 1024 * 1024)
-                .memoryCacheSizePercentage(13)
-                        // default
-                .diskCache(
-                        new UnlimitedDiskCache(StorageUtils.getCacheDirectory(
-                                context, true)))
-                        // default
-                .diskCacheSize(50 * 1024 * 1024).diskCacheFileCount(100)
-                .diskCacheFileNameGenerator(new HashCodeFileNameGenerator())
-                        // default
-                .imageDownloader(new BaseImageDownloader(context))
-                        // default
-                .imageDecoder(new BaseImageDecoder(false))
-                        // default
-                .defaultDisplayImageOptions(DisplayImageOptions.createSimple())
-                        // default
-                .defaultDisplayImageOptions(imageOptions).build();
-
-        ImageLoader.getInstance().init(config);
-    }
-
-    private DisplayImageOptions image_display_options_disc = new DisplayImageOptions.Builder()
-            .showImageOnLoading(R.drawable.grey_def_bg)
-            .showImageForEmptyUri(R.drawable.grey_def_bg)
-            .showImageOnFail(R.drawable.grey_def_bg).cacheOnDisc(true).build();
-    private DisplayImageOptions image_display_options_cache = new DisplayImageOptions.Builder()
-            .showImageOnLoading(R.drawable.grey_def_bg)
-            .showImageForEmptyUri(R.drawable.grey_def_bg)
-            .showImageOnFail(R.drawable.grey_def_bg).cacheInMemory(true).build();
 
     private int index = 0;
     @Bind(R.id.progressbar)

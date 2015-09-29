@@ -1,6 +1,7 @@
 package com.shequcun.farm.ui.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,12 +9,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
-import com.android.volley.toolbox.NetworkImageView;
-import com.bitmap.cache.ImageCacheManager;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.SlidesEntry;
-import com.shequcun.farm.util.AvoidDoubleClickListener;
-import com.shequcun.farm.util.DeviceInfo;
 
 import java.util.List;
 
@@ -27,6 +26,8 @@ public class CarouselAdapter extends BaseAdapter {
     private List<SlidesEntry> mImageList;
     private View.OnClickListener onClick;
     private int width;
+    private ImageLoaderListener imageLoaderListener;
+    private int curVisibleIndex;
 
     public CarouselAdapter(Context context, List<SlidesEntry> list) {
         this.mInflater = (LayoutInflater) context
@@ -69,12 +70,8 @@ public class CarouselAdapter extends BaseAdapter {
         if (TextUtils.isEmpty(item.img)) {
             holder.coverView.setImageResource(R.drawable.icon_combo_default);
         } else {
-            ImageCacheManager.getInstance().displayImage(holder.coverView , item.img+ "?imageView2/2/w/" + width);
+            com.nostra13.universalimageloader.core.ImageLoader.getInstance().displayImage(item.img + "?imageView2/2/w/" + width, holder.coverView, new InnerImageLoadingListener(position));
         }
-//        holder.coverView.setImageUrl(item.img, ImageCacheManager.getInstance()
-//                .getImageLoader());
-
-
         holder.coverView.setTag(item);
         holder.coverView.setOnClickListener(onClick);
         return convertView;
@@ -86,5 +83,57 @@ public class CarouselAdapter extends BaseAdapter {
 
     public void setWidth(int width) {
         this.width = width;
+    }
+
+    public void setCurVisibleIndex(int curVisibleIndex) {
+        this.curVisibleIndex = curVisibleIndex;
+    }
+
+    public interface ImageLoaderListener {
+        void loadFinish();
+
+        void loadStart();
+    }
+
+    public void setImageLoaderListener(ImageLoaderListener imageLoaderListener) {
+        this.imageLoaderListener = imageLoaderListener;
+    }
+
+    class InnerImageLoadingListener implements ImageLoadingListener {
+        private int position;
+
+        public InnerImageLoadingListener(int position) {
+            this.position = position;
+        }
+
+        @Override
+        public void onLoadingStarted(String imageUri, View view) {
+            if (curVisibleIndex == position)
+                if (imageLoaderListener != null)
+                    imageLoaderListener.loadStart();
+        }
+
+        @Override
+        public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+            loadFinish(view, imageUri);
+        }
+
+        @Override
+        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+            loadFinish(view, imageUri);
+        }
+
+        @Override
+        public void onLoadingCancelled(String imageUri, View view) {
+            loadFinish(view, imageUri);
+        }
+
+        private void loadFinish(View view, String uri) {
+            /*表明已经加载完毕*/
+            view.setTag(uri);
+            if (curVisibleIndex == position)
+                if (imageLoaderListener != null)
+                    imageLoaderListener.loadFinish();
+        }
     }
 }

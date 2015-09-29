@@ -5,12 +5,27 @@
     android:layout_height="wrap_content"
     android:background="@color/gray_fafafa">
 
-    <com.common.widget.ViewFlow
-        android:id="@+id/carousel_img"
-        android:layout_width="fill_parent"
-        android:layout_height="@dimen/px374"
-        android:focusable="true"
-        android:focusableInTouchMode="true" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.common.widget.ViewFlow
+            android:id="@+id/carousel_img"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/px374"
+            android:focusable="true"
+            android:focusableInTouchMode="true" />
+
+        <ProgressBar
+            android:id="@+id/imgProgress"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="visible" />
+
+    </FrameLayout>
+
 
     <com.common.widget.CircleFlowIndicator
         android:id="@+id/carousel_point"

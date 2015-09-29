@@ -8,8 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.volley.toolbox.NetworkImageView;
-import com.bitmap.cache.ImageCacheManager;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.RecommendEntry;
 import com.shequcun.farm.util.Utils;
@@ -46,7 +45,7 @@ public class FarmSpecialtyShopCartAdapter extends ArrayAdapter<RecommendEntry> {
         vh.goods_sub.setOnClickListener(onSubGoodsLsn);
         vh.goods_sub.setContentDescription(String.valueOf(entry.id));
         if (entry != null) {
-            vh.goods_img.setImageUrl(entry.imgs[0], ImageCacheManager.getInstance().getImageLoader());
+            ImageLoader.getInstance().displayImage(entry.imgs[0]+"?imageview2/2/w/180",vh.goods_img);
             vh.goods_name.setText(entry.title);
             vh.goods_price.setText(Utils.unitConversion(entry.packw) + "/份");
         }
@@ -65,7 +64,7 @@ public class FarmSpecialtyShopCartAdapter extends ArrayAdapter<RecommendEntry> {
 
     class ViewHolder {
         @Bind(R.id.goods_img)
-        NetworkImageView goods_img;
+        ImageView goods_img;
         @Bind(R.id.goods_name)
         TextView goods_name;
         @Bind(R.id.goods_price)

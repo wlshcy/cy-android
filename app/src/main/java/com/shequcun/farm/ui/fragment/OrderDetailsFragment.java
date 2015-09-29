@@ -6,13 +6,13 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.android.volley.toolbox.NetworkImageView;
-import com.bitmap.cache.ImageCacheManager;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.ComboEntry;
 import com.shequcun.farm.data.OrderEntry;
@@ -178,7 +178,8 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
             mLv.addFooterView(LayoutInflater.from(getActivity()).inflate(R.layout.remark_footer_ly, null), null, false);
             for (int i = 0; i < mOrderController.getOptionItems().size(); i++) {
                 View footerView = LayoutInflater.from(getActivity()).inflate(R.layout.order_details_item_ly, null);
-                ((NetworkImageView) footerView.findViewById(R.id.goods_img)).setImageUrl(mOrderController.getOptionItems().get(i).imgs[0], ImageCacheManager.getInstance().getImageLoader());
+                ImageView goodImg =  (ImageView) footerView.findViewById(R.id.goods_img);
+                ImageLoader.getInstance().displayImage(mOrderController.getOptionItems().get(i).imgs[0] + "?imageview2/2/w/180", goodImg);
                 ((TextView) footerView.findViewById(R.id.goods_name)).setText(mOrderController.getOptionItems().get(i).title);
                 ((TextView) footerView.findViewById(R.id.goods_price)).setText(Utils.unitConversion(mOrderController.getOptionItems().get(i).packw) + "/份");
                 footerView.findViewById(R.id.goods_count).setVisibility(View.GONE);

@@ -1,6 +1,7 @@
 package com.shequcun.farm.ui.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -11,9 +12,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bitmap.cache.ImageCacheManager;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.ComboEntry;
 import com.shequcun.farm.data.FixedComboEntry;
@@ -71,8 +74,11 @@ public class ComboSubAdapter extends BaseAdapter {
         }
 
         if (vh != null) {
-            if (vh.combo_img != null && entry.wimgs != null && entry.wimgs.length > 0)
-                ImageCacheManager.getInstance().displayImage(vh.combo_img, TextUtils.isEmpty(entry.wimgs[position]) ? entry.img : entry.wimgs[position]);
+            if (vh.combo_img != null && entry.wimgs != null && entry.wimgs.length > 0) {
+                String url = TextUtils.isEmpty(entry.wimgs[position]) ? entry.img : entry.wimgs[position];
+                vh.imgProgress.setTag(position);
+                ImageLoader.getInstance().displayImage(url + "?imageview2/2/w/180", vh.combo_img, new InnerImageLoadingListener(vh.imgProgress,position));
+            }
 
             if (vh.combo_name != null) {
                 String splits[] = entry.title.split("套餐");
@@ -196,6 +202,8 @@ public class ComboSubAdapter extends BaseAdapter {
          */
         @Bind(R.id.combo_img)
         ImageView combo_img;
+        @Bind(R.id.imgProgress)
+        View imgProgress;
         @Bind(R.id.combo_name)
         TextView combo_name;
         /**
@@ -223,5 +231,48 @@ public class ComboSubAdapter extends BaseAdapter {
         @Bind(R.id.ll_container)
         LinearLayout ll_container;
 
+    }
+
+    class InnerImageLoadingListener implements ImageLoadingListener {
+        private View imgProgress;
+        private int position;
+
+        public InnerImageLoadingListener(View imgProgress, int position) {
+            this.imgProgress = imgProgress;
+            this.position = position;
+        }
+
+        @Override
+        public void onLoadingStarted(String imageUri, View view) {
+            setProgress(true);
+        }
+
+        @Override
+        public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+            setProgress(false);
+        }
+
+        @Override
+        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+            setProgress(false);
+        }
+
+        @Override
+        public void onLoadingCancelled(String imageUri, View view) {
+            setProgress(false);
+        }
+
+        private void setProgress(boolean visible) {
+            if (imgProgress.getTag() == null) return;
+            if (!(imgProgress.getTag() instanceof Integer)) return;
+            if ((int) imgProgress.getTag() != position) return;
+            /*表明已经加载完毕*/
+            if (imgProgress == null) return;
+            if (visible)
+                imgProgress.setVisibility(View.VISIBLE);
+            else
+                imgProgress.setVisibility(View.GONE);
+
+        }
     }
 }

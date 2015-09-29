@@ -16,8 +16,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.bitmap.cache.ImageCacheManager;
 import com.common.widget.CircleImageView;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.UserLoginEntry;
 import com.shequcun.farm.datacenter.CacheManager;
@@ -25,7 +25,6 @@ import com.shequcun.farm.dlg.ConsultationDlg;
 import com.shequcun.farm.ui.adapter.MyAdapter;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
 import com.shequcun.farm.util.IntentUtil;
-import com.shequcun.farm.util.JsonUtilsParser;
 
 import butterknife.Bind;
 import butterknife.OnItemClick;
@@ -112,7 +111,9 @@ public class MyFragment extends BaseFragment {
         uEntry = new CacheManager(getActivity()).getUserLoginEntry();
         hView_1 = LayoutInflater.from(getActivity()).inflate(R.layout.my_item_head_ly, null);
         ((TextView) hView_1.findViewById(R.id.mobile_phone)).setText(uEntry != null ? uEntry.mobile : "");
-        ((CircleImageView) hView_1.findViewById(R.id.my_head)).setImageUrl(uEntry != null ? uEntry.headimg : null, ImageCacheManager.getInstance().getImageLoader());
+        CircleImageView circleImageView = ((CircleImageView) hView_1.findViewById(R.id.my_head));
+        if (uEntry != null && !TextUtils.isEmpty(uEntry.headimg))
+            ImageLoader.getInstance().displayImage(uEntry.headimg+"?imageview2/2/w/200", circleImageView);
         hView_1.findViewById(R.id.my_head).setOnClickListener(new AvoidDoubleClickListener() {
             @Override
             public void onViewClick(View v) {

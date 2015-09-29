@@ -25,10 +25,10 @@ import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.bitmap.cache.ImageCacheManager;
 import com.common.widget.BadgeView;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.shequcun.farm.R;
 import com.shequcun.farm.anim.ArcTranslateAnimation;
 import com.shequcun.farm.data.ComboEntry;
@@ -269,7 +269,7 @@ public class ChooseDishesFragment extends BaseFragment {
         for (DishesItemEntry it : mOrderController.getNoChooseDishesItems(aList)) {
             View v = LayoutInflater.from(getActivity()).inflate(R.layout.option_item_ly, null);
             ImageView goods_img = (ImageView) v.findViewById(R.id.goods_img);
-            ImageCacheManager.getInstance().displayImage(goods_img, it.imgs[0]);
+            ImageLoader.getInstance().displayImage(it.imgs[0]+"?imageview2/2/w/180",goods_img);
             ((TextView) v.findViewById(R.id.goods_name)).setText(it.title);
             ((TextView) v.findViewById(R.id.goods_price)).setText(Utils.unitConversion(it.packw) + "/份");
             final CheckBox option_cb = (CheckBox) v.findViewById(R.id.option_cb);
