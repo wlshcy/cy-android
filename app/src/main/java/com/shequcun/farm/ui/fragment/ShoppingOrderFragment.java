@@ -29,6 +29,9 @@ import org.apache.http.Header;
 
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.OnItemClick;
+
 /**
  * 购买订单
  * Created by apple on 15/8/8.
@@ -48,9 +51,6 @@ public class ShoppingOrderFragment extends BaseFragment {
 
     @Override
     protected void initWidget(View v) {
-        mLv = (ListView) v.findViewById(R.id.mLv);
-        pBar = (ProgressBar) v.findViewById(R.id.progress_bar);
-        scroll_view = (PullToRefreshScrollView) v.findViewById(R.id.pView);
     }
 
     @Override
@@ -58,8 +58,21 @@ public class ShoppingOrderFragment extends BaseFragment {
         buildAdapter();
         scroll_view.setMode(PullToRefreshBase.Mode.PULL_FROM_END);
         scroll_view.setOnRefreshListener(onRefrshLsn);
-        mLv.setOnItemClickListener(onItemLsn);
         requestOrderEntry();
+    }
+
+    @OnItemClick(R.id.mLv)
+    void OnItemClick(int position) {
+        if (adapter == null)
+            return;
+        HistoryOrderEntry entry = adapter.getItem(position);
+        if (entry != null) {
+            if (entry.status == 1 || entry.status == 3 || entry.status == 0 || entry.status == 2) {
+                gotoFragmentByAdd(buildBundle(buildOrderParams(entry)), R.id.mainpage_ly, new ModifyOrderFragment(), ModifyOrderFragment.class.getName());
+            } else if (entry.status == 4) {
+                ToastHelper.showShort(getActivity(), "您的订单已取消!");
+            }
+        }
     }
 
     void buildAdapter() {
@@ -135,26 +148,10 @@ public class ShoppingOrderFragment extends BaseFragment {
         });
     }
 
-    AdapterView.OnItemClickListener onItemLsn = new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-            if (adapter == null)
-                return;
-            HistoryOrderEntry entry = adapter.getItem(position);
-
-            if (entry != null) {
-                if (entry.status == 1 || entry.status == 3 || entry.status == 0 || entry.status == 2) {
-                    gotoFragmentByAdd(buildBundle(buildOrderParams(entry)), R.id.mainpage_ly, new ModifyOrderFragment(), ModifyOrderFragment.class.getName());
-                } else if (entry.status == 4) {
-                    ToastHelper.showShort(getActivity(), "您的订单已取消!");
-                }
-            }
-        }
-    };
 
     ModifyOrderParams buildOrderParams(HistoryOrderEntry entry) {
         ModifyOrderParams params = new ModifyOrderParams();
-        params.setParams(entry.id, entry.orderno, entry.item_type, entry.combo_id, entry.price, entry.combo_idx, entry.status, entry.date, entry.name, entry.mobile, entry.address,entry.type);
+        params.setParams(entry.id, entry.orderno, entry.item_type, entry.combo_id, entry.price, entry.combo_idx, entry.status, entry.date, entry.name, entry.mobile, entry.address, entry.type);
         return params;
     }
 
@@ -164,8 +161,11 @@ public class ShoppingOrderFragment extends BaseFragment {
         return bundle;
     }
 
+    @Bind(R.id.progress_bar)
     ProgressBar pBar;
     ShoppingOrderAdapter adapter;
+    @Bind(R.id.mLv)
     ListView mLv;
+    @Bind(R.id.pView)
     PullToRefreshScrollView scroll_view;
 }

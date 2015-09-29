@@ -15,6 +15,9 @@ import com.shequcun.farm.util.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 /**
  * Created by cong on 15/9/7.
  */
@@ -47,15 +50,7 @@ public class RedPacketsAdapter extends BaseAdapter {
         ViewHolder vh;
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.item_red_packets, null);
-            vh = new ViewHolder();
-            vh.count = (TextView) convertView.findViewById(R.id.money_count_tv);
-            vh.expiryDate = (TextView) convertView.findViewById(R.id.expiry_date_tv);
-            vh.requiredCountTv = (TextView) convertView.findViewById(R.id.required_count_tv);
-            vh.moneySymbolTv = (TextView) convertView.findViewById(R.id.money_symbol_tv);
-            vh.zheTv = (TextView) convertView.findViewById(R.id.zhe_tv);
-            vh.nameTv = (TextView) convertView.findViewById(R.id.red_packets_name_tv);
-            vh.targetTv = (TextView) convertView.findViewById(R.id.target_tv);
-            vh.flowerIv = (ImageView) convertView.findViewById(R.id.flower_iv);
+            vh = new ViewHolder(convertView);
             convertView.setTag(vh);
         } else {
             vh = (ViewHolder) convertView.getTag();
@@ -76,10 +71,10 @@ public class RedPacketsAdapter extends BaseAdapter {
             vh.targetTv.setText("仅用于农庄优选商品");
         }
 
-        if (entry.charge > 0 && entry.type != 1){
+        if (entry.charge > 0 && entry.type != 1) {
             vh.requiredCountTv.setVisibility(View.VISIBLE);
             vh.requiredCountTv.setText("满" + entry.charge / 100 + "元使用");
-        }else{
+        } else {
             vh.requiredCountTv.setVisibility(View.GONE);
         }
         if (entry.used || (serveTime > 0 && entry.expire <= serveTime)) {
@@ -107,14 +102,26 @@ public class RedPacketsAdapter extends BaseAdapter {
     }
 
     static class ViewHolder {
+        @Bind(R.id.money_count_tv)
         TextView count;
+        @Bind(R.id.expiry_date_tv)
         TextView expiryDate;
+        @Bind(R.id.required_count_tv)
         TextView requiredCountTv;
+        @Bind(R.id.money_symbol_tv)
         TextView moneySymbolTv;
+        @Bind(R.id.zhe_tv)
         TextView zheTv;
+        @Bind(R.id.red_packets_name_tv)
         TextView nameTv;
+        @Bind(R.id.target_tv)
         TextView targetTv;
+        @Bind(R.id.flower_iv)
         ImageView flowerIv;
+
+        public ViewHolder(View convertView) {
+            ButterKnife.bind(this, convertView);
+        }
     }
 
     public void setServeTime(long serveTime) {

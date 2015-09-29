@@ -14,6 +14,9 @@ import com.shequcun.farm.R;
 import com.shequcun.farm.data.RecommendEntry;
 import com.shequcun.farm.util.Utils;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 /**
  * Created by mac on 15/9/6.
  */
@@ -28,14 +31,7 @@ public class FarmSpecialtyAdapter extends ArrayAdapter<RecommendEntry> {
         final ViewHolder vh;
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.farm_specialty_item_ly, null);
-            vh = new ViewHolder();
-            vh.goods_img = (ImageView) convertView.findViewById(R.id.goods_img);
-            vh.goods_name = (TextView) convertView.findViewById(R.id.goods_name);
-            vh.merge_unit_tv = (TextView) convertView.findViewById(R.id.merge_unit_tv);
-            vh.price_tv = (TextView) convertView.findViewById(R.id.price_tv);
-            vh.mprice_tv = (TextView) convertView.findViewById(R.id.mprice_tv);
-            vh.sale_tv = (TextView) convertView.findViewById(R.id.sale_tv);
-            vh.spike_tv = (TextView) convertView.findViewById(R.id.spike_tv);
+            vh = new ViewHolder(convertView);
             convertView.setTag(vh);
         } else {
             vh = (ViewHolder) convertView.getTag();
@@ -57,7 +53,6 @@ public class FarmSpecialtyAdapter extends ArrayAdapter<RecommendEntry> {
             vh.mprice_tv.setText(Utils.unitPeneyToYuan(entry.mprice));
             vh.sale_tv.setText(entry.sales + "人选择");
             vh.merge_unit_tv.setText(Utils.unitConversion(entry.packw) + "/份");
-
         }
 
         return convertView;
@@ -65,12 +60,23 @@ public class FarmSpecialtyAdapter extends ArrayAdapter<RecommendEntry> {
 
 
     class ViewHolder {
+        @Bind(R.id.goods_img)
         ImageView goods_img;
+        @Bind(R.id.goods_name)
         TextView goods_name;
+        @Bind(R.id.merge_unit_tv)
         TextView merge_unit_tv;//计量单位
+        @Bind(R.id.price_tv)
         TextView price_tv;//现价
+        @Bind(R.id.mprice_tv)
         TextView mprice_tv;//市场价
+        @Bind(R.id.sale_tv)
         TextView sale_tv;//销量
+        @Bind(R.id.spike_tv)
         TextView spike_tv;
+
+        ViewHolder(View convertView) {
+            ButterKnife.bind(this, convertView);
+        }
     }
 }

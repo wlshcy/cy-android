@@ -32,15 +32,22 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.OnClick;
+
 /**
  * Created by cong on 15/9/7.
  */
 public class RedPacketsListFragment extends BaseFragment {
-    private PullToRefreshListView redPacketsLv;
-    private TextView titleTv;
-    private TextView rightTv;
+    @Bind(R.id.red_packets_lv)
+    PullToRefreshListView redPacketsLv;
+    @Bind(R.id.title_center_text)
+    TextView titleTv;
+    @Bind(R.id.title_right_text)
+    TextView rightTv;
     private RedPacketsAdapter adapter;
-    private View emptyView, leftIv;
+    @Bind(R.id.empty_list_view)
+    View emptyView;
     public static final String KEY_TYPE = "type";
     public static final String KEY_ACTION = "action";
     /*1、2 选择红包(1.套餐优惠券, 2.单品优惠券)*/
@@ -73,14 +80,9 @@ public class RedPacketsListFragment extends BaseFragment {
 
     @Override
     protected void initWidget(View v) {
-        redPacketsLv = (PullToRefreshListView) v.findViewById(R.id.red_packets_lv);
         redPacketsLv.setMode(PullToRefreshBase.Mode.PULL_FROM_END);
-        titleTv = (TextView) v.findViewById(R.id.title_center_text);
         titleTv.setText(R.string.use_favorable_red_packets);
-        rightTv = (TextView) v.findViewById(R.id.title_right_text);
-        leftIv = v.findViewById(R.id.back);
         rightTv.setText(R.string.use_rule);
-        emptyView = v.findViewById(R.id.empty_list_view);
         if (adapter == null) {
             adapter = new RedPacketsAdapter(getActivity());
         }
@@ -94,20 +96,15 @@ public class RedPacketsListFragment extends BaseFragment {
             redPacketsLv.setOnItemClickListener(onItemClickListener);
         redPacketsLv.setOnRefreshListener(onRefreshListener);
         redPacketsLv.setOnRefreshingScrollToOriginal(onRefreshingScrollToOriginal);
-        leftIv.setOnClickListener(onClickListener);
-        rightTv.setOnClickListener(onClickListener);
+
     }
 
-    private View.OnClickListener onClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if (v == rightTv) {
-                gotoRuleFragment();
-            } else if (v == leftIv) {
-                popBackStack();
-            }
-        }
-    };
+    @OnClick({R.id.back, R.id.title_right_text})
+    void doClick(View v) {
+        if (v == rightTv)
+            gotoRuleFragment();
+        else popBackStack();
+    }
 
     private void gotoRuleFragment() {
         Bundle bundle = new Bundle();

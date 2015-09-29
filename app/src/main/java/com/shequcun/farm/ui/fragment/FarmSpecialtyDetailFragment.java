@@ -333,6 +333,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
                 cAdapter.setCurVisibleIndex(position);
             ViewFlow viewFlow = (ViewFlow) view.getParent();
             View view1 = viewFlow.getChildAt(position);
+            if (view1 == null) return;
             View img = view1.findViewById(R.id.imgView);
             if (img == null) return;
             if (img.getTag() == null) {

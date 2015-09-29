@@ -13,6 +13,9 @@ import com.shequcun.farm.R;
 import com.shequcun.farm.data.RecommendEntry;
 import com.shequcun.farm.util.Utils;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 /**
  * Created by mac on 15/9/8.
  */
@@ -25,14 +28,8 @@ public class FarmSpecialtyShopCartAdapter extends ArrayAdapter<RecommendEntry> {
     public View getView(int position, View v, ViewGroup parent) {
         ViewHolder vh;
         if (v == null) {
-            vh = new ViewHolder();
             v = LayoutInflater.from(getContext()).inflate(R.layout.goods_item_ly, null);
-            vh.goods_img = (ImageView) v.findViewById(R.id.goods_img);
-            vh.goods_name = (TextView) v.findViewById(R.id.goods_name);
-            vh.goods_price = (TextView) v.findViewById(R.id.goods_price);
-            vh.goods_count = (TextView) v.findViewById(R.id.goods_count);
-            vh.goods_sub = (ImageView) v.findViewById(R.id.goods_sub);
-            vh.goods_add = (ImageView) v.findViewById(R.id.goods_add);
+            vh = new ViewHolder(v);
             v.setTag(vh);
         } else {
             vh = (ViewHolder) v.getTag();
@@ -66,12 +63,22 @@ public class FarmSpecialtyShopCartAdapter extends ArrayAdapter<RecommendEntry> {
     }
 
     class ViewHolder {
+        @Bind(R.id.goods_img)
         ImageView goods_img;
+        @Bind(R.id.goods_name)
         TextView goods_name;
+        @Bind(R.id.goods_price)
         TextView goods_price;
+        @Bind(R.id.goods_count)
         TextView goods_count;
+        @Bind(R.id.goods_sub)
         ImageView goods_sub;
+        @Bind(R.id.goods_add)
         ImageView goods_add;
+
+        ViewHolder(View v) {
+            ButterKnife.bind(this, v);
+        }
     }
 
     public void buildOnClickLsn(View.OnClickListener onGoodsImgLsn, View.OnClickListener onAddGoodsLsn, View.OnClickListener onSubGoodsLsn) {

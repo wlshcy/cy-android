@@ -27,6 +27,7 @@ import com.shequcun.farm.util.AvoidDoubleClickListener;
 import com.shequcun.farm.util.IntentUtil;
 
 import butterknife.Bind;
+import butterknife.OnItemClick;
 
 /**
  * Created by apple on 15/8/3.
@@ -50,8 +51,42 @@ public class MyFragment extends BaseFragment {
 
     @Override
     protected void setWidgetLsn() {
-        mLv.setOnItemClickListener(onItemClick);
         buildAdapter();
+    }
+
+
+    @OnItemClick(R.id.mLv)
+    void onItemClick(int position) {
+        if (adapter == null || mLv == null)
+            return;
+        if (uEntry == null) {
+            showLoginDlg();
+            return;
+        }
+        switch (position - mLv.getHeaderViewsCount()) {
+            case 0://我的订单
+                gotoFragment(R.id.mainpage_ly, new MyOrderViewPagerFragment(), MyOrderViewPagerFragment.class.getName());
+                break;
+            case 1://订单延期配送
+                gotoFragment(R.id.mainpage_ly, new OrderDelayFragment(), OrderDelayFragment.class.getName());
+                break;
+            case 2://我的优惠红包
+                Bundle bundle1 = new Bundle();
+                bundle1.putInt(RedPacketsListFragment.KEY_ACTION, RedPacketsListFragment.ACTION_LOOK);
+                gotoFragment(bundle1, R.id.mainpage_ly, new RedPacketsListFragment(), RedPacketsListFragment.class.getName());
+                break;
+            case 3://拨打客服电话
+                ConsultationDlg.showCallTelDlg(getActivity());
+                break;
+            case 4://地址管理
+                Bundle bundle = new Bundle();
+                bundle.putInt(AddressListFragment.Action.KEY, AddressListFragment.Action.SETTING);
+                gotoFragmentByAdd(bundle, R.id.mainpage_ly, new AddressListFragment(), AddressListFragment.class.getName());
+                break;
+            case 5://设置
+                gotoFragmentByAdd(R.id.mainpage_ly, new SetFragment(), SetFragment.class.getName());
+                break;
+        }
     }
 
     @Override
@@ -96,43 +131,6 @@ public class MyFragment extends BaseFragment {
         mLv.setAdapter(adapter);
     }
 
-    private AdapterView.OnItemClickListener onItemClick = new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            if (adapter == null || mLv == null)
-                return;
-            if (uEntry == null) {
-//                ToastHelper.showShort(getActivity(), R.string.login_msg_tip);
-                showLoginDlg();
-                return;
-            }
-            switch (position - mLv.getHeaderViewsCount()) {
-                case 0://我的订单
-                    gotoFragment(R.id.mainpage_ly, new MyOrderViewPagerFragment(), MyOrderViewPagerFragment.class.getName());
-                    break;
-                case 1://订单延期配送
-                    gotoFragment(R.id.mainpage_ly, new OrderDelayFragment(), OrderDelayFragment.class.getName());
-                    break;
-                case 2://我的优惠红包
-                    Bundle bundle1 = new Bundle();
-                    bundle1.putInt(RedPacketsListFragment.KEY_ACTION, RedPacketsListFragment.ACTION_LOOK);
-                    gotoFragment(bundle1, R.id.mainpage_ly, new RedPacketsListFragment(), RedPacketsListFragment.class.getName());
-                    break;
-                case 3://拨打客服电话
-                    ConsultationDlg.showCallTelDlg(getActivity());
-                    break;
-                case 4://地址管理
-                    Bundle bundle = new Bundle();
-                    bundle.putInt(AddressListFragment.Action.KEY, AddressListFragment.Action.SETTING);
-                    gotoFragmentByAdd(bundle, R.id.mainpage_ly, new AddressListFragment(), AddressListFragment.class.getName());
-                    break;
-                case 5://设置
-                    gotoFragmentByAdd(R.id.mainpage_ly, new SetFragment(), SetFragment.class.getName());
-                    break;
-            }
-
-        }
-    };
 
     void doRegisterRefreshBrodcast() {
         if (!mIsBind) {

@@ -26,12 +26,17 @@ import com.shequcun.farm.util.ToastHelper;
 
 import org.apache.http.Header;
 
+import butterknife.Bind;
+import butterknife.OnClick;
+
 /**
  * Created by cong on 15/9/7.
  */
 public class OrderDelayFragment extends BaseFragment {
-    private TextView titleTv, delayTv;
-    private View leftIv;
+    @Bind(R.id.title_center_text)
+    TextView titleTv;
+    @Bind(R.id.delay_tv)
+    TextView delayTv;
     private String orderNo;
 
     @Nullable
@@ -40,11 +45,6 @@ public class OrderDelayFragment extends BaseFragment {
         return inflater.inflate(R.layout.fragment_order_delay, null);
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-//        requestDelayState();
-    }
 
     @Override
     public boolean onBackPressed() {
@@ -53,40 +53,27 @@ public class OrderDelayFragment extends BaseFragment {
 
     @Override
     protected void initWidget(View v) {
-        titleTv = (TextView) v.findViewById(R.id.title_center_text);
-        delayTv = (TextView) v.findViewById(R.id.delay_tv);
         titleTv.setText(R.string.order_delay_delivery);
-        leftIv = v.findViewById(R.id.back);
-//        orderNo = readOrderNoFromDisk();
         requestMycombo();
-//        if (TextUtils.isEmpty(orderNo)) {
-//            disableDelayView(R.string.you_have_not_buy_combo);
-//        } else {
-//            requestGetDelayState(orderNo);
-//        }
     }
 
     @Override
     protected void setWidgetLsn() {
-        leftIv.setOnClickListener(onClickListener);
-        titleTv.setOnClickListener(onClickListener);
-        delayTv.setOnClickListener(onClickListener);
     }
 
-    private View.OnClickListener onClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if (v == leftIv) {
-                popBackStack();
-            } else if (v == delayTv) {
-                if (TextUtils.isEmpty(orderNo)) {
-                    ToastHelper.showShort(getActivity(), R.string.you_have_not_buy_combo);
-                    return;
-                }
-                alertDelay();
-            }
+    @OnClick(R.id.back)
+    void back() {
+        popBackStack();
+    }
+
+    @OnClick(R.id.delay_tv)
+    void doClick() {
+        if (TextUtils.isEmpty(orderNo)) {
+            ToastHelper.showShort(getActivity(), R.string.you_have_not_buy_combo);
+            return;
         }
-    };
+        alertDelay();
+    }
 
     private void alertDelay() {
         final AlertDialog alert = new AlertDialog.Builder(getActivity()).create();
@@ -184,9 +171,9 @@ public class OrderDelayFragment extends BaseFragment {
                 String result = new String(responseBody);
                 DelayEntry entry = JsonUtilsParser.fromJson(result, DelayEntry.class);
                 if (entry != null) {
-                    if (TextUtils.isEmpty(entry.errcode)){
+                    if (TextUtils.isEmpty(entry.errcode)) {
                         successDelay(entry.delayed);
-                    }else {
+                    } else {
                         disableDelayView(R.string.you_have_not_buy_combo);
                     }
                 }

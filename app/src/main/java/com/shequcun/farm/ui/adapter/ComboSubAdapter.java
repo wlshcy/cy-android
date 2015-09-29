@@ -28,6 +28,9 @@ import org.apache.http.Header;
 
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 /**
  * 二级套餐适配器
  * Created by apple on 15/8/13.
@@ -60,16 +63,8 @@ public class ComboSubAdapter extends BaseAdapter {
     public View getView(int position, View view, ViewGroup parent) {
         ViewHolder vh;
         if (view == null) {
-            vh = new ViewHolder();
             view = LayoutInflater.from(mContext).inflate(R.layout.combo_sub_item_ly, null);
-            vh.combo_img = (ImageView) view.findViewById(R.id.combo_img);
-            vh.combo_name = (TextView) view.findViewById(R.id.combo_name);
-            vh.distribution_circle = (TextView) view.findViewById(R.id.distribution_circle);
-            vh.distribution_all_times = (TextView) view.findViewById(R.id.distribution_all_times);
-            vh.total_price = (TextView) view.findViewById(R.id.total_price);
-            vh.choose_dishes = view.findViewById(R.id.choose_dishes);
-            vh.ll_container = (LinearLayout) view.findViewById(R.id.ll_container);
-            vh.market_price_tv = (TextView) view.findViewById(R.id.market_price_tv);
+            vh = new ViewHolder(view);
             view.setTag(vh);
         } else {
             vh = (ViewHolder) view.getTag();
@@ -194,30 +189,40 @@ public class ComboSubAdapter extends BaseAdapter {
     }
 
     class ViewHolder {
+        public ViewHolder(View v) {
+            ButterKnife.bind(this, v);
+        }
+
         /**
          * 二级套餐图片
          */
+        @Bind(R.id.combo_img)
         ImageView combo_img;
+        @Bind(R.id.combo_name)
         TextView combo_name;
         /**
          * 每周配送次数
          */
+        @Bind(R.id.distribution_circle)
         TextView distribution_circle;
         /**
          * 52次/年
          */
+        @Bind(R.id.distribution_all_times)
         TextView distribution_all_times;
         /**
          * 价格
          */
+        @Bind(R.id.total_price)
         TextView total_price;
         /**
          * 去选菜
          */
+        @Bind(R.id.choose_dishes)
         View choose_dishes;
-
+        @Bind(R.id.market_price_tv)
         TextView market_price_tv;
-
+        @Bind(R.id.ll_container)
         LinearLayout ll_container;
 
     }

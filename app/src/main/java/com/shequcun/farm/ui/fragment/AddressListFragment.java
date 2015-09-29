@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 
 /**
  * Created by cong on 15/9/7.
@@ -123,7 +124,6 @@ public class AddressListFragment extends BaseFragment {
 
     @Override
     protected void setWidgetLsn() {
-
         addAddress = LayoutInflater.from(getActivity()).inflate(R.layout.item_add_address, null);
         addAddress.setVisibility(View.GONE);
         addressLv.addHeaderView(addAddress);
@@ -138,11 +138,14 @@ public class AddressListFragment extends BaseFragment {
         if (action == Action.SELECT) {
             adapter.setOnChooseAddressListener(onChooseAddressListener);
         }
-//        addressLv.setOnItemClickListener(onItemClickListener);
-        back.setOnClickListener(onClickListener);
         addAddress.setOnClickListener(onClickListener);
-//        addressLv.setOnItemLongClickListener(onItemLongClickListener);
     }
+
+    @OnClick(R.id.back)
+    void back() {
+        popBackStack();
+    }
+
 
     private AdapterView.OnItemLongClickListener onItemLongClickListener = new AdapterView.OnItemLongClickListener() {
         @Override
@@ -155,9 +158,7 @@ public class AddressListFragment extends BaseFragment {
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (v == back) {
-                popBackStack();
-            } else if (v == addAddress) {
+          if (v == addAddress) {
                 AddressFragment fragment = new AddressFragment();
                 gotoFragmentByAdd(fragment, fragment.getClass());
             }

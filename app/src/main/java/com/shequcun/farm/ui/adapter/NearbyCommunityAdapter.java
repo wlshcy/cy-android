@@ -10,6 +10,9 @@ import android.widget.TextView;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.ZoneEntry;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 
 /**
  * 附近小区Adapter
@@ -17,8 +20,6 @@ import com.shequcun.farm.data.ZoneEntry;
  * @author apple
  */
 public class NearbyCommunityAdapter extends ArrayAdapter<ZoneEntry> {
-
-    private Context mContext;
 
     ZoneEntry data;
 
@@ -28,7 +29,6 @@ public class NearbyCommunityAdapter extends ArrayAdapter<ZoneEntry> {
 
     public NearbyCommunityAdapter(Context mContext) {
         super(mContext, R.layout.nearby_community_item_ly);
-        this.mContext = mContext;
 //        bigFontSize = ResUtil.dip2px(mContext, 18);
 //        smallFontSize = ResUtil.dip2px(mContext, 14);
     }
@@ -42,15 +42,8 @@ public class NearbyCommunityAdapter extends ArrayAdapter<ZoneEntry> {
         data = getItem(position);
         ViewHolder viewHolder;
         if (v == null) {
-            v = LayoutInflater.from(mContext).inflate(
-                    R.layout.nearby_community_item_ly, null);
-            viewHolder = new ViewHolder();
-            viewHolder.community_info = (TextView) v
-                    .findViewById(R.id.community_info);
-            viewHolder.community_address = (TextView) v
-                    .findViewById(R.id.community_address);
-            viewHolder.dist = (TextView) v
-                    .findViewById(R.id.dist_tv);
+            v = LayoutInflater.from(getContext()).inflate(R.layout.nearby_community_item_ly, null);
+            viewHolder = new ViewHolder(v);
             v.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) v.getTag();
@@ -74,9 +67,16 @@ public class NearbyCommunityAdapter extends ArrayAdapter<ZoneEntry> {
     }
 
     class ViewHolder {
+        @Bind(R.id.community_info)
         TextView community_info;
+        @Bind(R.id.community_address)
         TextView community_address;
+        @Bind(R.id.dist_tv)
         TextView dist;
+
+        public ViewHolder(View v) {
+            ButterKnife.bind(this, v);
+        }
     }
 
 }

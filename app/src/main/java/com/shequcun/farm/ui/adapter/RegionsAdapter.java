@@ -11,18 +11,19 @@ import android.widget.TextView;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.RegionEntry;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 
 /**
  * Created by apple check_turn_on 15/7/20.
  */
 public class RegionsAdapter extends ArrayAdapter<RegionEntry> {
-    private Context mContext;
     RegionEntry data;
     boolean isShowChild = true;//是否显示右边的箭头
 
     public RegionsAdapter(Context context) {
         super(context, R.layout.city_region_item_ly);
-        mContext = context;
     }
 
     public void setIsShowChild(boolean isShowChild) {
@@ -34,11 +35,8 @@ public class RegionsAdapter extends ArrayAdapter<RegionEntry> {
         data = getItem(position);
         ViewHolder viewHolder;
         if (v == null) {
-            v = LayoutInflater.from(mContext).inflate(
-                    R.layout.city_region_item_ly, null);
-            viewHolder = new ViewHolder();
-            viewHolder.city_name = (TextView) v.findViewById(R.id.city_name);
-            viewHolder.right_arrow_iv = (ImageView) v.findViewById(R.id.right_arrow_iv);
+            v = LayoutInflater.from(getContext()).inflate(R.layout.city_region_item_ly, null);
+            viewHolder = new ViewHolder(v);
             v.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) v.getTag();
@@ -51,8 +49,14 @@ public class RegionsAdapter extends ArrayAdapter<RegionEntry> {
     }
 
     class ViewHolder {
+        @Bind(R.id.city_name)
         TextView city_name;
+        @Bind(R.id.right_arrow_iv)
         ImageView right_arrow_iv;
+
+        public ViewHolder(View v) {
+            ButterKnife.bind(this,v);
+        }
     }
 
 }

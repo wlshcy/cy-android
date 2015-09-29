@@ -12,6 +12,9 @@ import android.widget.TextView;
 import com.shequcun.farm.R;
 import com.shequcun.farm.ui.adapter.MyOrderViewPagerAdapter;
 
+import butterknife.Bind;
+import butterknife.OnClick;
+
 /**
  * 我的订单
  * Created by apple on 15/8/8.
@@ -31,40 +34,29 @@ public class MyOrderViewPagerFragment extends BaseFragment {
 
     @Override
     protected void initWidget(View v) {
-//        mOrderDataCenter = new MyOrderDataCenter(getActivity());
-        orderPager = (ViewPager) v.findViewById(R.id.orderPager);
-        back = v.findViewById(R.id.back);
-        dishes_tv = (TextView) v.findViewById(R.id.dishes_tv);
-        shopping_tv = (TextView) v.findViewById(R.id.shopping_tv);
         ((TextView) v.findViewById(R.id.title_center_text)).setText(R.string.my_order);
     }
 
     @Override
     protected void setWidgetLsn() {
-        back.setOnClickListener(onClick);
-        shopping_tv.setOnClickListener(onClick);
-        dishes_tv.setOnClickListener(onClick);
         orderPager.addOnPageChangeListener(onPageChangeListener);
         orderPager.setOffscreenPageLimit(1);
         buildAdapter();
     }
 
-    View.OnClickListener onClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if (v == back)
-                popBackStack();
-            else if (v == dishes_tv)
-                orderPager.setCurrentItem(0);
-            else if (v == shopping_tv)
-                orderPager.setCurrentItem(1);
-        }
-    };
+    @OnClick(R.id.back)
+    void back() {
+        popBackStack();
+    }
+
+    @OnClick({R.id.dishes_tv, R.id.shopping_tv})
+    void doClick(View v) {
+        orderPager.setCurrentItem(v == dishes_tv ? 0 : 1);
+    }
 
     void buildAdapter() {
         adpter = new MyOrderViewPagerAdapter(getChildFragmentManager());
         orderPager.setAdapter(adpter);
-//        mOrderDataCenter.requestMyOrder(adpter, 0, 20);
     }
 
     ViewPager.OnPageChangeListener onPageChangeListener = new ViewPager.OnPageChangeListener() {
@@ -100,14 +92,14 @@ public class MyOrderViewPagerFragment extends BaseFragment {
     /**
      * 菜品订单
      */
+    @Bind(R.id.dishes_tv)
     TextView dishes_tv;
     /**
      * 购物订单
      */
+    @Bind(R.id.shopping_tv)
     TextView shopping_tv;
     MyOrderViewPagerAdapter adpter;
-    View back;
+    @Bind(R.id.orderPager)
     ViewPager orderPager;
-
-//    MyOrderDataCenter mOrderDataCenter;
 }
