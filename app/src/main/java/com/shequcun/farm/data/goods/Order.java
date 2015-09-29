@@ -106,14 +106,16 @@ public class Order {
         if (optionItems == null) {
             optionItems = new ArrayList<DishesItemEntry>();
         }
-        optionItems.add(item);
+        if (!optionItems.contains(item))
+            optionItems.add(item);
     }
 
     public void removeOptionItem(DishesItemEntry item) {
         if (optionItems == null || optionItems.size() <= 0) {
             return;
         }
-        optionItems.remove(item);
+        if (optionItems.contains(item))
+            optionItems.remove(item);
     }
 
 

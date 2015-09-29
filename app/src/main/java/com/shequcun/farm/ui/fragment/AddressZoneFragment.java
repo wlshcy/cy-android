@@ -16,6 +16,7 @@ import com.shequcun.farm.util.ToastHelper;
 import com.shequcun.farm.util.Utils;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 
 /**
  * Created by cong on 15/9/7.
@@ -23,10 +24,6 @@ import butterknife.Bind;
 public class AddressZoneFragment extends BaseFragment {
     @Bind(R.id.zone_edit)
     EditText zoneEt;
-    @Bind(R.id.save_tv)
-    View saveTv;
-    @Bind(R.id.back)
-    View back;
     private String zone;
     @Bind(R.id.title_center_text)
     TextView titleTv;
@@ -49,27 +46,25 @@ public class AddressZoneFragment extends BaseFragment {
     @Override
     protected void setWidgetLsn() {
         titleTv.setText(R.string.input_zone_address);
-        saveTv.setOnClickListener(onClickListener);
-        back.setOnClickListener(onClickListener);
     }
 
-    private View.OnClickListener onClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if (v == back) {
-                checkQuit();
-            } else if (v == saveTv) {
-                if (checkInput()) {
-                    Utils.hideVirtualKeyboard(getActivity(), v);
-                    IntentUtil.sendUpdateMyAddressMsg(getActivity(), zone);
-                    popBackStack();
-                    popBackStack();
-//                    clearStack();
-//                    gotoFragment(buildBundle(comName, addresses), R.id.mainpage_ly, new AddressFragment(), AddressFragment.class.getName());
-                }
-            }
+    @OnClick(R.id.save_tv)
+    void doSave() {
+        if (checkInput()) {
+            IntentUtil.sendUpdateMyAddressMsg(getActivity(), zone);
+            popBackStack();
+            popBackStack();
         }
-    };
+    }
+
+    @OnClick(R.id.back)
+    void back() {
+        if (checkInput1())
+            alertQuitEdit();
+        else
+            popBackStack();
+    }
+
 
     private boolean checkInput() {
         zone = zoneEt.getText().toString();
@@ -80,14 +75,14 @@ public class AddressZoneFragment extends BaseFragment {
         return true;
     }
 
-    private void checkQuit(){
-        if (checkInput1())
-            alertQuitEdit();
-        else
-            popBackStack();
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Utils.hideVirtualKeyboard(getActivity(), zoneEt);
     }
 
-    private boolean checkInput1(){
+    private boolean checkInput1() {
         String content = zoneEt.getText().toString();
         return !TextUtils.isEmpty(content);
     }

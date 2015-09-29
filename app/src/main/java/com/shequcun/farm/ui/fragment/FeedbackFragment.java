@@ -25,6 +25,7 @@ import org.apache.http.Header;
 import org.json.JSONObject;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 
 /**
  * Created by apple on 15/8/22.
@@ -48,19 +49,12 @@ public class FeedbackFragment extends BaseFragment {
 
     @Override
     protected void setWidgetLsn() {
-        back.setOnClickListener(onClick);
-        feedback_btn.setOnClickListener(onClick);
     }
 
-    AvoidDoubleClickListener onClick = new AvoidDoubleClickListener() {
-        @Override
-        public void onViewClick(View v) {
-            if (v == back)
-                checkQuit();
-            else if (v == feedback_btn)
-                uploadFeedbackToServer();
-        }
-    };
+    @OnClick(R.id.back)
+    void back() {
+        checkQuit();
+    }
 
     @Override
     public void onDestroyView() {
@@ -76,8 +70,7 @@ public class FeedbackFragment extends BaseFragment {
     }
 
     private boolean checkInput() {
-        String content = feedback_et.getText().toString();
-        return !TextUtils.isEmpty(content);
+        return !TextUtils.isEmpty(feedback_et.getText().toString());
     }
 
     private void alertQuitEdit() {
@@ -106,6 +99,7 @@ public class FeedbackFragment extends BaseFragment {
                 });
     }
 
+    @OnClick(R.id.feedback_btn)
     void uploadFeedbackToServer() {
         String feedback = feedback_et.getText().toString();
         if (TextUtils.isEmpty(feedback)) {
@@ -168,8 +162,6 @@ public class FeedbackFragment extends BaseFragment {
         });
     }
 
-    @Bind(R.id.back)
-    View back;
     @Bind(R.id.feedback_et)
     EditText feedback_et;
     @Bind(R.id.feedback_btn)

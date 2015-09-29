@@ -31,6 +31,8 @@ import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
 
 import java.util.List;
 
+import butterknife.Bind;
+
 /**
  * 浏览图片
  * Created by apple on 15/8/11.
@@ -43,8 +45,6 @@ public class BrowseImageFragment extends BaseFragment {
 
     @Override
     protected void initWidget(View v) {
-        mProgressBar = (ProgressBar) v.findViewById(R.id.progressbar);
-        mViewPager = (ExtendedViewPager) v.findViewById(R.id.view_pager);
         mViewPager.setAdapter(new TouchImageAdapter());
         mViewPager.setCurrentItem(index);
         initTips(v);
@@ -320,10 +320,11 @@ public class BrowseImageFragment extends BaseFragment {
             .showImageOnFail(R.drawable.grey_def_bg).cacheInMemory(true).build();
 
     private int index = 0;
-    private ProgressBar mProgressBar;
+    @Bind(R.id.progressbar)
+    ProgressBar mProgressBar;
     private ImageView[] tips;
-
-    private ExtendedViewPager mViewPager;
+    @Bind(R.id.view_pager)
+    ExtendedViewPager mViewPager;
     //    private Bitmap saveBitmap;
     public static final String KEY_PHOTOS = "photos";
     public static final String KEY_INDEX = "index";

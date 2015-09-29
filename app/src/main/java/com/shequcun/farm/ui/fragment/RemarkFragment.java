@@ -17,6 +17,9 @@ import com.shequcun.farm.R;
 import com.shequcun.farm.util.IntentUtil;
 import com.shequcun.farm.util.Utils;
 
+import butterknife.Bind;
+import butterknife.OnClick;
+
 /**
  * 添加备注页
  * Created by mac on 15/9/9.
@@ -36,11 +39,8 @@ public class RemarkFragment extends BaseFragment {
 
     @Override
     protected void initWidget(View v) {
-        back = v.findViewById(R.id.back);
-        leave_msg_to_farm = (EditText) v.findViewById(R.id.leave_msg_to_farm);
         ((TextView) v.findViewById(R.id.title_center_text)).setText(R.string.add_remark);
         leave_msg_to_farm.setText(getArguments().getString("RemarkTip"));
-        save = (TextView) v.findViewById(R.id.title_right_text);
         ColorStateList green =
                 getActivity().getResources().getColorStateList(R.color.green_2bbc6a);
         save.setTextColor(green);
@@ -49,54 +49,34 @@ public class RemarkFragment extends BaseFragment {
 
     @Override
     protected void setWidgetLsn() {
-        back.setOnClickListener(onClick);
-        save.setOnClickListener(onClick);
     }
 
-    View.OnClickListener onClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if (v == back) {
-                checkQuit();
-            } else if (v == save) {
-
-
-                if (lsn != null) {
-                    lsn.updateRemarkWidget(leave_msg_to_farm.getText().toString());
-                }
-
-//                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-//                String tag = fragmentManager
-//                        .getBackStackEntryAt(
-//                                fragmentManager
-//                                        .getBackStackEntryCount() - 1)
-//                        .getName();
-//                Log.d("This is your Top Fragment name: ", "" + tag);
-
-
-//                FragmentManager fragManager = getActivity().getSupportFragmentManager();
-//                int count = fragManager.getBackStackEntryCount();
-//                Fragment frag = fragManager.getFragments().get(count > 0 ? count - 2 : count);
-
-                popBackStack();
+    @OnClick({R.id.back, R.id.title_right_text})
+    void back(View v) {
+        if (v == save) {
+            if (lsn != null) {
+                lsn.updateRemarkWidget(leave_msg_to_farm.getText().toString());
             }
+            popBackStack();
+            return;
         }
-    };
+        checkQuit();
+    }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Utils.hideVirtualKeyboard(getActivity(), back);
+        Utils.hideVirtualKeyboard(getActivity(), save);
     }
 
-    private void checkQuit(){
+    private void checkQuit() {
         if (checkInput())
             alertQuitEdit();
         else
             popBackStack();
     }
 
-    private boolean checkInput(){
+    private boolean checkInput() {
         String content = leave_msg_to_farm.getText().toString();
         return !TextUtils.isEmpty(content);
     }
@@ -137,7 +117,8 @@ public class RemarkFragment extends BaseFragment {
         void updateRemarkWidget(String remark);
     }
 
-    View back;
+    @Bind(R.id.leave_msg_to_farm)
     EditText leave_msg_to_farm;
+    @Bind(R.id.title_right_text)
     TextView save;
 }

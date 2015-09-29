@@ -12,7 +12,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -33,6 +32,10 @@ import com.shequcun.farm.util.ToastHelper;
 import org.apache.http.Header;
 import org.json.JSONObject;
 
+import butterknife.Bind;
+import butterknife.OnClick;
+import butterknife.OnItemClick;
+
 /**
  * 设置
  * Created by apple on 15/8/22.
@@ -52,17 +55,12 @@ public class SetFragment extends BaseFragment {
 
     @Override
     protected void initWidget(View v) {
-        mLv = (ListView) v.findViewById(R.id.mLv);
-        exit_login = v.findViewById(R.id.exit_login);
-        back = v.findViewById(R.id.back);
         ((TextView) v.findViewById(R.id.title_center_text)).setText(R.string.set);
     }
 
+
     @Override
     protected void setWidgetLsn() {
-        mLv.setOnItemClickListener(onItemClick);
-        back.setOnClickListener(onClick);
-        exit_login.setOnClickListener(onClick);
         buildAdapter();
     }
 
@@ -73,31 +71,6 @@ public class SetFragment extends BaseFragment {
         mLv.setAdapter(adapter);
     }
 
-    private AdapterView.OnItemClickListener onItemClick = new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            if (adapter == null || mLv == null)
-                return;
-
-            switch (position - mLv.getHeaderViewsCount()) {
-                case 0://關於有菜
-                    gotoFragmentByAdd(buildBundle("https://store.shequcun.com/about/ycabout", R.string.about), R.id.mainpage_ly, new SetWebViewFragment(), SetWebViewFragment.class.getName());
-                    break;
-                case 1://檢查更新
-                    checkVersion();
-                    break;
-                case 2://幫助
-                    gotoFragmentByAdd(buildBundle("https://store.shequcun.com/help/ychelp", R.string.help), R.id.mainpage_ly, new SetWebViewFragment(), SetWebViewFragment.class.getName());
-//                    ToastHelper.showShort(getActivity(), "坐等关于有菜帮助的内容");
-                    break;
-                case 3://問題反饋
-                    gotoFragmentByAdd(R.id.mainpage_ly, new FeedbackFragment(), FeedbackFragment.class.getName());
-                    break;
-            }
-
-        }
-    };
-
 
     Bundle buildBundle(String url, int tId) {
         Bundle bundle = new Bundle();
@@ -105,17 +78,6 @@ public class SetFragment extends BaseFragment {
         bundle.putInt("TitleId", tId);
         return bundle;
     }
-
-
-    View.OnClickListener onClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if (v == back)
-                popBackStack();
-            else if (exit_login == v)
-                showExitDlg();
-        }
-    };
 
 
     void checkVersion() {
@@ -210,8 +172,8 @@ public class SetFragment extends BaseFragment {
         dialog.show();
     }
 
-
-    private void showExitDlg() {
+    @OnClick(R.id.exit_login)
+    void showExitDlg() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("提示");
         builder.setMessage("是否退出登录");
@@ -228,7 +190,8 @@ public class SetFragment extends BaseFragment {
     /**
      * 注销
      */
-    private void doLogout() {
+
+    void doLogout() {
         RequestParams params = new RequestParams();
         params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
 
@@ -288,8 +251,34 @@ public class SetFragment extends BaseFragment {
         });
     }
 
+    @OnClick(R.id.back)
+    void back() {
+        popBackStack();
+    }
+
+    @OnItemClick(R.id.mLv)
+    void onItemClick(int pos) {
+        if (adapter == null || mLv == null)
+            return;
+
+        switch (pos - mLv.getHeaderViewsCount()) {
+            case 0://關於有菜
+                gotoFragmentByAdd(buildBundle("https://store.shequcun.com/about/ycabout", R.string.about), R.id.mainpage_ly, new SetWebViewFragment(), SetWebViewFragment.class.getName());
+                break;
+            case 1://檢查更新
+                checkVersion();
+                break;
+            case 2://幫助
+                gotoFragmentByAdd(buildBundle("https://store.shequcun.com/help/ychelp", R.string.help), R.id.mainpage_ly, new SetWebViewFragment(), SetWebViewFragment.class.getName());
+//                    ToastHelper.showShort(getActivity(), "坐等关于有菜帮助的内容");
+                break;
+            case 3://問題反饋
+                gotoFragmentByAdd(R.id.mainpage_ly, new FeedbackFragment(), FeedbackFragment.class.getName());
+                break;
+        }
+    }
+
     MyAdapter adapter;
+    @Bind(R.id.mLv)
     ListView mLv;
-    View exit_login;
-    View back;
 }

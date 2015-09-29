@@ -31,6 +31,8 @@ import org.apache.http.Header;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.OnClick;
+import butterknife.OnItemClick;
 
 /**
  * 套餐页面
@@ -55,45 +57,36 @@ public class ComboFragment extends BaseFragment {
 
     @Override
     protected void setWidgetLsn() {
-        mListView.setOnItemClickListener(onItemClick);
-        back.setOnClickListener(onClick);
         pView.setMode(PullToRefreshBase.Mode.PULL_FROM_END);
-//        pView.setMode(PullToRefreshBase.Mode.DISABLED);
         pView.setOnRefreshListener(onRefrshLsn);
         buildAdapter();
         requestComboList();
     }
 
+    @OnItemClick(R.id.mListView)
+    void OnItemClick(int position) {
+        if (adapter == null)
+            return;
+        ComboEntry entry = adapter.getItem(position);
+        if (entry == null)
+            return;
+        if (buildIsMyComboClick(position)) {
+            gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new ChooseDishesFragment(), ChooseDishesFragment.class.getName());
+        } else
+            gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new ComboSecondFragment(), ComboSecondFragment.class.getName());
+    }
 
-    View.OnClickListener onClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if (v == back) {
-                popBackStack();
-            }
-        }
-    };
+    @OnClick(R.id.back)
+    void back() {
+        popBackStack();
+    }
+
 
     void buildAdapter() {
         if (adapter == null)
             adapter = new ComboAdapter(getActivity());
         mListView.setAdapter(adapter);
     }
-
-    private AdapterView.OnItemClickListener onItemClick = new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            if (adapter == null)
-                return;
-            ComboEntry entry = adapter.getItem(position);
-            if (entry == null)
-                return;
-            if (buildIsMyComboClick(position)) {
-                gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new ChooseDishesFragment(), ChooseDishesFragment.class.getName());
-            } else
-                gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new ComboSecondFragment(), ComboSecondFragment.class.getName());
-        }
-    };
 
     Bundle buildBundle(ComboEntry entry) {
         Bundle bundle = new Bundle();
@@ -215,8 +208,6 @@ public class ComboFragment extends BaseFragment {
     ComboAdapter adapter;
     @Bind(R.id.mListView)
     ListView mListView;
-    @Bind(R.id.back)
-    View back;
     @Bind(R.id.pView)
     PullToRefreshScrollView pView;
 }

@@ -12,6 +12,7 @@ import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 
 /**
  * 产品介绍
@@ -36,22 +37,19 @@ public class ComboMongoliaLayerFragment extends BaseFragment {
 
     @Override
     protected void setWidgetLsn() {
-        close.setOnClickListener(onClick);
-        look_combo_detail_tv.setOnClickListener(onClick);
     }
 
-    AvoidDoubleClickListener onClick = new AvoidDoubleClickListener() {
-        @Override
-        public void onViewClick(View v) {
-            PersistanceManager.saveIsShowLookupComboDetails(getActivity(), buildKey(), false);
-            if (look_combo_detail_tv == v) {
-                popBackStack();
-                gotoFragmentByAdd(getArguments(), R.id.mainpage_ly, new WebViewFragment(), WebViewFragment.class.getName());
-            } else if (close == v) {
-                popBackStack();
-            }
-        }
-    };
+    @OnClick(R.id.close)
+    void back() {
+        popBackStack();
+    }
+
+    @OnClick(R.id.look_combo_detail_tv)
+    void lookComboDetail() {
+        PersistanceManager.saveIsShowLookupComboDetails(getActivity(), buildKey(), false);
+        popBackStack();
+        gotoFragmentByAdd(getArguments(), R.id.mainpage_ly, new WebViewFragment(), WebViewFragment.class.getName());
+    }
 
 
     private String buildKey() {
@@ -66,11 +64,4 @@ public class ComboMongoliaLayerFragment extends BaseFragment {
     }
 
 
-    /**
-     * 查看详情
-     */
-    @Bind(R.id.look_combo_detail_tv)
-    View look_combo_detail_tv;
-    @Bind(R.id.close)
-    View close;
 }

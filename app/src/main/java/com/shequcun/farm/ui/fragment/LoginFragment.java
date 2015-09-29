@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -30,6 +31,7 @@ import com.shequcun.farm.util.Utils;
 import org.apache.http.Header;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 
 /**
  * 登录页面
@@ -53,22 +55,30 @@ public class LoginFragment extends BaseFragment {
         ((TextView) v.findViewById(R.id.title_center_text)).setText(R.string.login);
     }
 
-    /**
-     * 鉴权
-     */
-    private void doAuthInit() {
 
-//        String cookieValue = PersistanceManager.getCookieValue(getActivity());
-//        if (!TextUtils.isEmpty(cookieValue)) {
-//            doGetSnsCode();
-//            return;
-//        }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        stopTime();
+    }
 
+    @Override
+    protected void setWidgetLsn() {
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+    }
+
+    @OnClick(R.id.back)
+    void back(View v) {
+        Utils.hideVirtualKeyboard(getActivity(), v);
+        popBackStack();
+    }
+
+    @OnClick(R.id.obtain_verification_code)
+    void doGetSmsCode() {
         final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
         HttpRequestUtil.getHttpClient(getActivity()).get(
                 LocalParams.getBaseUrl() + "auth/init",
                 new AsyncHttpResponseHandler() {
-
                     @Override
                     public void onStart() {
                         super.onStart();
@@ -94,38 +104,12 @@ public class LoginFragment extends BaseFragment {
 
                     @Override
                     public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
-
                     }
                 });
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        stopTime();
-    }
-
-    @Override
-    protected void setWidgetLsn() {
-        back.setOnClickListener(onClick);
-        login.setOnClickListener(onClick);
-        obtain_verification_code.setOnClickListener(onClick);
-    }
-
-    AvoidDoubleClickListener onClick = new AvoidDoubleClickListener() {
-        @Override
-        public void onViewClick(View v) {
-            if (v == back) {
-                Utils.hideVirtualKeyboard(getActivity(), v);
-                popBackStack();
-            } else if (v == obtain_verification_code)
-                doAuthInit();
-            else if (v == login)
-                doLogin();
-        }
-    };
-
-    void doLogin() {
+    @OnClick(R.id.login)
+    void doLogin(View v) {
         final String mobileNumber = input_mobile_tel.getText().toString();
         if (TextUtils.isEmpty(mobileNumber) || mobileNumber.length() != 11) {
             ToastHelper.showShort(getActivity(), R.string.mobile_phone_error);
@@ -136,7 +120,7 @@ public class LoginFragment extends BaseFragment {
             ToastHelper.showShort(getActivity(), R.string.sns_code_error);
             return;
         }
-        Utils.hideVirtualKeyboard(getActivity(), login);
+        Utils.hideVirtualKeyboard(getActivity(), v);
         String xXsrfToken = PersistanceManager.getCookieValue(getActivity());
         RequestParams params = new RequestParams();
         params.add("mobile", mobileNumber);
@@ -188,6 +172,7 @@ public class LoginFragment extends BaseFragment {
             });
         }
     }
+
 
     /**
      * 获取验证码
@@ -255,12 +240,8 @@ public class LoginFragment extends BaseFragment {
     }
 
     TimeCount tCount;
-    @Bind(R.id.back)
-    View back;
     @Bind(R.id.obtain_verification_code)
     Button obtain_verification_code;
-    @Bind(R.id.login)
-    View login;
     @Bind(R.id.sms_code_et)
     EditText sms_code_et;
     @Bind(R.id.input_mobile_tel)
