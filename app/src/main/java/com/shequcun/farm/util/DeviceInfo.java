@@ -6,6 +6,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.telephony.TelephonyManager;
+import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
 import java.util.UUID;
@@ -69,8 +70,17 @@ public class DeviceInfo {
         return deviceId;
     }
 
-    public static int getDeviceWidth(Activity context){
-        WindowManager wm = context.getWindowManager();
-        return wm.getDefaultDisplay().getWidth();
+    public static int getDeviceWidth(Activity context) {
+        DisplayMetrics metrics = new DisplayMetrics();
+        context.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        return metrics.widthPixels;
     }
+
+    public static int getDeviceHeight(Activity context) {
+        DisplayMetrics metrics = new DisplayMetrics();
+        context.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        return metrics.heightPixels;
+    }
+
+
 }
