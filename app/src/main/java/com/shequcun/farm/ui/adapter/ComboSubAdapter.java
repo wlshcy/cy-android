@@ -21,6 +21,7 @@ import com.shequcun.farm.R;
 import com.shequcun.farm.data.ComboEntry;
 import com.shequcun.farm.data.FixedComboEntry;
 import com.shequcun.farm.data.FixedListComboEntry;
+import com.shequcun.farm.util.Constrants;
 import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
@@ -75,9 +76,17 @@ public class ComboSubAdapter extends BaseAdapter {
 
         if (vh != null) {
             if (vh.combo_img != null && entry.wimgs != null && entry.wimgs.length > 0) {
-                String url = TextUtils.isEmpty(entry.wimgs[position]) ? entry.img : entry.wimgs[position];
-                vh.imgProgress.setTag(position);
-                ImageLoader.getInstance().displayImage(url + "?imageview2/2/w/180", vh.combo_img, new InnerImageLoadingListener(vh.imgProgress,position));
+                String url = (TextUtils.isEmpty(entry.wimgs[position]) ? entry.img : entry.wimgs[position])+"?imageview2/2/w/180";
+                if (vh.lastImageUrl == null || !vh.lastImageUrl.equals(url)
+                        || vh.combo_img.getDrawable() == null) {
+                    vh.imgProgress.setTag(position);
+                    /*刷新图片*/
+                    InnerImageLoadingListener innerImageLoadingListener = new InnerImageLoadingListener(vh.imgProgress,position);
+                    innerImageLoadingListener.setViewHolder(vh);
+                    ImageLoader.getInstance().displayImage(url, vh.combo_img, innerImageLoadingListener);
+                } else {
+                    /*不需要重新加载图片*/
+                }
             }
 
             if (vh.combo_name != null) {
@@ -230,12 +239,13 @@ public class ComboSubAdapter extends BaseAdapter {
         TextView market_price_tv;
         @Bind(R.id.ll_container)
         LinearLayout ll_container;
-
+        String lastImageUrl;
     }
 
     class InnerImageLoadingListener implements ImageLoadingListener {
         private View imgProgress;
         private int position;
+        private ViewHolder viewHolder;
 
         public InnerImageLoadingListener(View imgProgress, int position) {
             this.imgProgress = imgProgress;
@@ -250,16 +260,22 @@ public class ComboSubAdapter extends BaseAdapter {
         @Override
         public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
             setProgress(false);
+            if (viewHolder != null)
+                this.viewHolder.lastImageUrl = null;
         }
 
         @Override
         public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
             setProgress(false);
+            if (viewHolder != null)
+                this.viewHolder.lastImageUrl = imageUri;
         }
 
         @Override
         public void onLoadingCancelled(String imageUri, View view) {
             setProgress(false);
+            if (viewHolder != null)
+                this.viewHolder.lastImageUrl = null;
         }
 
         private void setProgress(boolean visible) {
@@ -273,6 +289,10 @@ public class ComboSubAdapter extends BaseAdapter {
             else
                 imgProgress.setVisibility(View.GONE);
 
+        }
+
+        public void setViewHolder(ViewHolder viewHolder) {
+            this.viewHolder = viewHolder;
         }
     }
 }

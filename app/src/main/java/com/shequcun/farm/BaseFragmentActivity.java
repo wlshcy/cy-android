@@ -18,6 +18,7 @@ import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 import com.nostra13.universalimageloader.utils.StorageUtils;
 import com.shequcun.farm.ui.fragment.BaseFragment;
 import com.shequcun.farm.ui.fragment.FragmentMgrInterface;
+import com.shequcun.farm.util.Constrants;
 import com.shequcun.farm.util.HttpRequestUtil;
 
 
@@ -94,7 +95,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements
                         // default
                 .imageDecoder(new BaseImageDecoder(false))
                         // default
-                .defaultDisplayImageOptions(DisplayImageOptions.createSimple())
+//                .defaultDisplayImageOptions(DisplayImageOptions.createSimple())
                         // default
                 .defaultDisplayImageOptions(imageOptions).build();
 
