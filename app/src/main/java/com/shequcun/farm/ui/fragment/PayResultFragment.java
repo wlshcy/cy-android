@@ -34,6 +34,7 @@ import com.shequcun.farm.util.LocalParams;
 import org.apache.http.Header;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 
 /**
  * 支付结果界面
@@ -67,11 +68,11 @@ public class PayResultFragment extends BaseFragment {
 
     @Override
     protected void setWidgetLsn() {
-//        buildAdapter();
-        back.setOnClickListener(onClick);
-//        IntentUtil.sendUpdateComboMsg(getActivity());
-//        if (isRecomDishes())
-//            requestRecomendDishes();
+    }
+
+    @OnClick(R.id.back)
+    void back(){
+        clearStack();
     }
 
     @Override
@@ -109,14 +110,7 @@ public class PayResultFragment extends BaseFragment {
         return false;
     }
 
-    AvoidDoubleClickListener onClick = new AvoidDoubleClickListener() {
-        @Override
-        public void onViewClick(View v) {
-            if (v == back) {
-                clearStack();
-            }
-        }
-    };
+
 
 //    void buildAdapter() {
 //        if (adapter == null)

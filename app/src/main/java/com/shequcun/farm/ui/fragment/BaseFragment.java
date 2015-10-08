@@ -102,7 +102,13 @@ public abstract class BaseFragment extends Fragment {
      * 出栈
      */
     public void popBackStack() {
-        getActivity().getSupportFragmentManager().popBackStack();
+        FragmentActivity mAct = getActivity();
+        if (mAct != null) {
+            FragmentManager fMgr = mAct.getSupportFragmentManager();
+            if (fMgr != null)
+                fMgr.popBackStack();
+        }
+//        getActivity().getSupportFragmentManager().;
     }
 
     public void clearStack() {

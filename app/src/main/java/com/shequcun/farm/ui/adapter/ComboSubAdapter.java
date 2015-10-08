@@ -79,8 +79,10 @@ public class ComboSubAdapter extends BaseAdapter {
                 String url = (TextUtils.isEmpty(entry.wimgs[position]) ? entry.img : entry.wimgs[position])+"?imageview2/2/w/180";
                 if (vh.lastImageUrl == null || !vh.lastImageUrl.equals(url)
                         || vh.combo_img.getDrawable() == null) {
+                    vh.imgProgress.setTag(position);
                     /*刷新图片*/
-                    InnerImageLoadingListener innerImageLoadingListener = new InnerImageLoadingListener(vh);
+                    InnerImageLoadingListener innerImageLoadingListener = new InnerImageLoadingListener(vh.imgProgress,position);
+                    innerImageLoadingListener.setViewHolder(vh);
                     ImageLoader.getInstance().displayImage(url, vh.combo_img, innerImageLoadingListener);
                 } else {
                     /*不需要重新加载图片*/
@@ -209,6 +211,8 @@ public class ComboSubAdapter extends BaseAdapter {
          */
         @Bind(R.id.combo_img)
         ImageView combo_img;
+        @Bind(R.id.imgProgress)
+        View imgProgress;
         @Bind(R.id.combo_name)
         TextView combo_name;
         /**
@@ -239,32 +243,56 @@ public class ComboSubAdapter extends BaseAdapter {
     }
 
     class InnerImageLoadingListener implements ImageLoadingListener {
+        private View imgProgress;
+        private int position;
         private ViewHolder viewHolder;
 
-        public InnerImageLoadingListener(ViewHolder viewHolder) {
-            this.viewHolder = viewHolder;
+        public InnerImageLoadingListener(View imgProgress, int position) {
+            this.imgProgress = imgProgress;
+            this.position = position;
         }
 
         @Override
         public void onLoadingStarted(String imageUri, View view) {
+            setProgress(true);
         }
 
         @Override
         public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+            setProgress(false);
             if (viewHolder != null)
                 this.viewHolder.lastImageUrl = null;
         }
 
         @Override
         public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+            setProgress(false);
             if (viewHolder != null)
                 this.viewHolder.lastImageUrl = imageUri;
         }
 
         @Override
         public void onLoadingCancelled(String imageUri, View view) {
+            setProgress(false);
             if (viewHolder != null)
                 this.viewHolder.lastImageUrl = null;
+        }
+
+        private void setProgress(boolean visible) {
+            if (imgProgress.getTag() == null) return;
+            if (!(imgProgress.getTag() instanceof Integer)) return;
+            if ((int) imgProgress.getTag() != position) return;
+            /*表明已经加载完毕*/
+            if (imgProgress == null) return;
+            if (visible)
+                imgProgress.setVisibility(View.VISIBLE);
+            else
+                imgProgress.setVisibility(View.GONE);
+
+        }
+
+        public void setViewHolder(ViewHolder viewHolder) {
+            this.viewHolder = viewHolder;
         }
     }
 }

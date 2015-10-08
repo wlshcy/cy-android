@@ -22,6 +22,9 @@ import com.shequcun.farm.data.ComboEntry;
 import com.shequcun.farm.dlg.ConsultationDlg;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
 
+import butterknife.Bind;
+import butterknife.OnClick;
+
 /**
  * Created by apple on 15/8/20.
  */
@@ -39,31 +42,24 @@ public class WebViewFragment extends BaseFragment {
 
     @Override
     protected void initWidget(View v) {
-        mWebView = (WebView) v.findViewById(R.id.mWebView);
-        mProgressBar = (SeekBar) v.findViewById(R.id.seekbar);
-        back = v.findViewById(R.id.back);
         ((TextView) v.findViewById(R.id.title_center_text)).setText(R.string.combo_introduce);
-        right = (TextView) v.findViewById(R.id.title_right_text);
-        right.setText(R.string.consultation);
+        ((TextView) v.findViewById(R.id.title_right_text)).setText(R.string.consultation);
     }
 
     @Override
     protected void setWidgetLsn() {
-        back.setOnClickListener(onClick);
-        right.setOnClickListener(onClick);
         setWebViewValue();
     }
 
-    AvoidDoubleClickListener onClick = new AvoidDoubleClickListener() {
-        @Override
-        public void onViewClick(View v) {
-            if (v == back)
-                popBackStack();
-            else if (v == right) {
-                ConsultationDlg.showCallTelDlg(getActivity());
-            }
-        }
-    };
+    @OnClick(R.id.back)
+    void back() {
+        popBackStack();
+    }
+
+    @OnClick(R.id.title_right_text)
+    void doClick() {
+        ConsultationDlg.showCallTelDlg(getActivity());
+    }
 
     String[] buildUrl() {
         Bundle bundle = getArguments();
@@ -73,11 +69,11 @@ public class WebViewFragment extends BaseFragment {
         if (entry == null)
             return null;
         String tiles[] = entry.tiles;
-            return tiles;
+        return tiles;
     }
 
-    private String getHtml(String imgs[]){
-        if (imgs==null||imgs.length<=0){
+    private String getHtml(String imgs[]) {
+        if (imgs == null || imgs.length <= 0) {
             return null;
         }
         StringBuffer s = new StringBuffer();
@@ -95,7 +91,7 @@ public class WebViewFragment extends BaseFragment {
                 "</head>\n" +
                 "<body>\n" +
                 "<div class=\"container\">\n");
-        for (String img:imgs){
+        for (String img : imgs) {
             s.append("<img v-repeat=\"imgs\" class=\"lazy img-responsive\" src=\"");
             s.append(img);
             s.append("\"alt=\"\"/>");
@@ -120,7 +116,7 @@ public class WebViewFragment extends BaseFragment {
         settings.setUseWideViewPort(true);
 
         String htmlUrl = getHtml(buildUrl());
-        if (htmlUrl==null)return;
+        if (htmlUrl == null) return;
         mWebView.loadData(htmlUrl, "text/html", "UTF-8");
 
 //        mWebView.loadUrl(buildUrl());
@@ -182,12 +178,10 @@ public class WebViewFragment extends BaseFragment {
             }
         }
     };
-
-
+    @Bind(R.id.mWebView)
     WebView mWebView;
+    @Bind(R.id.seekbar)
+    SeekBar mProgressBar;
     final int PROGRESS_LOADING = 1;
     final int PROGRESS_SUCCESS = 2;
-    SeekBar mProgressBar;
-    TextView right;
-    View back;
 }

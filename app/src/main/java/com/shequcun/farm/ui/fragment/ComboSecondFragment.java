@@ -15,6 +15,8 @@ import com.shequcun.farm.ui.adapter.ComboSubAdapter;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
 
 import butterknife.Bind;
+import butterknife.OnClick;
+import butterknife.OnItemClick;
 
 
 /**
@@ -41,31 +43,21 @@ public class ComboSecondFragment extends BaseFragment {
 
     @Override
     protected void setWidgetLsn() {
-        back.setOnClickListener(onClick);
-        mLv.setOnItemClickListener(onItemLsn);
         buildAdapter();
     }
 
-    AvoidDoubleClickListener onClick = new AvoidDoubleClickListener() {
-        @Override
-        public void onViewClick(View v) {
-            if (v == back)
-                popBackStack();
+    @OnClick(R.id.back)
+    void back() {
+        popBackStack();
+    }
+
+    @OnItemClick(R.id.mLv)
+    void OnItemClick(int pos) {
+        if (entry != null) {
+            entry.setPosition(pos);
+            gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new ChooseDishesFragment(), ChooseDishesFragment.class.getName());
         }
-    };
-
-
-    AdapterView.OnItemClickListener onItemLsn = new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-            if (entry != null) {
-                entry.setPosition(position);
-                gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new ChooseDishesFragment(), ChooseDishesFragment.class.getName());
-            }
-        }
-    };
-
-
+    }
     void buildAdapter() {
         buildComboEntry();
         if (adapter == null)
@@ -90,7 +82,5 @@ public class ComboSecondFragment extends BaseFragment {
     @Bind(R.id.mLv)
     ListView mLv;
     ComboEntry entry;
-    @Bind(R.id.back)
-    View back;
     ComboSubAdapter adapter;
 }

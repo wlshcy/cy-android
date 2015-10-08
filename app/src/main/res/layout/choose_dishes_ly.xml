@@ -73,21 +73,20 @@
                     android:layout_height="wrap_content"
                     android:background="#f7f7f6"
                     android:gravity="center_vertical"
+                    android:lineSpacingExtra="3dp"
+                    android:lineSpacingMultiplier="1.2"
                     android:paddingBottom="@dimen/px10"
                     android:paddingLeft="@dimen/px24"
                     android:paddingRight="@dimen/px24"
                     android:paddingTop="@dimen/px10"
-                    android:visibility="gone"
-                    android:lineSpacingMultiplier="1.2"
-                    android:lineSpacingExtra="3dp"
-                    android:textSize="@dimen/font28"/>
+                    android:textSize="@dimen/font28"
+                    android:visibility="gone" />
 
                 <LinearLayout
                     android:id="@+id/option_container_ll"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                </LinearLayout>
+                    android:orientation="vertical"></LinearLayout>
 
             </LinearLayout>
 
@@ -146,7 +145,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left|bottom"
-
+                android:layout_marginTop="@dimen/px208"
                 android:orientation="vertical">
 
                 <FrameLayout

@@ -48,6 +48,7 @@ import org.apache.http.Header;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 
 /**
  * 套餐支付界面
@@ -78,16 +79,20 @@ public class PayFragment extends BaseFragment {
 
     @Override
     protected void setWidgetLsn() {
-        initAlipay();
-        back.setOnClickListener(onClick);
         alipay_ly.setOnClickListener(onClick);
         wx_pay_ly.setOnClickListener(onClick);
-        add_address_ly.setOnClickListener(onClick);
-        addressLy.setOnClickListener(onClick);
-        addressLy.setOnClickListener(onClick);
-        red_packets_money_ly.setOnClickListener(onClick);
         OtherInfo info = buildOtherInfo();
         red_packets_money_ly.setVisibility((info != null && info.isSckill) ? View.GONE : View.VISIBLE);
+    }
+
+    @OnClick(R.id.back)
+    void back() {
+        popBackStack();
+    }
+
+    @OnClick(R.id.add_address_ly)
+    void doClick() {
+        gotoFragmentByAdd(R.id.mainpage_ly, new AddressFragment(), AddressFragment.class.getName());
     }
 
     int getOrderMoney() {
@@ -234,7 +239,8 @@ public class PayFragment extends BaseFragment {
 
 
     void initAlipay() {
-        aUtils = new AlipayUtils();
+        if (aUtils == null)
+            aUtils = new AlipayUtils();
         aUtils.setHandler(mHandler);
         aUtils.initAlipay(getActivity());
     }
@@ -358,13 +364,13 @@ public class PayFragment extends BaseFragment {
     View.OnClickListener onClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (v == back)
-                popBackStack();
-            else if (v == alipay_ly || v == wx_pay_ly) {
+            if (v == alipay_ly || v == wx_pay_ly) {
                 isAlipayPay = v == alipay_ly ? true : false;
                 if (!isAlipayPay) {
                     doWxPayResultRegister();
                     initWxPay();
+                } else {
+                    initAlipay();
                 }
                 OtherInfo info = buildOtherInfo();
                 if (info != null && info.item_type != 0) {
@@ -376,24 +382,6 @@ public class PayFragment extends BaseFragment {
                     return;
                 }
                 makeOrder();
-            } else if (add_address_ly == v) {
-                gotoFragmentByAdd(R.id.mainpage_ly, new AddressFragment(), AddressFragment.class.getName());
-            } else if (addressLy == v) {
-                Bundle bundle = new Bundle();
-                bundle.putInt(AddressListFragment.Action.KEY, AddressListFragment.Action.SELECT);
-                gotoFragmentByAdd(bundle, R.id.mainpage_ly, new AddressListFragment(), AddressListFragment.class.getName());
-            } else if (red_packets_money_ly == v) {
-                OtherInfo info = buildOtherInfo();
-                Bundle bundle = new Bundle();
-                if (info != null && info.item_type == 0)
-                    bundle.putInt(RedPacketsListFragment.KEY_TYPE, info != null && info.type == 3 ? 2 : 1);
-                else
-                    bundle.putInt(RedPacketsListFragment.KEY_TYPE, info != null ? info.item_type : 1);
-
-                int payMoney = getOrderMoney();
-                payMoney = (payMoney - 1000) / 1000 >= 99 ? payMoney : payMoney - 1000;
-                bundle.putInt("PayMoney", payMoney);
-                gotoFragmentByAdd(bundle, R.id.mainpage_ly, new RedPacketsListFragment(), RedPacketsListFragment.class.getName());
             }
         }
     };
@@ -648,14 +636,34 @@ public class PayFragment extends BaseFragment {
                 });
     }
 
+    @OnClick(R.id.addressee_ly)
+    void doModifyAddress() {
+        Bundle bundle = new Bundle();
+        bundle.putInt(AddressListFragment.Action.KEY, AddressListFragment.Action.SELECT);
+        gotoFragmentByAdd(bundle, R.id.mainpage_ly, new AddressListFragment(), AddressListFragment.class.getName());
+    }
+
+    @OnClick(R.id.red_packets_money_ly)
+    void doUseRedPackets() {
+        OtherInfo info = buildOtherInfo();
+        Bundle bundle = new Bundle();
+        if (info != null && info.item_type == 0)
+            bundle.putInt(RedPacketsListFragment.KEY_TYPE, info != null && info.type == 3 ? 2 : 1);
+        else
+            bundle.putInt(RedPacketsListFragment.KEY_TYPE, info != null ? info.item_type : 1);
+
+        int payMoney = getOrderMoney();
+        payMoney = (payMoney - 1000) / 1000 >= 99 ? payMoney : payMoney - 1000;
+        bundle.putInt("PayMoney", payMoney);
+        gotoFragmentByAdd(bundle, R.id.mainpage_ly, new RedPacketsListFragment(), RedPacketsListFragment.class.getName());
+    }
+
     WxPayResEntry payRes;
     /**
      * 微信支付
      */
     @Bind(R.id.wx_pay_ly)
     View wx_pay_ly;
-    @Bind(R.id.back)
-    View back;
     @Bind(R.id.alipay_ly)
     View alipay_ly;
     @Bind(R.id.pay_money)

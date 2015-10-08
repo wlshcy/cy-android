@@ -35,6 +35,9 @@ import com.shequcun.farm.util.Utils;
 import org.apache.http.Header;
 import org.json.JSONObject;
 
+import butterknife.Bind;
+import butterknife.OnClick;
+
 /**
  * 订单详情页
  * Created by apple on 15/8/10.
@@ -53,22 +56,18 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
 
     @Override
     protected void initWidget(View v) {
-        mLv = (ListView) v.findViewById(R.id.mLv);
-        back = v.findViewById(R.id.back);
-        titleTv = (TextView) v.findViewById(R.id.title_center_text);
         titleTv.setText(R.string.cailanzi);
-        address = (TextView) v.findViewById(R.id.address);
         rightTv = (TextView) v.findViewById(R.id.title_right_text);
         rightTv.setText(R.string.consultation);
-        commitOrderTv = (TextView) v.findViewById(R.id.buy_order_tv);
-        shop_cart_total_price_tv = (TextView) v.findViewById(R.id.shop_cart_total_price_tv);
-        shop_cart_surpport_now_pay_tv = (TextView) v.findViewById(R.id.shop_cart_surpport_now_pay_tv);
-        remark_ly = v.findViewById(R.id.remark_ly);
-        remark_tv = (TextView) v.findViewById(R.id.remark_tv);
         v.findViewById(R.id.freight_ly).setVisibility(View.GONE);
         entry = buildEntry();
         buildUserLoginEntry();
         showBottomWidget();
+    }
+
+    @OnClick(R.id.back)
+    void back() {
+        popBackStack();
     }
 
     ComboEntry buildEntry() {
@@ -124,39 +123,37 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
 
     @Override
     protected void setWidgetLsn() {
-        back.setOnClickListener(onClick);
-        rightTv.setOnClickListener(onClick);
-        commitOrderTv.setOnClickListener(onClick);
-        remark_ly.setOnClickListener(onClick);
         buildAdapter();
     }
 
-    AvoidDoubleClickListener onClick = new AvoidDoubleClickListener() {
-        @Override
-        public void onViewClick(View v) {
-            if (v == back)
-                popBackStack();
-            else if (v == rightTv)
-                ConsultationDlg.showCallTelDlg(getActivity());
-            else if (v == commitOrderTv) {
-                if (commitOrderTv.getText().toString().equals(getResources().getString(R.string.pay_immediately))) {
-                    gotoFragmentByAdd(getArguments(), R.id.mainpage_ly, new PayFragment(), PayFragment.class.getName());
-                    return;
-                }
-                if (isCreateOrder()) {
-                    createOrder();
-                } else {
-                    modifyOrder(buildOrederno());
-                }
-            } else if (v == remark_ly) {
-                RemarkFragment fragment = new RemarkFragment();
-                fragment.setCallBackLsn(OrderDetailsFragment.this);
-                Bundle bundle = new Bundle();
-                bundle.putString("RemarkTip", remark_tv != null ? remark_tv.getText().toString() : "");
-                gotoFragmentByAdd(bundle, R.id.mainpage_ly, fragment, RemarkFragment.class.getName());
-            }
+
+    @OnClick(R.id.title_right_text)
+    void callServicePhone() {
+        ConsultationDlg.showCallTelDlg(getActivity());
+    }
+
+    @OnClick(R.id.remark_ly)
+    void doAddRemark() {
+        RemarkFragment fragment = new RemarkFragment();
+        fragment.setCallBackLsn(OrderDetailsFragment.this);
+        Bundle bundle = new Bundle();
+        bundle.putString("RemarkTip", remark_tv != null ? remark_tv.getText().toString() : "");
+        gotoFragmentByAdd(bundle, R.id.mainpage_ly, fragment, RemarkFragment.class.getName());
+    }
+
+    @OnClick(R.id.buy_order_tv)
+    void doBuy() {
+        if (commitOrderTv.getText().toString().equals(getResources().getString(R.string.pay_immediately))) {
+            gotoFragmentByAdd(getArguments(), R.id.mainpage_ly, new PayFragment(), PayFragment.class.getName());
+            return;
         }
-    };
+        if (isCreateOrder()) {
+            createOrder();
+        } else {
+            modifyOrder(buildOrederno());
+        }
+    }
+
 
     void addFooter() {
         View footerView = LayoutInflater.from(getActivity()).inflate(R.layout.order_details_footer_ly, null);
@@ -182,7 +179,7 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
             for (int i = 0; i < mOrderController.getOptionItems().size(); i++) {
                 View footerView = LayoutInflater.from(getActivity()).inflate(R.layout.order_details_item_ly, null);
                 ImageView goodImg =  (ImageView) footerView.findViewById(R.id.goods_img);
-                ImageLoader.getInstance().displayImage(mOrderController.getOptionItems().get(i).imgs[0]+"?imageview2/2/w/180",goodImg);
+                ImageLoader.getInstance().displayImage(mOrderController.getOptionItems().get(i).imgs[0] + "?imageview2/2/w/180", goodImg);
                 ((TextView) footerView.findViewById(R.id.goods_name)).setText(mOrderController.getOptionItems().get(i).title);
                 ((TextView) footerView.findViewById(R.id.goods_price)).setText(Utils.unitConversion(mOrderController.getOptionItems().get(i).packw) + "/份");
                 footerView.findViewById(R.id.goods_count).setVisibility(View.GONE);
@@ -396,20 +393,26 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
     }
 
     ComboEntry entry;
+    @Bind(R.id.title_center_text)
     TextView titleTv;
+    @Bind(R.id.buy_order_tv)
     TextView commitOrderTv;
     UserLoginEntry uEntry;
     OrderDetailsAdapter adapter;
+    @Bind(R.id.mLv)
     ListView mLv;
-    View back;
-    TextView address;
+
+    @Bind(R.id.title_right_text)
     TextView rightTv;
     /**
      * 价格
      */
+    @Bind(R.id.shop_cart_total_price_tv)
     TextView shop_cart_total_price_tv;
+    @Bind(R.id.shop_cart_surpport_now_pay_tv)
     TextView shop_cart_surpport_now_pay_tv;
     DisheDataCenter mOrderController = DisheDataCenter.getInstance();
-    View remark_ly;
+
+    @Bind(R.id.remark_tv)
     TextView remark_tv;
 }

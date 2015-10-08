@@ -10,6 +10,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -38,6 +39,10 @@ import org.apache.http.Header;
 
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.OnClick;
+import butterknife.OnItemClick;
+
 /**
  * Created by apple on 15/8/5.
  */
@@ -56,51 +61,73 @@ public class SearchFragment extends BaseFragment implements AMapLocationListener
     @Override
     protected void initWidget(View v) {
         startLocation();
-        keyword_et = (EditText) v.findViewById(R.id.keyword_et);
-        back = v.findViewById(R.id.back);
-        mSearchResultLv = (ListView) v.findViewById(R.id.mLv);
-        search_community = v.findViewById(R.id.search_community);
-        fill_in_address = v.findViewById(R.id.fill_in_address);
         ((TextView) v.findViewById(R.id.title_center_text)).setText(R.string.search_community);
-        pBar = (ProgressBar) v.findViewById(R.id.progress_bar);
     }
 
     @Override
     protected void setWidgetLsn() {
-        back.setOnClickListener(onClick);
-        fill_in_address.setOnClickListener(onClick);
-        search_community.setOnClickListener(onClick);
-        mSearchResultLv.setOnItemClickListener(onItemClick);
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         keyword_et.addTextChangedListener(wLsn);
         buildAdapter();
     }
 
-    AvoidDoubleClickListener onClick = new AvoidDoubleClickListener() {
-        @Override
-        public void onViewClick(View v) {
-            if (v == back)
-                popBackStack();
-            else if (search_community == v)
-                searchCommunity();
-            else if (fill_in_address == v) {
-                gotoFragmentByAdd(R.id.mainpage_ly, new AddressZoneFragment(), AddressZoneFragment.class.getName());
+    @OnItemClick(R.id.mLv)
+    void onItemClick(int pos) {
+        if (adapter == null)
+            return;
+        ZoneEntry zEntry = adapter.getItem(pos);
+        if (zEntry == null)
+            return;
+        IntentUtil.sendUpdateMyAddressMsg(getActivity(), zEntry);
+        popBackStack();
+    }
+
+    @OnClick(R.id.back)
+    void back() {
+        Utils.hideVirtualKeyboard(getActivity(), search_community);
+        popBackStack();
+    }
+
+    @OnClick(R.id.fill_in_address)
+    void gotoAddressZoneFragment() {
+        gotoFragmentByAdd(R.id.mainpage_ly, new AddressZoneFragment(), AddressZoneFragment.class.getName());
+    }
+
+
+    @OnClick(R.id.search_community)
+    void startSearch() {
+        final String keyword = keyword_et.getText().toString().trim();
+        if (TextUtils.isEmpty(keyword)) {
+            ToastHelper.showShort(getActivity(), "请输入小区名称...");
+            return;
+        }
+        RequestParams params = new RequestParams();
+        params.add("cid", "1");
+        params.add("kw", keyword);
+
+        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "zone/search", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] data) {
+                if (data != null && data.length > 0) {
+                    ZoneListEntry zLentry = JsonUtilsParser.fromJson(new String(data), ZoneListEntry.class);
+                    if (zLentry != null) {
+                        if (TextUtils.isEmpty(zLentry.errmsg)) {
+                            addDataToAdapter(zLentry.aList);
+                        } else {
+                            ToastHelper.showShort(getActivity(), zLentry.errmsg);
+                        }
+                    }
+                }
             }
-        }
-    };
-    AdapterView.OnItemClickListener onItemClick = new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            if (adapter == null)
-                return;
-            ZoneEntry zEntry = adapter.getItem(position);
-            if (zEntry == null)
-                return;
-            IntentUtil.sendUpdateMyAddressMsg(getActivity(), zEntry);
-            //new CacheManager(getActivity()).saveZoneCacheToDisk(JsonUtilsParser.toJson(zEntry).getBytes());
-            //popBackStack();
-            popBackStack();
-        }
-    };
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] data, Throwable error) {
+                if (statusCode == 0)
+                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
+            }
+        });
+    }
+
 
 //    void upLoadUserAddressToServer(String address) {
 //        RequestParams params = new RequestParams();
@@ -149,38 +176,6 @@ public class SearchFragment extends BaseFragment implements AMapLocationListener
         return bundle != null ? bundle.getInt("CityId") + "" : "";
     }
 
-    void searchCommunity() {
-        final String keyword = keyword_et.getText().toString().trim();
-        if (TextUtils.isEmpty(keyword)) {
-            ToastHelper.showShort(getActivity(), "请输入小区名称...");
-            return;
-        }
-        RequestParams params = new RequestParams();
-        params.add("cid", "1");
-        params.add("kw", keyword);
-
-        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "zone/search", params, new AsyncHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] data) {
-                if (data != null && data.length > 0) {
-                    ZoneListEntry zLentry = JsonUtilsParser.fromJson(new String(data), ZoneListEntry.class);
-                    if (zLentry != null) {
-                        if (TextUtils.isEmpty(zLentry.errmsg)) {
-                            addDataToAdapter(zLentry.aList);
-                        } else {
-                            ToastHelper.showShort(getActivity(), zLentry.errmsg);
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] data, Throwable error) {
-                if (statusCode == 0)
-                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
-            }
-        });
-    }
 
     void addDataToAdapter(List<ZoneEntry> aList) {
         if (aList == null || aList.size() <= 0) {
@@ -248,7 +243,7 @@ public class SearchFragment extends BaseFragment implements AMapLocationListener
             }
 
             @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] data) {
+            public void onSuccess(int sCode, Header[] h, byte[] data) {
                 if (data != null && data.length > 0) {
                     ZoneListEntry zEntry = JsonUtilsParser.fromJson(new String(
                             data), ZoneListEntry.class);
@@ -264,8 +259,7 @@ public class SearchFragment extends BaseFragment implements AMapLocationListener
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers,
-                                  byte[] data, Throwable error) {
+            public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
                 ToastHelper.showShort(getActivity(), "加载失败...");
             }
         });
@@ -335,12 +329,14 @@ public class SearchFragment extends BaseFragment implements AMapLocationListener
     }
 
     LocationManagerProxy mLocMgrProxy;
+    @Bind(R.id.progress_bar)
     ProgressBar pBar;
     NearbyCommunityAdapter adapter;
+    @Bind(R.id.mLv)
     ListView mSearchResultLv;
+    @Bind(R.id.search_community)
     View search_community;
+    @Bind(R.id.keyword_et)
     EditText keyword_et;
-    View fill_in_address;
-    View back;
     private int locationCount = 0;
 }
