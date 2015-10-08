@@ -62,7 +62,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements
 
     void initImageLoader(Context context) {
         DisplayImageOptions imageOptions = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.grey_def_bg)
+                .showImageOnLoading(R.drawable.icon_place_holder)
                 .showImageOnFail(R.drawable.ic_loading_failure)
                 .cacheInMemory(true).cacheOnDisk(true)
                 .resetViewBeforeLoading(true).considerExifParams(false)
