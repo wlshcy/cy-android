@@ -65,7 +65,7 @@ public class ChooseDishesAdapter extends ArrayAdapter<DishesItemEntry> {
         vh.goods_sub.setTag(position);
         vh.goods_sub.setOnClickListener(onSubGoodsLsn);
         vh.goods_sub.setContentDescription(String.valueOf(entry.id));
-        if (entry != null) {
+        if (entry != null && entry.imgs != null && entry.imgs.length > 0) {
             String url = entry.imgs[0] + "?imageview2/2/w/180";
             if (vh.lastImageUrl == null || !vh.lastImageUrl.equals(url)
                     || vh.goods_img.getDrawable() == null) {

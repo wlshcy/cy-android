@@ -1,5 +1,6 @@
 package com.shequcun.farm.ui.fragment;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -178,7 +179,7 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
             mLv.addFooterView(LayoutInflater.from(getActivity()).inflate(R.layout.remark_footer_ly, null), null, false);
             for (int i = 0; i < mOrderController.getOptionItems().size(); i++) {
                 View footerView = LayoutInflater.from(getActivity()).inflate(R.layout.order_details_item_ly, null);
-                ImageView goodImg =  (ImageView) footerView.findViewById(R.id.goods_img);
+                ImageView goodImg = (ImageView) footerView.findViewById(R.id.goods_img);
                 ImageLoader.getInstance().displayImage(mOrderController.getOptionItems().get(i).imgs[0] + "?imageview2/2/w/180", goodImg);
                 ((TextView) footerView.findViewById(R.id.goods_name)).setText(mOrderController.getOptionItems().get(i).title);
                 ((TextView) footerView.findViewById(R.id.goods_price)).setText(Utils.unitConversion(mOrderController.getOptionItems().get(i).packw) + "/份");
@@ -358,6 +359,10 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
                     if (entry != null) {
                         if (TextUtils.isEmpty(entry.errmsg)) {
                             if (TextUtils.isEmpty(entry.alipay)) {
+                                if (entry.last) {
+                                    showMyComboExpireAlertDlg();
+                                    return;
+                                }
                                 gotoFragmentByAdd(buildBundle(entry.orderno, getOrderMoney(), entry.alipay, true, R.string.order_result), R.id.mainpage_ly, new PayResultFragment(), PayResultFragment.class.getName());
                                 return;
                             }
@@ -390,6 +395,21 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
         if (remark_tv != null) {
             remark_tv.setText(remark);
         }
+    }
+
+    public void showMyComboExpireAlertDlg() {
+        final android.app.AlertDialog alert = new android.app.AlertDialog.Builder(getActivity()).create();
+        alert.show();
+        alert.setCancelable(false);
+        alert.getWindow().setContentView(R.layout.my_combo_expire_alert_ly);
+        alert.getWindow().findViewById(R.id.close_btn)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alert.dismiss();
+                        gotoFragmentByAdd(buildBundle(entry.orderno, getOrderMoney(), null, true, R.string.order_result), R.id.mainpage_ly, new PayResultFragment(), PayResultFragment.class.getName());
+                    }
+                });
     }
 
     ComboEntry entry;

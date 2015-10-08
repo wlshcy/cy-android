@@ -314,11 +314,6 @@ public class PayFragment extends BaseFragment {
 
             @Override
             public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
-//                if (sCode == 0) {
-//                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
-//                    return;
-//                }
-//                ToastHelper.showShort(getActivity(), "请求失败,错误码" + sCode);
                 setAddressWidgetContent(new CacheManager(getActivity()).getUserReceivingAddress());
             }
         });
