@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.common.widget.PullToRefreshBase;
 import com.common.widget.PullToRefreshScrollView;
@@ -17,6 +18,7 @@ import com.loopj.android.http.RequestParams;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.HistoryOrderEntry;
 import com.shequcun.farm.data.ModifyOrderParams;
+import com.shequcun.farm.data.MyComboOrder;
 import com.shequcun.farm.data.MyComboOrderListEntry;
 import com.shequcun.farm.data.OrderListEntry;
 import com.shequcun.farm.data.RecommendEntry;
@@ -36,6 +38,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.OnItemClick;
 import butterknife.OnItemSelected;
 
@@ -48,7 +51,7 @@ public class DishesFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.my_order_listview_ly, container, false);
+        return inflater.inflate(R.layout.my_combo_order_ly, container, false);
     }
 
     @Override
@@ -58,6 +61,7 @@ public class DishesFragment extends BaseFragment {
 
     @Override
     protected void initWidget(View v) {
+        ((TextView) v.findViewById(R.id.title_center_text)).setText(R.string.my_combo_order);
         buidlAdapter();
     }
 
@@ -78,55 +82,71 @@ public class DishesFragment extends BaseFragment {
     @Override
     protected void setWidgetLsn() {
         scroll_view.setMode(PullToRefreshBase.Mode.DISABLED);
-        requestOrderNo();
+        requestOrderEntry(buildOrderNo());
     }
 
 
-    void requestOrderNo() {
-        final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
+    @OnClick(R.id.back)
+    void back() {
+        popBackStack();
+    }
 
-        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "cai/mycombo", new AsyncHttpResponseHandler() {
-
-            @Override
-            public void onStart() {
-                super.onStart();
-                pDlg.show();
+    String buildOrderNo() {
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            MyComboOrder entry = (MyComboOrder) bundle.getSerializable("MyComboOrderEntry");
+            if (entry != null) {
+                return entry.con;
             }
+        }
+        return null;
+    }
 
-            @Override
-            public void onFinish() {
-                super.onFinish();
-                pDlg.dismiss();
-                if (pBar != null) {
-                    pBar.setVisibility(View.GONE);
-                }
-            }
-
-            @Override
-            public void onSuccess(int sCode, Header[] h, byte[] data) {
-                if (data != null && data.length > 0) {
-//                    RecommendEntry entry = JsonUtilsParser.fromJson(new String(data), RecommendEntry.class);
-//                    if (entry != null) {
-//                        if (TextUtils.isEmpty(entry.errmsg)) {
-////                            gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailFragment(), FarmSpecialtyDetailFragment.class.getName());
-//                        }
+//    void requestOrderNo() {
+//        final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
+//
+//        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "cai/mycombo", new AsyncHttpResponseHandler() {
+//
+//            @Override
+//            public void onStart() {
+//                super.onStart();
+//                pDlg.show();
+//            }
+//
+//            @Override
+//            public void onFinish() {
+//                super.onFinish();
+//                pDlg.dismiss();
+//                if (pBar != null) {
+//                    pBar.setVisibility(View.GONE);
+//                }
+//            }
+//
+//            @Override
+//            public void onSuccess(int sCode, Header[] h, byte[] data) {
+//                if (data != null && data.length > 0) {
+////                    RecommendEntry entry = JsonUtilsParser.fromJson(new String(data), RecommendEntry.class);
+////                    if (entry != null) {
+////                        if (TextUtils.isEmpty(entry.errmsg)) {
+//////                            gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailFragment(), FarmSpecialtyDetailFragment.class.getName());
+////                        }
+////                    }
+//
+//                    MyComboOrderListEntry entry = JsonUtilsParser.fromJson(new String(data), MyComboOrderListEntry.class);
+//
+//                    if (entry != null && entry.aList != null && entry.aList.size() > 0) {
+//                        requestOrderEntry(entry.aList.get(0).con);
 //                    }
-
-                    MyComboOrderListEntry entry = JsonUtilsParser.fromJson(new String(data), MyComboOrderListEntry.class);
-
-                    if (entry != null && entry.aList != null && entry.aList.size() > 0) {
-                        requestOrderEntry(entry.aList.get(0).con);
-                    }
-
-                }
-            }
-
-            @Override
-            public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
-
-            }
-        });
-    }
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
+//
+//            }
+//        });
+//    }
 
 //    PullToRefreshScrollView.OnRefreshListener2 onRefrshLsn = new PullToRefreshBase.OnRefreshListener2() {
 //        @Override
@@ -158,7 +178,7 @@ public class DishesFragment extends BaseFragment {
 
     ModifyOrderParams buildOrderParams(HistoryOrderEntry entry) {
         ModifyOrderParams params = new ModifyOrderParams();
-        params.setParams(entry.id, entry.orderno, 1, entry.combo_id, entry.price, entry.combo_idx, entry.status, entry.date,entry.name,entry.mobile,entry.address,entry.type);
+        params.setParams(entry.id, entry.orderno, 1, entry.combo_id, entry.price, entry.combo_idx, entry.status, entry.date, entry.name, entry.mobile, entry.address, entry.type);
         return params;
     }
 
@@ -170,13 +190,13 @@ public class DishesFragment extends BaseFragment {
 
 
     public void requestOrderEntry(String orderno) {
-//        UserLoginEntry uentry = new CacheManager(getActivity()).getUserLoginEntry();
-//        if (uentry == null || TextUtils.isEmpty(uentry.orderno)) {
-//            if (pBar != null) {
-//                pBar.setVisibility(View.GONE);
-//            }
-//            return;
-//        }
+        if (TextUtils.isEmpty(orderno)) {
+            if (pBar != null) {
+                pBar.setVisibility(View.GONE);
+            }
+            ToastHelper.showShort(getActivity(), "请求数据失败.请稍后再试...");
+            return;
+        }
         RequestParams params = new RequestParams();
         params.add("orderno", orderno);
         HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "cai/choose", params, new AsyncHttpResponseHandler() {
@@ -224,6 +244,5 @@ public class DishesFragment extends BaseFragment {
     ListView mLv;
     @Bind(R.id.pView)
     PullToRefreshScrollView scroll_view;
-
     MyOrderAdapter adapter;
 }
