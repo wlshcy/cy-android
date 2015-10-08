@@ -1,6 +1,7 @@
 package com.shequcun.farm.ui.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,8 +11,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.RecommendEntry;
+import com.shequcun.farm.util.Constrants;
 import com.shequcun.farm.util.Utils;
 
 import butterknife.Bind;
@@ -21,6 +25,7 @@ import butterknife.ButterKnife;
  * Created by mac on 15/9/6.
  */
 public class FarmSpecialtyAdapter extends ArrayAdapter<RecommendEntry> {
+
     public FarmSpecialtyAdapter(Context context) {
         super(context, R.layout.farm_specialty_item_ly);
     }
@@ -38,8 +43,17 @@ public class FarmSpecialtyAdapter extends ArrayAdapter<RecommendEntry> {
         }
         RecommendEntry entry = getItem(position);
         if (entry != null && vh != null) {
-            if (entry.imgs != null && entry.imgs.length > 0)
-                ImageLoader.getInstance().displayImage(entry.imgs[0]+"?imageview2/2/w/400",vh.goods_img);
+            if (entry.imgs != null && entry.imgs.length > 0) {
+                String url = entry.imgs[0] + "?imageview2/2/w/400";
+                if (vh.lastImageUrl == null || !vh.lastImageUrl.equals(url)
+                        || vh.goods_img.getDrawable() == null) {
+                    /*刷新图片*/
+                    InnerImageLoadingListener innerImageLoadingListener = new InnerImageLoadingListener(vh);
+                    ImageLoader.getInstance().displayImage(url, vh.goods_img, innerImageLoadingListener);
+                } else {
+                    /*不需要重新加载图片*/
+                }
+            }
             vh.goods_name.setText(entry.title);
             if (entry.type == 2) {
                 vh.spike_tv.setVisibility(View.VISIBLE);
@@ -77,6 +91,38 @@ public class FarmSpecialtyAdapter extends ArrayAdapter<RecommendEntry> {
 
         ViewHolder(View convertView) {
             ButterKnife.bind(this, convertView);
+        }
+
+        String lastImageUrl;
+    }
+
+    class InnerImageLoadingListener implements ImageLoadingListener {
+        private ViewHolder viewHolder;
+
+        public InnerImageLoadingListener(ViewHolder viewHolder) {
+            this.viewHolder = viewHolder;
+        }
+
+        @Override
+        public void onLoadingStarted(String imageUri, View view) {
+        }
+
+        @Override
+        public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+            if (viewHolder != null)
+                this.viewHolder.lastImageUrl = null;
+        }
+
+        @Override
+        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+            if (viewHolder != null)
+                this.viewHolder.lastImageUrl = imageUri;
+        }
+
+        @Override
+        public void onLoadingCancelled(String imageUri, View view) {
+            if (viewHolder != null)
+                this.viewHolder.lastImageUrl = null;
         }
     }
 }

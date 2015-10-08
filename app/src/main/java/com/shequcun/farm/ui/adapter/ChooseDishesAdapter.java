@@ -1,6 +1,7 @@
 package com.shequcun.farm.ui.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.DishesItemEntry;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
@@ -63,7 +66,15 @@ public class ChooseDishesAdapter extends ArrayAdapter<DishesItemEntry> {
         vh.goods_sub.setOnClickListener(onSubGoodsLsn);
         vh.goods_sub.setContentDescription(String.valueOf(entry.id));
         if (entry != null) {
-            ImageLoader.getInstance().displayImage(entry.imgs[0]+"?imageview2/1/w/180",vh.goods_img, Constrants.image_display_options_disc);
+            String url = entry.imgs[0] + "?imageview2/2/w/180";
+            if (vh.lastImageUrl == null || !vh.lastImageUrl.equals(url)
+                    || vh.goods_img.getDrawable() == null) {
+                    /*刷新图片*/
+                InnerImageLoadingListener innerImageLoadingListener = new InnerImageLoadingListener(vh);
+                ImageLoader.getInstance().displayImage(url, vh.goods_img, innerImageLoadingListener);
+            } else {
+                    /*不需要重新加载图片*/
+            }
             vh.goods_name.setText(entry.title);
             vh.goods_price.setText(Utils.unitConversion(entry.packw) + "/份");
         }
@@ -86,6 +97,37 @@ public class ChooseDishesAdapter extends ArrayAdapter<DishesItemEntry> {
         TextView goods_count;
         ImageView goods_sub;
         ImageView goods_add;
+        String lastImageUrl;
+    }
+
+    class InnerImageLoadingListener implements ImageLoadingListener {
+        private ViewHolder viewHolder;
+
+        public InnerImageLoadingListener(ViewHolder viewHolder) {
+            this.viewHolder = viewHolder;
+        }
+
+        @Override
+        public void onLoadingStarted(String imageUri, View view) {
+        }
+
+        @Override
+        public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+            if (viewHolder != null)
+                this.viewHolder.lastImageUrl = null;
+        }
+
+        @Override
+        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+            if (viewHolder != null)
+                this.viewHolder.lastImageUrl = imageUri;
+        }
+
+        @Override
+        public void onLoadingCancelled(String imageUri, View view) {
+            if (viewHolder != null)
+                this.viewHolder.lastImageUrl = null;
+        }
     }
 
     AvoidDoubleClickListener onGoodsImgLsn;

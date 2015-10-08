@@ -1,7 +1,9 @@
 package com.shequcun.farm.ui.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Paint;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.ComboEntry;
 import com.shequcun.farm.util.Constrants;
@@ -57,7 +61,17 @@ public class ComboAdapter extends ArrayAdapter<ComboEntry> {
             }
 
             vh.combo_name.setText(entry.title);
-            ImageLoader.getInstance().displayImage(entry.img+"?imageview2/2/w/180",vh.combo_img, Constrants.image_display_options_disc);
+            if (!TextUtils.isEmpty(entry.img)) {
+                String url = entry.img + "?imageview2/2/w/180";
+                if (vh.lastImageUrl == null || !vh.lastImageUrl.equals(url)
+                        || vh.combo_img.getDrawable() == null) {
+                    /*刷新图片*/
+                    InnerImageLoadingListener innerImageLoadingListener = new InnerImageLoadingListener(vh);
+                    ImageLoader.getInstance().displayImage(url, vh.combo_img, innerImageLoadingListener);
+                } else {
+                    /*不需要重新加载图片*/
+                }
+            }
 
             if (entry.shipday != null) {
                 vh.dis_cycle.setText(entry.shipday.length + "次/周");//"每周配送" +
@@ -122,5 +136,37 @@ public class ComboAdapter extends ArrayAdapter<ComboEntry> {
         ImageView combo_img;
         @Bind(R.id.farm_tv)
         TextView farm_tv;
+        String lastImageUrl;
+    }
+
+    class InnerImageLoadingListener implements ImageLoadingListener {
+        private ViewHolder viewHolder;
+
+        public InnerImageLoadingListener(ViewHolder viewHolder) {
+            this.viewHolder = viewHolder;
+        }
+
+        @Override
+        public void onLoadingStarted(String imageUri, View view) {
+        }
+
+        @Override
+        public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+            if (viewHolder != null)
+                this.viewHolder.lastImageUrl = null;
+        }
+
+        @Override
+        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+            if (viewHolder != null)
+                this.viewHolder.lastImageUrl = imageUri;
+        }
+
+        @Override
+        public void onLoadingCancelled(String imageUri, View view) {
+            if (viewHolder != null)
+                this.viewHolder.lastImageUrl = null;
+
+        }
     }
 }

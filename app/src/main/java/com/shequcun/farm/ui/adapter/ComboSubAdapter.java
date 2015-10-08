@@ -1,6 +1,7 @@
 package com.shequcun.farm.ui.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -14,10 +15,13 @@ import android.widget.TextView;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.ComboEntry;
 import com.shequcun.farm.data.FixedComboEntry;
 import com.shequcun.farm.data.FixedListComboEntry;
+import com.shequcun.farm.util.Constrants;
 import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
@@ -72,8 +76,15 @@ public class ComboSubAdapter extends BaseAdapter {
 
         if (vh != null) {
             if (vh.combo_img != null && entry.wimgs != null && entry.wimgs.length > 0) {
-                String url = TextUtils.isEmpty(entry.wimgs[position]) ? entry.img : entry.wimgs[position];
-                ImageLoader.getInstance().displayImage(url+"?imageview2/2/w/180", vh.combo_img);
+                String url = (TextUtils.isEmpty(entry.wimgs[position]) ? entry.img : entry.wimgs[position])+"?imageview2/2/w/180";
+                if (vh.lastImageUrl == null || !vh.lastImageUrl.equals(url)
+                        || vh.combo_img.getDrawable() == null) {
+                    /*刷新图片*/
+                    InnerImageLoadingListener innerImageLoadingListener = new InnerImageLoadingListener(vh);
+                    ImageLoader.getInstance().displayImage(url, vh.combo_img, innerImageLoadingListener);
+                } else {
+                    /*不需要重新加载图片*/
+                }
             }
 
             if (vh.combo_name != null) {
@@ -224,6 +235,36 @@ public class ComboSubAdapter extends BaseAdapter {
         TextView market_price_tv;
         @Bind(R.id.ll_container)
         LinearLayout ll_container;
+        String lastImageUrl;
+    }
 
+    class InnerImageLoadingListener implements ImageLoadingListener {
+        private ViewHolder viewHolder;
+
+        public InnerImageLoadingListener(ViewHolder viewHolder) {
+            this.viewHolder = viewHolder;
+        }
+
+        @Override
+        public void onLoadingStarted(String imageUri, View view) {
+        }
+
+        @Override
+        public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+            if (viewHolder != null)
+                this.viewHolder.lastImageUrl = null;
+        }
+
+        @Override
+        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+            if (viewHolder != null)
+                this.viewHolder.lastImageUrl = imageUri;
+        }
+
+        @Override
+        public void onLoadingCancelled(String imageUri, View view) {
+            if (viewHolder != null)
+                this.viewHolder.lastImageUrl = null;
+        }
     }
 }
