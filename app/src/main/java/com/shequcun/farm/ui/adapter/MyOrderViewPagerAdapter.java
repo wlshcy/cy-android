@@ -7,7 +7,7 @@ import android.support.v4.view.PagerAdapter;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 
-import com.shequcun.farm.ui.fragment.DishesFragment;
+import com.shequcun.farm.ui.fragment.MyComboOrderFragment;
 import com.shequcun.farm.ui.fragment.ShoppingOrderFragment;
 
 /**
@@ -29,7 +29,7 @@ public class MyOrderViewPagerAdapter extends FragmentPagerAdapter {
         Fragment f = getFragment(position);
 //        Bundle args = new Bundle();
         if (position == 0) {
-            f = new DishesFragment();
+            f = new MyComboOrderFragment();
         } else if (position == 1) {
             f = new ShoppingOrderFragment();
         }

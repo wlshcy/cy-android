@@ -39,14 +39,7 @@ import com.shequcun.farm.dlg.AlertDialog;
 import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.model.PhotoModel;
 import com.shequcun.farm.ui.adapter.ChooseDishesAdapter;
-import com.shequcun.farm.util.AvoidDoubleClickListener;
-import com.shequcun.farm.util.DeviceInfo;
-import com.shequcun.farm.util.HttpRequestUtil;
-import com.shequcun.farm.util.JsonUtilsParser;
-import com.shequcun.farm.util.LocalParams;
-import com.shequcun.farm.util.ResUtil;
-import com.shequcun.farm.util.ToastHelper;
-import com.shequcun.farm.util.Utils;
+import com.shequcun.farm.util.*;
 
 import org.apache.http.Header;
 
@@ -76,8 +69,8 @@ public class ChooseDishesFragment extends BaseFragment {
     protected void initWidget(View v) {
         entry = buildEntry();
         ((TextView) v.findViewById(R.id.title_center_text)).setText(R.string.choose_dishes);
-        rightTv.setText(R.string.combo_introduce);
-        rightTv.setVisibility(isShowComboIntroduce() ? View.VISIBLE : View.GONE);
+        ((TextView) v.findViewById(R.id.title_right_text)).setText(R.string.combo_introduce);
+        v.findViewById(R.id.title_right_text).setVisibility(isShowComboIntroduce() ? View.VISIBLE : View.GONE);
         mOrderController = DisheDataCenter.getInstance();
         mBadgeViewShopCart = new BadgeView(getActivity(), mShopCartIv);
         mBadgeViewShopCart.setWidth(ResUtil.dip2px(getActivity(), 20));
@@ -104,7 +97,6 @@ public class ChooseDishesFragment extends BaseFragment {
 
     @Override
     protected void setWidgetLsn() {
-        rightTv.setOnClickListener(onClick);
         mShopCartIv.setOnClickListener(onClick);
         emptyView.setOnClickListener(onClick);
         option_dishes_tv.setOnClickListener(onClick);
@@ -114,6 +106,11 @@ public class ChooseDishesFragment extends BaseFragment {
     @OnClick(R.id.back)
     void back() {
         doPopUpStack();
+    }
+
+    @OnClick(R.id.title_right_text)
+    void gotoWebViewFragment() {
+        gotoFragmentByAdd(getArguments(), R.id.mainpage_ly, new WebViewFragment(), WebViewFragment.class.getName());
     }
 
 
@@ -130,22 +127,18 @@ public class ChooseDishesFragment extends BaseFragment {
     View.OnClickListener onClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (v == rightTv) {
-                gotoFragmentByAdd(getArguments(), R.id.mainpage_ly, new WebViewFragment(), WebViewFragment.class.getName());
-            } else if (v == mShopCartIv) {
+            if (v == mShopCartIv) {
                 if (mShopCartClearTv.getVisibility() == View.GONE) {
                     hideOptionWidget();
                     popupShoppingCart();
-                } else {
-                    hideShopCart();
-                }
-            } else if (v == emptyView) {
-                hideShopCart();
-                hideOptionWidget();
-            } else if (v == option_dishes_tv) {
-                if (option_dishes_tip.getVisibility() == View.GONE) {
-                    popUpOptionsWidget();
                 } else
+                    hideShopCart();
+            } else if (v == emptyView) {
+                doPopUpStack();
+            } else if (v == option_dishes_tv) {
+                if (option_dishes_tip.getVisibility() == View.GONE)
+                    popUpOptionsWidget();
+                else
                     hideOptionWidget();
             }
         }
@@ -326,10 +319,7 @@ public class ChooseDishesFragment extends BaseFragment {
         LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(
                 AbsListView.LayoutParams.MATCH_PARENT, AbsListView.LayoutParams.WRAP_CONTENT);
         popupShopCartLl.addView(scrollView, lp1);
-
-//        滑动容器中的linearLayout添加item
         containerLl = (LinearLayout) scrollView.findViewById(R.id.container_ll);
-
         for (DishesItemEntry it : mOrderController.buildItems()) {
             View v = LayoutInflater.from(getActivity()).inflate(R.layout.good_item_popup, null);
             TextView priceTv = (TextView) v.findViewById(R.id.good_price_tv);
@@ -370,6 +360,7 @@ public class ChooseDishesFragment extends BaseFragment {
                     return;
                 }
                 goNext = true;
+                PlaySoundUtils.doPlay(getActivity(), R.raw.psst2);
                 shopChartIconScaleAnimation(v);
             }
             animationFly(v);
@@ -426,7 +417,6 @@ public class ChooseDishesFragment extends BaseFragment {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-//                移除飞红球
                 rootView.removeView(flyTv);
             }
         });
@@ -445,7 +435,6 @@ public class ChooseDishesFragment extends BaseFragment {
         popupShopCartLl.setLayoutParams(lp);
         popupShopCartLl.removeAllViews();
     }
-
 
     /**
      * 隐藏数量红点
@@ -590,6 +579,7 @@ public class ChooseDishesFragment extends BaseFragment {
                 int position = (int) v.getTag();
                 updateListItem(position);
             }
+            PlaySoundUtils.doPlay(getActivity(), R.raw.pop);
             setBadgeView(false);
             updateBuyOrderStatus();
         }
@@ -665,6 +655,7 @@ public class ChooseDishesFragment extends BaseFragment {
                     break;
                 }
             }
+            PlaySoundUtils.doPlay(getActivity(), R.raw.psst2);
             setBadgeView(true);
             updateShopCartWidgetStatus();
             updateBuyOrderStatus();
@@ -720,7 +711,7 @@ public class ChooseDishesFragment extends BaseFragment {
                     }
                 }
             }
-
+            PlaySoundUtils.doPlay(getActivity(), R.raw.pop);
             if (intCount == 0) {
                 ivDown.setVisibility(View.GONE);
                 tvCount.setVisibility(View.GONE);
@@ -876,7 +867,6 @@ public class ChooseDishesFragment extends BaseFragment {
             }
         }
     }
-
     @Bind(R.id.option_dishes_tv)
     TextView option_dishes_tv;
     boolean enabled;
@@ -895,8 +885,6 @@ public class ChooseDishesFragment extends BaseFragment {
     @Bind(R.id.mLv)
     ListView mLv;
     ChooseDishesAdapter adapter;
-    @Bind(R.id.title_right_text)
-    TextView rightTv;
     @Bind(R.id.shop_cart_clear_tv)
     TextView mShopCartClearTv;//清空购物车
     @Bind(R.id.empty_view)

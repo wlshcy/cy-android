@@ -160,4 +160,6 @@
     <string name="no_freight">免运费</string>
 
     <string name="wx_pay">微信支付</string>
+    <string name="my_combo_order">套餐订单</string>
+
 </resources>
