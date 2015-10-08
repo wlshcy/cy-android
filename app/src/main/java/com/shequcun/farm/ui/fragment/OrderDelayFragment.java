@@ -7,6 +7,8 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -14,11 +16,13 @@ import com.loopj.android.http.RequestParams;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.ComboEntry;
 import com.shequcun.farm.data.DelayEntry;
+import com.shequcun.farm.data.DelayItemEntry;
 import com.shequcun.farm.data.MyComboEntry;
 import com.shequcun.farm.data.UserLoginEntry;
 import com.shequcun.farm.datacenter.CacheManager;
 import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.dlg.ProgressDlg;
+import com.shequcun.farm.ui.adapter.DelayAdapter;
 import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
@@ -26,8 +30,11 @@ import com.shequcun.farm.util.ToastHelper;
 
 import org.apache.http.Header;
 
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.OnClick;
+import butterknife.OnItemClick;
 
 /**
  * Created by cong on 15/9/7.
@@ -35,16 +42,18 @@ import butterknife.OnClick;
 public class OrderDelayFragment extends BaseFragment {
     @Bind(R.id.title_center_text)
     TextView titleTv;
-    @Bind(R.id.delay_tv)
-    TextView delayTv;
-    private String orderNo;
+    //    @Bind(R.id.delay_tv)
+//    TextView delayTv;
+    @Bind(R.id.comboLv)
+    ListView comboLv;
+    private DelayAdapter delayAdapter;
+    private DelayItemEntry delayItemEntry;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_order_delay, null);
     }
-
 
     @Override
     public boolean onBackPressed() {
@@ -54,7 +63,7 @@ public class OrderDelayFragment extends BaseFragment {
     @Override
     protected void initWidget(View v) {
         titleTv.setText(R.string.order_delay_delivery);
-        requestMycombo();
+        requestGetDelayState(null);
     }
 
     @Override
@@ -66,16 +75,16 @@ public class OrderDelayFragment extends BaseFragment {
         popBackStack();
     }
 
-    @OnClick(R.id.delay_tv)
-    void doClick() {
-        if (TextUtils.isEmpty(orderNo)) {
-            ToastHelper.showShort(getActivity(), R.string.you_have_not_buy_combo);
-            return;
-        }
-        alertDelay();
-    }
+//    @OnClick(R.id.delay_tv)
+//    void doClick() {
+//        if (TextUtils.isEmpty(orderNo)) {
+//            ToastHelper.showShort(getActivity(), R.string.you_have_not_buy_combo);
+//            return;
+//        }
+//        alertDelay();
+//    }
 
-    private void alertDelay() {
+    private void alertDelay(final String orderNo) {
         final AlertDialog alert = new AlertDialog.Builder(getActivity()).create();
         alert.show();
         alert.setCancelable(false);
@@ -106,51 +115,70 @@ public class OrderDelayFragment extends BaseFragment {
         return userLoginEntry == null ? null : userLoginEntry.orderno;
     }
 
-    private void requestMycombo() {
-        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "cai/mycombo", new AsyncHttpResponseHandler() {
+//    private void requestMycombo() {
+//        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "cai/mycombo", new AsyncHttpResponseHandler() {
+//
+//            @Override
+//            public void onStart() {
+//                super.onStart();
+//            }
+//
+//            @Override
+//            public void onFinish() {
+//                super.onFinish();
+//            }
+//
+//            @Override
+//            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+//                String result = new String(responseBody);
+//                MyComboEntry entry = JsonUtilsParser.fromJson(result, MyComboEntry.class);
+//                if (entry != null) {
+//                    if (TextUtils.isEmpty(entry.errcode)) {
+//                        if (entry.combos != null && !entry.combos.isEmpty())
+////                            requestGetDelayState(entry.combos.get(0).con);
+//                            successMyCombo(entry.combos);
+//                        else
+//                            disableDelayView(R.string.you_have_not_buy_combo);
+//                    } else {
+//                        ToastHelper.showShort(getActivity(), entry.errmsg);
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+//                disableDelayView(R.string.btn_delay_a_week_delivery);
+//                if (statusCode == 0) {
+//                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
+//                    return;
+//                }
+//                ToastHelper.showShort(getActivity(), "请求失败,错误码" + statusCode);
+//            }
+//        });
+//    }
 
-            @Override
-            public void onStart() {
-                super.onStart();
-            }
+//    private void successMyCombo(List<ComboEntry> list) {
+//        if (delayAdapter == null) {
+//            delayAdapter = new DelayAdapter(getActivity());
+//            delayAdapter.setDelayClick(delayClick);
+//            comboLv.setAdapter(delayAdapter);
+//        }
+//        delayAdapter.add(list);
+//    }
 
-            @Override
-            public void onFinish() {
-                super.onFinish();
-            }
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                String result = new String(responseBody);
-                MyComboEntry entry = JsonUtilsParser.fromJson(result, MyComboEntry.class);
-                if (entry != null) {
-                    if (TextUtils.isEmpty(entry.errcode)) {
-                        if (entry.combos != null && !entry.combos.isEmpty())
-                            requestGetDelayState(entry.combos.get(0).con);
-                        else
-                            disableDelayView(R.string.you_have_not_buy_combo);
-                    } else {
-                        ToastHelper.showShort(getActivity(), entry.errmsg);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                disableDelayView(R.string.btn_delay_a_week_delivery);
-                if (statusCode == 0) {
-                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
-                    return;
-                }
-                ToastHelper.showShort(getActivity(), "请求失败,错误码" + statusCode);
-            }
-        });
-    }
+    private DelayAdapter.DelayClick delayClick = new DelayAdapter.DelayClick() {
+        @Override
+        public void onDelay(DelayItemEntry entry) {
+            if (entry == null) return;
+            delayItemEntry = entry;
+            alertDelay(entry.orderno);
+        }
+    };
 
     private void requestGetDelayState(String orderNo) {
-        this.orderNo = orderNo;
         RequestParams params = new RequestParams();
-        params.add("orderno", orderNo);
+        if (!TextUtils.isEmpty(orderNo))
+            params.add("orderno", orderNo);
         final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
         HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "cai/delay", params, new AsyncHttpResponseHandler() {
 
@@ -172,16 +200,13 @@ public class OrderDelayFragment extends BaseFragment {
                 DelayEntry entry = JsonUtilsParser.fromJson(result, DelayEntry.class);
                 if (entry != null) {
                     if (TextUtils.isEmpty(entry.errcode)) {
-                        successDelay(entry.delayed);
-                    } else {
-                        disableDelayView(R.string.you_have_not_buy_combo);
+                        successDelayInfo(entry);
                     }
                 }
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                disableDelayView(R.string.btn_delay_a_week_delivery);
                 if (statusCode == 0) {
                     ToastHelper.showShort(getActivity(), R.string.network_error_tip);
                     return;
@@ -189,6 +214,15 @@ public class OrderDelayFragment extends BaseFragment {
                 ToastHelper.showShort(getActivity(), "请求失败,错误码" + statusCode);
             }
         });
+    }
+
+    private void successDelayInfo(DelayEntry entry) {
+        if (entry.data == null || entry.data.isEmpty()) return;
+        if (delayAdapter == null) {
+            delayAdapter = new DelayAdapter(getActivity());
+            comboLv.setAdapter(delayAdapter);
+        }
+        delayAdapter.add(entry.data);
     }
 
     private void requestPostDelayOrder(String orderNo) {
@@ -220,8 +254,6 @@ public class OrderDelayFragment extends BaseFragment {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                disableDelayView(R.string.btn_delay_a_week_delivery);
-                successDelay(false);
                 if (statusCode == 0) {
                     ToastHelper.showShort(getActivity(), R.string.network_error_tip);
                     return;
@@ -232,18 +264,6 @@ public class OrderDelayFragment extends BaseFragment {
     }
 
     private void successDelay(boolean delay) {
-        if (delay) {
-            disableDelayView(R.string.btn_has_delaied_a_week_delivery);
-        } else {
-            delayTv.setText(R.string.btn_delay_a_week_delivery);
-            delayTv.setBackgroundResource(R.drawable.btn_bg_red_selector);
-            delayTv.setEnabled(true);
-        }
-    }
-
-    private void disableDelayView(int strId) {
-        delayTv.setText(strId);
-        delayTv.setBackgroundResource(R.drawable.btn_bg_gray_selector);
-        delayTv.setEnabled(false);
+        requestGetDelayState(null);
     }
 }

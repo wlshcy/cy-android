@@ -17,17 +17,27 @@
         android:textColor="@color/common_text"
         />
 
-    <TextView
-        android:id="@+id/delay_tv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="@dimen/px30"
-        android:paddingBottom="@dimen/px30"
-        android:layout_marginLeft="@dimen/px110"
-        android:layout_marginRight="@dimen/px110"
-        android:background="@null"
-        android:gravity="center"
-        android:textColor="@android:color/white"
-        android:textSize="16sp"
-        />
+    <ListView
+        android:id="@+id/comboLv"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:paddingLeft="7dp"
+        android:paddingRight="7dp"
+        android:dividerHeight="@dimen/px10"
+        android:divider="@null">
+    </ListView>
+
+    <!--<TextView-->
+        <!--android:id="@+id/delay_tv"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:paddingTop="@dimen/px30"-->
+        <!--android:paddingBottom="@dimen/px30"-->
+        <!--android:layout_marginLeft="@dimen/px110"-->
+        <!--android:layout_marginRight="@dimen/px110"-->
+        <!--android:background="@null"-->
+        <!--android:gravity="center"-->
+        <!--android:textColor="@android:color/white"-->
+        <!--android:textSize="16sp"-->
+        <!--/>-->
 </LinearLayout>

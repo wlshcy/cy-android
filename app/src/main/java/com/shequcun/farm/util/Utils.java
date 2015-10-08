@@ -166,4 +166,13 @@ public class Utils {
         String sb = format.format(gc.getTime());
         return sb;
     }
+    public static String getMMdd(long d) {
+        Date dat = new Date(d);
+        GregorianCalendar gc = new GregorianCalendar();
+        gc.setTime(dat);
+        java.text.SimpleDateFormat format = new java.text.SimpleDateFormat(
+                "MM月dd日");
+        String sb = format.format(gc.getTime());
+        return sb;
+    }
 }

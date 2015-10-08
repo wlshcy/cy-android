@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_f4f4f4"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/px76"
+            android:background="@drawable/icon_my_combo"/>
+
+        <TextView
+            android:id="@+id/indexTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/px76"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:text=""
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/titleTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:gravity="center"
+        android:paddingBottom="@dimen/px30"
+        android:paddingTop="@dimen/px30"
+        android:text="有菜555月套餐"
+        android:textColor="@android:color/black"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/descTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:gravity="center"
+        android:paddingBottom="@dimen/px30"
+        android:paddingTop="@dimen/px30"
+        android:text="延期配送蔬菜每次只能选择延期一周配送"
+        android:textColor="@android:color/black"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/delayTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/px10"
+        android:layout_marginLeft="@dimen/px110"
+        android:layout_marginRight="@dimen/px110"
+        android:background="@null"
+        android:gravity="center"
+        android:paddingBottom="@dimen/px30"
+        android:paddingTop="@dimen/px30"
+        android:text="延期一周配送"
+        android:textColor="@android:color/white"
+        android:textSize="16sp" />
+</LinearLayout>

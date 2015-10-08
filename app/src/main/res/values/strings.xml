@@ -119,6 +119,9 @@
     <string name="delay_delivery_note">如家中有事，您可以选择延期配送菜品。延期期间不在给您短信通知选菜，延期结束后我门会通知您选菜。</string>
     <string name="btn_delay_a_week_delivery">延期一周配送</string>
     <string name="btn_has_delaied_a_week_delivery">您已延期一周配送</string>
+    <string name="btn_can_not_delay_a_week_delivery">您不能选择延期配送</string>
+    <string name="delay_desc1">延期配送蔬菜每次只能选择【延期一周配送】</string>
+    <string name="delay_desc2">您本周已选过菜了，不能为您延期，请联系客服。</string>
     <string name="order_delay_delivery">延期配送蔬菜</string>
     <string name="prompt_order_delivery">您确定订单延期配送？</string>
     <string name="red_packets_rule">红包使用规则</string>
