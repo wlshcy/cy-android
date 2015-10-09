@@ -102,64 +102,6 @@ public class DishesFragment extends BaseFragment {
         return null;
     }
 
-//    void requestOrderNo() {
-//        final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
-//
-//        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "cai/mycombo", new AsyncHttpResponseHandler() {
-//
-//            @Override
-//            public void onStart() {
-//                super.onStart();
-//                pDlg.show();
-//            }
-//
-//            @Override
-//            public void onFinish() {
-//                super.onFinish();
-//                pDlg.dismiss();
-//                if (pBar != null) {
-//                    pBar.setVisibility(View.GONE);
-//                }
-//            }
-//
-//            @Override
-//            public void onSuccess(int sCode, Header[] h, byte[] data) {
-//                if (data != null && data.length > 0) {
-////                    RecommendEntry entry = JsonUtilsParser.fromJson(new String(data), RecommendEntry.class);
-////                    if (entry != null) {
-////                        if (TextUtils.isEmpty(entry.errmsg)) {
-//////                            gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailFragment(), FarmSpecialtyDetailFragment.class.getName());
-////                        }
-////                    }
-//
-//                    MyComboOrderListEntry entry = JsonUtilsParser.fromJson(new String(data), MyComboOrderListEntry.class);
-//
-//                    if (entry != null && entry.aList != null && entry.aList.size() > 0) {
-//                        requestOrderEntry(entry.aList.get(0).con);
-//                    }
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
-//
-//            }
-//        });
-//    }
-
-//    PullToRefreshScrollView.OnRefreshListener2 onRefrshLsn = new PullToRefreshBase.OnRefreshListener2() {
-//        @Override
-//        public void onPullDownToRefresh(PullToRefreshBase refreshView) {
-//        }
-//
-//        @Override
-//        public void onPullUpToRefresh(PullToRefreshBase refreshView) {
-//            requestOrderEntry();
-//        }
-//    };
-
-
     void buidlAdapter() {
         if (adapter == null) {
             adapter = new MyOrderAdapter(getActivity());

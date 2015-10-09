@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -24,14 +25,13 @@ import com.shequcun.farm.data.RecommendEntry;
 import com.shequcun.farm.data.SlidesEntry;
 import com.shequcun.farm.datacenter.CacheManager;
 import com.shequcun.farm.db.RecommendItemKey;
+import com.shequcun.farm.platform.ShareContent;
 import com.shequcun.farm.platform.ShareManager;
 import com.shequcun.farm.ui.SqcFarmActivity;
 import com.shequcun.farm.ui.adapter.CarouselAdapter;
 import com.shequcun.farm.util.Constrants;
 import com.shequcun.farm.util.DeviceInfo;
 import com.shequcun.farm.util.IntentUtil;
-import com.shequcun.farm.platform.ShareContent;
-//import com.shequcun.farm.util.ShareUtil;
 import com.shequcun.farm.util.ToastHelper;
 import com.shequcun.farm.util.Utils;
 
@@ -39,6 +39,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.OnClick;
+
+//import com.shequcun.farm.util.ShareUtil;
 
 /**
  * 农庄特产详情
@@ -105,10 +108,14 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
     protected void setWidgetLsn() {
         producingPlaceTv.setOnClickListener(onClick);
         shareIv.setOnClickListener(onClick);
-        back.setOnClickListener(onClick);
         buildCarouselAdapter();
         setDataToView(entry);
         addChildViewToParent();
+    }
+
+    @OnClick(R.id.back)
+    void back() {
+        popBackStack();
     }
 
     void buildCarouselAdapter() {
@@ -117,28 +124,31 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
             dismissImgProgress();
             return;
         }
-        List<SlidesEntry> aList = new ArrayList<>();
+        final List<SlidesEntry> aList = new ArrayList<>();
         int size = entry.imgs.length;
         for (int i = 0; i < size; i++) {
             SlidesEntry sEntry = new SlidesEntry();
             sEntry.img = entry.imgs[i];
             aList.add(sEntry);
         }
-
         cAdapter = new CarouselAdapter(getActivity(), aList);
         cAdapter.setWidth(DeviceInfo.getDeviceWidth(getActivity()));
-        carousel_img.setAdapter(cAdapter, 0);
         carousel_img.setOnViewSwitchListener(viewSwitchListener);
         cAdapter.setImageLoaderListener(imageLoaderListener);
-        carousel_img.setFlowIndicator(carousel_point);
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                carousel_img.setAdapter(cAdapter, 0);
+                carousel_img.setFlowIndicator(carousel_point);
+            }
+        }, 0);
+
     }
 
     View.OnClickListener onClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (v == back)
-                popBackStack();
-            else if (v == shareIv) {
+            if (v == shareIv) {
                 ShareContent sharecontent = new ShareContent();
 //                sharecontent.seturlimage("drawable:///" + r.drawable.icon_share);
                 sharecontent.setImageId(R.drawable.icon_share_logo);
@@ -305,6 +315,14 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
                 });
     }
 
+    private Handler mHandler = new Handler();
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mHandler.removeCallbacksAndMessages(null);
+    }
+
     /**
      * 是否登录成功
      *
@@ -368,8 +386,6 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
     CircleFlowIndicator carousel_point;
     CarouselAdapter cAdapter;
     RecommendEntry entry;
-    @Bind(R.id.back)
-    View back;
     @Bind(R.id.pView)
     FrameLayout pView;
     @Bind(R.id.name_tv)

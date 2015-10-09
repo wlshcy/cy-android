@@ -307,8 +307,7 @@ public class ModifyOrderFragment extends BaseFragment {
     }
 
     private void setRedPacketsView(boolean visible) {
-        if (visible)
-            redPacketsIv.setVisibility(View.VISIBLE);
+        redPacketsIv.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 
     Bundle buildBundle(String orderno, int orderMoney, String alipay, int titleId) {
@@ -351,59 +350,6 @@ public class ModifyOrderFragment extends BaseFragment {
         dialog.show();
     }
 
-//    void requestUserAddress() {
-//        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "user/v2/address", new AsyncHttpResponseHandler() {
-//            @Override
-//            public void onSuccess(int sCode, Header[] h, byte[] data) {
-//                if (data != null && data.length > 0) {
-//                    AddressListEntry entry = JsonUtilsParser.fromJson(new String(data), AddressListEntry.class);
-//                    if (entry != null) {
-//                        if (TextUtils.isEmpty(entry.errmsg)) {
-//                            successUserAddress(entry.aList);
-//                            return;
-//                        } else {
-//                            ToastHelper.showShort(getActivity(), entry.errmsg);
-//                        }
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
-//                setAddressWidgetContent(new CacheManager(getActivity()).getUserReceivingAddress());
-//            }
-//        });
-//    }
-
-//    private void successUserAddress(List<AddressEntry> list) {
-//        if (list == null || list.size() <= 0)
-//            return;
-//        int size = list.size();
-//        for (int i = 0; i < size; ++i) {
-//            AddressEntry entry = list.get(i);
-//            if (entry.isDefault) {
-//                setAddressWidgetContent(entry);
-//                return;
-//            }
-//        }
-//    }
-
-//    public void setAddressWidgetContent(AddressEntry entry) {
-//        if (entry == null)
-//            return;
-//        addressLy.setVisibility(View.VISIBLE);
-//        addressee_info.setText(entry.name + "  " + entry.mobile);
-//        String addressStr = entry.address;
-//        if (TextUtils.isEmpty(addressStr)) {
-//            StringBuilder builder = new StringBuilder();
-//            builder.append(!TextUtils.isEmpty(entry.city) ? entry.city : "");
-//            builder.append(!TextUtils.isEmpty(entry.region) ? entry.region : "");
-//            builder.append(!TextUtils.isEmpty(entry.zname) ? entry.zname : "");
-//            builder.append(!TextUtils.isEmpty(entry.bur) ? entry.bur : "");
-//            addressStr = builder.toString();
-//        }
-//        address.setText("地址: " + addressStr);
-//    }
 
     private void requestRedPacktetShareUrl(String orderNo) {
         RequestParams params = new RequestParams();
@@ -430,11 +376,11 @@ public class ModifyOrderFragment extends BaseFragment {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-//                if (statusCode == 0) {
-//                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
-//                    return;
-//                }
-//                ToastHelper.showShort(getActivity(), "请求失败,错误码" + statusCode);
+                if (statusCode == 0) {
+                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
+                    return;
+                }
+                ToastHelper.showShort(getActivity(), "请求失败,错误码" + statusCode);
             }
         });
     }
@@ -476,8 +422,8 @@ public class ModifyOrderFragment extends BaseFragment {
             mLv.addFooterView(LayoutInflater.from(getActivity()).inflate(R.layout.remark_footer_ly, null), null, false);
             for (int i = 0; i < aList.size(); i++) {
                 View footerView = LayoutInflater.from(getActivity()).inflate(R.layout.order_details_item_ly, null);
-                ImageView goodsImg = (ImageView)footerView.findViewById(R.id.goods_img);
-                ImageLoader.getInstance().displayImage(aList.get(i).img+"?imageview2/2/w/180",goodsImg);
+                ImageView goodsImg = (ImageView) footerView.findViewById(R.id.goods_img);
+                ImageLoader.getInstance().displayImage(aList.get(i).img + "?imageview2/2/w/180", goodsImg);
                 ((TextView) footerView.findViewById(R.id.goods_name)).setText(aList.get(i).title);
                 (footerView.findViewById(R.id.goods_price)).setVisibility(View.GONE);
                 footerView.findViewById(R.id.goods_count).setVisibility(View.GONE);
