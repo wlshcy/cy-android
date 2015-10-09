@@ -31,7 +31,7 @@ public class ChooseDishesAdapter extends ArrayAdapter<DishesItemEntry> {
         super(context, R.layout.goods_item_ly);
     }
 
-    public void buildOnClickLsn(boolean enabled, AvoidDoubleClickListener onGoodsImgLsn, View.OnClickListener onAddGoodsLsn, AvoidDoubleClickListener onSubGoodsLsn) {
+    public void buildOnClickLsn(boolean enabled, AvoidDoubleClickListener onGoodsImgLsn, View.OnClickListener onAddGoodsLsn, View.OnClickListener onSubGoodsLsn) {
         this.enabled = enabled;
         this.onGoodsImgLsn = onGoodsImgLsn;
         this.onAddGoodsLsn = onAddGoodsLsn;
@@ -132,5 +132,5 @@ public class ChooseDishesAdapter extends ArrayAdapter<DishesItemEntry> {
 
     AvoidDoubleClickListener onGoodsImgLsn;
     View.OnClickListener onAddGoodsLsn;
-    AvoidDoubleClickListener onSubGoodsLsn;
+    View.OnClickListener onSubGoodsLsn;
 }

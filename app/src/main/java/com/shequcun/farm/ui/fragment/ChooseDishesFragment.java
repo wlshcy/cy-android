@@ -146,9 +146,8 @@ public class ChooseDishesFragment extends BaseFragment {
     };
 
     int buildRequestID() {
-        if (entry == null) {
+        if (entry == null)
             return 1;
-        }
         if (enabled) {
             mOrderController.setReqWeight(entry.weights[entry.getPosition()]);
             mBuyOrderTv.setText("选择" + Utils.unitConversion(mOrderController.getReqWeight()));
@@ -304,9 +303,7 @@ public class ChooseDishesFragment extends BaseFragment {
      */
     private void popupShoppingCart() {
         emptyView.setVisibility(View.VISIBLE);
-//        显示清空全部
         mShopCartClearTv.setVisibility(View.VISIBLE);
-//        设定弹出的购物车容器底边距为底部栏高度
         LinearLayout popupShopCartLl = (LinearLayout) rootView
                 .findViewById(R.id.shop_cart_container_ll);
         LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) popupShopCartLl
@@ -322,14 +319,11 @@ public class ChooseDishesFragment extends BaseFragment {
         containerLl = (LinearLayout) scrollView.findViewById(R.id.container_ll);
         for (DishesItemEntry it : mOrderController.buildItems()) {
             View v = LayoutInflater.from(getActivity()).inflate(R.layout.good_item_popup, null);
-            TextView priceTv = (TextView) v.findViewById(R.id.good_price_tv);
-            priceTv.setVisibility(View.GONE);
-            TextView countTv = (TextView) v.findViewById(R.id.good_count_tv);
-            countTv.setText(String.valueOf(it.getCount()));
-            TextView nameTv = (TextView) v.findViewById(R.id.good_name_tv);
+            v.findViewById(R.id.good_price_tv).setVisibility(View.GONE);
+            ((TextView) v.findViewById(R.id.good_count_tv)).setText(String.valueOf(it.getCount()));
             ImageView downIv = (ImageView) v.findViewById(R.id.good_count_down_iv);
             ImageView upIv = (ImageView) v.findViewById(R.id.good_count_up_iv);
-            nameTv.setText(it.title);
+            ((TextView) v.findViewById(R.id.good_name_tv)).setText(it.title);
             upIv.setTag(it.id);
             upIv.setOnClickListener(mUpOnClickListenerInShopCart);
             downIv.setTag(it.id);
@@ -476,21 +470,17 @@ public class ChooseDishesFragment extends BaseFragment {
      */
     private void toggleBuyOrder(boolean buy) {
         if (buy) {
-            mBuyOrderTv
-                    .setBackgroundResource(R.drawable.shopping_cart_widget_selector_3);
+            mBuyOrderTv.setBackgroundResource(R.drawable.shopping_cart_widget_selector_3);
             mBuyOrderTv.setText(R.string.small_market_buy);
-            mBuyOrderTv.setTextColor(getResources().getColor(
-                    R.color.white_fefefe));
+            mBuyOrderTv.setTextColor(getResources().getColor(R.color.white_fefefe));
             mShopCartPriceTv.setText(R.string.choose_dishes_successful);
             option_dishes_tv.setVisibility(View.VISIBLE);
         } else {
             option_dishes_tv.setVisibility(View.GONE);
-            mBuyOrderTv
-                    .setBackgroundResource(R.drawable.shopping_cart_widget_selector_2);
+            mBuyOrderTv.setBackgroundResource(R.drawable.shopping_cart_widget_selector_2);
             String txt = getResources().getString(
                     R.string.small_market_buy_not_enough);
             int surplus = mOrderController.getReqWeight() - mOrderController.getItemsWeight();
-
             if (surplus == mOrderController.getReqWeight()) {
                 txt = "选择" + Utils.unitConversion(surplus);
             } else {
@@ -515,13 +505,8 @@ public class ChooseDishesFragment extends BaseFragment {
             if (pView == null)
                 return;
             TextView tvCount = (TextView) pView.findViewById(R.id.goods_count);// 显示数量
-            if (tvCount.getVisibility() == View.GONE) {
-                tvCount.setVisibility(View.VISIBLE);
-            }
-            ImageView ivDown = (ImageView) pView.findViewById(R.id.goods_sub);
-            if (ivDown.getVisibility() == View.GONE) {
-                ivDown.setVisibility(View.VISIBLE);
-            }
+            tvCount.setVisibility(View.VISIBLE);
+            pView.findViewById(R.id.goods_sub).setVisibility(View.VISIBLE);
             String count = tvCount.getText().toString();
             int intCount = Integer.parseInt(count) + 1;
             DishesItemEntry item = adapter.getItem(position);
@@ -539,7 +524,7 @@ public class ChooseDishesFragment extends BaseFragment {
         int i = mOrderController.outOfReqWeight(lastWeight);
         if (i > 0) {
             /*异常不会出现的情况*/
-            if (i > lastWeight || i == lastWeight) {
+            if (i >= lastWeight) {
                 new AlertDialog().alertOutOfReqWeight(getActivity(), mOrderController.getReqWeight());
                 return true;
                 /*举例：选了10，要求10，再选*/
@@ -558,23 +543,17 @@ public class ChooseDishesFragment extends BaseFragment {
         if (mOrderController.outOfMaxpacks(id)) {
             new AlertDialog().alertOutOfMaxpacks(getActivity(), mOrderController.getMaxpacksById(id));
             return true;
-        } else {
-            /*超过剩余g数*/
-            if (mOrderController.outOfRemainWeight(id)) {
-                new AlertDialog().alertOutOfRemains(getActivity());
-                return true;
-            }
+        } else if (mOrderController.outOfRemainWeight(id)) {
+            new AlertDialog().alertOutOfRemains(getActivity());
+            return true;
         }
         return false;
     }
 
 
-    /**
-     * 减号被点击
-     */
-    private AvoidDoubleClickListener mDownOnClickListener = new AvoidDoubleClickListener() {
+    private View.OnClickListener mDownOnClickListener = new View.OnClickListener() {
         @Override
-        public void onViewClick(View v) {
+        public void onClick(View v) {
             if (v.getTag() instanceof Integer) {
                 int position = (int) v.getTag();
                 updateListItem(position);
@@ -593,50 +572,33 @@ public class ChooseDishesFragment extends BaseFragment {
         if (pView == null)
             return;
         TextView tvCount = (TextView) pView.findViewById(R.id.goods_count);// 显示数量
-        if (tvCount.getVisibility() == View.GONE) {
-            tvCount.setVisibility(View.VISIBLE);
-        }
-        ImageView ivDown = (ImageView) pView.findViewById(R.id.goods_sub);
-        if (ivDown.getVisibility() == View.GONE) {
-            ivDown.setVisibility(View.VISIBLE);
-        }
         String count = tvCount.getText().toString();
         int intCount = Integer.parseInt(count) - 1;
         DishesItemEntry goodItem = adapter.getItem(position);
         goodItem.setCount(intCount);
         mOrderController.removeItemById(goodItem.id);
-        if (intCount == 0) {
-            ivDown.setVisibility(View.GONE);
-            tvCount.setVisibility(View.GONE);
-        }
+        int visibility = intCount == 0 ? View.GONE : View.VISIBLE;
+        pView.findViewById(R.id.goods_sub).setVisibility(visibility);
+        tvCount.setVisibility(visibility);
         tvCount.setText(String.valueOf(intCount));
     }
 
     private AvoidDoubleClickListener mUpOnClickListenerInShopCart = new AvoidDoubleClickListener() {
         @Override
         public void onViewClick(View v) {
-            int id = (int) (v.getTag());
+            int id = (int) v.getTag();
             DishesItemEntry item = mOrderController.getItemById(id);
-            if (checkReqWeight(item.packw)) {
-                return;
-            }
-            if (checkMaxpacks(item.id)) {
+            if (checkReqWeight(item.packw) || checkMaxpacks(item.id)) {
                 return;
             }
             ViewGroup vG = (ViewGroup) v.getParent();
             TextView tvCount = (TextView) vG.findViewById(R.id.good_count_tv);
-            if (tvCount.getVisibility() == View.GONE) {
-                tvCount.setVisibility(View.VISIBLE);
-            }
-            ImageView ivDown = (ImageView) vG.findViewById(R.id.good_count_down_iv);
-            if (ivDown.getVisibility() == View.GONE) {
-                ivDown.setVisibility(View.VISIBLE);
-            }
+            tvCount.setVisibility(View.VISIBLE);
+            vG.findViewById(R.id.good_count_down_iv).setVisibility(View.VISIBLE);
             item.setCount(item.getCount() + 1);
             mOrderController.addItem(item);
             mOrderController.removeOptionItem(item);
             tvCount.setText(String.valueOf(item.getCount()));
-
             for (int i = 0; i < adapter.getCount(); ++i) {
                 DishesItemEntry tmpItem = adapter.getItem(i);
                 if (tmpItem != null && item != null && tmpItem.id == item.id) {
@@ -644,13 +606,8 @@ public class ChooseDishesFragment extends BaseFragment {
                     if (pView == null)
                         break;
                     TextView tvcount = (TextView) pView.findViewById(R.id.goods_count);// 显示数量
-                    if (tvcount.getVisibility() == View.GONE) {
-                        tvcount.setVisibility(View.VISIBLE);
-                    }
-                    ImageView ivdown = (ImageView) pView.findViewById(R.id.goods_sub);
-                    if (ivdown.getVisibility() == View.GONE) {
-                        ivdown.setVisibility(View.VISIBLE);
-                    }
+                    tvcount.setVisibility(View.VISIBLE);
+                    pView.findViewById(R.id.goods_sub).setVisibility(View.VISIBLE);
                     tvcount.setText(item.getCount() + "");
                     break;
                 }
@@ -669,13 +626,6 @@ public class ChooseDishesFragment extends BaseFragment {
             ViewGroup parentView0 = (ViewGroup) v.getParent();
             ViewGroup parentView = (ViewGroup) parentView0.getParent();
             TextView tvCount = (TextView) parentView.findViewById(R.id.good_count_tv);
-            if (tvCount.getVisibility() == View.GONE) {
-                tvCount.setVisibility(View.VISIBLE);
-            }
-            ImageView ivDown = (ImageView) parentView.findViewById(R.id.good_count_down_iv);
-            if (ivDown.getVisibility() == View.GONE) {
-                ivDown.setVisibility(View.VISIBLE);
-            }
             String count = tvCount.getText().toString();
             int intCount = Integer.parseInt(count);
             intCount--;
@@ -691,30 +641,23 @@ public class ChooseDishesFragment extends BaseFragment {
                         if (pView == null)
                             break;
                         TextView tvcount = (TextView) pView.findViewById(R.id.goods_count);// 显示数量
-                        if (tvcount.getVisibility() == View.GONE) {
-                            tvcount.setVisibility(View.VISIBLE);
-                        }
-                        ImageView ivdown = (ImageView) pView.findViewById(R.id.goods_sub);
-                        if (ivdown.getVisibility() == View.GONE) {
-                            ivdown.setVisibility(View.VISIBLE);
-                        }
                         String s = tvcount.getText().toString();
                         int intcount = Integer.parseInt(s) - 1;
                         DishesItemEntry goodItem = adapter.getItem(i);
                         goodItem.setCount(intcount);
-                        if (intcount == 0) {
-                            ivdown.setVisibility(View.GONE);
-                            tvcount.setVisibility(View.GONE);
-                        }
+                        int visibility = intcount == 0 ? View.GONE : View.VISIBLE;
+                        tvcount.setVisibility(visibility);
+                        pView.findViewById(R.id.goods_sub).setVisibility(visibility);
                         tvcount.setText(String.valueOf(intcount));
                         break;
                     }
                 }
             }
             PlaySoundUtils.doPlay(getActivity(), R.raw.pop);
+            int visibility = intCount <= 0 ? View.GONE : View.VISIBLE;
+            parentView.findViewById(R.id.good_count_down_iv).setVisibility(visibility);
+            tvCount.setVisibility(visibility);
             if (intCount == 0) {
-                ivDown.setVisibility(View.GONE);
-                tvCount.setVisibility(View.GONE);
                 containerLl.removeView(parentView);
             } else if (intCount < 0) {
                 intCount = 0;
@@ -755,8 +698,8 @@ public class ChooseDishesFragment extends BaseFragment {
         final TextView choose_dishes_tip = (TextView) v.findViewById(R.id.choose_dishes_tip);
         if (!isChooseNextDishes()) {
             int status = buildStatus();
+            choose_dishes_tip.setVisibility(View.VISIBLE);
             if (status == 1) {
-                choose_dishes_tip.setVisibility(View.VISIBLE);
                 choose_dishes_tip.setText(R.string.has_choosen_dishes_tip);
                 choose_dishes_tip.setOnClickListener(new AvoidDoubleClickListener() {
                     @Override
@@ -766,10 +709,8 @@ public class ChooseDishesFragment extends BaseFragment {
                 });
                 return false;
             } else if (status == 3) {
-                choose_dishes_tip.setVisibility(View.VISIBLE);
                 choose_dishes_tip.setText(R.string.delievery_success);
             } else if (status == 2) {
-                choose_dishes_tip.setVisibility(View.VISIBLE);
                 choose_dishes_tip.setText(R.string.choose_dishes_tip);
                 Drawable left = getActivity().getResources().getDrawable(R.drawable.icon_sigh);
                 choose_dishes_tip.setCompoundDrawablesWithIntrinsicBounds(left, null, null, null);
@@ -805,8 +746,7 @@ public class ChooseDishesFragment extends BaseFragment {
     private void setWidgetEnableStatus() {
         mShopCartIv.setEnabled(false);
         mShopCartPriceTv.setText(null);
-        mBuyOrderTv.setTextColor(
-                getActivity().getResources().getColorStateList(R.color.gray_d8d8d8));
+        mBuyOrderTv.setTextColor(getActivity().getResources().getColorStateList(R.color.gray_d8d8d8));
         mBuyOrderTv.setText(R.string.has_chosen_dishes);
         mBuyOrderTv.setEnabled(false);
     }
@@ -858,8 +798,7 @@ public class ChooseDishesFragment extends BaseFragment {
                     if (pView == null)
                         continue;
                     TextView tvcount = (TextView) pView.findViewById(R.id.goods_count);// 显示数量
-                    ImageView ivdown = (ImageView) pView.findViewById(R.id.goods_sub);
-                    ivdown.setVisibility(View.GONE);
+                    pView.findViewById(R.id.goods_sub).setVisibility(View.GONE);
                     tvcount.setVisibility(View.GONE);
                     tvcount.setText("0");
                     break;
@@ -867,6 +806,7 @@ public class ChooseDishesFragment extends BaseFragment {
             }
         }
     }
+
     @Bind(R.id.option_dishes_tv)
     TextView option_dishes_tv;
     boolean enabled;
