@@ -12,6 +12,7 @@
         android:layout_marginLeft="@dimen/px20" />
 
     <LinearLayout
+        android:id="@+id/lookDtlLy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
@@ -48,10 +49,9 @@
             android:id="@+id/goods_sub"
             android:layout_width="@dimen/px80"
             android:layout_height="@dimen/px80"
-            android:visibility="gone"
             android:scaleType="centerInside"
             android:src="@drawable/icon_sub"
-            />
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/goods_count"
@@ -59,10 +59,9 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="0"
-            android:visibility="gone"
             android:textColor="@android:color/black"
             android:textSize="@dimen/font30"
-            />
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/goods_add"

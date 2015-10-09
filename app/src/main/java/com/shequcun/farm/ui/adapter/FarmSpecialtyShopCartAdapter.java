@@ -44,8 +44,11 @@ public class FarmSpecialtyShopCartAdapter extends ArrayAdapter<RecommendEntry> {
         vh.goods_sub.setTag(position);
         vh.goods_sub.setOnClickListener(onSubGoodsLsn);
         vh.goods_sub.setContentDescription(String.valueOf(entry.id));
+
+        vh.lookDtlLy.setTag(position);
+        vh.lookDtlLy.setOnClickListener(onLookDtlLsn);
         if (entry != null) {
-            ImageLoader.getInstance().displayImage(entry.imgs[0]+"?imageview2/2/w/180",vh.goods_img);
+            ImageLoader.getInstance().displayImage(entry.imgs[0] + "?imageview2/2/w/180", vh.goods_img);
             vh.goods_name.setText(entry.title);
             vh.goods_price.setText(Utils.unitConversion(entry.packw) + "/份");
         }
@@ -75,19 +78,23 @@ public class FarmSpecialtyShopCartAdapter extends ArrayAdapter<RecommendEntry> {
         ImageView goods_sub;
         @Bind(R.id.goods_add)
         ImageView goods_add;
+        @Bind(R.id.lookDtlLy)
+        View lookDtlLy;
 
         ViewHolder(View v) {
             ButterKnife.bind(this, v);
         }
     }
 
-    public void buildOnClickLsn(View.OnClickListener onGoodsImgLsn, View.OnClickListener onAddGoodsLsn, View.OnClickListener onSubGoodsLsn) {
+    public void buildOnClickLsn(View.OnClickListener onLookDtlLsn, View.OnClickListener onGoodsImgLsn, View.OnClickListener onAddGoodsLsn, View.OnClickListener onSubGoodsLsn) {
         this.onGoodsImgLsn = onGoodsImgLsn;
         this.onAddGoodsLsn = onAddGoodsLsn;
+        this.onLookDtlLsn = onLookDtlLsn;
         this.onSubGoodsLsn = onSubGoodsLsn;
     }
 
     View.OnClickListener onGoodsImgLsn;
     View.OnClickListener onAddGoodsLsn;
     View.OnClickListener onSubGoodsLsn;
+    View.OnClickListener onLookDtlLsn;
 }

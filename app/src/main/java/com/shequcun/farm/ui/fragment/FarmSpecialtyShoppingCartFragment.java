@@ -153,9 +153,27 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment implements R
         if (adapter == null)
             adapter = new FarmSpecialtyShopCartAdapter(getActivity());
         adapter.clear();
-        adapter.buildOnClickLsn(onGoodsImgLsn, onAddGoodsLsn, onSubGoodsLsn);
+        adapter.buildOnClickLsn(onLookDtlLsn, onGoodsImgLsn, onAddGoodsLsn, onSubGoodsLsn);
         mLv.setAdapter(adapter);
         mLv.setExpanded(true);
+    }
+
+    View.OnClickListener onLookDtlLsn = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            int position = (int) v.getTag();
+            if (adapter == null || position >= adapter.getCount() || adapter.getItem(position) == null)
+                return;
+            RecommendEntry entry = adapter.getItem(position);
+            entry.isShowDtlFooter = true;
+            gotoFragmentByAnimation(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailFragment(), FarmSpecialtyDetailFragment.class.getName());
+        }
+    };
+
+    Bundle buildBundle(RecommendEntry entry) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("RecommentEntry", entry);
+        return bundle;
     }
 
     void addDataToAdapter(RecommendEntry[] rEntryArray) {
