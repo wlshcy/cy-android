@@ -220,6 +220,7 @@ public class OrderDelayFragment extends BaseFragment {
         if (entry.data == null || entry.data.isEmpty()) return;
         if (delayAdapter == null) {
             delayAdapter = new DelayAdapter(getActivity());
+            delayAdapter.setDelayClick(delayClick);
             comboLv.setAdapter(delayAdapter);
         }
         delayAdapter.add(entry.data);
