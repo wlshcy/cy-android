@@ -46,6 +46,8 @@ public class OrderDelayFragment extends BaseFragment {
 //    TextView delayTv;
     @Bind(R.id.comboLv)
     ListView comboLv;
+    @Bind(R.id.emptyTv)
+    TextView emptyTv;
     private DelayAdapter delayAdapter;
     private DelayItemEntry delayItemEntry;
 
@@ -217,7 +219,10 @@ public class OrderDelayFragment extends BaseFragment {
     }
 
     private void successDelayInfo(DelayEntry entry) {
-        if (entry.data == null || entry.data.isEmpty()) return;
+        if (entry.data == null || entry.data.isEmpty()) {
+            comboLv.setEmptyView(emptyTv);
+            return;
+        }
         if (delayAdapter == null) {
             delayAdapter = new DelayAdapter(getActivity());
             delayAdapter.setDelayClick(delayClick);
