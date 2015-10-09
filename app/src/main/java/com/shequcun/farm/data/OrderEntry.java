@@ -53,7 +53,8 @@ public class OrderEntry extends BaseEntry {
     public long modified;//int	修改时间	1970年1月1日至今的毫秒数	1423458933975
     @SerializedName("wxpay")
     public WxPayResEntry wxpay;
-
+    @SerializedName("last")
+    public boolean last;
 //    "fee":59800,
 //            "orderno":1587496832633814,
 //            "freight":0,
