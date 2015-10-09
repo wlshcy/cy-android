@@ -59,7 +59,7 @@ public class DelayAdapter extends BaseAdapter {
         }
         final DelayItemEntry entry = (DelayItemEntry) getItem(position);
         viewHolder.titleTv.setText(entry.title);
-        viewHolder.indexTv.setText("我的套餐"+position+1);
+        viewHolder.indexTv.setText("我的套餐"+(position+1));
         viewHolder.delayTv.setText("延期");
         //已经选过菜，不能延期
         if (entry.chosen) {
