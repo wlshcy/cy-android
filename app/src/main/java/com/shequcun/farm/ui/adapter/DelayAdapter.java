@@ -63,7 +63,7 @@ public class DelayAdapter extends BaseAdapter {
         viewHolder.delayTv.setText("延期");
         //已经选过菜，不能延期
         if (entry.chosen) {
-            viewHolder.descTv.setText(R.string.delay_desc1);
+            viewHolder.descTv.setText(R.string.delay_desc2);
             viewHolder.delayTv.setText(R.string.btn_can_not_delay_a_week_delivery);
             viewHolder.delayTv.setBackgroundResource(R.drawable.btn_bg_gray_selector);
             viewHolder.delayTv.setEnabled(false);
@@ -76,7 +76,7 @@ public class DelayAdapter extends BaseAdapter {
                 viewHolder.delayTv.setEnabled(false);
                 //表示可以延期
             } else {
-                viewHolder.descTv.setText(R.string.delay_desc2);
+                viewHolder.descTv.setText(R.string.delay_desc1);
                 viewHolder.delayTv.setText(R.string.btn_delay_a_week_delivery);
                 viewHolder.delayTv.setBackgroundResource(R.drawable.btn_bg_red_selector);
                 viewHolder.delayTv.setEnabled(true);
