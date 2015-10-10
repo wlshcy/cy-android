@@ -59,28 +59,25 @@ public class DelayAdapter extends BaseAdapter {
         }
         final DelayItemEntry entry = (DelayItemEntry) getItem(position);
         viewHolder.titleTv.setText(entry.title);
-        viewHolder.indexTv.setText("我的套餐"+(position+1));
+        viewHolder.indexTv.setText("我的套餐" + (position + 1));
         viewHolder.delayTv.setText("延期");
-        //已经选过菜，不能延期
-        if (entry.chosen) {
+//        0.没有选菜，可以延期；1.已经延期，不能再延期；2.已选过菜，不能延期
+        if (entry.status == 0) {
+            viewHolder.descTv.setText(R.string.delay_desc1);
+            viewHolder.delayTv.setText(R.string.btn_delay_a_week_delivery);
+            viewHolder.delayTv.setBackgroundResource(R.drawable.btn_bg_red_selector);
+            viewHolder.delayTv.setEnabled(true);
+        } else if (entry.status == 1) {
+            if (entry.delay != null)
+                viewHolder.descTv.setText("下次配送时间" + Utils.getMMdd(entry.delay.date) + ",请在配送日24小时前选菜");
+            viewHolder.delayTv.setText(R.string.btn_has_delaied_a_week_delivery);
+            viewHolder.delayTv.setBackgroundResource(R.drawable.btn_bg_gray_selector);
+            viewHolder.delayTv.setEnabled(false);
+        } else if (entry.status == 2) {
             viewHolder.descTv.setText(R.string.delay_desc2);
             viewHolder.delayTv.setText(R.string.btn_can_not_delay_a_week_delivery);
             viewHolder.delayTv.setBackgroundResource(R.drawable.btn_bg_gray_selector);
             viewHolder.delayTv.setEnabled(false);
-        } else {
-            //已经延期过，不能在延期
-            if (entry.delay != null) {
-                viewHolder.descTv.setText("下次配送时间" + Utils.getMMdd(entry.delay.date) + ",请在配送日24小时前选菜");
-                viewHolder.delayTv.setText(R.string.btn_has_delaied_a_week_delivery);
-                viewHolder.delayTv.setBackgroundResource(R.drawable.btn_bg_gray_selector);
-                viewHolder.delayTv.setEnabled(false);
-                //表示可以延期
-            } else {
-                viewHolder.descTv.setText(R.string.delay_desc1);
-                viewHolder.delayTv.setText(R.string.btn_delay_a_week_delivery);
-                viewHolder.delayTv.setBackgroundResource(R.drawable.btn_bg_red_selector);
-                viewHolder.delayTv.setEnabled(true);
-            }
         }
 
         viewHolder.delayTv.setOnClickListener(new AvoidDoubleClickListener() {
@@ -108,6 +105,7 @@ public class DelayAdapter extends BaseAdapter {
         TextView descTv;
         @Bind(R.id.indexTv)
         TextView indexTv;
+
         public ViewHolder(View view) {
             ButterKnife.bind(this, view);
         }

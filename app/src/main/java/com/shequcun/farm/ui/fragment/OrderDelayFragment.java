@@ -49,7 +49,6 @@ public class OrderDelayFragment extends BaseFragment {
     @Bind(R.id.emptyTv)
     TextView emptyTv;
     private DelayAdapter delayAdapter;
-    private DelayItemEntry delayItemEntry;
 
     @Nullable
     @Override
@@ -172,7 +171,6 @@ public class OrderDelayFragment extends BaseFragment {
         @Override
         public void onDelay(DelayItemEntry entry) {
             if (entry == null) return;
-            delayItemEntry = entry;
             alertDelay(entry.orderno);
         }
     };

@@ -60,7 +60,7 @@ public class MyAddressAdapter extends BaseAdapter {
         AddressEntry entry = (AddressEntry) getItem(position);
         vh.name.setText(entry.name);
         vh.mobile.setText(entry.mobile);
-        vh.address.setText(entry.city + entry.region + entry.zname + entry.bur);
+        vh.address.setText(entry.city + entry.region + entry.address);
         if (entry.isDefault && showDefaultIcon) {
             vh.choose.setImageResource(R.drawable.icon_choose);
         } else {

@@ -20,12 +20,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/px20"
-                android:paddingTop="@dimen/px20"
                 android:paddingBottom="@dimen/px20"
+                android:paddingTop="@dimen/px20"
                 android:text="@string/contract"
                 android:textColor="@android:color/black"
-                android:textSize="@dimen/font28"
-                />
+                android:textSize="@dimen/font28" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -52,10 +51,12 @@
                     android:hint="@string/input_receive_name"
                     android:textSize="@dimen/font28" />
             </LinearLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1.0dp"
                 android:background="#e4e4e4" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/px110"
@@ -81,66 +82,78 @@
                     android:hint="@string/input_receive_mobile"
                     android:textSize="@dimen/font28" />
             </LinearLayout>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/px20"
-                android:paddingTop="@dimen/px20"
                 android:paddingBottom="@dimen/px20"
+                android:paddingTop="@dimen/px20"
                 android:text="@string/receive_address"
                 android:textColor="@android:color/black"
-                android:textSize="@dimen/font28"
-                />
+                android:textSize="@dimen/font28" />
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1.0dp"
                 android:background="#e4e4e4" />
+
             <LinearLayout
                 android:id="@+id/choose_zone_ll"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/px110"
                 android:background="@drawable/list_bg"
-                android:orientation="horizontal"
-                >
+                android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/community_title_tv"
+                    android:id="@+id/regionTitleTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="@dimen/px20"
-                    android:text="@string/community"
+                    android:text="@string/live_region"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/font28" />
 
                 <TextView
-                    android:id="@+id/choose_zone_tv"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/px92"
-                    android:layout_weight="1"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/px20"
-                    android:background="@drawable/list_item_selector"
-                    android:drawableLeft="@drawable/icon_location"
-                    android:gravity="center_vertical"
-                    android:textColor="@color/gray_9a9a9a"
-                    android:textSize="@dimen/font28"
-                    android:text="@string/click_to_choose"
-                    />
-
-                <TextView
-                    android:id="@+id/community_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/px92"
+                    android:id="@+id/regionTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/px20"
                     android:layout_marginRight="@dimen/px20"
                     android:layout_gravity="center_vertical"
-                    android:background="@drawable/list_item_selector"
-                    android:drawableRight="@drawable/icon_more"
-                    android:gravity="center_vertical"
-                    android:minWidth="@dimen/px180"
+                    android:background="@null"
                     android:textColor="@android:color/black"
+                    android:hint="@string/input_your_region"
                     android:textSize="@dimen/font28" />
+                <!--<TextView-->
+                <!--android:id="@+id/choose_zone_tv"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="@dimen/px92"-->
+                <!--android:layout_weight="1"-->
+                <!--android:layout_gravity="center_vertical"-->
+                <!--android:layout_marginLeft="@dimen/px20"-->
+                <!--android:background="@drawable/list_item_selector"-->
+                <!--android:drawableLeft="@drawable/icon_location"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:textColor="@color/gray_9a9a9a"-->
+                <!--android:textSize="@dimen/font28"-->
+                <!--android:text="@string/click_to_choose"-->
+                <!--/>-->
+
+                <!--<TextView-->
+                <!--android:id="@+id/community_tv"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="@dimen/px92"-->
+                <!--android:layout_marginLeft="@dimen/px20"-->
+                <!--android:layout_marginRight="@dimen/px20"-->
+                <!--android:layout_gravity="center_vertical"-->
+                <!--android:background="@drawable/list_item_selector"-->
+                <!--android:drawableRight="@drawable/icon_more"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:minWidth="@dimen/px180"-->
+                <!--android:textColor="@android:color/black"-->
+                <!--android:textSize="@dimen/font28" />-->
 
             </LinearLayout>
 
@@ -148,19 +161,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="1.0dp"
                 android:background="#e4e4e4" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/px110"
                 android:background="@android:color/white"
                 android:gravity="center_vertical"
-                android:orientation="horizontal"
-                >
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/px20"
-                    android:text="@string/building_and_room_no"
+                    android:text="@string/street_address"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/font28" />
 
@@ -176,64 +189,64 @@
                     android:textSize="@dimen/font28" />
             </LinearLayout>
             <!--<View-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="1.0dp"-->
-                <!--android:background="#e4e4e4" />-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="1.0dp"-->
+            <!--android:background="#e4e4e4" />-->
             <!--<LinearLayout-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="@dimen/px110"-->
-                <!--android:background="@android:color/white"-->
-                <!--android:gravity="center_vertical"-->
-                <!--android:orientation="horizontal">-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="@dimen/px110"-->
+            <!--android:background="@android:color/white"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:orientation="horizontal">-->
 
-                <!--<TextView-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginLeft="@dimen/px20"-->
-                    <!--android:text="@string/unit_number"-->
-                    <!--android:textColor="@android:color/black"-->
-                    <!--android:textSize="@dimen/font28" />-->
+            <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="@dimen/px20"-->
+            <!--android:text="@string/unit_number"-->
+            <!--android:textColor="@android:color/black"-->
+            <!--android:textSize="@dimen/font28" />-->
 
-                <!--<EditText-->
-                    <!--android:id="@+id/unit_number_edit"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginLeft="@dimen/px20"-->
-                    <!--android:layout_marginRight="@dimen/px20"-->
-                    <!--android:background="@null"-->
-                    <!--android:hint="@string/required"-->
+            <!--<EditText-->
+            <!--android:id="@+id/unit_number_edit"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="@dimen/px20"-->
+            <!--android:layout_marginRight="@dimen/px20"-->
+            <!--android:background="@null"-->
+            <!--android:hint="@string/required"-->
 
-                    <!--android:textSize="@dimen/font28" />-->
+            <!--android:textSize="@dimen/font28" />-->
             <!--</LinearLayout>-->
             <!--<View-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="1.0dp"-->
-                <!--android:background="#e4e4e4" />-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="1.0dp"-->
+            <!--android:background="#e4e4e4" />-->
             <!--<LinearLayout-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="@dimen/px110"-->
-                <!--android:background="@android:color/white"-->
-                <!--android:gravity="center_vertical"-->
-                <!--android:orientation="horizontal">-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="@dimen/px110"-->
+            <!--android:background="@android:color/white"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:orientation="horizontal">-->
 
-                <!--<TextView-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginLeft="@dimen/px20"-->
-                    <!--android:text="@string/house_number"-->
-                    <!--android:textColor="@android:color/black"-->
-                    <!--android:textSize="@dimen/font28" />-->
+            <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="@dimen/px20"-->
+            <!--android:text="@string/house_number"-->
+            <!--android:textColor="@android:color/black"-->
+            <!--android:textSize="@dimen/font28" />-->
 
-                <!--<EditText-->
-                    <!--android:id="@+id/house_number_edit"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginLeft="@dimen/px20"-->
-                    <!--android:layout_marginRight="@dimen/px20"-->
-                    <!--android:background="@null"-->
-                    <!--android:hint="@string/required"-->
+            <!--<EditText-->
+            <!--android:id="@+id/house_number_edit"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="@dimen/px20"-->
+            <!--android:layout_marginRight="@dimen/px20"-->
+            <!--android:background="@null"-->
+            <!--android:hint="@string/required"-->
 
-                    <!--android:textSize="@dimen/font28" />-->
+            <!--android:textSize="@dimen/font28" />-->
             <!--</LinearLayout>-->
 
         </LinearLayout>

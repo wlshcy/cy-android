@@ -8,6 +8,7 @@
     <string name="name">姓名</string>
     <string name="mobile_phone">手机号</string>
     <string name="community">小区</string>
+    <string name="live_region">所在区域</string>
     <string name="nearby_community">附近的小区</string>
     <string name="ok">好的</string>
     <string name="receiveing_address">收货地址</string>
@@ -21,6 +22,7 @@
     <string name="input_name">请输入您的姓名</string>
     <string name="input_mobile_phone">请输入您的手机号码</string>
     <string name="choose_community">请选择您的小区</string>
+    <string name="choose_region">请选择所在区域</string>
     <string name="input_building_number">请输入您的楼号及门牌号</string>
 
     <string name="login">登录</string>
@@ -132,9 +134,11 @@
     <string name="contract">联系人</string>
     <string name="receive_address">收货地址</string>
     <string name="input_receive_name">请填写收货人姓名</string>
+    <string name="input_your_region">请选择您所在的城市区域</string>
     <string name="input_receive_mobile">请填写收货人手机号</string>
     <string name="building_and_room_no">楼号－门牌号：</string>
-    <string name="sample_building_room">例：12号楼1501室</string>
+    <string name="street_address">街道地址</string>
+    <string name="sample_building_room">例:广渠路63号,2-A502</string>
     <string name="click_to_choose">点击选择</string>
     <string name="hint_input_street_and_zone_name">请输入：街道，小区名称</string>
     <string name="prompt_delete_address">您确定删除该地址？</string>

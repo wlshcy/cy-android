@@ -16,4 +16,6 @@ public class DelayItemEntry {
     public boolean chosen;
     @SerializedName("delay")
     public DelayInfo delay;
+    @SerializedName("status")
+    public int status;
 }

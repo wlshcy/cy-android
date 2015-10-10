@@ -1,10 +1,13 @@
 package com.shequcun.farm.ui.fragment;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -20,12 +23,15 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.AddressEntry;
+import com.shequcun.farm.data.RegionEntry;
+import com.shequcun.farm.data.RegionListEntry;
 import com.shequcun.farm.data.ZoneEntry;
 import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
 import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.IntentUtil;
+import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.PhoneUtil;
 import com.shequcun.farm.util.ToastHelper;
@@ -92,9 +98,10 @@ public class AddressFragment extends BaseFragment {
         @Override
         public void onViewClick(View v) {
             Utils.hideVirtualKeyboard(getActivity(), v);
-            if (v == choose_zone_ll)
-                gotoFragmentByAdd(R.id.mainpage_ly, new SearchFragment(), SearchFragment.class.getName());
-            else if (v == back) {
+            if (v == choose_zone_ll) {
+                requestRegionsList();
+//                gotoFragmentByAdd(R.id.mainpage_ly, new SearchFragment(), SearchFragment.class.getName());
+            } else if (v == back) {
                 alertQuitEdit();
 //                boolean hasInput = checkHasInput();
 //                if (hasInput) {
@@ -111,6 +118,69 @@ public class AddressFragment extends BaseFragment {
             //(R.id.mainpage_ly, new ComboMongoliaLayerFragment(), ComboMongoliaLayerFragment.class.getName());
         }
     };
+
+    private void selectRegionAlert(final String[] array) {
+        Dialog alertDialog = new AlertDialog.Builder(getActivity())
+                .setTitle("选择区域")
+                .setItems(array, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        regionTv.setText(array[which]);
+                    }
+                })
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // TODO Auto-generated method stub
+                    }
+                }).create();
+        alertDialog.show();
+    }
+
+    void requestRegionsList() {
+        RequestParams params = new RequestParams();
+        params.add("range", "0");
+        params.add("pid", "1");
+        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "util/region", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                super.onStart();
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] data) {
+                if (data != null && data.length > 0) {
+                    RegionListEntry rEntry = JsonUtilsParser.fromJson(new String(data), RegionListEntry.class);
+                    if (rEntry != null) {
+                        if (TextUtils.isEmpty(rEntry.errmsg)) {
+                            successRegionList(rEntry);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                if (statusCode == 0) {
+                    ToastHelper.showShort(getActivity(), "请检查您的网络后重试.");
+                }
+            }
+        });
+    }
+
+    private void successRegionList(RegionListEntry entry) {
+        if (entry.mList == null || entry.mList.isEmpty()) return;
+        String regions[] = new String[entry.mList.size()];
+        for (int i = 0; i < regions.length; i++) {
+            regions[i] = entry.mList.get(i).name;
+        }
+        selectRegionAlert(regions);
+    }
 
     void upLoadAddressToServer() {
         name = name_edit.getText().toString().trim();
@@ -129,9 +199,9 @@ public class AddressFragment extends BaseFragment {
             return;
         }
 
-        community = choose_zone_tv.getText().toString().trim();
-        if (TextUtils.isEmpty(community) || "点击选择".equals(community)) {
-            ToastHelper.showShort(getActivity(), R.string.choose_community);
+        region = regionTv.getText().toString().trim();
+        if (TextUtils.isEmpty(region) || "点击选择".equals(region)) {
+            ToastHelper.showShort(getActivity(), R.string.choose_region);
             return;
         }
 
@@ -166,11 +236,12 @@ public class AddressFragment extends BaseFragment {
         params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
         params.put("name", name);
         params.put("mobile", mobile);
-        if (entry != null)
+        if (entry != null){
             params.put("id", entry.id);
-        params.put("zid", entry == null ? "0" : "" + entry.zid);
-        params.put("zname", community);
-        params.put("bur", detailAddr);
+            params.put("city", entry.city);
+        }
+        params.put("region", region);
+        params.put("address", detailAddr);
 //        if (!TextUtils.isEmpty(entry.street)) {
 //            params.put("street", entry.street);
 //            params.put("region", "");
@@ -184,13 +255,13 @@ public class AddressFragment extends BaseFragment {
 //            params.put("zid", entry == null ? "0" : "" + entry.zid);
 //            params.put("region", entry == null ? "" : entry.region);
 //            params.put("city", entry == null ? "北京市" : entry.city);
-//            params.put("zname", community);
+//            params.put("zname", region);
 //            params.put("building", detailAddr);
 ////            params.put("unit", union_NO);
 ////            params.put("room", house_NO);
 //        }
         final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
-        HttpRequestUtil.getHttpClient(getActivity()).post(LocalParams.getBaseUrl() + "user/v2/address", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.getHttpClient(getActivity()).post(LocalParams.getBaseUrl() + "user/v3/address", params, new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {
                 super.onStart();
@@ -239,21 +310,21 @@ public class AddressFragment extends BaseFragment {
         });
     }
 
-    private boolean checkDiff() {
-        setInputToFiled();
-        if (!TextUtils.isEmpty(entry.name) && !entry.name.equals(name))
-            return true;
-        if (!TextUtils.isEmpty(entry.mobile) && !entry.mobile.equals(mobile))
-            return true;
-        if (!TextUtils.isEmpty(entry.zname) && znameDiff)
-            return true;
-        return !TextUtils.isEmpty(entry.bur) && !entry.bur.equals(detailAddr);
-    }
+//    private boolean checkDiff() {
+//        setInputToFiled();
+//        if (!TextUtils.isEmpty(entry.name) && !entry.name.equals(name))
+//            return true;
+//        if (!TextUtils.isEmpty(entry.mobile) && !entry.mobile.equals(mobile))
+//            return true;
+//        if (!TextUtils.isEmpty(entry.zname) && znameDiff)
+//            return true;
+//        return !TextUtils.isEmpty(entry.bur) && !entry.bur.equals(detailAddr);
+//    }
 
     private void setInputToFiled() {
         name = name_edit.getText().toString().trim();
         mobile = mobile_phone_edit.getText().toString().trim();
-        community = choose_zone_tv.getText().toString().trim();
+        region = regionTv.getText().toString().trim();
         detailAddr = addressDetailEt.getText().toString().trim();
     }
 
@@ -269,8 +340,8 @@ public class AddressFragment extends BaseFragment {
                 return true;
             }
 
-            community = choose_zone_tv.getText().toString().trim();
-            if (!"点击选择".equals(community)) {
+            region = regionTv.getText().toString().trim();
+            if (!"点击选择".equals(region)) {
                 return true;
             }
 
@@ -331,10 +402,10 @@ public class AddressFragment extends BaseFragment {
             name_edit.setText(entry.name);
         if (!TextUtils.isEmpty(entry.mobile))
             mobile_phone_edit.setText(entry.mobile);
-        if (!TextUtils.isEmpty(entry.zname))
-            choose_zone_tv.setText(entry.zname);
-        if (!TextUtils.isEmpty(entry.bur))
-            addressDetailEt.setText(entry.bur);
+        if (!TextUtils.isEmpty(entry.region))
+            regionTv.setText(entry.region);
+        if (!TextUtils.isEmpty(entry.address))
+            addressDetailEt.setText(entry.address);
     }
 
     void doRegisterRefreshBrodcast() {
@@ -370,11 +441,11 @@ public class AddressFragment extends BaseFragment {
                 if (!TextUtils.isEmpty(details_address)) {
                     if (entry == null)
                         entry = new AddressEntry();
-                    entry.zname = details_address;
+                    entry.address = details_address;
                     entry.zid = 0;
                     entry.city = null;
                     entry.region = null;
-                    choose_zone_tv.setText(details_address);
+//                    choose_zone_tv.setText(details_address);
                 }
 //                setWidgetContent(entry);
 //                    }
@@ -386,10 +457,10 @@ public class AddressFragment extends BaseFragment {
     void setWidgetContent(ZoneEntry zEntry) {
         if (entry == null)
             entry = new AddressEntry();
-        if (!TextUtils.isEmpty(entry.name) && !entry.name.equals(zEntry.name)) znameDiff = true;
-        entry.zname = zEntry.name;
+//        if (!TextUtils.isEmpty(entry.name) && !entry.name.equals(zEntry.name)) znameDiff = true;
+//        entry.zname = zEntry.name;
         entry.zid = zEntry.id;
-        choose_zone_tv.setText(zEntry.name);
+//        choose_zone_tv.setText(zEntry.name);
     }
 
     private void alertQuitEdit() {
@@ -419,7 +490,6 @@ public class AddressFragment extends BaseFragment {
     }
 
 
-
     private AddressEntry entry = null;
     /**
      * 门牌号
@@ -430,8 +500,10 @@ public class AddressFragment extends BaseFragment {
      */
     @Bind(R.id.mobile_phone_edit)
     EditText mobile_phone_edit;
-    @Bind(R.id.choose_zone_tv)
-    TextView choose_zone_tv;
+    //    @Bind(R.id.choose_zone_tv)
+//    TextView choose_zone_tv;
+    @Bind(R.id.regionTv)
+    TextView regionTv;
     /**
      * 姓名
      */
@@ -454,5 +526,5 @@ public class AddressFragment extends BaseFragment {
     @Bind(R.id.title_center_text)
     TextView title_center_text;
     private boolean znameDiff;
-    private String name, mobile, community, detailAddr;
+    private String name, mobile, region, detailAddr;
 }

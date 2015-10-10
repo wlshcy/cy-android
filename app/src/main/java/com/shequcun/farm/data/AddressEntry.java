@@ -7,7 +7,6 @@ import com.google.gson.annotations.SerializedName;
  * Created by apple on 15/8/11.
  */
 public class AddressEntry extends BaseEntry {
-    public String address;
     @SerializedName("id")
     public int id;
     @SerializedName("name")
@@ -18,10 +17,12 @@ public class AddressEntry extends BaseEntry {
     public String city = "";
     @SerializedName("region")
     public String region = "";
-    @SerializedName("zname")
-    public String zname;
-    @SerializedName("bur")
-    public String bur;
+    //    @SerializedName("zname")
+//    public String zname;
+//    @SerializedName("bur")
+//    public String bur;
+    @SerializedName("address")
+    public String address;
     @SerializedName("default")
     public boolean isDefault;
     public int zid = 0;

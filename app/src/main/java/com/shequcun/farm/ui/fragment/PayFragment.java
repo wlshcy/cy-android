@@ -296,7 +296,7 @@ public class PayFragment extends BaseFragment {
 
 
     void requestUserAddress() {
-        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "user/v2/address", new AsyncHttpResponseHandler() {
+        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "user/v3/address", new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int sCode, Header[] h, byte[] data) {
                 if (data != null && data.length > 0) {
@@ -348,8 +348,8 @@ public class PayFragment extends BaseFragment {
             StringBuilder builder = new StringBuilder();
             builder.append(!TextUtils.isEmpty(entry.city) ? entry.city : "");
             builder.append(!TextUtils.isEmpty(entry.region) ? entry.region : "");
-            builder.append(!TextUtils.isEmpty(entry.zname) ? entry.zname : "");
-            builder.append(!TextUtils.isEmpty(entry.bur) ? entry.bur : "");
+            builder.append(!TextUtils.isEmpty(entry.address) ? entry.address : "");
+//            builder.append(!TextUtils.isEmpty(entry.bur) ? entry.bur : "");
             addressStr = builder.toString();
         }
         address.setText("地址: " + addressStr);
