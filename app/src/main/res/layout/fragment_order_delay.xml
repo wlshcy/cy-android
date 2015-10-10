@@ -1,43 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/gray_ececec">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_ececec"
+    android:orientation="vertical">
 
     <include layout="@layout/common_title_ly"></include>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/px42"
         android:paddingBottom="@dimen/px50"
         android:paddingLeft="@dimen/px48"
         android:paddingRight="@dimen/px48"
+        android:paddingTop="@dimen/px42"
         android:text="@string/delay_delivery_note"
-        android:textColor="@color/common_text"
-        />
+        android:textColor="@color/common_text" />
 
     <ListView
         android:id="@+id/comboLv"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:paddingLeft="7dp"
-        android:paddingRight="7dp"
+        android:divider="@null"
         android:dividerHeight="@dimen/px20"
-        android:divider="@null">
+        android:paddingLeft="7dp"
+        android:paddingRight="7dp">
+
     </ListView>
 
+    <TextView
+        android:id="@+id/emptyTv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="@dimen/px120"
+        android:layout_gravity="center"
+        android:gravity="top|center_horizontal"
+        android:text="您未购买任何套餐"
+        android:visibility="gone"
+        android:textSize="@dimen/px34"/>
+
     <!--<TextView-->
-        <!--android:id="@+id/delay_tv"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:paddingTop="@dimen/px30"-->
-        <!--android:paddingBottom="@dimen/px30"-->
-        <!--android:layout_marginLeft="@dimen/px110"-->
-        <!--android:layout_marginRight="@dimen/px110"-->
-        <!--android:background="@null"-->
-        <!--android:gravity="center"-->
-        <!--android:textColor="@android:color/white"-->
-        <!--android:textSize="16sp"-->
-        <!--/>-->
+    <!--android:id="@+id/delay_tv"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:paddingTop="@dimen/px30"-->
+    <!--android:paddingBottom="@dimen/px30"-->
+    <!--android:layout_marginLeft="@dimen/px110"-->
+    <!--android:layout_marginRight="@dimen/px110"-->
+    <!--android:background="@null"-->
+    <!--android:gravity="center"-->
+    <!--android:textColor="@android:color/white"-->
+    <!--android:textSize="16sp"-->
+    <!--/>-->
 </LinearLayout>
