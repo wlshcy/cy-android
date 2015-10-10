@@ -77,7 +77,7 @@ public class ChooseDishesFragment extends BaseFragment {
         mBadgeViewShopCart.setHeight(ResUtil.dip2px(getActivity(), 20));
         mBadgeViewShopCart.setBackgroundResource(R.drawable.red_oval);
         mBadgeViewShopCart.setTextSize(TypedValue.COMPLEX_UNIT_PX, ResUtil.dip2px(getActivity(), 10));
-        option_dishes_tip.setText(Utils.getSpanableSpan(getResources().getString(R.string.option_dishes_tip), getResources().getString(R.string.option_dishes_tip_1), ResUtil.dipToPixel(getActivity(), 14), ResUtil.dipToPixel(getActivity(), 14),0xFF7b7b7b,0xFFf36043));
+        option_dishes_tip.setText(Utils.getSpanableSpan(getResources().getString(R.string.option_dishes_tip), getResources().getString(R.string.option_dishes_tip_1), ResUtil.dipToPixel(getActivity(), 14), ResUtil.dipToPixel(getActivity(), 14), 0xFF7b7b7b, 0xFFf36043));
         enabled = setChooseDishesContent(v);
         buildAdapter(enabled);
         if (!enabled)
@@ -701,17 +701,19 @@ public class ChooseDishesFragment extends BaseFragment {
             choose_dishes_tip.setVisibility(View.VISIBLE);
             if (status == 1) {
                 choose_dishes_tip.setText(R.string.has_choosen_dishes_tip);
-                choose_dishes_tip.setOnClickListener(new AvoidDoubleClickListener() {
+                choose_dishes_tip.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onViewClick(View v) {
+                    public void onClick(View v) {
                         gotoFragmentByAdd(buildBundle(buildOrderParams(entry)), R.id.mainpage_ly, new ModifyOrderFragment(), ModifyOrderFragment.class.getName());
                     }
                 });
                 return false;
             } else if (status == 3) {
-                choose_dishes_tip.setText(R.string.delievery_success);
-                Drawable left = getActivity().getResources().getDrawable(R.drawable.icon_sigh);
-                choose_dishes_tip.setCompoundDrawablesWithIntrinsicBounds(left, null, null, null);
+//                choose_dishes_tip.setText(R.string.delievery_success);
+//                Drawable left = getActivity().getResources().getDrawable(R.drawable.icon_sigh);
+//                choose_dishes_tip.setCompoundDrawablesWithIntrinsicBounds(left, null, null, null);
+                choose_dishes_tip.setVisibility(View.GONE);
+//                entry.choose = true;
             } else if (status == 2) {
                 choose_dishes_tip.setText(R.string.choose_dishes_tip);
                 Drawable left = getActivity().getResources().getDrawable(R.drawable.icon_sigh);
