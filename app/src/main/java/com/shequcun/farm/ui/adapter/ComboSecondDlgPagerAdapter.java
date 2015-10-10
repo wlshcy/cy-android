@@ -39,6 +39,10 @@ public class ComboSecondDlgPagerAdapter extends PagerAdapter {
         return 0;
     }
 
+    public float getPageWidth(int position) {
+        return 0.5f;
+    }
+
     /**
      * 初始化position位置的界面
      */
@@ -49,7 +53,10 @@ public class ComboSecondDlgPagerAdapter extends PagerAdapter {
         }
         ((ViewPager) view).addView(views.get(position), 0);
         return views.get(position);
+
+
     }
+
 
     /**
      * 判断是否由对象生成界面

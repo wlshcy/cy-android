@@ -178,6 +178,13 @@ public class WebViewFragment extends BaseFragment {
             }
         }
     };
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mHandler.removeCallbacksAndMessages(null);
+    }
+
     @Bind(R.id.mWebView)
     WebView mWebView;
     @Bind(R.id.seekbar)

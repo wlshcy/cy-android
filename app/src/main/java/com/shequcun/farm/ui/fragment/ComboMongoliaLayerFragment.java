@@ -41,6 +41,7 @@ public class ComboMongoliaLayerFragment extends BaseFragment {
 
     @OnClick(R.id.close)
     void back() {
+        PersistanceManager.saveIsShowLookupComboDetails(getActivity(), buildKey(), false);
         popBackStack();
     }
 

@@ -76,7 +76,7 @@ public class ComboFragment extends BaseFragment {
 //            dialog.addViewsToList(entry);
 //            dialog.show();
             gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new ComboSecondFragment(), ComboSecondFragment.class.getName());
-            // gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new ComboSecondFragmentEx(), ComboSecondFragmentEx.class.getName());
+//             gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new ComboSecondFragmentEx(), ComboSecondFragmentEx.class.getName());
         }
     }
 
