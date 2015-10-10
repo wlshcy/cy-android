@@ -55,7 +55,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
         return inflater.inflate(R.layout.farm_specialty_detail_ly, container, false);
     }
 
-    private void setDataToView(RecommendEntry entry) {
+    private void setDataToView() {
         nameTv.setText(entry.title);
         if (!TextUtils.isEmpty(entry.descr))
             descTv.setText(entry.descr);
@@ -80,10 +80,12 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
             }
             contentTv.setText(entry.detail.content);
         }
-        RecommendEntry localEntry = readRecommendEntryFromDisk(entry);
-        this.entry.count = 1;
-        if (localEntry == null) return;
-        this.entry = localEntry;
+        if (!entry.isShowDtlFooter) {
+            entry.count = 1;
+            RecommendEntry localEntry = readRecommendEntryFromDisk(entry);
+            if (localEntry == null) return;
+            entry = localEntry;
+        }
     }
 
     private RecommendEntry readRecommendEntryFromDisk(RecommendEntry pEntry) {
@@ -109,7 +111,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
         producingPlaceTv.setOnClickListener(onClick);
         shareIv.setOnClickListener(onClick);
         buildCarouselAdapter();
-        setDataToView(entry);
+        setDataToView();
         addChildViewToParent();
     }
 
@@ -219,7 +221,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
 
                 }
             });
-        } else if (entry.type == 1) {//普通菜品
+        } else if (entry.type == 1 && !entry.isShowDtlFooter) {//普通菜品
             View childView = LayoutInflater.from(getActivity()).inflate(R.layout.shop_cart_widget_ly, null);
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             params.gravity = Gravity.BOTTOM;

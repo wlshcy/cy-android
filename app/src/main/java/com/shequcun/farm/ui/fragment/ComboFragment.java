@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -72,8 +71,13 @@ public class ComboFragment extends BaseFragment {
             return;
         if (buildIsMyComboClick(position)) {
             gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new ChooseDishesFragment(), ChooseDishesFragment.class.getName());
-        } else
+        } else {
+//            ComboSecondDialog dialog = new ComboSecondDialog(getActivity());
+//            dialog.addViewsToList(entry);
+//            dialog.show();
             gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new ComboSecondFragment(), ComboSecondFragment.class.getName());
+            // gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new ComboSecondFragmentEx(), ComboSecondFragmentEx.class.getName());
+        }
     }
 
     @OnClick(R.id.back)
