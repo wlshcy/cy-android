@@ -2,6 +2,8 @@ package com.shequcun.farm.data;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Comparator;
+
 /**
  * 地址信息(楼号+单元号+门牌号)
  * Created by apple on 15/8/11.
@@ -26,4 +28,5 @@ public class AddressEntry extends BaseEntry {
     @SerializedName("default")
     public boolean isDefault;
     public int zid = 0;
+
 }

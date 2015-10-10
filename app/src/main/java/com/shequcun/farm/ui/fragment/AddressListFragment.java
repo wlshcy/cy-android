@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.shequcun.farm.R;
+import com.shequcun.farm.compare.AddressComparator;
 import com.shequcun.farm.data.AddressEntry;
 import com.shequcun.farm.data.AddressListEntry;
 import com.shequcun.farm.data.BaseEntry;
@@ -36,6 +37,7 @@ import com.shequcun.farm.util.ToastHelper;
 import org.apache.http.Header;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.Bind;
@@ -238,6 +240,7 @@ public class AddressListFragment extends BaseFragment {
 //            else
 //                goneAddAddressView();
         }
+        Collections.sort(list,new AddressComparator());
         adapter.clear();
         adapter.addAll(list);
     }
