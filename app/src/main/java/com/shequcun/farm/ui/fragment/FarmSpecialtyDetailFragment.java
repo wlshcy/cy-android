@@ -137,14 +137,8 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
         cAdapter.setWidth(DeviceInfo.getDeviceWidth(getActivity()));
         carousel_img.setOnViewSwitchListener(viewSwitchListener);
         cAdapter.setImageLoaderListener(imageLoaderListener);
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                carousel_img.setAdapter(cAdapter, 0);
-                carousel_img.setFlowIndicator(carousel_point);
-            }
-        }, 0);
-
+        carousel_img.setAdapter(cAdapter, 0);
+        carousel_img.setFlowIndicator(carousel_point);
     }
 
     View.OnClickListener onClick = new View.OnClickListener() {

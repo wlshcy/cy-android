@@ -25,15 +25,18 @@
 
     </FrameLayout>
 
+
     <com.common.widget.CircleFlowIndicator
         android:id="@+id/carousel_point"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:padding="20dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:paddingBottom="20dp"
         app:activeDrawable="@drawable/icon_dot_selected"
+        app:centered="true"
         app:inactiveDrawable="@drawable/icon_dot"
         app:inactiveType="fill"
-        app:radius="7dp" />
+        app:radius="6dp"/>
+
 
 </FrameLayout>
