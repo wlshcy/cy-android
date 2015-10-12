@@ -46,8 +46,8 @@ public class ChooseDishesAdapter extends ArrayAdapter<DishesItemEntry> {
     public View getView(int position, View v, ViewGroup parent) {
         ViewHolder vh;
         if (v == null) {
-            vh = new ViewHolder(v);
             v = LayoutInflater.from(getContext()).inflate(R.layout.goods_item_ly, null);
+            vh = new ViewHolder(v);
             v.setTag(vh);
         } else {
             vh = (ViewHolder) v.getTag();
