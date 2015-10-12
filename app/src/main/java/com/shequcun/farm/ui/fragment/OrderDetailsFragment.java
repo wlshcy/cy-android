@@ -189,6 +189,11 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
         }
     }
 
+    void addHeader() {
+        View v = LayoutInflater.from(getActivity()).inflate(R.layout.ucai_safe_tip_ly, null);
+        mLv.addHeaderView(v, null, false);
+    }
+
 
     void buildAdapter() {
         addFooter();
@@ -198,6 +203,7 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
         mLv.setAdapter(adapter);
         adapter.addAll(mOrderController.buildItems());
         adapter.notifyDataSetChanged();
+        addHeader();
     }
 
 
@@ -255,7 +261,7 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
         return entry != null ? entry.prices[entry.getPosition()] : 0;
     }
 
-    Bundle buildBundle(String orderno, int orderMoney, String alipay, boolean isRecoDishes, int titleId,boolean isLast) {
+    Bundle buildBundle(String orderno, int orderMoney, String alipay, boolean isRecoDishes, int titleId, boolean isLast) {
         Bundle bundle = new Bundle();
         PayParams payParams = new PayParams();
         payParams.setParams(orderno, orderMoney, alipay, isRecoDishes, titleId, false);
@@ -282,7 +288,7 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
                         if (jObj != null) {
                             String errmsg = jObj.optString("errmsg");
                             if (TextUtils.isEmpty(errmsg)) {
-                                gotoFragmentByAdd(buildBundle(orderno, getOrderMoney(), "", true, R.string.order_result,false), R.id.mainpage_ly, new PayResultFragment(), PayResultFragment.class.getName());
+                                gotoFragmentByAdd(buildBundle(orderno, getOrderMoney(), "", true, R.string.order_result, false), R.id.mainpage_ly, new PayResultFragment(), PayResultFragment.class.getName());
                                 return;
                             }
                             ToastHelper.showShort(getActivity(), errmsg);
@@ -359,7 +365,7 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
                     if (entry != null) {
                         if (TextUtils.isEmpty(entry.errmsg)) {
                             if (TextUtils.isEmpty(entry.alipay)) {
-                                gotoFragmentByAdd(buildBundle(entry.orderno, getOrderMoney(), entry.alipay, true, R.string.order_result,entry.last), R.id.mainpage_ly, new PayResultFragment(), PayResultFragment.class.getName());
+                                gotoFragmentByAdd(buildBundle(entry.orderno, getOrderMoney(), entry.alipay, true, R.string.order_result, entry.last), R.id.mainpage_ly, new PayResultFragment(), PayResultFragment.class.getName());
                                 return;
                             }
                         } else {
@@ -392,7 +398,6 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
             remark_tv.setText(remark);
         }
     }
-
 
 
     ComboEntry entry;

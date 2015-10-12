@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#31be70">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:gravity="center_vertical"
+        android:layout_gravity="center"
+        android:layout_height="33dp"
+        android:layout_marginLeft="@dimen/px20"
+        android:text="@string/ucai_safe_tip"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/font23" />
+
+</FrameLayout>

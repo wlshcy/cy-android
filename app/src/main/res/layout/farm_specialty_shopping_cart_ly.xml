@@ -9,7 +9,6 @@
         android:id="@+id/tmpId"
         layout="@layout/common_title_ly" />
 
-
     <ScrollView
         android:id="@+id/pScrollView"
         android:layout_width="match_parent"

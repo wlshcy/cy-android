@@ -187,6 +187,7 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment implements R
         }
         adapter.addAll(rEntryArray);
         adapter.notifyDataSetChanged();
+        addHeader();
         addFooter(allPart);
         pScrollView.fullScroll(View.FOCUS_UP);
     }
@@ -386,6 +387,11 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment implements R
         memo = remark;
         if (remark_tv != null)
             remark_tv.setText(remark);
+    }
+
+    void addHeader() {
+        View v = LayoutInflater.from(getActivity()).inflate(R.layout.ucai_safe_tip_ly, null);
+        mLv.addHeaderView(v, null, false);
     }
 
     boolean mIsBind = false;
