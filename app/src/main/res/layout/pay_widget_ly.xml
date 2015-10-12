@@ -34,7 +34,7 @@
         android:id="@+id/buy_order_tv"
         android:layout_width="@dimen/px180"
         android:layout_height="@dimen/px100"
-        android:background="@drawable/shopping_cart_widget_selector_3"
+        android:background="@drawable/shopping_cart_widget_selector_4"
         android:gravity="center"
         android:text="@string/now_pay"
         android:textColor="@color/white_f4f4f4"
