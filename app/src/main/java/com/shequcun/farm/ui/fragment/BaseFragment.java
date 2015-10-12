@@ -20,7 +20,7 @@ import butterknife.ButterKnife;
  */
 public abstract class BaseFragment extends Fragment {
     protected FragmentMgrInterface fMgrInterface;
-//    protected FragmentActivity mfragmentActivity;
+    protected FragmentActivity mAct;
 
 
     @Override
@@ -56,13 +56,16 @@ public abstract class BaseFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 //        防止activity被系统回收掉
-//        mfragmentActivity = (FragmentActivity)activity;
+        mAct = (FragmentActivity) activity;
     }
 
 
     public void gotoFragment(int id, Fragment fragment, String tag) {
-        FragmentManager fm = getActivity().getSupportFragmentManager();
-
+        FragmentActivity mmAct = getActivity();
+        if (mmAct == null) {
+            mmAct = mAct;
+        }
+        FragmentManager fm = mmAct.getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.replace(id, fragment);
         transaction.addToBackStack(tag);
@@ -70,7 +73,11 @@ public abstract class BaseFragment extends Fragment {
     }
 
     public void gotoFragmentByAdd(int id, Fragment fragment, String tag) {
-        FragmentManager fm = getActivity().getSupportFragmentManager();
+        FragmentActivity mmAct = getActivity();
+        if (mmAct == null) {
+            mmAct = mAct;
+        }
+        FragmentManager fm = mmAct.getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.add(id, fragment);
         transaction.addToBackStack(tag);
@@ -102,22 +109,25 @@ public abstract class BaseFragment extends Fragment {
      * 出栈
      */
     public void popBackStack() {
-        FragmentActivity mAct = getActivity();
-        if (mAct != null) {
-            FragmentManager fMgr = mAct.getSupportFragmentManager();
-            if (fMgr != null)
-                fMgr.popBackStack();
+        FragmentActivity mmAct = getActivity();
+        if (mmAct == null) {
+            mAct = mmAct;
         }
+        FragmentManager fMgr = mAct.getSupportFragmentManager();
+        if (fMgr != null)
+            fMgr.popBackStack();
+
 //        getActivity().getSupportFragmentManager().;
     }
 
     public void clearStack() {
-        FragmentActivity mAct = getActivity();
-        if (mAct != null) {
-            FragmentManager fMgr = mAct.getSupportFragmentManager();
-            if (fMgr != null)
-                fMgr.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        FragmentActivity mmAct = getActivity();
+        if (mmAct == null) {
+            mmAct = mAct;
         }
+        FragmentManager fMgr = mmAct.getSupportFragmentManager();
+        if (fMgr != null)
+            fMgr.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 
 
