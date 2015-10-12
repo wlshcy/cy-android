@@ -9,12 +9,16 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.SlidesEntry;
 
 import java.util.List;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * 轮播图Adapter
@@ -59,26 +63,22 @@ public class CarouselAdapter extends BaseAdapter {
         ViewHolder holder = null;
         SlidesEntry item = mImageList.get(position);
         if (convertView == null) {
-            holder = new ViewHolder();
+            holder = new ViewHolder(convertView);
             convertView = mInflater.inflate(R.layout.image_item, null);
-            holder.coverView = (ImageView) convertView
+            holder.imgView = (ImageView) convertView
                     .findViewById(R.id.imgView);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
         if (TextUtils.isEmpty(item.img)) {
-            holder.coverView.setImageResource(R.drawable.icon_combo_default);
+            holder.imgView.setImageResource(R.drawable.icon_combo_default);
         } else {
-            com.nostra13.universalimageloader.core.ImageLoader.getInstance().displayImage(item.img + "?imageView2/2/w/" + width, holder.coverView, new InnerImageLoadingListener(position));
+            ImageLoader.getInstance().displayImage(item.img + "?imageView2/2/w/" + width, holder.imgView, new InnerImageLoadingListener(position));
         }
-        holder.coverView.setTag(item);
-        holder.coverView.setOnClickListener(onClick);
+        holder.imgView.setTag(item);
+        holder.imgView.setOnClickListener(onClick);
         return convertView;
-    }
-
-    class ViewHolder {
-        public ImageView coverView;
     }
 
     public void setWidth(int width) {
@@ -134,6 +134,15 @@ public class CarouselAdapter extends BaseAdapter {
             if (curVisibleIndex == position)
                 if (imageLoaderListener != null)
                     imageLoaderListener.loadFinish();
+        }
+    }
+
+    static class ViewHolder {
+        @Bind(R.id.imgView)
+        ImageView imgView;
+
+        ViewHolder(View view) {
+            ButterKnife.bind(this, view);
         }
     }
 }

@@ -14,6 +14,9 @@ import com.shequcun.farm.data.AlreadyPurchasedEntry;
 import com.shequcun.farm.util.Constrants;
 import com.shequcun.farm.util.Utils;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 /**
  * Created by apple on 15/8/20.
  */
@@ -26,32 +29,40 @@ public class AlreadyPurchasedAdapter extends ArrayAdapter<AlreadyPurchasedEntry>
     public View getView(int position, View v, ViewGroup parent) {
         ViewHolder vh;
         if (v == null) {
-            vh = new ViewHolder();
+            vh = new ViewHolder(v);
             v = LayoutInflater.from(getContext()).inflate(R.layout.order_details_item_ly, null);
-            vh.goods_img = (ImageView) v.findViewById(R.id.goods_img);
-            vh.goods_name = (TextView) v.findViewById(R.id.goods_name);
-            vh.goods_price = (TextView) v.findViewById(R.id.goods_price);
-            vh.goods_count = (TextView) v.findViewById(R.id.goods_count);
             v.setTag(vh);
         } else {
             vh = (ViewHolder) v.getTag();
         }
         AlreadyPurchasedEntry entry = getItem(position);
         if (entry != null) {
-            ImageLoader.getInstance().displayImage(entry.img+"?imageView2/1/w/"+180,vh.goods_img,Constrants.image_display_options_disc);
-            vh.goods_name.setText(entry.title);
-            vh.goods_count.setText("x" + entry.packs);
-            vh.goods_price.setText(Utils.unitConversion(entry.packw) + "/份");
+            ImageLoader.getInstance().displayImage(entry.img + "?imageView2/1/w/180", vh.goodsImg, Constrants.image_display_options_disc);
+            vh.goodsName.setText(entry.title);
+            vh.goodsCount.setText("x" + entry.packs);
+            vh.goodsPrice.setText(Utils.unitConversion(entry.packw) + "/份");
         }
         return v;
     }
 
-    class ViewHolder {
-        ImageView goods_img;
-        TextView goods_name;
-        TextView goods_price;
-        TextView goods_count;
+    /**
+     * This class contains all butterknife-injected Views & Layouts from layout file 'order_details_item_ly.xml'
+     * for easy to all layout elements.
+     *
+     * @author ButterKnifeZelezny, plugin for Android Studio by Avast Developers (http://github.com/avast)
+     */
+    static class ViewHolder {
+        @Bind(R.id.goods_img)
+        ImageView goodsImg;
+        @Bind(R.id.goods_name)
+        TextView goodsName;
+        @Bind(R.id.goods_price)
+        TextView goodsPrice;
+        @Bind(R.id.goods_count)
+        TextView goodsCount;
+
+        ViewHolder(View view) {
+            ButterKnife.bind(this, view);
+        }
     }
-
-
 }
