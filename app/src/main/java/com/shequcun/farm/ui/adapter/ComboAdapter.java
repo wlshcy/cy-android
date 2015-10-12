@@ -3,6 +3,7 @@ package com.shequcun.farm.ui.adapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
+import android.os.Build;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.shequcun.farm.R;
 import com.shequcun.farm.data.ComboEntry;
 import com.shequcun.farm.util.Constrants;
 import com.shequcun.farm.util.Utils;
+import com.tencent.mm.sdk.constants.ConstantsAPI;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -53,11 +55,18 @@ public class ComboAdapter extends ArrayAdapter<ComboEntry> {
         entry = getItem(position);
         if (entry != null) {
             if (entry.isMine()) {
-                vh.my_combo.setVisibility(View.VISIBLE);
-                vh.combo_name.setVisibility(View.GONE);
+                vh.myComboTv.setText("我的");
+                vh.myComboTv.setBackgroundColor(getContext().getResources().getColor(R.color.green_11C258));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    vh.myComboTv.setCompoundDrawablesWithIntrinsicBounds(getContext().getDrawable(R.drawable.icon_combo_green), null, getContext().getDrawable(R.drawable.icon_combo_green), null);
+                } else {
+                    vh.myComboTv.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.icon_combo_green), null, getContext().getResources().getDrawable(R.drawable.icon_combo_green), null);
+                }
+//                vh.combo_name.setVisibility(View.GONE);
             } else {
-                vh.my_combo.setVisibility(View.GONE);
-                vh.combo_name.setVisibility(View.VISIBLE);
+                vh.myComboTv.setText("");
+//                vh.my_combo.setVisibility(View.GONE);
+//                vh.combo_name.setVisibility(View.VISIBLE);
             }
 
             vh.combo_name.setText(entry.title);
@@ -100,8 +109,8 @@ public class ComboAdapter extends ArrayAdapter<ComboEntry> {
         /**
          * 我的套餐
          */
-        @Bind(R.id.my_combo)
-        TextView my_combo;
+        @Bind(R.id.my_combo_tv)
+        TextView myComboTv;
         /**
          * 套餐名称
          */
