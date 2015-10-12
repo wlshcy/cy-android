@@ -307,7 +307,8 @@ public class ModifyOrderFragment extends BaseFragment {
     }
 
     private void setRedPacketsView(boolean visible) {
-        redPacketsIv.setVisibility(visible ? View.VISIBLE : View.GONE);
+        if (redPacketsIv != null)
+            redPacketsIv.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 
     Bundle buildBundle(String orderno, int orderMoney, String alipay, int titleId) {
