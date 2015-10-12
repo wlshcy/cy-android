@@ -15,7 +15,6 @@ import com.loopj.android.http.RequestParams;
 import com.shequcun.farm.R;
 import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.dlg.ProgressDlg;
-import com.shequcun.farm.util.AvoidDoubleClickListener;
 import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.ToastHelper;
@@ -53,20 +52,16 @@ public class FeedbackFragment extends BaseFragment {
 
     @OnClick(R.id.back)
     void back() {
+        Utils.hideVirtualKeyboard(getActivity(), feedback_btn);
         checkQuit();
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        Utils.hideVirtualKeyboard(getActivity(), feedback_btn);
-    }
 
     private void checkQuit() {
         if (checkInput())
             alertQuitEdit();
         else
-            popBackStack();
+            doPopStack();
     }
 
     private boolean checkInput() {
@@ -94,7 +89,7 @@ public class FeedbackFragment extends BaseFragment {
                     @Override
                     public void onClick(View v) {
                         alert.dismiss();
-                        popBackStack();
+                        doPopStack();
                     }
                 });
     }
@@ -134,9 +129,9 @@ public class FeedbackFragment extends BaseFragment {
                         if (jObj != null) {
                             String errmsg = jObj.optString("errmsg");
                             if (TextUtils.isEmpty(errmsg)) {
-                                ToastHelper.showShort(getActivity(),
-                                        R.string.tks_feedback_tip);
-                                popBackStack();
+                                doPopStack();
+                                ToastHelper.showShort(getActivity(), R.string.tks_feedback_tip);
+
                                 return;
                             }
 
@@ -160,6 +155,11 @@ public class FeedbackFragment extends BaseFragment {
                 ToastHelper.showShort(getActivity(), "反馈失败,错误码" + sCode);
             }
         });
+    }
+
+    void doPopStack() {
+        Utils.hideVirtualKeyboard(getActivity(), feedback_btn);
+        popBackStack();
     }
 
     @Bind(R.id.feedback_et)

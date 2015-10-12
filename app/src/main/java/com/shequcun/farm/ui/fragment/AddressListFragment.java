@@ -52,8 +52,6 @@ public class AddressListFragment extends BaseFragment {
     @Bind(R.id.title_center_text)
     TextView titleTv;
     private MyAddressAdapter adapter;
-    @Bind(R.id.back)
-    View back;
     private View addAddress;
     private int maxLen = 5;
     private int action = Action.SELECT;

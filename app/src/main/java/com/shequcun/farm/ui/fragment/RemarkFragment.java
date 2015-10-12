@@ -53,8 +53,8 @@ public class RemarkFragment extends BaseFragment {
 
     @OnClick({R.id.back, R.id.title_right_text})
     void back(View v) {
+        Utils.hideVirtualKeyboard(getActivity(), v);
         if (v == save) {
-            Utils.hideVirtualKeyboard(getActivity(),v);
             if (lsn != null) {
                 lsn.updateRemarkWidget(leave_msg_to_farm.getText().toString());
             }
@@ -67,7 +67,6 @@ public class RemarkFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Utils.hideVirtualKeyboard(getActivity(), save);
     }
 
     private void checkQuit() {
@@ -103,6 +102,7 @@ public class RemarkFragment extends BaseFragment {
                     @Override
                     public void onClick(View v) {
                         alert.dismiss();
+                        Utils.hideVirtualKeyboard(getActivity(), save);
                         popBackStack();
                     }
                 });
