@@ -23,6 +23,7 @@ import com.shequcun.farm.datacenter.CacheManager;
 import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.ui.adapter.MyAdapter;
+import com.shequcun.farm.util.DeviceInfo;
 import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.IntentUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
@@ -67,7 +68,7 @@ public class SetFragment extends BaseFragment {
     void buildAdapter() {
         if (adapter == null)
             adapter = new MyAdapter(getActivity(), getResources().getStringArray(R.array.set_array));
-        adapter.setVerName("V " + getVersionName());
+        adapter.setVerName("V " + DeviceInfo.getVersion(getActivity()));
         mLv.setAdapter(adapter);
     }
 
@@ -91,7 +92,7 @@ public class SetFragment extends BaseFragment {
                     VersionEntry vEntry = JsonUtilsParser.fromJson(new String(data), VersionEntry.class);
                     if (vEntry != null) {
                         if (TextUtils.isEmpty(vEntry.errmsg)) {
-                            if (!TextUtils.isEmpty(vEntry.version) && vEntry.version.compareTo(getVersionName()) > 0) {
+                            if (!TextUtils.isEmpty(vEntry.version) && vEntry.version.compareTo(DeviceInfo.getVersion(getActivity())) > 0) {
                                 showUpdateDlg(vEntry);
                             } else {
                                 ToastHelper.showShort(getActivity(), "您的版本已是最新版本咯!");
@@ -127,18 +128,6 @@ public class SetFragment extends BaseFragment {
         });
     }
 
-
-    String getVersionName() {
-        PackageInfo info = null;
-        PackageManager manager = getActivity().getPackageManager();
-        try {
-            info = manager.getPackageInfo(getActivity().getPackageName(), 0);
-            return info.versionName;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        return "";
-    }
 
     private void showUpdateDlg(final VersionEntry vEntry) {
         if (vEntry == null)
