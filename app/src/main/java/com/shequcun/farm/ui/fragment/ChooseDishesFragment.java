@@ -105,7 +105,8 @@ public class ChooseDishesFragment extends BaseFragment {
 
     @OnClick(R.id.back)
     void back() {
-        doPopUpStack();
+        if (!doPopUpStack())
+            popBackStack();
     }
 
     @OnClick(R.id.title_right_text)
@@ -120,7 +121,6 @@ public class ChooseDishesFragment extends BaseFragment {
             hideOptionWidget();
             return true;
         }
-        popBackStack();
         return false;
     }
 
@@ -354,7 +354,7 @@ public class ChooseDishesFragment extends BaseFragment {
                     return;
                 }
                 goNext = true;
-                PlaySoundUtils.doPlay(getActivity(), R.raw.psst2);
+                PlaySoundUtils.doPlay(getActivity(), R.raw.pop);
                 shopChartIconScaleAnimation(v);
             }
             animationFly(v);
@@ -558,7 +558,7 @@ public class ChooseDishesFragment extends BaseFragment {
                 int position = (int) v.getTag();
                 updateListItem(position);
             }
-            PlaySoundUtils.doPlay(getActivity(), R.raw.pop);
+            PlaySoundUtils.doPlay(getActivity(), R.raw.psst2);
             setBadgeView(false);
             updateBuyOrderStatus();
         }
@@ -612,7 +612,7 @@ public class ChooseDishesFragment extends BaseFragment {
                     break;
                 }
             }
-            PlaySoundUtils.doPlay(getActivity(), R.raw.psst2);
+            PlaySoundUtils.doPlay(getActivity(), R.raw.pop);
             setBadgeView(true);
             updateShopCartWidgetStatus();
             updateBuyOrderStatus();
@@ -653,7 +653,7 @@ public class ChooseDishesFragment extends BaseFragment {
                     }
                 }
             }
-            PlaySoundUtils.doPlay(getActivity(), R.raw.pop);
+            PlaySoundUtils.doPlay(getActivity(), R.raw.psst2);
             int visibility = intCount <= 0 ? View.GONE : View.VISIBLE;
             parentView.findViewById(R.id.good_count_down_iv).setVisibility(visibility);
             tvCount.setVisibility(visibility);
