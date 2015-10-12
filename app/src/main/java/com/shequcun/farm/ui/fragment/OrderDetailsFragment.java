@@ -255,7 +255,7 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
         return entry != null ? entry.prices[entry.getPosition()] : 0;
     }
 
-    Bundle buildBundle(String orderno, int orderMoney, String alipay, boolean isRecoDishes, int titleId) {
+    Bundle buildBundle(String orderno, int orderMoney, String alipay, boolean isRecoDishes, int titleId,boolean isLast) {
         Bundle bundle = new Bundle();
         PayParams payParams = new PayParams();
         payParams.setParams(orderno, orderMoney, alipay, isRecoDishes, titleId, false);
@@ -282,7 +282,7 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
                         if (jObj != null) {
                             String errmsg = jObj.optString("errmsg");
                             if (TextUtils.isEmpty(errmsg)) {
-                                gotoFragmentByAdd(buildBundle(orderno, getOrderMoney(), "", true, R.string.order_result), R.id.mainpage_ly, new PayResultFragment(), PayResultFragment.class.getName());
+                                gotoFragmentByAdd(buildBundle(orderno, getOrderMoney(), "", true, R.string.order_result,false), R.id.mainpage_ly, new PayResultFragment(), PayResultFragment.class.getName());
                                 return;
                             }
                             ToastHelper.showShort(getActivity(), errmsg);
@@ -359,11 +359,7 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
                     if (entry != null) {
                         if (TextUtils.isEmpty(entry.errmsg)) {
                             if (TextUtils.isEmpty(entry.alipay)) {
-                                if (entry.last) {
-                                    showMyComboExpireAlertDlg();
-                                    return;
-                                }
-                                gotoFragmentByAdd(buildBundle(entry.orderno, getOrderMoney(), entry.alipay, true, R.string.order_result), R.id.mainpage_ly, new PayResultFragment(), PayResultFragment.class.getName());
+                                gotoFragmentByAdd(buildBundle(entry.orderno, getOrderMoney(), entry.alipay, true, R.string.order_result,entry.last), R.id.mainpage_ly, new PayResultFragment(), PayResultFragment.class.getName());
                                 return;
                             }
                         } else {
@@ -397,20 +393,7 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
         }
     }
 
-    public void showMyComboExpireAlertDlg() {
-        final android.app.AlertDialog alert = new android.app.AlertDialog.Builder(getActivity()).create();
-        alert.show();
-        alert.setCancelable(false);
-        alert.getWindow().setContentView(R.layout.my_combo_expire_alert_ly);
-        alert.getWindow().findViewById(R.id.close_btn)
-                .setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        alert.dismiss();
-                        gotoFragmentByAdd(buildBundle(entry.orderno, getOrderMoney(), null, true, R.string.order_result), R.id.mainpage_ly, new PayResultFragment(), PayResultFragment.class.getName());
-                    }
-                });
-    }
+
 
     ComboEntry entry;
     @Bind(R.id.title_center_text)

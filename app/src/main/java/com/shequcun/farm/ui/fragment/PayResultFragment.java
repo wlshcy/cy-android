@@ -71,7 +71,7 @@ public class PayResultFragment extends BaseFragment {
     }
 
     @OnClick(R.id.back)
-    void back(){
+    void back() {
         clearStack();
     }
 
@@ -82,6 +82,8 @@ public class PayResultFragment extends BaseFragment {
         if (payParams == null) return;
         if (!TextUtils.isEmpty(payParams.orderno) && payParams.isSendRedPackage)
             requestRedPacktetShareUrl(payParams.orderno);
+        if (payParams.isLast)
+            showMyComboExpireAlertDlg();
     }
 
 
@@ -109,34 +111,6 @@ public class PayResultFragment extends BaseFragment {
         }
         return false;
     }
-
-
-
-//    void buildAdapter() {
-//        if (adapter == null)
-//            adapter = new RecommendAdapter(getActivity());
-//        adapter.buildOnClickLsn(onGoodsImgLsn, onBuyLsn);
-//        mLv.setAdapter(adapter);
-//    }
-
-
-//    AvoidDoubleClickListener onBuyLsn = new AvoidDoubleClickListener() {
-//        @Override
-//        public void onViewClick(View v) {
-//            int position = (int) v.getTag();
-//            if (adapter == null)
-//                return;
-//
-//            RecommendEntry entry = adapter.getItem(position);
-//
-//            if (entry.remains <= 0) {
-//                alertOutOfRemains();
-//                return;
-//            }
-//
-//            gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new SingleDishesFragment(), SingleDishesFragment.class.getName());
-//        }
-//    };
 
     /**
      * 剩余量不足
@@ -179,68 +153,6 @@ public class PayResultFragment extends BaseFragment {
         bundle.putSerializable("RecommendEntry", entry);
         return bundle;
     }
-
-//    AvoidDoubleClickListener onGoodsImgLsn = new AvoidDoubleClickListener() {
-//        @Override
-//        public void onViewClick(View v) {
-//            if (adapter == null)
-//                return;
-//            int position = (int) v.getTag();
-//            RecommendEntry entry = adapter.getItem(position);
-//            Bundle bundle = new Bundle();
-//            bundle.putSerializable("RecommendEntry", entry);
-//            gotoFragmentByAnimation(bundle, R.id.mainpage_ly, new RecommendGoodsDetailsFragment(), RecommendGoodsDetailsFragment.class.getName());
-//        }
-//    };
-
-//    void requestRecomendDishes() {
-//        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "cai/itemlist", new AsyncHttpResponseHandler() {
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, byte[] data) {
-//                if (data != null && data.length > 0) {
-//                    RecommentListEntry entry = JsonUtilsParser.fromJson(new String(data), RecommentListEntry.class);
-//                    if (entry != null) {
-//                        if (TextUtils.isEmpty(entry.errmsg)) {
-//                            addDataToAdapter(entry.aList);
-//                            return;
-//                        }
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-//
-//            }
-//        });
-////        HttpRequestUtil.httpGet(LocalParams.getBaseUrl() + "cai/itemlist", new AsyncHttpResponseHandler() {
-////            @Override
-////            public void onSuccess(int sCode, Header[] h, byte[] data) {
-////                if (data != null && data.length > 0) {
-////                    RecommentListEntry entry = JsonUtilsParser.fromJson(new String(data), RecommentListEntry.class);
-////                    if (entry != null) {
-////                        if (TextUtils.isEmpty(entry.errmsg)) {
-////                            addDataToAdapter(entry.aList);
-////                            return;
-////                        }
-////                    }
-////                }
-////            }
-////
-////            @Override
-////            public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
-////            }
-////        });
-//    }
-
-//    void addDataToAdapter(List<RecommendEntry> aList) {
-//        if (aList != null && aList.size() > 0) {
-//            recoTv.setVisibility(View.VISIBLE);
-//            recoTv.setText("为您特别推荐");
-//            adapter.addAll(aList);
-//            adapter.notifyDataSetChanged();
-//        }
-//    }
 
     private int getTitleId() {
         Bundle bundle = getArguments();
@@ -317,6 +229,21 @@ public class PayResultFragment extends BaseFragment {
         shareContent.setTitle(title);
         shareContent.setContent(content);
         ShareManager.shareByFrame(getActivity(), shareContent);
+    }
+
+    public void showMyComboExpireAlertDlg() {
+        final android.app.AlertDialog alert = new android.app.AlertDialog.Builder(getActivity()).create();
+        alert.show();
+        alert.setCancelable(false);
+        alert.getWindow().setContentView(R.layout.my_combo_expire_alert_ly);
+        alert.getWindow().findViewById(R.id.close_btn)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alert.dismiss();
+                        clearStack();
+                    }
+                });
     }
 
     @Bind(R.id.common_small_tv)

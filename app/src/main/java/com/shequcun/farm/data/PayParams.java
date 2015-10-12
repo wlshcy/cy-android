@@ -42,6 +42,10 @@ public class PayParams implements Serializable {
     }
 
     /**
+     * 是否是最后一次选品
+     */
+    public boolean isLast = false;
+    /**
      * 是否要发红包
      */
     public boolean isSendRedPackage;

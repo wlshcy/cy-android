@@ -19,6 +19,7 @@ import com.shequcun.farm.R;
 import com.shequcun.farm.data.VersionEntry;
 import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.dlg.ProgressDlg;
+import com.shequcun.farm.dlg.UserGuideDialog;
 import com.shequcun.farm.ui.adapter.HomeViewPagerAdapter;
 import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
@@ -39,6 +40,9 @@ public class SqcFarmActivity extends BaseFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if (!PersistanceManager.getOnce(this)) {
+            new UserGuideDialog(this).show();
+        }
         initWidget();
         doAuthInit();
         checkVersion();
@@ -189,6 +193,7 @@ public class SqcFarmActivity extends BaseFragmentActivity {
         dialog.setCancelable(false);
         dialog.show();
     }
+
     /**
      * 鉴权
      */

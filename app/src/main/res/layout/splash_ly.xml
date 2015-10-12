@@ -2,25 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/splash_bg"
     >
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/welcome_viewpager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"></android.support.v4.view.ViewPager>
-
-    <TextView
-        android:id="@+id/welcome_btn"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/px92"
-        android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginBottom="@dimen/px80"
-        android:layout_marginLeft="@dimen/px98"
-        android:layout_marginRight="@dimen/px98"
-        android:background="@drawable/shopping_cart_widget_selector_1"
-        android:gravity="center"
-        android:text="立即体验"
-        android:textColor="@android:color/white"
-        android:textSize="18sp"
-        android:visibility="gone" />
 </FrameLayout>
