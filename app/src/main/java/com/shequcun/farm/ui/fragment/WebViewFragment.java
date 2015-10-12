@@ -139,7 +139,8 @@ public class WebViewFragment extends BaseFragment {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
-                mProgressBar.setVisibility(View.VISIBLE);
+                if (mProgressBar != null)
+                    mProgressBar.setVisibility(View.VISIBLE);
             }
 
         });
