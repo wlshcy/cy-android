@@ -3,11 +3,6 @@ package com.shequcun.farm.util;
 import android.content.Context;
 import android.content.Intent;
 
-import com.shequcun.farm.data.AddressEntry;
-import com.shequcun.farm.data.ComboEntry;
-import com.shequcun.farm.data.ZoneEntry;
-import com.tencent.mm.sdk.modelbase.BaseResp;
-
 /**
  * Created by apple on 15/8/8.
  */
@@ -34,12 +29,6 @@ public class IntentUtil {
         mContext.sendBroadcast(intent);
     }
 
-    public static void sendUpdateMyAddressMsg(Context mContext, ZoneEntry zEntry) {
-        Intent intent = new Intent();
-        intent.setAction("com.youcai.refresh.myaddress");
-        intent.putExtra("ZoneEntry", zEntry);
-        mContext.sendBroadcast(intent);
-    }
 
     public static void sendUpdateMyAddressMsg(Context mContext, String details_address) {
         Intent intent = new Intent();

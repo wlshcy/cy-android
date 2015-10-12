@@ -54,6 +54,7 @@ public class RemarkFragment extends BaseFragment {
     @OnClick({R.id.back, R.id.title_right_text})
     void back(View v) {
         if (v == save) {
+            Utils.hideVirtualKeyboard(getActivity(),v);
             if (lsn != null) {
                 lsn.updateRemarkWidget(leave_msg_to_farm.getText().toString());
             }
