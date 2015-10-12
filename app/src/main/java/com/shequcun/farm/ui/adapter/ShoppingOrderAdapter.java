@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.HistoryOrderEntry;
-import com.shequcun.farm.util.AvoidDoubleClickListener;
 import com.shequcun.farm.util.Utils;
 
 import butterknife.Bind;
@@ -43,7 +42,7 @@ public class ShoppingOrderAdapter extends ArrayAdapter<HistoryOrderEntry> {
             vh.distribution_name.setVisibility(View.GONE);
             if (entry.status == 3) {// 0.未付款, 1.待配送, 2.配送中, 3.配送完成,
                 vh.order_status.setText("配送完成");
-                vh.order_status.setBackgroundResource(R.drawable.gray_f0f0f0_corner_bg);
+                vh.order_status.setBackgroundResource(R.drawable.gray_d1d1d1_corner_bg);
             } else if (entry.status == 0) {
                 vh.order_status.setText(R.string.unpaid);
                 vh.order_status.setBackgroundResource(R.drawable.red_f36043_corner_bg);
@@ -55,7 +54,7 @@ public class ShoppingOrderAdapter extends ArrayAdapter<HistoryOrderEntry> {
                 vh.order_status.setBackgroundResource(R.drawable.green_94d6c0_corner_bg);
             } else if (entry.status == 4) {
                 vh.order_status.setText("订单取消");
-                vh.order_status.setBackgroundResource(R.drawable.gray_f0f0f0_corner_bg);
+                vh.order_status.setBackgroundResource(R.drawable.gray_d1d1d1_corner_bg);
             }
 
             if (entry.status == 0) {
