@@ -27,6 +27,7 @@ public class DeviceInfo {
         }
     }
 
+
     public static String getReleseVersion() {
         String release;
         try {

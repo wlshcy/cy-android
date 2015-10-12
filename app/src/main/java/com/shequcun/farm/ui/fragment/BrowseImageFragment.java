@@ -246,11 +246,13 @@ public class BrowseImageFragment extends BaseFragment {
 
         @Override
         public void onLoadingStarted(String s, View view) {
+            if(mProgressBar!=null)
             mProgressBar.setVisibility(View.VISIBLE);
         }
 
         @Override
         public void onLoadingFailed(String s, View view, FailReason failReason) {
+            if(mProgressBar!=null)
             mProgressBar.setVisibility(View.GONE);
             if (imageView != null)
                 imageView.setImageResource(R.drawable.ic_loading_failure);
@@ -258,14 +260,16 @@ public class BrowseImageFragment extends BaseFragment {
 
         @Override
         public void onLoadingComplete(String s, View view, Bitmap bitmap) {
-            mProgressBar.setVisibility(View.GONE);
+            if (mProgressBar != null)
+                mProgressBar.setVisibility(View.GONE);
 //            if (save)
 //                saveBitmap = bitmap;
         }
 
         @Override
         public void onLoadingCancelled(String s, View view) {
-            mProgressBar.setVisibility(View.GONE);
+            if (mProgressBar != null)
+                mProgressBar.setVisibility(View.GONE);
         }
     }
 

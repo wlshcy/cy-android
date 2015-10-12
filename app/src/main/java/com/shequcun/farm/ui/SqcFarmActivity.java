@@ -21,6 +21,7 @@ import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.dlg.UserGuideDialog;
 import com.shequcun.farm.ui.adapter.HomeViewPagerAdapter;
+import com.shequcun.farm.util.DeviceInfo;
 import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
@@ -125,7 +126,7 @@ public class SqcFarmActivity extends BaseFragmentActivity {
                     VersionEntry vEntry = JsonUtilsParser.fromJson(new String(data), VersionEntry.class);
                     if (vEntry != null) {
                         if (TextUtils.isEmpty(vEntry.errmsg)) {
-                            if (!TextUtils.isEmpty(vEntry.version) && vEntry.version.compareTo(getVersionName()) > 0) {
+                            if (!TextUtils.isEmpty(vEntry.version) && vEntry.version.compareTo(DeviceInfo.getVersion(SqcFarmActivity.this)) > 0) {
                                 showUpdateDlg(vEntry);
                             }
                         } else {
@@ -141,19 +142,6 @@ public class SqcFarmActivity extends BaseFragmentActivity {
 
             }
         });
-    }
-
-
-    String getVersionName() {
-        PackageInfo info = null;
-        PackageManager manager = getPackageManager();
-        try {
-            info = manager.getPackageInfo(getPackageName(), 0);
-            return info.versionName;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        return "";
     }
 
     private void showUpdateDlg(final VersionEntry vEntry) {
