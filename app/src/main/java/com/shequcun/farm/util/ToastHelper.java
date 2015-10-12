@@ -9,6 +9,8 @@ public class ToastHelper {
     private static Toast toast;
 
     public static void showShort(Context context, CharSequence message) {
+        if (context == null)
+            return;
         if (null == toast) {
             toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
             // toast.setGravity(Gravity.CENTER, 0, 0);
@@ -23,6 +25,8 @@ public class ToastHelper {
      * @param message
      */
     public static void showShort(Context context, int message) {
+        if (context == null)
+            return;
         if (null == toast) {
             toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
             // toast.setGravity(Gravity.CENTER, 0, 0);

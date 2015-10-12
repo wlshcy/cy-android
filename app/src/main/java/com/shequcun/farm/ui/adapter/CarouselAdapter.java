@@ -63,10 +63,8 @@ public class CarouselAdapter extends BaseAdapter {
         ViewHolder holder = null;
         SlidesEntry item = mImageList.get(position);
         if (convertView == null) {
-            holder = new ViewHolder(convertView);
             convertView = mInflater.inflate(R.layout.image_item, null);
-            holder.imgView = (ImageView) convertView
-                    .findViewById(R.id.imgView);
+            holder = new ViewHolder(convertView);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();

@@ -111,6 +111,10 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment implements R
             footerView = null;
         }
 
+        if (headView != null) {
+            mLv.removeHeaderView(headView);
+            headView = null;
+        }
         if (sChilidView != null) {
             pView.removeView(sChilidView);
             sChilidView = null;
@@ -390,8 +394,10 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment implements R
     }
 
     void addHeader() {
-        View v = LayoutInflater.from(getActivity()).inflate(R.layout.ucai_safe_tip_ly, null);
-        mLv.addHeaderView(v, null, false);
+        if (headView == null) {
+            headView = LayoutInflater.from(getActivity()).inflate(R.layout.ucai_safe_tip_ly, null);
+            mLv.addHeaderView(headView, null, false);
+        }
     }
 
     boolean mIsBind = false;
@@ -421,4 +427,6 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment implements R
     String memo;
     CouponEntry cEntry;
     View noLoginView;
+
+    View headView;
 }
