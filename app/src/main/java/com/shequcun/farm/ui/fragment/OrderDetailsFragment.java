@@ -107,6 +107,8 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
                         shop_cart_surpport_now_pay_tv.setText("本套餐只支持年付!");
                     } else if (entry.duration >= 12) {
                         shop_cart_surpport_now_pay_tv.setText("本套餐只支持季付!");
+                    } else if (entry.duration >= 8) {
+                        shop_cart_surpport_now_pay_tv.setVisibility(View.GONE);
                     } else if (entry.duration >= 4) {
                         shop_cart_surpport_now_pay_tv.setText("本套餐只支持月付!");
                     } else {

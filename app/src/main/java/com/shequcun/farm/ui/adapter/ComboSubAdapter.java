@@ -76,12 +76,12 @@ public class ComboSubAdapter extends BaseAdapter {
 
         if (vh != null) {
             if (vh.combo_img != null && entry.wimgs != null && entry.wimgs.length > 0) {
-                String url = (TextUtils.isEmpty(entry.wimgs[position]) ? entry.img : entry.wimgs[position])+"?imageview2/2/w/180";
+                String url = (TextUtils.isEmpty(entry.wimgs[position]) ? entry.img : entry.wimgs[position]) + "?imageview2/2/w/180";
                 if (vh.lastImageUrl == null || !vh.lastImageUrl.equals(url)
                         || vh.combo_img.getDrawable() == null) {
                     vh.imgProgress.setTag(position);
                     /*刷新图片*/
-                    InnerImageLoadingListener innerImageLoadingListener = new InnerImageLoadingListener(vh.imgProgress,position);
+                    InnerImageLoadingListener innerImageLoadingListener = new InnerImageLoadingListener(vh.imgProgress, position);
                     innerImageLoadingListener.setViewHolder(vh);
                     ImageLoader.getInstance().displayImage(url, vh.combo_img, innerImageLoadingListener);
                 } else {
@@ -100,12 +100,14 @@ public class ComboSubAdapter extends BaseAdapter {
             }
 
             if (vh.distribution_all_times != null) {
-                if (entry.duration >= 52)
-                    vh.distribution_all_times.setText(entry.duration * entry.shipday.length + "次/年");
-                else if (entry.duration >= 12)
-                    vh.distribution_all_times.setText(entry.duration * entry.shipday.length + "次/季");
-                else
-                    vh.distribution_all_times.setText(entry.duration * entry.shipday.length + "次/月");
+//                if (entry.duration >= 52)
+//                    vh.distribution_all_times.setText(entry.duration * entry.shipday.length + "次/年");
+//                else if (entry.duration >= 12)
+//                    vh.distribution_all_times.setText(entry.duration * entry.shipday.length + "次/季");
+//                else
+//                    vh.distribution_all_times.setText(entry.duration * entry.shipday.length + "次/月");
+
+                vh.distribution_all_times.setText("共" + entry.duration * entry.shipday.length + "次");
             }
 
 

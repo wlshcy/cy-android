@@ -166,12 +166,12 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
 
     private void gotoShoppingCart() {
         popBackStack();
-        if (entry != null && entry.count > 0) {
-            RecommendItemKey itemKey = new RecommendItemKey();
-            itemKey.object = entry;
-            new CacheManager(getActivity()).saveRecommendToDisk(itemKey);
-            IntentUtil.sendUpdateFarmShoppingCartMsg(getActivity());
-        }
+//        if (entry != null && entry.count > 0) {
+//            RecommendItemKey itemKey = new RecommendItemKey();
+//            itemKey.object = entry;
+//            new CacheManager(getActivity()).saveRecommendToDisk(itemKey);
+//            IntentUtil.sendUpdateFarmShoppingCartMsg(getActivity());
+//        }
         SqcFarmActivity mAct = (SqcFarmActivity) getActivity();
         mAct.buildRadioButtonStatus(1);
     }
