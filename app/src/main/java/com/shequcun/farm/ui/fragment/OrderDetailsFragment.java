@@ -264,6 +264,7 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
     Bundle buildBundle(String orderno, int orderMoney, String alipay, boolean isRecoDishes, int titleId, boolean isLast) {
         Bundle bundle = new Bundle();
         PayParams payParams = new PayParams();
+        payParams.isLast=isLast;
         payParams.setParams(orderno, orderMoney, alipay, isRecoDishes, titleId, false);
         bundle.putSerializable("PayParams", payParams);
         return bundle;

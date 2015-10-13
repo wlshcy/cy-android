@@ -46,6 +46,8 @@ public class Utils {
      * @return
      */
     public static String unitPeneyToYuan(int peney) {
+        if (peney <= 0)
+            return "";
         double yuan = (double) peney / 100;
         DecimalFormat df = new DecimalFormat("###.00");
         return "￥" + (peney / 100 == 0 ? "0" + df.format(yuan) : df.format(yuan));
@@ -99,7 +101,7 @@ public class Utils {
     }
 
     public static SpannableString getSpanableSpan(String strFrom1,
-                                                  String strTo1, int size1, int size2,int color1,int color2) {
+                                                  String strTo1, int size1, int size2, int color1, int color2) {
         if (TextUtils.isEmpty(strFrom1) || TextUtils.isEmpty(strTo1))
             return null;
 
@@ -166,6 +168,7 @@ public class Utils {
         String sb = format.format(gc.getTime());
         return sb;
     }
+
     public static String getMMdd(long d) {
         Date dat = new Date(d);
         GregorianCalendar gc = new GregorianCalendar();
