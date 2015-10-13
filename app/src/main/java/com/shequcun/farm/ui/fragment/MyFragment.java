@@ -112,8 +112,10 @@ public class MyFragment extends BaseFragment {
         hView_1 = LayoutInflater.from(getActivity()).inflate(R.layout.my_item_head_ly, null);
         ((TextView) hView_1.findViewById(R.id.mobile_phone)).setText(uEntry != null ? uEntry.mobile : "");
         CircleImageView circleImageView = ((CircleImageView) hView_1.findViewById(R.id.my_head));
-        if (uEntry != null && !TextUtils.isEmpty(uEntry.headimg))
-            ImageLoader.getInstance().displayImage(uEntry.headimg+"?imageview2/2/w/200", circleImageView);
+        if (uEntry != null && !TextUtils.isEmpty(uEntry.headimg)) {
+            ImageLoader.getInstance().displayImage(uEntry.headimg + "?imageview2/2/w/200", circleImageView);
+            hView_1.findViewById(R.id.click_login_tv).setVisibility(View.GONE);
+        }
         hView_1.findViewById(R.id.my_head).setOnClickListener(new AvoidDoubleClickListener() {
             @Override
             public void onViewClick(View v) {

@@ -69,7 +69,7 @@
                         android:layout_marginRight="@dimen/px36"
                         android:background="@android:color/transparent"
                         android:text="@string/get_sms_code"
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/green_11C258"
                         android:textSize="@dimen/font28" />
                 </LinearLayout>
 

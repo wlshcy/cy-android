@@ -7,15 +7,15 @@
 
     <include layout="@layout/common_title_ly"></include>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/px50"
-        android:paddingLeft="@dimen/px48"
-        android:paddingRight="@dimen/px48"
-        android:paddingTop="@dimen/px42"
-        android:text="@string/delay_delivery_note"
-        android:textColor="@color/common_text" />
+    <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:paddingBottom="@dimen/px50"-->
+        <!--android:paddingLeft="@dimen/px48"-->
+        <!--android:paddingRight="@dimen/px48"-->
+        <!--android:paddingTop="@dimen/px42"-->
+        <!--android:text="@string/delay_delivery_note"-->
+        <!--android:textColor="@color/common_text" />-->
 
     <ListView
         android:id="@+id/comboLv"

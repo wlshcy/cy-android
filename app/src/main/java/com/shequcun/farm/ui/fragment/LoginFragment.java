@@ -228,8 +228,10 @@ public class LoginFragment extends BaseFragment {
     }
 
     void startTime() {
-        if (tCount == null)
+        if (tCount == null){
+            obtain_verification_code.setTextColor(getResources().getColor(R.color.gray_3d3d3d));
             tCount = new TimeCount(60000, 1000, obtain_verification_code);
+        }
         tCount.start();
     }
 

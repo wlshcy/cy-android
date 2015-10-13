@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/px50"
+    android:paddingLeft="@dimen/px48"
+    android:paddingRight="@dimen/px48"
+    android:paddingTop="@dimen/px42"
+    android:text="@string/delay_delivery_note"
+    android:textColor="@color/common_text"></TextView>

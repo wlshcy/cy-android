@@ -158,7 +158,10 @@ public class HomeFragment extends BaseFragment {
                 gotoFragmentByAdd(R.id.mainpage_ly, new LoginFragment(), LoginFragment.class.getName());
                 return;
             }
-            SlidesEntry item = (SlidesEntry) v.getTag();
+            SlidesEntry item = null;
+            if (v.getTag() instanceof SlidesEntry) {
+                item = (SlidesEntry) v.getTag();
+            }
             if (item == null)
                 return;
             if (TextUtils.isEmpty(item.url)) {
