@@ -1,6 +1,5 @@
 package com.shequcun.farm.ui.fragment;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -26,7 +25,6 @@ import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.dlg.ConsultationDlg;
 import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.ui.adapter.OrderDetailsAdapter;
-import com.shequcun.farm.util.AvoidDoubleClickListener;
 import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;

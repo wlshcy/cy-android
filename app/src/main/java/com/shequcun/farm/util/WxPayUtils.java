@@ -1,13 +1,18 @@
 package com.shequcun.farm.util;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
 import com.google.gson.annotations.SerializedName;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.WxPayResEntry;
 import com.shequcun.farm.dlg.ProgressDlg;
+import com.shequcun.farm.ui.fragment.LoginFragment;
 import com.tencent.mm.sdk.constants.Build;
 import com.tencent.mm.sdk.modelpay.PayReq;
 import com.tencent.mm.sdk.openapi.IWXAPI;
@@ -62,7 +67,7 @@ public class WxPayUtils {
      * @return
      */
     public boolean isSupportWxPay() {
-        return iwxapi != null && iwxapi.getWXAppSupportAPI() >= Build.PAY_SUPPORTED_SDK_INT;
+        return iwxapi != null && iwxapi.isWXAppInstalled() && iwxapi.isWXAppSupportAPI();
     }
 
     public void doWxPay() {
@@ -70,6 +75,11 @@ public class WxPayUtils {
     }
 
     public void doWxPay(WxPayResEntry wxPay) {
+        if (!isSupportWxPay()) {
+            alertWxPayDlg();
+            return;
+        }
+
         PayReq req = new PayReq();
         req.appId = wxPay.appId;
         req.partnerId = wxPay.partnerid;
@@ -80,6 +90,45 @@ public class WxPayUtils {
         req.sign = wxPay.sign;
         iwxapi.registerApp(LocalParams.getWxAppId());
         iwxapi.sendReq(req);
+    }
+
+
+    private void alertWxPayDlg() {
+//        final AlertDialog alert = new AlertDialog.Builder(mContext).create();
+//        alert.show();
+//        alert.setCancelable(false);
+//        alert.getWindow().setContentView(R.layout.prompt_dialog);
+//        ((TextView) alert.getWindow().findViewById(R.id.content_tv))
+//                .setText("请先打开您的微信客户端!");
+//        alert.getWindow().findViewById(R.id.no)
+//                .setOnClickListener(new View.OnClickListener() {
+//
+//                    @Override
+//                    public void onClick(View v) {
+//                        alert.dismiss();
+//                    }
+//                });
+//        alert.getWindow().findViewById(R.id.yes)
+//                .setOnClickListener(new View.OnClickListener() {
+//
+//                    @Override
+//                    public void onClick(View v) {
+//                        alert.dismiss();
+//
+//                    }
+//                });
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setTitle("提示");
+        builder.setMessage("亲,请先打开您的微信客户端!");
+        builder.setNegativeButton("好的", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //gotoFragment(R.id.mainpage_ly, new LoginFragment(), LoginFragment.class.getName());
+            }
+        });
+        builder.setNeutralButton("", null);
+        builder.create().show();
     }
 
     /**

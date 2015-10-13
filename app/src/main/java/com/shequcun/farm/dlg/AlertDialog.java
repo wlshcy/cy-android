@@ -1,6 +1,7 @@
 package com.shequcun.farm.dlg;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.view.View;
 import android.widget.TextView;
@@ -36,7 +37,7 @@ public class AlertDialog {
         alertDialog(mAct, content);
     }
 
-    public void alertDialog(Activity mAct, String content) {
+    public void alertDialog(Context mAct, String content) {
         final android.app.AlertDialog alert = new android.app.AlertDialog.Builder(mAct).create();
         alert.show();
         alert.setCancelable(false);

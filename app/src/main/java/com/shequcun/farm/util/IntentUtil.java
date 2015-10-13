@@ -30,13 +30,6 @@ public class IntentUtil {
     }
 
 
-    public static void sendUpdateMyAddressMsg(Context mContext, String details_address) {
-        Intent intent = new Intent();
-        intent.setAction("com.youcai.refresh.myaddress");
-        intent.putExtra("details_address", details_address);
-        mContext.sendBroadcast(intent);
-    }
-
     /**
      * 刷新农庄特产购物车界面
      */

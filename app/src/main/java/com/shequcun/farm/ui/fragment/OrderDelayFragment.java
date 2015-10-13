@@ -42,8 +42,6 @@ import butterknife.OnItemClick;
 public class OrderDelayFragment extends BaseFragment {
     @Bind(R.id.title_center_text)
     TextView titleTv;
-    //    @Bind(R.id.delay_tv)
-//    TextView delayTv;
     @Bind(R.id.comboLv)
     ListView comboLv;
     @Bind(R.id.emptyTv)
