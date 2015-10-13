@@ -33,7 +33,6 @@
         android:layout_height="wrap_content"
         android:background="@null"
         android:gravity="center"
-        android:paddingBottom="@dimen/px30"
         android:paddingTop="@dimen/px30"
         android:text="有菜555月套餐"
         android:textColor="@android:color/black"
@@ -48,7 +47,7 @@
         android:paddingBottom="@dimen/px30"
         android:paddingTop="@dimen/px30"
         android:text="延期配送蔬菜每次只能选择延期一周配送"
-        android:textColor="@android:color/black"
+        android:textColor="@color/gray_cecece"
         android:textSize="@dimen/font28" />
 
     <TextView
