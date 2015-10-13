@@ -16,34 +16,50 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <com.common.widget.CircleImageView
-                android:id="@+id/my_head"
-                android:layout_width="@dimen/px180"
-                android:layout_height="@dimen/px180"
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/px84"
-                android:src="@drawable/icon_default_head" />
+                android:layout_marginTop="@dimen/px84">
+
+                <com.common.widget.CircleImageView
+                    android:id="@+id/my_head"
+                    android:layout_width="@dimen/px180"
+                    android:layout_height="@dimen/px180"
+                    android:layout_gravity="center"
+                    android:src="@color/white_f4f4f4" />
+
+                <TextView
+                    android:id="@+id/click_login_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="点击登录"
+                    android:textColor="@color/black_131313"
+                    android:textSize="@dimen/font30"
+                    />
+            </FrameLayout>
 
             <TextView
                 android:id="@+id/mobile_phone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|bottom"
-                android:text="@string/mobile_phone"
                 android:layout_marginTop="@dimen/px20"
                 android:textColor="@color/green_446628"
                 android:textSize="@dimen/font30" />
 
             <!--<TextView-->
-                <!--android:id="@+id/address_tv"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_gravity="center|bottom"-->
-                <!--android:paddingBottom="@dimen/px24"-->
-                <!--android:paddingTop="@dimen/px24"-->
-                <!--android:gravity="center"-->
-                <!--android:textColor="@color/green_446628"-->
-                <!--android:textSize="@dimen/font28" />-->
+            <!--android:id="@+id/address_tv"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center|bottom"-->
+            <!--android:paddingBottom="@dimen/px24"-->
+            <!--android:paddingTop="@dimen/px24"-->
+            <!--android:gravity="center"-->
+            <!--android:textColor="@color/green_446628"-->
+            <!--android:textSize="@dimen/font28" />-->
 
         </LinearLayout>
 

@@ -62,6 +62,8 @@ public class OrderDelayFragment extends BaseFragment {
     @Override
     protected void initWidget(View v) {
         titleTv.setText(R.string.order_delay_delivery);
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.delay_list_header_textview, null);
+        comboLv.addHeaderView(view);
         requestGetDelayState(null);
     }
 

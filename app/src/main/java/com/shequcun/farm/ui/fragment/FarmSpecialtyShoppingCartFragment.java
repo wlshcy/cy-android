@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.Spannable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -281,7 +282,8 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment implements R
         number_copies.setText("共" + part + "份");
         boolean isAddFreight = allMoney / 100 >= 99;
         allMoney = isAddFreight ? allMoney : allMoney + 1000;
-        shop_cart_total_price_tv.setText("共付:" + Utils.unitPeneyToYuan(allMoney));
+        Spannable spannable = Utils.getSpanableSpan("共付:", Utils.unitPeneyToYuan(allMoney), ResUtil.dip2px(getActivity(), 14), ResUtil.dip2px(getActivity(), 14), getResources().getColor(R.color.gray_a9a9a9), getResources().getColor(R.color.red_f36043));
+        shop_cart_total_price_tv.setText(spannable);
         freight_money_tv.setText(isAddFreight ? R.string.no_freight : R.string.freight_money);
     }
 

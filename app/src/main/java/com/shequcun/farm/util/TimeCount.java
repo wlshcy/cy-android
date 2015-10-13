@@ -20,7 +20,7 @@ public class TimeCount extends CountDownTimer {
     public void onTick(long millisUntilFinished) {
         obtain_verification_code.setClickable(false);
         obtain_verification_code.setText(millisUntilFinished / 1000
-                + "秒后可重新发送");
+                + "秒");
     }
 
     @Override
