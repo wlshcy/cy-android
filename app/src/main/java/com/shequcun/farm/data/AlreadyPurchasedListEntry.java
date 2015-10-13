@@ -14,4 +14,11 @@ public class AlreadyPurchasedListEntry extends BaseEntry {
     public boolean cpflag;
     @SerializedName("spares")
     public List<AlreadyPurchasedEntry> dIe;
+    @SerializedName("fid")
+    public int fid;
+    @SerializedName("farm")
+    public String farm;
+//    "fid": 2,
+//            "farm": "无忧无虑",
+//            "status": 3,
 }

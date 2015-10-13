@@ -222,6 +222,7 @@ public class ModifyOrderFragment extends BaseFragment {
         final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
         RequestParams params = new RequestParams();
         params.add("orderno", getOrderNumber());
+
         HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "cai/orderdtl", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] h, byte[] data) {
