@@ -195,7 +195,9 @@ public class ComboFragment extends BaseFragment {
                 - mListView.getFirstVisiblePosition());
         if (pView == null)
             return false;
-        return pView.findViewById(R.id.my_combo).getVisibility() == View.VISIBLE;
+        ComboEntry entry = adapter.getItem(position);
+        return entry.isMine();
+//        return pView.findViewById(R.id.my_combo_iv).getVisibility() == View.VISIBLE;
     }
 
     PullToRefreshScrollView.OnRefreshListener2 onRefrshLsn = new PullToRefreshBase.OnRefreshListener2() {
