@@ -18,6 +18,7 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.ComboEntry;
 import com.shequcun.farm.util.Constrants;
+import com.shequcun.farm.util.ResUtil;
 import com.shequcun.farm.util.Utils;
 import com.tencent.mm.sdk.constants.ConstantsAPI;
 
@@ -56,12 +57,14 @@ public class ComboAdapter extends ArrayAdapter<ComboEntry> {
         if (entry != null) {
             if (entry.isMine()) {
                 vh.myComboTv.setText("我的");
-                vh.myComboTv.setBackgroundColor(getContext().getResources().getColor(R.color.green_11C258));
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    vh.myComboTv.setCompoundDrawablesWithIntrinsicBounds(getContext().getDrawable(R.drawable.icon_combo_green), null, getContext().getDrawable(R.drawable.icon_combo_green), null);
-                } else {
-                    vh.myComboTv.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.icon_combo_green), null, getContext().getResources().getDrawable(R.drawable.icon_combo_green), null);
-                }
+                vh.myComboTv.setPadding(ResUtil.dip2px(getContext(),6),0,ResUtil.dip2px(getContext(),6),0);
+                vh.myComboTv.setBackgroundResource(R.drawable.my_combo_mark_shape);
+                vh.myComboTv.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+//                vh.myComboTv.setBackgroundColor(getContext().getResources().getColor(R.color.green_11C258));
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                } else {
+//                    vh.myComboTv.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(R.drawable.icon_combo_green), null, getContext().getResources().getDrawable(R.drawable.icon_combo_green), null);
+//                }
 //                vh.combo_name.setVisibility(View.GONE);
             } else {
                 vh.myComboTv.setText("");
