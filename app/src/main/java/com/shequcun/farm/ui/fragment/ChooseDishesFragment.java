@@ -713,6 +713,7 @@ public class ChooseDishesFragment extends BaseFragment {
 //                Drawable left = getActivity().getResources().getDrawable(R.drawable.icon_sigh);
 //                choose_dishes_tip.setCompoundDrawablesWithIntrinsicBounds(left, null, null, null);
                 choose_dishes_tip.setVisibility(View.GONE);
+                return false;
 //                entry.choose = true;
             } else if (status == 2) {
                 choose_dishes_tip.setText(R.string.choose_dishes_tip);
