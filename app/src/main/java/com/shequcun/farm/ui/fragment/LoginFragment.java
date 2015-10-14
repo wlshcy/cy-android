@@ -27,6 +27,7 @@ import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.TimeCount;
 import com.shequcun.farm.util.ToastHelper;
 import com.shequcun.farm.util.Utils;
+import com.umeng.analytics.MobclickAgent;
 
 import org.apache.http.Header;
 
@@ -158,6 +159,8 @@ public class LoginFragment extends BaseFragment {
                                 IntentUtil.sendUpdateComboMsg(getActivity());
                                 IntentUtil.sendUpdateFarmShoppingCartMsg(getActivity());
                                 popBackStack();
+                                //umeng统计当用户使用自有账号登录时
+                                MobclickAgent.onProfileSignIn(lEntry.id+"");
                                 return;
                             } else {
                                 ToastHelper.showShort(getActivity(), lEntry.errmsg);

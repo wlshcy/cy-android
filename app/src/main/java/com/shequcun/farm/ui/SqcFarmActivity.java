@@ -26,6 +26,7 @@ import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.ToastHelper;
+import com.umeng.analytics.MobclickAgent;
 
 import org.apache.http.Header;
 

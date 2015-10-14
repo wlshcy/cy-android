@@ -17,6 +17,8 @@ import com.shequcun.farm.R;
 import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.ui.adapter.ViewPagerAdapter;
 import com.shequcun.farm.util.HttpRequestUtil;
+import com.umeng.analytics.AnalyticsConfig;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 
@@ -31,6 +33,10 @@ public class SplashActivity extends BaseFragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_ly);
         mHandler.sendEmptyMessageDelayed(0, 1000);
+        //umeng统计
+        AnalyticsConfig.setAppkey(this, "55c870b067e58ec5440030b5");
+        /** 设置是否对日志信息进行加密, 默认false(不加密). */
+        AnalyticsConfig.enableEncrypt(true);
     }
 
     private Handler mHandler = new Handler() {
@@ -44,5 +50,19 @@ public class SplashActivity extends BaseFragmentActivity {
     private void gotoHome() {
         startActivity(new Intent(SplashActivity.this, SqcFarmActivity.class));
         finish();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //umeng统计页面
+        MobclickAgent.onPageStart("SplashScreen");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        //umeng统计页面
+        MobclickAgent.onPageEnd("SplashScreen");
     }
 }

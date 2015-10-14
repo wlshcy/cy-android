@@ -12,6 +12,7 @@ import android.view.animation.AlphaAnimation;
 
 import com.shequcun.farm.R;
 import com.shequcun.farm.util.HttpRequestUtil;
+import com.umeng.analytics.MobclickAgent;
 
 import butterknife.ButterKnife;
 
@@ -148,6 +149,32 @@ public abstract class BaseFragment extends Fragment {
         super.onDestroyView();
         HttpRequestUtil.cancelHttpRequest();
         ButterKnife.unbind(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+//umeng统计页面
+        MobclickAgent.onPageStart(this.getClass().getSimpleName());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+//umeng统计页面
+        MobclickAgent.onPageEnd(this.getClass().getSimpleName());
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+//        if (isVisibleToUser) {
+//            //umeng统计页面
+//            MobclickAgent.onPageStart(this.getClass().getSimpleName());
+//        } else {
+//            //umeng统计页面
+//            MobclickAgent.onPageEnd(this.getClass().getSimpleName());
+//        }
     }
 
     /**

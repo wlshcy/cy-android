@@ -20,6 +20,7 @@ import com.shequcun.farm.ui.fragment.BaseFragment;
 import com.shequcun.farm.ui.fragment.FragmentMgrInterface;
 import com.shequcun.farm.util.Constrants;
 import com.shequcun.farm.util.HttpRequestUtil;
+import com.umeng.analytics.MobclickAgent;
 
 
 public abstract class BaseFragmentActivity extends FragmentActivity implements
@@ -100,6 +101,20 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements
                 .defaultDisplayImageOptions(imageOptions).build();
 
         ImageLoader.getInstance().init(config);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //umeng统计时长
+//        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        //umeng统计时长
+//        MobclickAgent.onPause(this);
     }
 
     protected BaseFragment fragement;
