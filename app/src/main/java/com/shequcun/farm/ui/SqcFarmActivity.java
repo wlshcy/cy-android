@@ -29,9 +29,10 @@ import com.shequcun.farm.util.ToastHelper;
 import com.umeng.analytics.MobclickAgent;
 
 
+import org.apache.http.Header;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import cz.msebera.android.httpclient.Header;
 
 /**
  * farm home

@@ -30,9 +30,10 @@ import com.shequcun.farm.util.Utils;
 import com.umeng.analytics.MobclickAgent;
 
 
+import org.apache.http.Header;
+
 import butterknife.Bind;
 import butterknife.OnClick;
-import cz.msebera.android.httpclient.Header;
 
 /**
  * 登录页面
@@ -160,7 +161,7 @@ public class LoginFragment extends BaseFragment {
                                 IntentUtil.sendUpdateFarmShoppingCartMsg(getActivity());
                                 popBackStack();
                                 //umeng统计当用户使用自有账号登录时
-                                MobclickAgent.onProfileSignIn(lEntry.id+"");
+                                MobclickAgent.onProfileSignIn(lEntry.id + "");
                                 return;
                             } else {
                                 ToastHelper.showShort(getActivity(), lEntry.errmsg);

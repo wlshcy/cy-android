@@ -25,9 +25,10 @@ import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.ToastHelper;
 
+import org.apache.http.Header;
+
 import butterknife.Bind;
 import butterknife.OnClick;
-import cz.msebera.android.httpclient.Header;
 
 /**
  * Created by cong on 15/9/7.

@@ -37,13 +37,13 @@ import com.shequcun.farm.util.PhoneUtil;
 import com.shequcun.farm.util.ToastHelper;
 import com.shequcun.farm.util.Utils;
 
+import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
 
 import butterknife.Bind;
-import cz.msebera.android.httpclient.Header;
 
 /**
  * 管理收获地址

@@ -43,11 +43,12 @@ import com.shequcun.farm.util.ToastHelper;
 import com.shequcun.farm.util.Utils;
 import com.shequcun.farm.util.WxPayUtils;
 
+import org.apache.http.Header;
+
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
-import cz.msebera.android.httpclient.Header;
 
 /**
  * 套餐支付界面

@@ -28,12 +28,12 @@ import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.ResUtil;
 import com.shequcun.farm.util.Utils;
 
+import org.apache.http.Header;
 
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import cz.msebera.android.httpclient.Header;
 
 /**
  * 二级套餐适配器
