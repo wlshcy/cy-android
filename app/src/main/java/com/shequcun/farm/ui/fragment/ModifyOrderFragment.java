@@ -21,6 +21,7 @@ import com.shequcun.farm.data.AlreadyPurchasedListEntry;
 import com.shequcun.farm.data.ComboEntry;
 import com.shequcun.farm.data.CouponShareEntry;
 import com.shequcun.farm.data.ModifyOrderParams;
+import com.shequcun.farm.data.MyOrderDetailListEntry;
 import com.shequcun.farm.data.OtherInfo;
 import com.shequcun.farm.data.PayParams;
 import com.shequcun.farm.datacenter.PersistanceManager;
@@ -37,6 +38,8 @@ import com.shequcun.farm.util.ToastHelper;
 import org.apache.http.Header;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -215,22 +218,54 @@ public class ModifyOrderFragment extends BaseFragment {
         final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
         RequestParams params = new RequestParams();
         params.add("orderno", getOrderNumber());
-
-        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "cai/orderdtl", params, new AsyncHttpResponseHandler() {
+        // cai/v2/orderdtl  cai/orderdtl
+        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "cai/v2/orderdtl", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] h, byte[] data) {
                 if (data != null && data.length > 0) {
-                    AlreadyPurchasedListEntry entry = JsonUtilsParser.fromJson(new String(data), AlreadyPurchasedListEntry.class);
+//                    AlreadyPurchasedListEntry entry = JsonUtilsParser.fromJson(new String(data), AlreadyPurchasedListEntry.class);
+//                    if (entry != null) {
+//                        if (TextUtils.isEmpty(entry.errmsg)) {
+//                            setRedPacketsView(entry.cpflag);
+//                            buildAdapter(entry.aList);
+//                            addSparesFooter(entry.dIe);
+//                            return;
+//                        }
+//                        ToastHelper.showShort(getActivity(), entry.errmsg);
+//                    }
+
+                    MyOrderDetailListEntry entry = JsonUtilsParser.fromJson(new String(data), MyOrderDetailListEntry.class);
+
                     if (entry != null) {
                         if (TextUtils.isEmpty(entry.errmsg)) {
-                            setRedPacketsView(entry.cpflag);
-                            buildAdapter(entry.aList);
-                            addSparesFooter(entry.dIe);
+                            if (entry.aList != null && entry.aList.size() > 0) {
+                                List<AlreadyPurchasedEntry> aList = new ArrayList<AlreadyPurchasedEntry>();
+                                //AlreadyPurchasedListEntry
+                                ArrayList<AlreadyPurchasedEntry> dIe = new ArrayList<AlreadyPurchasedEntry>();
+                                int size = entry.aList.size();
+
+                                for (int i = 0; i < size; ++i) {
+                                    AlreadyPurchasedListEntry tmpEntry = entry.aList.get(i);
+                                    if (tmpEntry != null && tmpEntry.aList != null && tmpEntry.aList.size() > 0) {
+                                        for (int j = 0; j < tmpEntry.aList.size(); ++j) {
+                                            aList.add(tmpEntry.aList.get(j));
+                                        }
+                                    }
+
+                                    if (tmpEntry != null && tmpEntry.dIe != null && tmpEntry.dIe.size() > 0) {
+                                        for (int j = 0; j < tmpEntry.dIe.size(); ++j) {
+                                            dIe.add(tmpEntry.dIe.get(j));
+                                        }
+                                    }
+                                }
+                                setRedPacketsView(entry.cpflag);
+                                buildAdapter(aList);
+                                addSparesFooter(dIe);
+                            }
                             return;
                         }
                         ToastHelper.showShort(getActivity(), entry.errmsg);
                     }
-
                 }
             }
 

@@ -8,8 +8,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.common.widget.FlipViewController;
 import com.shequcun.farm.R;
 import com.shequcun.farm.datacenter.PersistanceManager;
+import com.shequcun.farm.ui.adapter.UserGuideAdapter;
 import com.shequcun.farm.ui.adapter.ViewPagerAdapter;
 
 import java.util.ArrayList;
@@ -17,14 +19,17 @@ import java.util.ArrayList;
 /**
  * Created by mac on 15/10/12.
  */
-public class UserGuideDialog extends Dialog {
+public class UserGuideDialog extends Dialog implements FlipViewController.ViewFlipListener {
 
     public UserGuideDialog(Context context) {
         super(context, R.style.FullScreenDialog);
+//        FlipViewController fvc = new FlipViewController(context, FlipViewController.HORIZONTAL);
+//        fvc.setOnViewFlipListener(this);
+//        fvc.setAdapter(new UserGuideAdapter(context));
+//        setContentView(fvc);
         setContentView(R.layout.ucai_guide_ly);
         initViewPager();
     }
-
 
 
     private void initViewPager() {
@@ -80,4 +85,12 @@ public class UserGuideDialog extends Dialog {
     private ViewPagerAdapter vpAdapter;
     private ViewPager viewPager;
     private ArrayList<View> views;
+
+    @Override
+    public void onViewFlipped(View view, int position) {
+        if (position == 3) {
+            dismiss();
+            PersistanceManager.saveOnce(getContext(), true);
+        }
+    }
 }
