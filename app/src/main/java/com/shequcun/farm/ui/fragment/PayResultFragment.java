@@ -20,21 +20,13 @@ import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.platform.ShareContent;
 import com.shequcun.farm.platform.ShareManager;
 import com.shequcun.farm.ui.adapter.RecommendAdapter;
-import com.shequcun.farm.util.AvoidDoubleClickListener;
 import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
-//import com.shequcun.farm.util.ShareUtil;
-//import com.shequcun.farm.util.ToastHelper;
-//import com.umeng.socialize.bean.SHARE_MEDIA;
-//import com.umeng.socialize.bean.SocializeEntity;
-//import com.umeng.socialize.bean.StatusCode;
-//import com.umeng.socialize.controller.listener.SocializeListeners;
-
-import org.apache.http.Header;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import cz.msebera.android.httpclient.Header;
 
 /**
  * 支付结果界面

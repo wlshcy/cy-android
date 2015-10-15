@@ -14,20 +14,11 @@ import android.widget.ProgressBar;
 
 import com.common.widget.ExtendedViewPager;
 import com.common.widget.TouchImageView;
-import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
-import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
-import com.nostra13.universalimageloader.core.decode.BaseImageDecoder;
-import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
-import com.nostra13.universalimageloader.utils.StorageUtils;
 import com.shequcun.farm.R;
 import com.shequcun.farm.model.PhotoModel;
-import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
 import com.shequcun.farm.util.Constrants;
 
 import java.util.List;

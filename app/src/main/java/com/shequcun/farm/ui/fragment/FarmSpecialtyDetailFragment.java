@@ -1,6 +1,7 @@
 package com.shequcun.farm.ui.fragment;
 
 import android.app.AlertDialog;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -17,6 +18,12 @@ import android.widget.TextView;
 
 import com.common.widget.CircleFlowIndicator;
 import com.common.widget.ViewFlow;
+import com.daimajia.slider.library.Animations.DescriptionAnimation;
+import com.daimajia.slider.library.Indicators.PagerIndicator;
+import com.daimajia.slider.library.SliderLayout;
+import com.daimajia.slider.library.SliderTypes.BaseSliderView;
+import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
+import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.ComboEntry;
@@ -39,6 +46,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 //import com.shequcun.farm.util.ShareUtil;
@@ -48,11 +56,17 @@ import butterknife.OnClick;
  * Created by mac on 15/9/6.
  */
 public class FarmSpecialtyDetailFragment extends BaseFragment {
+    @Bind(R.id.slider)
+    SliderLayout slider;
+    @Bind(R.id.custom_indicator2)
+    PagerIndicator customIndicator2;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.farm_specialty_detail_ly, container, false);
+        View view = inflater.inflate(R.layout.farm_specialty_detail_ly, container, false);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
     private void setDataToView() {
@@ -121,24 +135,54 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
     }
 
     void buildCarouselAdapter() {
-        if (entry == null || entry.imgs == null || entry.imgs.length <= 0) {
-            carousel_img.setVisibility(View.GONE);
-            dismissImgProgress();
-            return;
+//        if (entry == null || entry.imgs == null || entry.imgs.length <= 0) {
+//            carousel_img.setVisibility(View.GONE);
+//            dismissImgProgress();
+//            return;
+//        }
+//        final List<SlidesEntry> aList = new ArrayList<>();
+//        int size = entry.imgs.length;
+//        for (int i = 0; i < size; i++) {
+//            SlidesEntry sEntry = new SlidesEntry();
+//            sEntry.img = entry.imgs[i];
+//            aList.add(sEntry);
+//        }
+//        cAdapter = new CarouselAdapter(getActivity(), aList);
+//        cAdapter.setWidth(DeviceInfo.getDeviceWidth(getActivity()));
+//        carousel_img.setOnViewSwitchListener(viewSwitchListener);
+//        cAdapter.setImageLoaderListener(imageLoaderListener);
+//        carousel_img.setAdapter(cAdapter, 0);
+//        carousel_img.setFlowIndicator(carousel_point);
+        if (entry == null || entry.imgs == null || entry.imgs.length < 1) return;
+        for (String url : entry.imgs) {
+            addSliderUrl(url);
         }
-        final List<SlidesEntry> aList = new ArrayList<>();
-        int size = entry.imgs.length;
-        for (int i = 0; i < size; i++) {
-            SlidesEntry sEntry = new SlidesEntry();
-            sEntry.img = entry.imgs[i];
-            aList.add(sEntry);
-        }
-        cAdapter = new CarouselAdapter(getActivity(), aList);
-        cAdapter.setWidth(DeviceInfo.getDeviceWidth(getActivity()));
-        carousel_img.setOnViewSwitchListener(viewSwitchListener);
-        cAdapter.setImageLoaderListener(imageLoaderListener);
-        carousel_img.setAdapter(cAdapter, 0);
-        carousel_img.setFlowIndicator(carousel_point);
+        slider.setPresetTransformer(SliderLayout.Transformer.Accordion);
+        slider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
+        slider.setCustomAnimation(new DescriptionAnimation());
+        slider.setDuration(4000);
+
+    }
+
+    private void addSliderUrl(String url) {
+        DefaultSliderView textSliderView = new DefaultSliderView(getActivity());
+        // initialize a SliderLayout
+        url = url+"?imageView2/2/"+DeviceInfo.getDeviceWidth(getActivity());
+        textSliderView
+                .description("")
+                .image(url)
+                .setScaleType(BaseSliderView.ScaleType.CenterCrop);
+        //add your extra information
+//        textSliderView.bundle(new Bundle());
+//        textSliderView.getBundle()
+//                .putString("extra", name);
+        slider.addSlider(textSliderView);
+    }
+
+    @Override
+    public void onStop() {
+        slider.stopAutoCycle();
+        super.onStop();
     }
 
     View.OnClickListener onClick = new View.OnClickListener() {
@@ -299,7 +343,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
         alert.show();
         alert.setCancelable(false);
         alert.getWindow().setContentView(R.layout.alert_dialog);
-        alert.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        alert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         TextView tv = (TextView) alert.getWindow().findViewById(R.id.content_tv);
         tv.setText(content);
         alert.getWindow().findViewById(R.id.ok_btn)
@@ -317,6 +361,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         mHandler.removeCallbacksAndMessages(null);
+        ButterKnife.unbind(this);
     }
 
     /**
@@ -331,56 +376,56 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
     private CarouselAdapter.ImageLoaderListener imageLoaderListener = new CarouselAdapter.ImageLoaderListener() {
         @Override
         public void loadFinish() {
-            dismissImgProgress();
+//            dismissImgProgress();
         }
 
         @Override
         public void loadStart() {
-            popImgProgress();
+//            popImgProgress();
         }
     };
 
-    private ViewFlow.ViewSwitchListener viewSwitchListener = new ViewFlow.ViewSwitchListener() {
-        @Override
-        public void onSwitched(View view, int position) {
-            if (cAdapter != null)
-                cAdapter.setCurVisibleIndex(position);
-            ViewFlow viewFlow = (ViewFlow) view.getParent();
-            View view1 = viewFlow.getChildAt(position);
-            if (view1 == null) return;
-            View img = view1.findViewById(R.id.imgView);
-            if (img == null) return;
-            if (img.getTag() == null) {
-                popImgProgress();
-            } else {
-                if (img.getTag() instanceof String) {
-                    String s = (String) img.getTag();
-                }
-                dismissImgProgress();
-            }
-        }
-    };
+//    private ViewFlow.ViewSwitchListener viewSwitchListener = new ViewFlow.ViewSwitchListener() {
+//        @Override
+//        public void onSwitched(View view, int position) {
+//            if (cAdapter != null)
+//                cAdapter.setCurVisibleIndex(position);
+//            ViewFlow viewFlow = (ViewFlow) view.getParent();
+//            View view1 = viewFlow.getChildAt(position);
+//            if (view1 == null) return;
+//            View img = view1.findViewById(R.id.imgView);
+//            if (img == null) return;
+//            if (img.getTag() == null) {
+//                popImgProgress();
+//            } else {
+//                if (img.getTag() instanceof String) {
+//                    String s = (String) img.getTag();
+//                }
+//                dismissImgProgress();
+//            }
+//        }
+//    };
 
-    private void dismissImgProgress() {
-        if (imgProgress == null) return;
-        if (imgProgress.getVisibility() == View.VISIBLE)
-            imgProgress.setVisibility(View.GONE);
-    }
-
-    private void popImgProgress() {
-        if (imgProgress == null) return;
-        if (imgProgress.getVisibility() == View.GONE)
-            imgProgress.setVisibility(View.VISIBLE);
-    }
+//    private void dismissImgProgress() {
+//        if (imgProgress == null) return;
+//        if (imgProgress.getVisibility() == View.VISIBLE)
+//            imgProgress.setVisibility(View.GONE);
+//    }
+//
+//    private void popImgProgress() {
+//        if (imgProgress == null) return;
+//        if (imgProgress.getVisibility() == View.GONE)
+//            imgProgress.setVisibility(View.VISIBLE);
+//    }
 
     /**
      * 轮播的图片
      */
-    @Bind(R.id.carousel_img)
-    ViewFlow carousel_img;
-    @Bind(R.id.carousel_point)
-    CircleFlowIndicator carousel_point;
-    CarouselAdapter cAdapter;
+//    @Bind(R.id.carousel_img)
+//    ViewFlow carousel_img;
+//    @Bind(R.id.carousel_point)
+//    CircleFlowIndicator carousel_point;
+//    CarouselAdapter cAdapter;
     RecommendEntry entry;
     @Bind(R.id.pView)
     FrameLayout pView;
@@ -406,7 +451,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
     ImageView contentImgIv;//产品图片
     @Bind(R.id.share_iv)
     ImageView shareIv;
-    @Bind(R.id.imgProgress)
-    View imgProgress;
+//    @Bind(R.id.imgProgress)
+//    View imgProgress;
 
 }

@@ -8,11 +8,16 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.BinaryHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.MySSLSocketFactory;
 import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
 
 import org.apache.http.conn.ssl.AllowAllHostnameVerifier;
 import org.apache.http.conn.ssl.SSLSocketFactory;
+
+import java.security.NoSuchAlgorithmException;
+
+import javax.net.ssl.SSLContext;
 
 public class HttpRequestUtil {
 
@@ -130,13 +135,22 @@ public class HttpRequestUtil {
      * @return
      */
     public static AsyncHttpClient getHttpClient(Context mContext) {
-        AsyncHttpClient hClient = new AsyncHttpClient();
+        if (hClient != null){
+            return hClient;
+        }
+        hClient = new AsyncHttpClient();
         hClient.addHeader("Accept-Encoding", "gzip");
         hClient.addHeader("User-Agent", "youcai/" + DeviceInfo.getVersion(mContext)
                 + " android/" + DeviceInfo.getReleseVersion() + " device/"
                 + DeviceInfo.getModelName());
-        SSLSocketFactory.getSocketFactory().setHostnameVerifier(
-                new AllowAllHostnameVerifier());
+        MySSLSocketFactory socketFactory = null;
+        try {
+            socketFactory = new MySSLSocketFactory(MySSLSocketFactory.getKeystore());
+        } catch (Exception e) {
+            return hClient;
+        }
+        socketFactory.setHostnameVerifier(MySSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+        hClient.setSSLSocketFactory(socketFactory);
         hClient.setTimeout(10000);
         PersistentCookieStore myCookieStore = new PersistentCookieStore(
                 mContext);
@@ -153,8 +167,8 @@ public class HttpRequestUtil {
         mContext = null;
     }
 
-    public static void cancelHttpRequest(){
-        if(hClient!=null){
+    public static void cancelHttpRequest() {
+        if (hClient != null) {
             hClient.cancelAllRequests(true);
         }
     }

@@ -41,13 +41,13 @@ import com.shequcun.farm.model.PhotoModel;
 import com.shequcun.farm.ui.adapter.ChooseDishesAdapter;
 import com.shequcun.farm.util.*;
 
-import org.apache.http.Header;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import cz.msebera.android.httpclient.Header;
 
 /**
  * 选择菜品页

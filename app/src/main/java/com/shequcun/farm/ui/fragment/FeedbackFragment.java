@@ -20,11 +20,11 @@ import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.ToastHelper;
 import com.shequcun.farm.util.Utils;
 
-import org.apache.http.Header;
 import org.json.JSONObject;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import cz.msebera.android.httpclient.Header;
 
 /**
  * Created by apple on 15/8/22.

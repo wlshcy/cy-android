@@ -16,6 +16,13 @@ import com.common.widget.ExpandableHeightGridView;
 import com.common.widget.PullToRefreshBase;
 import com.common.widget.PullToRefreshScrollView;
 import com.common.widget.ViewFlow;
+import com.daimajia.slider.library.Animations.DescriptionAnimation;
+import com.daimajia.slider.library.Indicators.PagerIndicator;
+import com.daimajia.slider.library.SliderLayout;
+import com.daimajia.slider.library.SliderTypes.BaseSliderView;
+import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
+import com.daimajia.slider.library.SliderTypes.TextSliderView;
+import com.daimajia.slider.library.Transformers.BaseTransformer;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.shequcun.farm.R;
@@ -37,25 +44,32 @@ import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.ToastHelper;
 
-import org.apache.http.Header;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnItemClick;
+import cz.msebera.android.httpclient.Header;
 
 /**
  * 有菜首页
  * Created by mac on 15/9/6.
  */
-public class HomeFragment extends BaseFragment {
+public class HomeFragment extends BaseFragment implements BaseSliderView.OnSliderClickListener {
+    @Bind(R.id.slider)
+    SliderLayout slider;
+    @Bind(R.id.custom_indicator2)
+    PagerIndicator customIndicator2;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.home_ly, container, false);
+        View view = inflater.inflate(R.layout.home_ly, container, false);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
     @Override
@@ -103,6 +117,7 @@ public class HomeFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         doUnRegisterReceiver();
+        ButterKnife.unbind(this);
     }
 
     void doRegisterRefreshBrodcast() {
@@ -135,19 +150,92 @@ public class HomeFragment extends BaseFragment {
     }
 
     void buildCarouselAdapter(List<SlidesEntry> aList) {
-        if (aList == null || aList.size() <= 0) {
-            aList = new ArrayList<SlidesEntry>();
-            SlidesEntry s = new SlidesEntry();
-            aList.add(s);
-            dismissImgProgress();
+//        if (aList == null || aList.size() <= 0) {
+//            aList = new ArrayList<SlidesEntry>();
+//            SlidesEntry s = new SlidesEntry();
+//            aList.add(s);
+//            dismissImgProgress();
+//        }
+//        cAdapter = new CarouselAdapter(getActivity(), aList);
+//        cAdapter.buildOnClick(onClick);
+//        carousel_img.setAdapter(cAdapter, 0);
+//        carousel_img.setFlowIndicator(carousel_point);
+//        carousel_img.setOnViewSwitchListener(viewSwitchListener);
+//        cAdapter.setImageLoaderListener(imageLoaderListener);
+//        cAdapter.setWidth(DeviceInfo.getDeviceWidth(getActivity()));
+        if (aList == null || aList.isEmpty()) {
+            addSliderUrl(R.drawable.icon_combo_default);
+            slider.setIndicatorVisibility(PagerIndicator.IndicatorVisibility.Invisible);
+            slider.setPagerTransformer(false, new BaseTransformer() {
+                @Override
+                protected void onTransform(View view, float position) {
+                    //空是为了防止loop
+                }
+            });
+        } else if (aList.size() == 1) {
+            addSliderUrl(aList.get(0));
+            slider.setIndicatorVisibility(PagerIndicator.IndicatorVisibility.Invisible);
+            slider.setPagerTransformer(false, new BaseTransformer() {
+                @Override
+                protected void onTransform(View view, float position) {
+                    //空是为了防止loop
+                }
+            });
+        } else {
+            for (SlidesEntry se : aList) {
+                addSliderUrl(se);
+            }
+            slider.setPresetTransformer(SliderLayout.Transformer.Accordion);
+            slider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
+            slider.setCustomAnimation(new DescriptionAnimation());
+            slider.setDuration(4000);
         }
-        cAdapter = new CarouselAdapter(getActivity(), aList);
-        cAdapter.buildOnClick(onClick);
-        carousel_img.setAdapter(cAdapter, 0);
-        carousel_img.setFlowIndicator(carousel_point);
-        carousel_img.setOnViewSwitchListener(viewSwitchListener);
-        cAdapter.setImageLoaderListener(imageLoaderListener);
-        cAdapter.setWidth(DeviceInfo.getDeviceWidth(getActivity()));
+    }
+
+    private void addSliderUrl(SlidesEntry entry) {
+        DefaultSliderView textSliderView = new DefaultSliderView(getActivity());
+        // initialize a SliderLayout
+        String url = entry.img+"?imageView2/2/"+DeviceInfo.getDeviceWidth(getActivity());
+        textSliderView
+                .description("")
+                .image(url)
+                .setScaleType(BaseSliderView.ScaleType.CenterCrop)
+                .setOnSliderClickListener(this)
+                .setParamObj(entry);
+        slider.addSlider(textSliderView);
+    }
+
+    private void addSliderUrl(int resId) {
+        DefaultSliderView textSliderView = new DefaultSliderView(getActivity());
+        // initialize a SliderLayout
+        textSliderView
+                .description("")
+                .image(resId)
+                .setScaleType(BaseSliderView.ScaleType.Fit);
+        slider.addSlider(textSliderView);
+    }
+
+    @Override
+    public void onSliderClick(BaseSliderView slider) {
+        if (slider.getParamObj() == null) return;
+        SlidesEntry entry = (SlidesEntry) slider.getParamObj();
+        gotoAdFragment(entry);
+    }
+
+    private void gotoAdFragment(SlidesEntry item) {
+        if (TextUtils.isEmpty(item.url)) {
+            LinkEntry link = item.link;
+            if (link == null || link.type == 0)
+                return;
+            if (link.type == 1) {//1.套餐详情,
+                requestComboDetail(link.id);
+            } else if (link.type == 2) {//2.菜品详情
+                requestSingleDishDetail(link.id);
+            }
+            return;
+        }
+
+        gotoFragmentByAdd(buildBundle(item.url), R.id.mainpage_ly, new AdFragment(), AdFragment.class.getName());
     }
 
     private View.OnClickListener onClick = new View.OnClickListener() {
@@ -409,55 +497,55 @@ public class HomeFragment extends BaseFragment {
     private CarouselAdapter.ImageLoaderListener imageLoaderListener = new CarouselAdapter.ImageLoaderListener() {
         @Override
         public void loadFinish() {
-            dismissImgProgress();
+//            dismissImgProgress();
         }
 
         @Override
         public void loadStart() {
-            popImgProgress();
+//            popImgProgress();
         }
     };
 
-    private ViewFlow.ViewSwitchListener viewSwitchListener = new ViewFlow.ViewSwitchListener() {
-        @Override
-        public void onSwitched(View view, int position) {
-            if (cAdapter != null)
-                cAdapter.setCurVisibleIndex(position);
-            ViewFlow viewFlow = (ViewFlow) view.getParent();
-            View view1 = viewFlow.getChildAt(position);
-            if (view1 == null) return;
-            View img = view1.findViewById(R.id.imgView);
-            if (img == null) return;
-            if (img.getTag() == null) {
-                popImgProgress();
-            } else {
-                if (img.getTag() instanceof String) {
-                    String s = (String) img.getTag();
-                }
-                dismissImgProgress();
-            }
-        }
-    };
+//    private ViewFlow.ViewSwitchListener viewSwitchListener = new ViewFlow.ViewSwitchListener() {
+//        @Override
+//        public void onSwitched(View view, int position) {
+//            if (cAdapter != null)
+//                cAdapter.setCurVisibleIndex(position);
+//            ViewFlow viewFlow = (ViewFlow) view.getParent();
+//            View view1 = viewFlow.getChildAt(position);
+//            if (view1 == null) return;
+//            View img = view1.findViewById(R.id.imgView);
+//            if (img == null) return;
+//            if (img.getTag() == null) {
+//                popImgProgress();
+//            } else {
+//                if (img.getTag() instanceof String) {
+//                    String s = (String) img.getTag();
+//                }
+//                dismissImgProgress();
+//            }
+//        }
+//    };
 
-    private void dismissImgProgress() {
-        if (imgProgress == null) return;
-        if (imgProgress.getVisibility() == View.VISIBLE)
-            imgProgress.setVisibility(View.GONE);
-    }
-
-    private void popImgProgress() {
-        if (imgProgress == null) return;
-        if (imgProgress.getVisibility() == View.GONE)
-            imgProgress.setVisibility(View.VISIBLE);
-    }
+//    private void dismissImgProgress() {
+//        if (imgProgress == null) return;
+//        if (imgProgress.getVisibility() == View.VISIBLE)
+//            imgProgress.setVisibility(View.GONE);
+//    }
+//
+//    private void popImgProgress() {
+//        if (imgProgress == null) return;
+//        if (imgProgress.getVisibility() == View.GONE)
+//            imgProgress.setVisibility(View.VISIBLE);
+//    }
 
     /**
      * 轮播的图片
      */
-    @Bind(R.id.carousel_img)
-    ViewFlow carousel_img;
-    @Bind(R.id.carousel_point)
-    CircleFlowIndicator carousel_point;
+//    @Bind(R.id.carousel_img)
+//    ViewFlow carousel_img;
+//    @Bind(R.id.carousel_point)
+//    CircleFlowIndicator carousel_point;
     @Bind(R.id.pView)
     PullToRefreshScrollView pView;
     @Bind(R.id.gv)
@@ -466,11 +554,11 @@ public class HomeFragment extends BaseFragment {
     View no_combo_iv;
     @Bind(R.id.has_combo_iv)
     View has_combo_iv;
-    @Bind(R.id.imgProgress)
-    View imgProgress;
+//    @Bind(R.id.imgProgress)
+//    View imgProgress;
 
     ComboEntry comboEntry;
-    CarouselAdapter cAdapter;
+    //    CarouselAdapter cAdapter;
     boolean mIsBind = false;
     private FarmSpecialtyAdapter adapter;
 }

@@ -32,7 +32,6 @@ import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.ToastHelper;
 import com.shequcun.farm.util.Utils;
 
-import org.apache.http.Header;
 
 import java.util.List;
 
@@ -41,6 +40,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnItemClick;
 import butterknife.OnItemSelected;
+import cz.msebera.android.httpclient.Header;
 
 /**
  * 菜品订单
