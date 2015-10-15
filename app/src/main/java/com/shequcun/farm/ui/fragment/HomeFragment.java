@@ -83,7 +83,8 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
     @Override
     protected void setWidgetLsn() {
         doRegisterRefreshBrodcast();
-        pView.setMode(PullToRefreshBase.Mode.PULL_FROM_END);
+//        pView.setMode(PullToRefreshBase.Mode.PULL_FROM_END);
+        pView.setMode(PullToRefreshBase.Mode.BOTH);
         pView.setOnRefreshListener(onRefrshLsn);
         buildGridViewAdapter();
         requestHome(1);
@@ -278,6 +279,7 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
     PullToRefreshScrollView.OnRefreshListener2 onRefrshLsn = new PullToRefreshBase.OnRefreshListener2() {
         @Override
         public void onPullDownToRefresh(PullToRefreshBase refreshView) {
+            requestHome(2);
         }
 
         @Override
@@ -312,8 +314,19 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
 
             @Override
             public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
-                ToastHelper.showShort(getActivity(), "请求失败.错误码" + sCode);
                 buildCarouselAdapter(null);
+                if (sCode == 0) {
+                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
+                    return;
+                }
+                ToastHelper.showShort(getActivity(),"请求失败.错误码"+sCode);
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                if (pView != null)
+                    pView.onRefreshComplete();
             }
         });
     }

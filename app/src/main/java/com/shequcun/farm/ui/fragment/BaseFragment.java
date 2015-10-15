@@ -137,7 +137,7 @@ public abstract class BaseFragment extends Fragment {
         fragment.setArguments(bundle);
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.setCustomAnimations(R.anim.slide_in_from_bottom, R.anim.slide_out_to_top, R.anim.slide_out_to_bottom, R.anim.slide_out_to_bottom);
-//        ft.replace(id, fragment);
+        // ft.setCustomAnimations(R.anim.slide_and_changebounds, R.anim.slide_and_changebounds_sequential, R.anim.slide_and_changebounds_sequential_with_interpolators, R.anim.slide_and_changebounds_sequential_with_interpolators);
         ft.add(id, fragment);
         ft.addToBackStack(tag);
 //        ft.commit();

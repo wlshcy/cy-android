@@ -74,4 +74,6 @@
     <dimen name="px680">340dp</dimen>
     <dimen name="px848">424dp</dimen>
     <dimen name="px562">281dp</dimen>
+
+    <integer name="anim_duration_long">500</integer>
 </resources>
