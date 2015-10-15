@@ -28,10 +28,10 @@ import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.ToastHelper;
 import com.umeng.analytics.MobclickAgent;
 
-import org.apache.http.Header;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import cz.msebera.android.httpclient.Header;
 
 /**
  * farm home
@@ -122,6 +122,7 @@ public class SqcFarmActivity extends BaseFragmentActivity {
         params.add("apptype", "5");
         params.add("platform", "2");
         HttpRequestUtil.getHttpClient(getApplication()).get(LocalParams.getBaseUrl() + "app/version", params, new AsyncHttpResponseHandler() {
+            @Override
             public void onSuccess(int sCode, Header[] h, byte[] data) {
                 if (data != null && data.length > 0) {
                     VersionEntry vEntry = JsonUtilsParser.fromJson(new String(data), VersionEntry.class);
@@ -142,6 +143,7 @@ public class SqcFarmActivity extends BaseFragmentActivity {
             public void onFailure(int sCode, Header[] h, byte[] data, Throwable e) {
 
             }
+
         });
     }
 

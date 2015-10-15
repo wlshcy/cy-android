@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
@@ -25,12 +24,11 @@ import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.ToastHelper;
 import com.shequcun.farm.util.Utils;
 
-import org.apache.http.Header;
-
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnItemClick;
+import cz.msebera.android.httpclient.Header;
 
 /**
  * 购买订单

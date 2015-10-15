@@ -7,17 +7,14 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.shequcun.farm.R;
-import com.shequcun.farm.data.ComboEntry;
 import com.shequcun.farm.data.DelayEntry;
 import com.shequcun.farm.data.DelayItemEntry;
-import com.shequcun.farm.data.MyComboEntry;
 import com.shequcun.farm.data.UserLoginEntry;
 import com.shequcun.farm.datacenter.CacheManager;
 import com.shequcun.farm.datacenter.PersistanceManager;
@@ -28,13 +25,9 @@ import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.ToastHelper;
 
-import org.apache.http.Header;
-
-import java.util.List;
-
 import butterknife.Bind;
 import butterknife.OnClick;
-import butterknife.OnItemClick;
+import cz.msebera.android.httpclient.Header;
 
 /**
  * Created by cong on 15/9/7.

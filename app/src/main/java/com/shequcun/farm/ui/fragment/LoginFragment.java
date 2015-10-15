@@ -29,10 +29,10 @@ import com.shequcun.farm.util.ToastHelper;
 import com.shequcun.farm.util.Utils;
 import com.umeng.analytics.MobclickAgent;
 
-import org.apache.http.Header;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import cz.msebera.android.httpclient.Header;
 
 /**
  * 登录页面

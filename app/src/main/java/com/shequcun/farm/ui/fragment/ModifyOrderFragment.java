@@ -23,8 +23,6 @@ import com.shequcun.farm.data.CouponShareEntry;
 import com.shequcun.farm.data.ModifyOrderParams;
 import com.shequcun.farm.data.OtherInfo;
 import com.shequcun.farm.data.PayParams;
-import com.shequcun.farm.data.UserLoginEntry;
-import com.shequcun.farm.datacenter.CacheManager;
 import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.platform.ShareContent;
@@ -34,20 +32,15 @@ import com.shequcun.farm.util.AvoidDoubleClickListener;
 import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
-//import com.shequcun.farm.util.ShareUtil;
 import com.shequcun.farm.util.ToastHelper;
-//import com.umeng.socialize.bean.SHARE_MEDIA;
-//import com.umeng.socialize.bean.SocializeEntity;
-//import com.umeng.socialize.bean.StatusCode;
-//import com.umeng.socialize.controller.listener.SocializeListeners;
 
-import org.apache.http.Header;
 import org.json.JSONObject;
 
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import cz.msebera.android.httpclient.Header;
 
 /**
  * 修改订单
