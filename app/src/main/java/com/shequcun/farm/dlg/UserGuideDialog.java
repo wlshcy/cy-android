@@ -5,9 +5,11 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.view.DragEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.Indicators.PagerIndicator;
@@ -15,9 +17,11 @@ import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
 import com.daimajia.slider.library.Transformers.BaseTransformer;
+import com.daimajia.slider.library.Tricks.ViewPagerEx;
 import com.shequcun.farm.R;
 import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.ui.adapter.ViewPagerAdapter;
+import com.shequcun.farm.util.ToastHelper;
 
 import java.util.ArrayList;
 
@@ -48,6 +52,29 @@ public class UserGuideDialog extends Dialog implements BaseSliderView.OnSliderCl
             @Override
             protected void onTransform(View view, float position) {
                 //空是为了防止loop
+                ToastHelper.show(getContext(), position + "", Toast.LENGTH_LONG);
+            }
+        });
+        slider.setOnDragListener(new View.OnDragListener() {
+            @Override
+            public boolean onDrag(View v, DragEvent event) {
+                return false;
+            }
+        });
+        slider.addOnPageChangeListener(new ViewPagerEx.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+//                ToastHelper.show(getContext(),"onPageScrolled"+position+"",Toast.LENGTH_LONG);
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+//                ToastHelper.show(getContext(),"onPageSelected"+position+"",Toast.LENGTH_LONG);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+//                ToastHelper.show(getContext(),"onPageScrollStateChanged"+state+"",Toast.LENGTH_LONG);
             }
         });
         slider.setPresetTransformer(SliderLayout.Transformer.Accordion);
@@ -63,15 +90,17 @@ public class UserGuideDialog extends Dialog implements BaseSliderView.OnSliderCl
                 .image(resId)
                 .setScaleType(BaseSliderView.ScaleType.Fit)
                 .setOnSliderClickListener(this);
-        if (resId == R.drawable.guide3)
-            textSliderView.setParamObj(new Object());
+//        if (resId == R.drawable.guide3)
+//            textSliderView.setParamObj(null);
         slider.addSlider(textSliderView);
     }
 
     @Override
     public void onSliderClick(BaseSliderView slider) {
-        if (slider.getParamObj() != null)
-            dismiss();
+//        if (slider.getParamObj() != null) {
+            if (dismissDialog != null) dismissDialog.dismiss();
+//            dismiss();
+//        }
     }
 
 //    private void initViewPager() {
@@ -121,6 +150,16 @@ public class UserGuideDialog extends Dialog implements BaseSliderView.OnSliderCl
             }
         });
     }
+
+    public interface DismissDialog {
+        void dismiss();
+    }
+
+    public void setDismissDialog(DismissDialog dismissDialog) {
+        this.dismissDialog = dismissDialog;
+    }
+
+    private DismissDialog dismissDialog;
 
     private int[] pics = {R.drawable.guide1, R.drawable.guide2,
             R.drawable.guide3};

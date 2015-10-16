@@ -3,12 +3,15 @@ package com.shequcun.farm.ui;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
+import android.view.View;
+import android.view.ViewStub;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -18,16 +21,15 @@ import com.shequcun.farm.BaseFragmentActivity;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.VersionEntry;
 import com.shequcun.farm.datacenter.PersistanceManager;
-import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.dlg.UserGuideDialog;
 import com.shequcun.farm.ui.adapter.HomeViewPagerAdapter;
+import com.shequcun.farm.ui.fragment.ComboFragment;
+import com.shequcun.farm.util.AvoidDoubleClickListener;
 import com.shequcun.farm.util.DeviceInfo;
 import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.ToastHelper;
-import com.umeng.analytics.MobclickAgent;
-
 
 import org.apache.http.Header;
 
@@ -39,13 +41,14 @@ import butterknife.ButterKnife;
  * Created by apple on 15/8/3.
  */
 public class SqcFarmActivity extends BaseFragmentActivity {
+    @Bind(R.id.tip_choose_combo_vb)
+    ViewStub tipChooseComboVb;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (!PersistanceManager.getOnce(this)) {
-            new UserGuideDialog(this).show();
-        }
+        ButterKnife.bind(this);
         initWidget();
         doAuthInit();
         checkVersion();
@@ -55,6 +58,36 @@ public class SqcFarmActivity extends BaseFragmentActivity {
         ButterKnife.bind(this);
         buildAdapter();
         setWidgetLsn();
+        initTipChooseCombo();
+    }
+
+    private void initTipChooseCombo() {
+        if (!PersistanceManager.getOnce(this)) {
+            tipChooseComboVb.inflate();
+            View view = findViewById(R.id.container_ll);
+            View view1 = findViewById(R.id.combo_iv);
+            view.setOnClickListener(new AvoidDoubleClickListener() {
+                @Override
+                public void onViewClick(View v) {
+                }
+            });
+            view1.setOnClickListener(new AvoidDoubleClickListener() {
+                @Override
+                public void onViewClick(View v) {
+                    tipChooseComboVb.setVisibility(View.INVISIBLE);
+                    gotoComboFragment(R.id.mainpage_ly, new ComboFragment(), ComboFragment.class.getName());
+                    PersistanceManager.saveOnce(SqcFarmActivity.this, true);
+                }
+            });
+        }
+    }
+
+    private void gotoComboFragment(int id, Fragment fragment, String tag){
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.add(id, fragment);
+        transaction.addToBackStack(tag);
+        transaction.commitAllowingStateLoss();
     }
 
     void setWidgetLsn() {

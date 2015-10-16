@@ -64,6 +64,10 @@ public class ComboFragment extends BaseFragment {
 
     @OnItemClick(R.id.mListView)
     void OnItemClick(int position) {
+        if (!isLogin()) {
+            gotoFragmentByAdd(R.id.mainpage_ly, new LoginFragment(), LoginFragment.class.getName());
+            return;
+        }
         if (adapter == null)
             return;
         ComboEntry entry = adapter.getItem(position);
@@ -78,6 +82,10 @@ public class ComboFragment extends BaseFragment {
             gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new ComboSecondFragment(), ComboSecondFragment.class.getName());
 //             gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new ComboSecondFragmentEx(), ComboSecondFragmentEx.class.getName());
         }
+    }
+
+    boolean isLogin() {
+        return new CacheManager(getActivity()).getUserLoginEntry() != null;
     }
 
     @OnClick(R.id.back)

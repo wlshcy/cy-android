@@ -60,4 +60,10 @@
         </RadioGroup>
     </LinearLayout>
 
+    <ViewStub
+        android:id="@+id/tip_choose_combo_vb"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout="@layout/tip_choose_combo_viewstub"/>
+
 </FrameLayout>

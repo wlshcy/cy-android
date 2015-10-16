@@ -10,18 +10,16 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 
-import com.common.widget.CircleFlowIndicator;
 import com.common.widget.ExpandableHeightGridView;
 import com.common.widget.PullToRefreshBase;
 import com.common.widget.PullToRefreshScrollView;
-import com.common.widget.ViewFlow;
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.Indicators.PagerIndicator;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
-import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Transformers.BaseTransformer;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -34,9 +32,11 @@ import com.shequcun.farm.data.RecommendEntry;
 import com.shequcun.farm.data.RecommentListEntry;
 import com.shequcun.farm.data.SlidesEntry;
 import com.shequcun.farm.datacenter.CacheManager;
+import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.ui.adapter.CarouselAdapter;
 import com.shequcun.farm.ui.adapter.FarmSpecialtyAdapter;
+import com.shequcun.farm.util.AvoidDoubleClickListener;
 import com.shequcun.farm.util.DeviceInfo;
 import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.IntentUtil;
@@ -44,10 +44,8 @@ import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.ToastHelper;
 
-
 import org.apache.http.Header;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -79,6 +77,7 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
     }
 
     protected void initWidget(View v) {
+
     }
 
     @Override
@@ -92,10 +91,10 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
 
     @OnClick({R.id.no_combo_iv, R.id.has_combo_iv})
     void doClick() {
-        if (!isLogin()) {
-            gotoFragmentByAdd(R.id.mainpage_ly, new LoginFragment(), LoginFragment.class.getName());
-            return;
-        }
+        gotoComboFragment();
+    }
+
+    private void gotoComboFragment(){
         gotoFragmentByAdd(R.id.mainpage_ly, new ComboFragment(), ComboFragment.class.getName());
     }
 
@@ -196,7 +195,7 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
     private void addSliderUrl(SlidesEntry entry) {
         DefaultSliderView textSliderView = new DefaultSliderView(getActivity());
         // initialize a SliderLayout
-        String url = entry.img+"?imageView2/2/"+DeviceInfo.getDeviceWidth(getActivity());
+        String url = entry.img + "?imageView2/2/" + DeviceInfo.getDeviceWidth(getActivity());
         textSliderView
                 .description("")
                 .image(url)
