@@ -70,12 +70,12 @@ public class ComboFragment extends BaseFragment {
         if (entry == null)
             return;
         if (buildIsMyComboClick(position)) {
-            gotoFragmentByAnimation(buildBundle(entry), R.id.mainpage_ly, new ChooseDishesFragment(), ChooseDishesFragment.class.getName(),R.anim.scale_left_bottom_in,R.anim.scale_left_bottom_out);
+            gotoFragmentByAnimation(buildBundle(entry), R.id.mainpage_ly, new ChooseDishesFragment(), ChooseDishesFragment.class.getName(), R.anim.scale_left_bottom_in, R.anim.scale_left_bottom_out);
         } else {
 //            ComboSecondDialog dialog = new ComboSecondDialog(getActivity());
 //            dialog.addViewsToList(entry);
 //            dialog.show();
-            gotoFragmentByAnimation(buildBundle(entry), R.id.mainpage_ly, new ComboSecondFragment(), ComboSecondFragment.class.getName(),R.anim.puff_in,R.anim.puff_out);
+            gotoFragmentByAnimation(buildBundle(entry), R.id.mainpage_ly, new ComboSecondFragment(), ComboSecondFragment.class.getName(), R.anim.puff_in, R.anim.puff_out);
 //             gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new ComboSecondFragmentEx(), ComboSecondFragmentEx.class.getName());
         }
     }
@@ -106,18 +106,18 @@ public class ComboFragment extends BaseFragment {
         final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
         HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "cai/combo", new AsyncHttpResponseHandler() {
 
-//            @Override
-//            public void onStart() {
-//                super.onStart();
-//                if (pDlg != null)
-//                    pDlg.show();
-//            }
+            @Override
+            public void onStart() {
+                super.onStart();
+                if (pDlg != null)
+                    pDlg.show();
+            }
 
             @Override
             public void onFinish() {
                 super.onFinish();
-//                if (pDlg != null)
-//                    pDlg.dismiss();
+                if (pDlg != null)
+                    pDlg.dismiss();
                 if (pView != null)
                     pView.onRefreshComplete();
             }

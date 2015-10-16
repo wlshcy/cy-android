@@ -155,11 +155,14 @@ public abstract class BaseFragment extends Fragment {
     public void gotoFragmentByAnimation(Bundle bundle, int id, Fragment fragment, String tag, int enterAni, int exitAni) {
         if (bundle != null)
             fragment.setArguments(bundle);
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.setCustomAnimations(enterAni, exitAni, enterAni, exitAni);
-        ft.add(id, fragment);
-        ft.addToBackStack(tag);
-        ft.commitAllowingStateLoss();
+        FragmentManager fMgr = getFragmentManager();
+        if (fMgr != null) {
+            FragmentTransaction ft = fMgr.beginTransaction();
+            ft.setCustomAnimations(enterAni, exitAni, enterAni, exitAni);
+            ft.add(id, fragment);
+            ft.addToBackStack(tag);
+            ft.commitAllowingStateLoss();
+        }
     }
 
 
