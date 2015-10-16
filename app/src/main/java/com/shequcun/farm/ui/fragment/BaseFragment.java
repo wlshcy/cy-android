@@ -153,7 +153,8 @@ public abstract class BaseFragment extends Fragment {
      * @param exitAni  退出动画
      */
     public void gotoFragmentByAnimation(Bundle bundle, int id, Fragment fragment, String tag, int enterAni, int exitAni) {
-        fragment.setArguments(bundle);
+        if (bundle != null)
+            fragment.setArguments(bundle);
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.setCustomAnimations(enterAni, exitAni, enterAni, exitAni);
         ft.add(id, fragment);

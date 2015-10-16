@@ -11,17 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.common.widget.CircleFlowIndicator;
 import com.common.widget.ExpandableHeightGridView;
 import com.common.widget.PullToRefreshBase;
 import com.common.widget.PullToRefreshScrollView;
-import com.common.widget.ViewFlow;
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.Indicators.PagerIndicator;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
-import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Transformers.BaseTransformer;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -47,7 +44,6 @@ import com.shequcun.farm.util.ToastHelper;
 
 import org.apache.http.Header;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -94,10 +90,10 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
     @OnClick({R.id.no_combo_iv, R.id.has_combo_iv})
     void doClick() {
         if (!isLogin()) {
-            gotoFragmentByAdd(R.id.mainpage_ly, new LoginFragment(), LoginFragment.class.getName());
+            gotoFragmentByAnimation(null, R.id.mainpage_ly, new LoginFragment(), LoginFragment.class.getName(), R.anim.scale_left_top_in, R.anim.scale_left_top_out);
             return;
         }
-        gotoFragmentByAdd(R.id.mainpage_ly, new ComboFragment(), ComboFragment.class.getName());
+        gotoFragmentByAnimation(null, R.id.mainpage_ly, new ComboFragment(), ComboFragment.class.getName(),R.anim.scale_left_top_in, R.anim.scale_left_top_out);
     }
 
     @OnItemClick(R.id.gv)
@@ -111,7 +107,8 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
             ToastHelper.showShort(getActivity(), R.string.spike_error_tip);
             return;
         }
-        gotoFragmentByAnimation(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailFragment(), FarmSpecialtyDetailFragment.class.getName(),R.anim.slide_in_from_bottom,R.anim.slide_out_to_bottom);
+        gotoFragmentByAnimation(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailFragment(), FarmSpecialtyDetailFragment.class.getName(), R.anim.slide_in_from_bottom, R.anim.slide_out_to_bottom);
+//        gotoFragmentByAnimation(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailFragment(), FarmSpecialtyDetailFragment.class.getName(),R.anim.rotate_in,R.anim.slide_out_to_bottom);
     }
 
 
@@ -197,7 +194,7 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
     private void addSliderUrl(SlidesEntry entry) {
         DefaultSliderView textSliderView = new DefaultSliderView(getActivity());
         // initialize a SliderLayout
-        String url = entry.img+"?imageView2/2/"+DeviceInfo.getDeviceWidth(getActivity());
+        String url = entry.img + "?imageView2/2/" + DeviceInfo.getDeviceWidth(getActivity());
         textSliderView
                 .description("")
                 .image(url)
@@ -320,7 +317,7 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
                     ToastHelper.showShort(getActivity(), R.string.network_error_tip);
                     return;
                 }
-                ToastHelper.showShort(getActivity(),"请求失败.错误码"+sCode);
+                ToastHelper.showShort(getActivity(), "请求失败.错误码" + sCode);
             }
 
             @Override
@@ -473,7 +470,7 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
                     ComboDetailEntry entry = JsonUtilsParser.fromJson(new String(data), ComboDetailEntry.class);
                     if (entry != null) {
                         if (TextUtils.isEmpty(entry.errmsg)) {
-                            gotoFragmentByAdd(buildBundle_(entry.combo), R.id.mainpage_ly, new ComboSecondFragment(), ComboSecondFragment.class.getName());
+                            gotoFragmentByAnimation(buildBundle_(entry.combo), R.id.mainpage_ly, new ComboSecondFragment(), ComboSecondFragment.class.getName(),R.anim.puff_in,R.anim.puff_out);
                             return;
                         }
                         ToastHelper.showShort(getActivity(), entry.errmsg);

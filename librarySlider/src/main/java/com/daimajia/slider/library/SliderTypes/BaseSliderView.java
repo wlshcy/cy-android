@@ -332,7 +332,7 @@ public abstract class BaseSliderView {
     }
 
     public interface OnSliderClickListener {
-        public void onSliderClick(BaseSliderView slider);
+        void onSliderClick(BaseSliderView slider);
     }
 
     /**
@@ -344,8 +344,8 @@ public abstract class BaseSliderView {
     }
 
     public interface ImageLoadListener{
-        public void onStart(BaseSliderView target);
-        public void onEnd(boolean result, BaseSliderView target);
+        void onStart(BaseSliderView target);
+        void onEnd(boolean result, BaseSliderView target);
     }
 
     /**

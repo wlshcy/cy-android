@@ -55,7 +55,7 @@ public class ComboSecondFragment extends BaseFragment {
     void OnItemClick(int pos) {
         if (entry != null) {
             entry.setPosition(pos);
-            gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new ChooseDishesFragment(), ChooseDishesFragment.class.getName());
+            gotoFragmentByAnimation(buildBundle(entry), R.id.mainpage_ly, new ChooseDishesFragment(), ChooseDishesFragment.class.getName(),R.anim.scale_left_bottom_in,R.anim.scale_left_bottom_out);
         }
     }
     void buildAdapter() {
