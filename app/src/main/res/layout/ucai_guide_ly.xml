@@ -1,12 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:id="@+id/guide_ly">
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/welcome_viewpager"
+    <!--<android.support.v4.view.ViewPager-->
+        <!--android:id="@+id/welcome_viewpager"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"></android.support.v4.view.ViewPager>-->
+
+    <com.daimajia.slider.library.SliderLayout
+        android:id="@+id/slider"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></android.support.v4.view.ViewPager>
+        android:layout_height="match_parent"
+        android:padding="0dp"
+        custom:auto_cycle="false"
+        custom:indicator_visibility="invisible"
+        custom:pager_animation="Accordion"
+        custom:pager_animation_span="1100" />
 
 </LinearLayout>

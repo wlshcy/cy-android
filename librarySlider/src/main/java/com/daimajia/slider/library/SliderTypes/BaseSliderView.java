@@ -238,7 +238,7 @@ public abstract class BaseSliderView {
 
             }
         };
-
+        targetImageView.setScaleType(ImageView.ScaleType.FIT_XY);
         if(mUrl!=null){
             ImageLoader.getInstance().displayImage(mUrl,targetImageView,imageLoadingListener);
         }else if(mFile != null){
@@ -248,61 +248,6 @@ public abstract class BaseSliderView {
         }else{
             return;
         }
-
-//        Picasso p = (mPicasso != null) ? mPicasso : Picasso.with(mContext);
-//        RequestCreator rq = null;
-//        if(mUrl!=null){
-//            rq = p.load(mUrl);
-//        }else if(mFile != null){
-//            rq = p.load(mFile);
-//        }else if(mRes != 0){
-//            rq = p.load(mRes);
-//        }else{
-//            return;
-//        }
-//
-//        if(rq == null){
-//            return;
-//        }
-//
-//        if(getEmpty() != 0){
-//            rq.placeholder(getEmpty());
-//        }
-//
-//        if(getError() != 0){
-//            rq.error(getError());
-//        }
-//
-//        switch (mScaleType){
-//            case Fit:
-//                rq.fit();
-//                break;
-//            case CenterCrop:
-//                rq.fit().centerCrop();
-//                break;
-//            case CenterInside:
-//                rq.fit().centerInside();
-//                break;
-//        }
-//
-//        rq.into(targetImageView,new Callback() {
-//            @Override
-//            public void onSuccess() {
-//                if(v.findViewById(R.id.loading_bar) != null){
-//                    v.findViewById(R.id.loading_bar).setVisibility(View.INVISIBLE);
-//                }
-//            }
-//
-//            @Override
-//            public void onError() {
-//                if(mLoadListener != null){
-//                    mLoadListener.onEnd(false,me);
-//                }
-//                if(v.findViewById(R.id.loading_bar) != null){
-//                    v.findViewById(R.id.loading_bar).setVisibility(View.INVISIBLE);
-//                }
-//            }
-//        });
    }
 
 
