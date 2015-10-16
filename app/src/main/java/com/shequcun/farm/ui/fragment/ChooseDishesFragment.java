@@ -207,7 +207,7 @@ public class ChooseDishesFragment extends BaseFragment {
         }
 
         if (PersistanceManager.getIsShowLookUpComboDetails(getActivity(), buildKey())) {
-            gotoFragmentByAnimation(getArguments(), R.id.mainpage_ly, new ComboMongoliaLayerFragment(), ComboMongoliaLayerFragment.class.getName(),R.anim.slide_in_from_bottom,R.anim.slide_out_to_bottom);
+            gotoFragmentByAnimation(getArguments(), R.id.mainpage_ly, new ComboMongoliaLayerFragment(), ComboMongoliaLayerFragment.class.getName(), R.anim.slide_in_from_bottom, R.anim.slide_out_to_bottom);
         }
     }
 
@@ -264,19 +264,27 @@ public class ChooseDishesFragment extends BaseFragment {
             ImageLoader.getInstance().displayImage(it.imgs[0] + "?imageview2/2/w/180", goods_img);
             ((TextView) v.findViewById(R.id.goods_name)).setText(it.title);
             ((TextView) v.findViewById(R.id.goods_price)).setText(Utils.unitConversion(it.packw) + "/份");
+            final View pRview = v.findViewById(R.id.pRview);
             final CheckBox option_cb = (CheckBox) v.findViewById(R.id.option_cb);
-            option_cb.setTag(it);
-            option_cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            pRview.setTag(it);
+            pRview.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    if (b) {
-                        mOrderController.addOptionItem((DishesItemEntry) option_cb.getTag());
+                public void onClick(View v) {
+                    option_cb.toggle();
+                    List<DishesItemEntry> dLst = mOrderController.getOptionItems();
+                    if (option_cb.isChecked()) {
+                        if (dLst != null && dLst.size() < 3) {
+                            mOrderController.addOptionItem((DishesItemEntry) pRview.getTag());
+                        } else {
+                            option_cb.toggle();
+                            mOrderController.removeOptionItem((DishesItemEntry) pRview.getTag());
+                            new AlertDialog().alertDialog(getActivity(), "亲,最多只能选择3个备选菜品哦！");
+                        }
                     } else {
-                        mOrderController.removeOptionItem((DishesItemEntry) option_cb.getTag());
+                        mOrderController.removeOptionItem((DishesItemEntry) pRview.getTag());
                     }
                 }
             });
-
             List<DishesItemEntry> aaList = mOrderController.getOptionItems();
             if (aaList != null && aaList.size() > 0) {
                 for (DishesItemEntry iit : aaList) {

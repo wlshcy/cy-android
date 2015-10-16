@@ -64,9 +64,7 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.home_ly, container, false);
-        ButterKnife.bind(this, view);
-        return view;
+        return inflater.inflate(R.layout.home_ly, container, false);
     }
 
     @Override
@@ -93,7 +91,7 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
             gotoFragmentByAnimation(null, R.id.mainpage_ly, new LoginFragment(), LoginFragment.class.getName(), R.anim.scale_left_top_in, R.anim.scale_left_top_out);
             return;
         }
-        gotoFragmentByAnimation(null, R.id.mainpage_ly, new ComboFragment(), ComboFragment.class.getName(),R.anim.scale_left_top_in, R.anim.scale_left_top_out);
+        gotoFragmentByAnimation(null, R.id.mainpage_ly, new ComboFragment(), ComboFragment.class.getName(), R.anim.scale_left_top_in, R.anim.scale_left_top_out);
     }
 
     @OnItemClick(R.id.gv)
@@ -470,7 +468,7 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
                     ComboDetailEntry entry = JsonUtilsParser.fromJson(new String(data), ComboDetailEntry.class);
                     if (entry != null) {
                         if (TextUtils.isEmpty(entry.errmsg)) {
-                            gotoFragmentByAnimation(buildBundle_(entry.combo), R.id.mainpage_ly, new ComboSecondFragment(), ComboSecondFragment.class.getName(),R.anim.puff_in,R.anim.puff_out);
+                            gotoFragmentByAnimation(buildBundle_(entry.combo), R.id.mainpage_ly, new ComboSecondFragment(), ComboSecondFragment.class.getName(), R.anim.puff_in, R.anim.puff_out);
                             return;
                         }
                         ToastHelper.showShort(getActivity(), entry.errmsg);
