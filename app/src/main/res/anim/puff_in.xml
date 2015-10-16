@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shareInterpolator="false">
+    <scale
+        android:duration="500"
+        android:fillAfter="false"
+        android:fromXScale="0.0"
+        android:fromYScale="0.0"
+        android:interpolator="@android:anim/accelerate_decelerate_interpolator"
+        android:pivotX="50%"
+        android:pivotY="50%"
+        android:toXScale="1"
+        android:toYScale="1" />
+
+</set>
+
+    <!--<?xml version="1.0" encoding="utf-8"?>--><!--<alpha xmlns:android="http://schemas.android.com/apk/res/android"--><!--android:interpolator="@android:interpolator/decelerate_quad"--><!--android:fromAlpha="0.0" android:toAlpha="1.0"--><!--android:duration="@android:integer/config_longAnimTime" />--><!--&lt;!&ndash;<objectAnimator xmlns:android="http://schemas.android.com/apk/res/android"&ndash;&gt;--><!--&lt;!&ndash;android:duration="@android:integer/config_mediumAnimTime"&ndash;&gt;--><!--&lt;!&ndash;android:interpolator="@android:anim/accelerate_decelerate_interpolator"&ndash;&gt;--><!--&lt;!&ndash;android:propertyName="translationY"&ndash;&gt;--><!--&lt;!&ndash;android:valueFrom="1280"&ndash;&gt;--><!--&lt;!&ndash;android:valueTo="0"&ndash;&gt;--><!--&lt;!&ndash;android:valueType="floatType" />&ndash;&gt;-->
+<!--<set android:interpolator="@android:anim/decelerate_interpolator">-->
+<!--<scale-->
+    <!--android:duration="400"-->
+    <!--android:fillBefore="false"-->
+    <!--android:fromXScale="1.4"-->
+    <!--android:fromYScale="0.6"-->
+    <!--android:pivotX="50%"-->
+    <!--android:pivotY="50%"-->
+    <!--android:startOffset="700"-->
+    <!--android:toXScale="0.0"-->
+    <!--android:toYScale="0.0" />-->
+<!--<rotate-->
+    <!--android:duration="400"-->
+    <!--android:fromDegrees="0"-->
+    <!--android:pivotX="50%"-->
+    <!--android:pivotY="50%"-->
+    <!--android:startOffset="700"-->
+    <!--android:toDegrees="-45"-->
+    <!--android:toYScale="0.0" />-->
+<!--</set>-->
+
+    <!--&lt;!&ndash;<?xml version="1.0" encoding="utf-8"?>&ndash;&gt;&lt;!&ndash;<objectAnimator xmlns:android="http://schemas.android.com/apk/res/android"&ndash;&gt;&lt;!&ndash;android:duration="500"&ndash;&gt;&lt;!&ndash;android:propertyName="x"&ndash;&gt;&lt;!&ndash;android:valueFrom="-1280"&ndash;&gt;&lt;!&ndash;android:valueTo="0"&ndash;&gt;&lt;!&ndash;android:valueType="floatType" />&ndash;&gt;-->

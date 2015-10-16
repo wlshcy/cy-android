@@ -111,7 +111,7 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
             ToastHelper.showShort(getActivity(), R.string.spike_error_tip);
             return;
         }
-        gotoFragmentByAnimation(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailFragment(), FarmSpecialtyDetailFragment.class.getName());
+        gotoFragmentByAnimation(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailFragment(), FarmSpecialtyDetailFragment.class.getName(),R.anim.slide_in_from_bottom,R.anim.slide_out_to_bottom);
     }
 
 

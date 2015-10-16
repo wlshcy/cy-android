@@ -112,7 +112,7 @@ public class DelayAdapter extends BaseAdapter {
     }
 
     public interface DelayClick {
-        public void onDelay(DelayItemEntry entry);
+        void onDelay(DelayItemEntry entry);
     }
 
     public void setDelayClick(DelayClick delayClick) {

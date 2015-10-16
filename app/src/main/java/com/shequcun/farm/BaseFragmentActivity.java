@@ -14,11 +14,9 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.decode.BaseImageDecoder;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
-import com.nostra13.universalimageloader.utils.StorageUtils;
 import com.shequcun.farm.ui.fragment.BaseFragment;
 import com.shequcun.farm.ui.fragment.FragmentMgrInterface;
 import com.shequcun.farm.util.HttpRequestUtil;
-import com.umeng.analytics.MobclickAgent;
 
 
 public abstract class BaseFragmentActivity extends FragmentActivity implements

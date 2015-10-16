@@ -7,21 +7,13 @@
     <string name="get_access_token_fail" formatted="false">获取access token失败，原因%s</string>
     <string name="name">姓名</string>
     <string name="mobile_phone">手机号</string>
-    <string name="community">小区</string>
     <string name="live_region">所在区域</string>
     <string name="nearby_community">附近的小区</string>
     <string name="ok">好的</string>
     <string name="receiveing_address">收货地址</string>
-    <string name="community_name">小区名称</string>
-    <string name="search">搜索</string>
-    <string name="choose_city">城市选择</string>
-    <string name="sorry">很抱歉,该城市还未开通配菜服务.</string>
-    <string name="input_community_name_hint">请输入小区名称</string>
     <string name="network_error_tip">请检查您的网络后重试...</string>
-    <string name="search_community">搜索小区</string>
     <string name="input_name">请输入您的姓名</string>
     <string name="input_mobile_phone">请输入您的手机号码</string>
-    <string name="choose_community">请选择您的小区</string>
     <string name="choose_region">请选择所在区域</string>
     <string name="input_building_number">请输入您的楼号及门牌号</string>
 
@@ -97,7 +89,6 @@
     <string name="logout_success">退出成功</string>
     <string name="logout_fail">退出失败</string>
     <string name="has_choosen_dishes_tip">您已选过本期菜品,如需更改请点击.</string>
-    <string name="delievery_success">您的上期菜品已经配送完成.</string>
     <string name="about">关于有菜</string>
     <string name="help">帮助</string>
     <string name="unpaid">未付款</string>
@@ -130,16 +121,13 @@
     <!--我的地址-->
     <string name="save">保存</string>
     <string name="save_address">保存地址</string>
-    <string name="input_zone_address">输入小区地址</string>
     <string name="contract">联系人</string>
     <string name="receive_address">收货地址</string>
     <string name="input_receive_name">请填写收货人姓名</string>
     <string name="input_your_region">请选择您所在的城市区域</string>
     <string name="input_receive_mobile">请填写收货人手机号</string>
-    <string name="building_and_room_no">楼号－门牌号：</string>
     <string name="street_address">街道地址</string>
     <string name="sample_building_room">例:广渠路63号,2-A502</string>
-    <string name="click_to_choose">点击选择</string>
     <string name="hint_input_street_and_zone_name">请输入：街道，小区名称</string>
     <string name="prompt_delete_address">您确定删除该地址？</string>
 
@@ -158,7 +146,6 @@
     <string name="no_login_tip">亲,您还未登录哦~登录后才可查看购物车哦~</string>
     <string name="go_login">去登录</string>
 
-    <string name="you_have_not_buy_combo">您还没有购买套餐</string>
     <string name="add_shop_cart_success">加入购物车成功.</string>
 
     <string name="freight">运费</string>

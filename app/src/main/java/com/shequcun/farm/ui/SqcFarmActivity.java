@@ -3,8 +3,6 @@ package com.shequcun.farm.ui;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -18,7 +16,6 @@ import com.shequcun.farm.BaseFragmentActivity;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.VersionEntry;
 import com.shequcun.farm.datacenter.PersistanceManager;
-import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.dlg.UserGuideDialog;
 import com.shequcun.farm.ui.adapter.HomeViewPagerAdapter;
 import com.shequcun.farm.util.DeviceInfo;
@@ -26,8 +23,6 @@ import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.ToastHelper;
-import com.umeng.analytics.MobclickAgent;
-
 
 import org.apache.http.Header;
 

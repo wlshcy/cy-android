@@ -132,17 +132,35 @@ public abstract class BaseFragment extends Fragment {
     }
 
 
-    public void gotoFragmentByAnimation(Bundle bundle, int id, Fragment fragment,
-                                        String tag) {
+//    public void gotoFragmentByAnimation(Bundle bundle, int id, Fragment fragment,
+//                                        String tag) {
+//        fragment.setArguments(bundle);
+//        FragmentTransaction ft = getFragmentManager().beginTransaction();
+//        ft.setCustomAnimations(R.anim.puff_in, R.anim.puff_in, R.anim.puff_in, R.anim.puff_out);
+////        ft.setCustomAnimations(R.anim.slide_in_from_bottom, R.anim.slide_out_to_top, R.anim.slide_out_to_bottom, R.anim.slide_out_to_bottom);
+//        ft.add(id, fragment);
+//        ft.addToBackStack(tag);
+////        ft.commit();
+//        ft.commitAllowingStateLoss();
+//    }
+
+    /**
+     * @param bundle
+     * @param id
+     * @param fragment
+     * @param tag
+     * @param enterAni 进入动画
+     * @param exitAni  退出动画
+     */
+    public void gotoFragmentByAnimation(Bundle bundle, int id, Fragment fragment, String tag, int enterAni, int exitAni) {
         fragment.setArguments(bundle);
         FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.setCustomAnimations(R.anim.slide_in_from_bottom, R.anim.slide_out_to_top, R.anim.slide_out_to_bottom, R.anim.slide_out_to_bottom);
-        // ft.setCustomAnimations(R.anim.slide_and_changebounds, R.anim.slide_and_changebounds_sequential, R.anim.slide_and_changebounds_sequential_with_interpolators, R.anim.slide_and_changebounds_sequential_with_interpolators);
+        ft.setCustomAnimations(enterAni, exitAni, enterAni, exitAni);
         ft.add(id, fragment);
         ft.addToBackStack(tag);
-//        ft.commit();
         ft.commitAllowingStateLoss();
     }
+
 
     @Override
     public void onDestroyView() {

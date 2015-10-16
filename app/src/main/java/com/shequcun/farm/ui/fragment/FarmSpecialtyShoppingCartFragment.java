@@ -171,7 +171,7 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment implements R
                 return;
             RecommendEntry entry = adapter.getItem(position);
             entry.isShowDtlFooter = true;
-            gotoFragmentByAnimation(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailFragment(), FarmSpecialtyDetailFragment.class.getName());
+            gotoFragmentByAnimation(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailFragment(), FarmSpecialtyDetailFragment.class.getName(), R.anim.slide_in_from_bottom, R.anim.slide_out_to_bottom);
         }
     };
 
@@ -210,7 +210,7 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment implements R
             Bundle budle = new Bundle();
             budle.putSerializable(BrowseImageFragment.KEY_PHOTOS, photos);
             budle.putInt(BrowseImageFragment.KEY_INDEX, position);
-            gotoFragmentByAdd(budle, R.id.mainpage_ly, new BrowseImageFragment(), BrowseImageFragment.class.getName());
+            gotoFragmentByAnimation(budle, R.id.mainpage_ly, new BrowseImageFragment(), BrowseImageFragment.class.getName(), R.anim.puff_in, R.anim.puff_out);
         }
     };
 

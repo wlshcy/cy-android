@@ -142,6 +142,11 @@ public class PayFragment extends BaseFragment {
             return;
         }
 
+        if (entry != null && !TextUtils.isEmpty(entry.orderno)) {
+            requestAlipay();
+            return;
+        }
+
         RequestParams params = new RequestParams();
         params.add("combo_id", mOrderController.getItems().get(0).combo_id + "");
         params.add("type", String.valueOf(isMyCombo() ? 2 : 1));
@@ -421,7 +426,7 @@ public class PayFragment extends BaseFragment {
     /**
      * 创建单品订单
      */
-    void createSingleOrder(OtherInfo info) {
+    void createSingleOrder(final OtherInfo info) {
         if (addressEntry == null) {
             ToastHelper.showShort(getActivity(), "请完善您的收货地址!");
             return;
@@ -434,6 +439,11 @@ public class PayFragment extends BaseFragment {
 
         if (payRes != null && !isAlipayPay) {
             doPay(alipay, payRes);
+            return;
+        }
+
+        if (entry != null && !TextUtils.isEmpty(entry.orderno)) {
+            requestAlipay();
             return;
         }
 
@@ -470,8 +480,6 @@ public class PayFragment extends BaseFragment {
                     OrderEntry orderEntry = JsonUtilsParser.fromJson(new String(data), OrderEntry.class);
                     if (orderEntry != null) {
                         if (TextUtils.isEmpty(orderEntry.errmsg)) {
-
-                            OtherInfo info = buildOtherInfo();
                             if (info != null && info.type == 3) {
                                 new CacheManager(getActivity()).delRecommendToDisk();
                                 IntentUtil.sendUpdateFarmShoppingCartMsg(getActivity());
