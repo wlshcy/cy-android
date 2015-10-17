@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.shequcun.farm.BaseFragmentActivity;
 import com.shequcun.farm.R;
 import com.shequcun.farm.datacenter.PersistanceManager;
+import com.shequcun.farm.dlg.UserGuideDialog;
 import com.shequcun.farm.ui.adapter.ViewPagerAdapter;
 import com.shequcun.farm.util.HttpRequestUtil;
 import com.umeng.analytics.AnalyticsConfig;
@@ -43,13 +44,26 @@ public class SplashActivity extends BaseFragmentActivity {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
+            if (!PersistanceManager.getOnce(SplashActivity.this)) {
+                UserGuideDialog userGuideDialog =  new UserGuideDialog(SplashActivity.this);
+                userGuideDialog.show();
+                userGuideDialog.setDismissDialog(dismissDialog);
+                return;
+            }
+            gotoHome();
+        }
+    };
+
+    private UserGuideDialog.DismissDialog dismissDialog = new UserGuideDialog.DismissDialog() {
+        @Override
+        public void dismiss() {
             gotoHome();
         }
     };
 
     private void gotoHome() {
-        startActivity(new Intent(SplashActivity.this, SqcFarmActivity.class));
         finish();
+        startActivity(new Intent(SplashActivity.this, SqcFarmActivity.class));
     }
 
     @Override

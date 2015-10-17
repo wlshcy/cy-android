@@ -87,10 +87,10 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
 
     @OnClick({R.id.no_combo_iv, R.id.has_combo_iv})
     void doClick() {
-        if (!isLogin()) {
-            gotoFragmentByAnimation(null, R.id.mainpage_ly, new LoginFragment(), LoginFragment.class.getName(), R.anim.scale_left_top_in, R.anim.scale_left_top_out);
-            return;
-        }
+//        if (!isLogin()) {
+//            gotoFragmentByAnimation(null, R.id.mainpage_ly, new LoginFragment(), LoginFragment.class.getName(), R.anim.scale_left_top_in, R.anim.scale_left_top_out);
+//            return;
+//        }
         gotoFragmentByAnimation(null, R.id.mainpage_ly, new ComboFragment(), ComboFragment.class.getName(), R.anim.scale_left_top_in, R.anim.scale_left_top_out);
     }
 
