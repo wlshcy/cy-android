@@ -166,9 +166,9 @@
                 android:id="@+id/content_img_iv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/px120"
+                android:layout_marginBottom="@dimen/px80"
                 android:adjustViewBounds="true"
-                android:scaleType="centerCrop" />
+                android:scaleType="fitXY" />
         </LinearLayout>
     </ScrollView>
 
