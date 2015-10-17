@@ -45,22 +45,22 @@ public class SplashActivity extends BaseFragmentActivity {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if (!PersistanceManager.getOnce(SplashActivity.this)) {
-                UserGuideDialog userGuideDialog =  new UserGuideDialog(SplashActivity.this);
-                userGuideDialog.show();
-                userGuideDialog.setDismissDialog(dismissDialog);
-                return;
-            }
+//            if (!PersistanceManager.getOnce(SplashActivity.this)) {
+//                UserGuideDialog userGuideDialog =  new UserGuideDialog(SplashActivity.this);
+//                userGuideDialog.show();
+//                userGuideDialog.setDismissDialog(dismissDialog);
+//                return;
+//            }
             gotoHome();
         }
     };
 
-    private UserGuideDialog.DismissDialog dismissDialog = new UserGuideDialog.DismissDialog() {
-        @Override
-        public void dismiss() {
-            gotoHome();
-        }
-    };
+//    private UserGuideDialog.DismissDialog dismissDialog = new UserGuideDialog.DismissDialog() {
+//        @Override
+//        public void dismiss() {
+//            gotoHome();
+//        }
+//    };
 
     private void gotoHome() {
         finish();

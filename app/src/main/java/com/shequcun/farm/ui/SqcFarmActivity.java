@@ -48,6 +48,7 @@ public class SqcFarmActivity extends BaseFragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        initGuide();
         initWidget();
         doAuthInit();
         checkVersion();
@@ -58,6 +59,14 @@ public class SqcFarmActivity extends BaseFragmentActivity {
         buildAdapter();
         setWidgetLsn();
         initTipChooseCombo();
+    }
+
+    private void initGuide(){
+        if (!PersistanceManager.getOnce(this)) {
+                UserGuideDialog userGuideDialog =  new UserGuideDialog(this);
+                userGuideDialog.show();
+                return;
+        }
     }
 
     private void initTipChooseCombo() {
