@@ -32,6 +32,7 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <meta-data android:value="55c870b067e58ec5440030b5" android:name="UMENG_APPKEY"></meta-data>
         </activity>
 
         <!--<meta-data-->

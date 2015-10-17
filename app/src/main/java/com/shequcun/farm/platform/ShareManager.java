@@ -29,6 +29,16 @@ public class ShareManager {
     private IWXAPI api;
     private static final int THUMB_SIZE = 150;
     private Bitmap mThumbBmp;
+    private static ShareManager instance;
+
+    private ShareManager(){
+    }
+
+    public static ShareManager getInstance() {
+        if (instance == null)
+            instance = new ShareManager();
+        return instance;
+    }
 
     private void shareToWx(Context context, ShareContent shareContent, boolean circle) {
         WXWebpageObject webpage = new WXWebpageObject();
@@ -136,7 +146,7 @@ public class ShareManager {
     }
 
     public static void shareByFrame(Context context, ShareContent shareContent) {
-        ShareManager shareManager = new ShareManager();
+        ShareManager shareManager = ShareManager.getInstance();
         shareManager.popShareFrame(context, shareContent);
     }
 }
