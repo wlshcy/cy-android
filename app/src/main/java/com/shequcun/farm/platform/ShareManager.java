@@ -5,8 +5,12 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
+import android.text.TextUtils;
 import android.view.View;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.shequcun.farm.R;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
 import com.shequcun.farm.util.Constrants;
@@ -24,6 +28,7 @@ import java.io.ByteArrayOutputStream;
 public class ShareManager {
     private IWXAPI api;
     private static final int THUMB_SIZE = 150;
+    private Bitmap mThumbBmp;
 
     private void shareToWx(Context context, ShareContent shareContent, boolean circle) {
         WXWebpageObject webpage = new WXWebpageObject();
@@ -36,6 +41,9 @@ public class ShareManager {
             Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, THUMB_SIZE, THUMB_SIZE, true);
             bmp.recycle();
             msg.thumbData = bmpToByteArray(thumbBmp, true);
+        } else if (!TextUtils.isEmpty(shareContent.getUrlImage())) {
+            if (mThumbBmp != null)
+                msg.thumbData = bmpToByteArray(mThumbBmp, true);
         }
 
         SendMessageToWX.Req req = new SendMessageToWX.Req();
@@ -75,6 +83,7 @@ public class ShareManager {
      * //
      */
     public void popShareFrame(final Context context, final ShareContent shareContent) {
+        requestThumbUrl(shareContent.getUrlImage());
         final AlertDialog alert = new AlertDialog.Builder(context).create();
         alert.show();
 //        alert.setCancelable(false);
@@ -99,7 +108,34 @@ public class ShareManager {
             api = WXAPIFactory.createWXAPI(context, Constrants.APP_ID);
     }
 
-    public static void shareByFrame(Context context,ShareContent shareContent) {
+    private void requestThumbUrl(String url) {
+        /**弹出框就去请求缩略图*/
+        if (!TextUtils.isEmpty(url) && mThumbBmp == null) {
+            ImageLoader.getInstance().loadImage(url + "?imageView2/1/w/" + THUMB_SIZE, new ImageLoadingListener() {
+                @Override
+                public void onLoadingStarted(String imageUri, View view) {
+
+                }
+
+                @Override
+                public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+
+                }
+
+                @Override
+                public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                    mThumbBmp = loadedImage;
+                }
+
+                @Override
+                public void onLoadingCancelled(String imageUri, View view) {
+
+                }
+            });
+        }
+    }
+
+    public static void shareByFrame(Context context, ShareContent shareContent) {
         ShareManager shareManager = new ShareManager();
         shareManager.popShareFrame(context, shareContent);
     }

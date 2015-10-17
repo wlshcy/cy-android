@@ -20,7 +20,7 @@ public class Constrants {
     public static final int SDK_PAY_FLAG = 1;
     public static final int SDK_CHECK_FLAG = 2;
     public static final String URL_FARM = "http://store.shequcun.com/yc_farm/";
-    public static final String URL_SHARE = "http://store.shequcun.com/yc_recom_item/";
+    public static final String URL_SHARE = "https://youcai.shequcun.com/?state=recomitem/";
     public static final String APP_ID = "wxedddf5c468bfd955";
     public static final BitmapDisplayer displayer = new FadeInBitmapDisplayer(0) {
         @Override

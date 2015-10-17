@@ -144,6 +144,7 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
     }
 
     void buildCarouselAdapter(List<SlidesEntry> aList) {
+        slider.removeAllSliders();
         if (aList == null || aList.isEmpty()) {
             addSliderUrl(R.drawable.icon_combo_default);
             slider.setIndicatorVisibility(PagerIndicator.IndicatorVisibility.Invisible);

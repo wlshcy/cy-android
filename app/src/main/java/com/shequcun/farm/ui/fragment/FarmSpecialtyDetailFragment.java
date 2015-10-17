@@ -184,11 +184,13 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
         public void onClick(View v) {
             if (v == shareIv) {
                 ShareContent sharecontent = new ShareContent();
-//                sharecontent.seturlimage("drawable:///" + r.drawable.icon_share);
-                sharecontent.setImageId(R.drawable.icon_share_logo);
+                sharecontent.setUrlImage(entry.imgs[0]);
+//                sharecontent.setImageId(R.drawable.icon_share_logo);
                 sharecontent.setTargetUrl(Constrants.URL_SHARE + entry.id);
-                sharecontent.setTitle("有菜，不能说的秘密！");
-                sharecontent.setContent("孩子的餐桌我们的标准，走心，连蔬菜都这么有bigger！");
+//                sharecontent.setTitle("有菜，不能说的秘密！");
+                sharecontent.setTitle(entry.title);
+//                sharecontent.setContent("孩子的餐桌我们的标准，走心，连蔬菜都这么有bigger！");
+                sharecontent.setContent(entry.descr);
                 ShareManager.shareByFrame(getActivity(), sharecontent);
             } else if (v == producingPlaceTv) {
                 gotoProducingPlaceFragment(entry.fid);
