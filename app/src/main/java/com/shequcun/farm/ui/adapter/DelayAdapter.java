@@ -71,6 +71,7 @@ public class DelayAdapter extends BaseAdapter {
             if (entry.delay != null)
                 viewHolder.descTv.setText("下次配送时间" + Utils.getMMdd(entry.delay.date) + ",请在配送日24小时前选菜");
             viewHolder.delayTv.setText(R.string.btn_has_delaied_a_week_delivery);
+            viewHolder.delayTv.setText("这是您第" + entry.delay.times + "次延期");
             viewHolder.delayTv.setBackgroundResource(R.drawable.btn_bg_gray_selector);
             viewHolder.delayTv.setEnabled(false);
         } else if (entry.status == 2) {
