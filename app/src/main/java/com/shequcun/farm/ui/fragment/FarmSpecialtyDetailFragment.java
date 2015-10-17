@@ -1,6 +1,7 @@
 package com.shequcun.farm.ui.fragment;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
@@ -16,20 +17,16 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.common.widget.CircleFlowIndicator;
-import com.common.widget.ViewFlow;
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.Indicators.PagerIndicator;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
-import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.ComboEntry;
 import com.shequcun.farm.data.OtherInfo;
 import com.shequcun.farm.data.RecommendEntry;
-import com.shequcun.farm.data.SlidesEntry;
 import com.shequcun.farm.datacenter.CacheManager;
 import com.shequcun.farm.db.RecommendItemKey;
 import com.shequcun.farm.platform.ShareContent;
@@ -41,9 +38,6 @@ import com.shequcun.farm.util.DeviceInfo;
 import com.shequcun.farm.util.IntentUtil;
 import com.shequcun.farm.util.ToastHelper;
 import com.shequcun.farm.util.Utils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -202,7 +196,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
         }
     };
 
-    private void gotoShoppingCart() {
+    private void gotoHomePageDependPos(int pos) {
         popBackStack();
 //        if (entry != null && entry.count > 0) {
 //            RecommendItemKey itemKey = new RecommendItemKey();
@@ -211,7 +205,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
 //            IntentUtil.sendUpdateFarmShoppingCartMsg(getActivity());
 //        }
         SqcFarmActivity mAct = (SqcFarmActivity) getActivity();
-        mAct.buildRadioButtonStatus(1);
+        mAct.buildRadioButtonStatus(pos);
     }
 
     private void gotoProducingPlaceFragment(int id) {
@@ -246,7 +240,15 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
                     }
 
                     if (entry.type == 2 && entry.bought) {
-                        new com.shequcun.farm.dlg.AlertDialog().alertDialog(getActivity(), R.string.spike_error_tip);
+                        new com.shequcun.farm.dlg.AlertDialog().alertDialog(getActivity(), R.string.spike_error_tip, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                gotoHomePageDependPos(2);
+                                Bundle bundle=new Bundle();
+
+                                gotoFragmentByAdd(bundle,R.id.mainpage_ly, new MyOrderViewPagerFragment(), MyOrderViewPagerFragment.class.getName());
+                            }
+                        });
                         return;
                     }
 
@@ -317,7 +319,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
             go_to_shop_cart_tv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    gotoShoppingCart();
+                    gotoHomePageDependPos(1);
                 }
             });
         }

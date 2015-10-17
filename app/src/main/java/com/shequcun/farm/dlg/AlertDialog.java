@@ -53,16 +53,12 @@ public class AlertDialog {
                 });
     }
 
-    public void alertDialog(Context mAct, int resId) {
+    public void alertDialog(Context mAct, int resId, DialogInterface.OnClickListener onClk) {
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(mAct);
         builder.setTitle("提示");
         builder.setMessage(resId);
-        builder.setNegativeButton("好的", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-            }
-        });
-        builder.setNeutralButton("", null);
+        builder.setNegativeButton("好的", onClk);
+        builder.setNeutralButton("不去看了", null);
         builder.create().show();
     }
 
