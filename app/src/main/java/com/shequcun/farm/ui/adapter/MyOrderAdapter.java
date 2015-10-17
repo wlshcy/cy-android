@@ -41,19 +41,22 @@ public class MyOrderAdapter extends ArrayAdapter<HistoryOrderEntry> {
             vh.distribution_number_tv.setText("第" + entry.times + "次选品");
             if (entry.status == 0) {
                 entry.date = "下单日期:" + Utils.getTime(entry.json.get(entry.status + "").getAsLong());
-                vh.distribution_date.setText(entry.date);
+//                vh.distribution_date.setText(entry.date);
             } else if (entry.status == 1) {
                 entry.date = "下单日期:" + Utils.getTime(entry.json.get(entry.status + "").getAsLong());
-                vh.distribution_date.setText(entry.date);
+//                vh.distribution_date.setText(entry.date);
             } else if (entry.status == 2) {
                 entry.date = "配送日期:" + Utils.getTime(entry.json.get(entry.status + "").getAsLong());
-                vh.distribution_date.setText(entry.date);
+//                vh.distribution_date.setText(entry.date);
             } else if (entry.status == 3) {
                 entry.date = "收货日期:" + Utils.getTime(entry.json.get(entry.status + "").getAsLong());
-                vh.distribution_date.setText(entry.date);
+//                vh.distribution_date.setText(entry.date);
             } else {
                 vh.distribution_date.setVisibility(View.GONE);
             }
+
+//            entry.date = "下单日期:" + Utils.getTime(entry.json.get(0 + "").getAsLong());
+            vh.distribution_date.setText("下单日期:" + Utils.getTime(entry.json.get(0 + "").getAsLong()));
 
             if (TextUtils.isEmpty(entry.title)) {
                 vh.distribution_name.setVisibility(View.GONE);
