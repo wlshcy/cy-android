@@ -1,13 +1,13 @@
 /*
     Android Asynchronous Http Client
     Copyright (c) 2011 James Smith <james@loopj.com>
-    http://loopj.com
+    https://loopj.com
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
     You may obtain a copy of the License at
 
-        http://www.apache.org/licenses/LICENSE-2.0
+        https://www.apache.org/licenses/LICENSE-2.0
 
     Unless required by applicable law or agreed to in writing, software
     distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,16 +18,16 @@
 
 package com.loopj.android.http;
 
-import android.util.Log;
-
-import org.apache.http.Header;
-import org.apache.http.HttpResponse;
-import org.apache.http.StatusLine;
-import org.apache.http.client.HttpResponseException;
+import android.os.Looper;
 
 import java.io.IOException;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
+
+import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.HttpResponse;
+import cz.msebera.android.httpclient.StatusLine;
+import cz.msebera.android.httpclient.client.HttpResponseException;
 
 /**
  * Used to intercept and handle the responses from requests made using {@link AsyncHttpClient}.
@@ -36,7 +36,7 @@ import java.util.regex.PatternSyntaxException;
  * <pre>
  * AsyncHttpClient client = new AsyncHttpClient();
  * String[] allowedTypes = new String[] { "image/png" };
- * client.get("http://www.example.com/image.png", new BinaryHttpResponseHandler(allowedTypes) {
+ * client.get("https://www.example.com/image.png", new BinaryHttpResponseHandler(allowedTypes) {
  *     &#064;Override
  *     public void onSuccess(byte[] imageData) {
  *         // Successfully got a response
@@ -51,7 +51,7 @@ import java.util.regex.PatternSyntaxException;
  */
 public abstract class BinaryHttpResponseHandler extends AsyncHttpResponseHandler {
 
-    private static final String LOG_TAG = "BinaryHttpResponseHandler";
+    private static final String LOG_TAG = "BinaryHttpRH";
 
     private String[] mAllowedContentTypes = new String[]{
             RequestParams.APPLICATION_OCTET_STREAM,
@@ -59,16 +59,6 @@ public abstract class BinaryHttpResponseHandler extends AsyncHttpResponseHandler
             "image/png",
             "image/gif"
     };
-
-    /**
-     * Method can be overriden to return allowed content types, can be sometimes better than passing
-     * data in constructor
-     *
-     * @return array of content-types or Pattern string templates (eg. '.*' to match every response)
-     */
-    public String[] getAllowedContentTypes() {
-        return mAllowedContentTypes;
-    }
 
     /**
      * Creates a new BinaryHttpResponseHandler
@@ -88,8 +78,34 @@ public abstract class BinaryHttpResponseHandler extends AsyncHttpResponseHandler
         if (allowedContentTypes != null) {
             mAllowedContentTypes = allowedContentTypes;
         } else {
-            Log.e(LOG_TAG, "Constructor passed allowedContentTypes was null !");
+            AsyncHttpClient.log.e(LOG_TAG, "Constructor passed allowedContentTypes was null !");
         }
+    }
+
+    /**
+     * Creates a new BinaryHttpResponseHandler with a user-supplied looper, and overrides the default allowed content types with
+     * passed String array (hopefully) of content types.
+     *
+     * @param allowedContentTypes content types array, eg. 'image/jpeg' or pattern '.*'
+     * @param looper              The looper to work with
+     */
+    public BinaryHttpResponseHandler(String[] allowedContentTypes, Looper looper) {
+        super(looper);
+        if (allowedContentTypes != null) {
+            mAllowedContentTypes = allowedContentTypes;
+        } else {
+            AsyncHttpClient.log.e(LOG_TAG, "Constructor passed allowedContentTypes was null !");
+        }
+    }
+
+    /**
+     * Method can be overriden to return allowed content types, can be sometimes better than passing
+     * data in constructor
+     *
+     * @return array of content-types or Pattern string templates (eg. '.*' to match every response)
+     */
+    public String[] getAllowedContentTypes() {
+        return mAllowedContentTypes;
     }
 
     @Override
@@ -105,13 +121,13 @@ public abstract class BinaryHttpResponseHandler extends AsyncHttpResponseHandler
         if (contentTypeHeaders.length != 1) {
             //malformed/ambiguous HTTP Header, ABORT!
             sendFailureMessage(
-                status.getStatusCode(),
-                response.getAllHeaders(),
-                null,
-                new HttpResponseException(
                     status.getStatusCode(),
-                    "None, or more than one, Content-Type Header found!"
-                )
+                    response.getAllHeaders(),
+                    null,
+                    new HttpResponseException(
+                            status.getStatusCode(),
+                            "None, or more than one, Content-Type Header found!"
+                    )
             );
             return;
         }
@@ -123,19 +139,19 @@ public abstract class BinaryHttpResponseHandler extends AsyncHttpResponseHandler
                     foundAllowedContentType = true;
                 }
             } catch (PatternSyntaxException e) {
-                Log.e("BinaryHttpResponseHandler", "Given pattern is not valid: " + anAllowedContentType, e);
+                AsyncHttpClient.log.e(LOG_TAG, "Given pattern is not valid: " + anAllowedContentType, e);
             }
         }
         if (!foundAllowedContentType) {
             //Content-Type not in allowed list, ABORT!
             sendFailureMessage(
-                status.getStatusCode(),
-                response.getAllHeaders(),
-                null,
-                new HttpResponseException(
                     status.getStatusCode(),
-                    "Content-Type (" + contentTypeHeader.getValue() + ") not allowed!"
-                )
+                    response.getAllHeaders(),
+                    null,
+                    new HttpResponseException(
+                            status.getStatusCode(),
+                            "Content-Type (" + contentTypeHeader.getValue() + ") not allowed!"
+                    )
             );
             return;
         }

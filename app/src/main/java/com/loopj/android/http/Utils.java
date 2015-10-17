@@ -1,13 +1,13 @@
 /*
     Android Asynchronous Http Client
     Copyright (c) 2011 James Smith <james@loopj.com>
-    http://loopj.com
+    https://loopj.com
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
     You may obtain a copy of the License at
 
-        http://www.apache.org/licenses/LICENSE-2.0
+        https://www.apache.org/licenses/LICENSE-2.0
 
     Unless required by applicable law or agreed to in writing, software
     distributed under the License is distributed on an "AS IS" BASIS,
@@ -32,7 +32,7 @@ class Utils {
      *
      * @param expression    result of your asserted condition
      * @param failedMessage message to be included in error log
-     * @throws AssertionError
+     * @throws java.lang.AssertionError
      */
     public static void asserts(final boolean expression, final String failedMessage) {
         if (!expression) {
@@ -45,7 +45,7 @@ class Utils {
      *
      * @param argument object that should be asserted as not null
      * @param name     name of the object asserted
-     * @throws IllegalArgumentException
+     * @throws java.lang.IllegalArgumentException
      */
     public static <T> T notNull(final T argument, final String name) {
         if (argument == null) {

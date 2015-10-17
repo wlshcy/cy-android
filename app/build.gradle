@@ -36,6 +36,7 @@ android {
 
 dependencies {
     compile 'com.android.support:appcompat-v7:22.2.0'
+    compile 'cz.msebera.android:httpclient:4.3.3'
     compile files('libs/uCaiSDK.jar')
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile project(':librarySlider')

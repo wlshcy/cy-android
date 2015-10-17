@@ -1,13 +1,13 @@
 /*
     Android Asynchronous Http Client
     Copyright (c) 2013 Jason Choy <jjwchoy@gmail.com>
-    http://loopj.com
+    https://loopj.com
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
     You may obtain a copy of the License at
 
-        http://www.apache.org/licenses/LICENSE-2.0
+        https://www.apache.org/licenses/LICENSE-2.0
 
     Unless required by applicable law or agreed to in writing, software
     distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,7 +40,8 @@ public class RequestHandle {
      * thread executing this request should be interrupted in an attempt to stop the request.
      * <p>&nbsp;</p> After this method returns, subsequent calls to isDone() will always return
      * true. Subsequent calls to isCancelled() will always return true if this method returned
-     * true.
+     * true. Subsequent calls to isDone() will return true either if the request got cancelled by
+     * this method, or if the request completed normally
      *
      * @param mayInterruptIfRunning true if the thread executing this request should be interrupted;
      *                              otherwise, in-progress requests are allowed to complete
@@ -57,8 +58,11 @@ public class RequestHandle {
                         _request.cancel(mayInterruptIfRunning);
                     }
                 }).start();
+                // Cannot reliably tell if the request got immediately canceled at this point
+                // we'll assume it got cancelled
+                return true;
             } else {
-                _request.cancel(mayInterruptIfRunning);
+                return _request.cancel(mayInterruptIfRunning);
             }
         }
         return false;
@@ -90,5 +94,28 @@ public class RequestHandle {
         if (should)
             request.clear();
         return should;
+    }
+
+    /**
+     * Will return TAG of underlying AsyncHttpRequest if it's not already GCed
+     *
+     * @return Object TAG, can be null
+     */
+    public Object getTag() {
+        AsyncHttpRequest _request = request.get();
+        return _request == null ? null : _request.getTag();
+    }
+
+    /**
+     * Will set Object as TAG to underlying AsyncHttpRequest
+     *
+     * @param tag Object used as TAG to underlying AsyncHttpRequest
+     * @return this RequestHandle to allow fluid syntax
+     */
+    public RequestHandle setTag(Object tag) {
+        AsyncHttpRequest _request = request.get();
+        if (_request != null)
+            _request.setRequestTag(tag);
+        return this;
     }
 }

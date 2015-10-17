@@ -1,13 +1,13 @@
 /*
     Android Asynchronous Http Client
     Copyright (c) 2011 James Smith <james@loopj.com>
-    http://loopj.com
+    https://loopj.com
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
     You may obtain a copy of the License at
 
-        http://www.apache.org/licenses/LICENSE-2.0
+        https://www.apache.org/licenses/LICENSE-2.0
 
     Unless required by applicable law or agreed to in writing, software
     distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,11 +19,6 @@
 package com.loopj.android.http;
 
 import android.text.TextUtils;
-import android.util.Log;
-
-import org.apache.http.Header;
-import org.apache.http.HttpEntity;
-import org.apache.http.message.BasicHeader;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -34,6 +29,10 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.zip.GZIPOutputStream;
+
+import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.HttpEntity;
+import cz.msebera.android.httpclient.message.BasicHeader;
 
 /**
  * HTTP entity to upload JSON data using streams. This has very low memory footprint; suitable for
@@ -48,27 +47,22 @@ public class JsonStreamerEntity implements HttpEntity {
 
     // Size of the byte-array buffer used in I/O streams.
     private static final int BUFFER_SIZE = 4096;
-
-    // Buffer used for reading from input streams.
-    private final byte[] buffer = new byte[BUFFER_SIZE];
-
     private static final byte[] JSON_TRUE = "true".getBytes();
     private static final byte[] JSON_FALSE = "false".getBytes();
     private static final byte[] JSON_NULL = "null".getBytes();
     private static final byte[] STREAM_NAME = escape("name");
     private static final byte[] STREAM_TYPE = escape("type");
     private static final byte[] STREAM_CONTENTS = escape("contents");
-
     private static final Header HEADER_JSON_CONTENT =
             new BasicHeader(
                     AsyncHttpClient.HEADER_CONTENT_TYPE,
                     RequestParams.APPLICATION_JSON);
-
     private static final Header HEADER_GZIP_ENCODING =
             new BasicHeader(
                     AsyncHttpClient.HEADER_CONTENT_ENCODING,
                     AsyncHttpClient.ENCODING_GZIP);
-
+    // Buffer used for reading from input streams.
+    private final byte[] buffer = new byte[BUFFER_SIZE];
     // JSON data and associated meta-data to be uploaded.
     private final Map<String, Object> jsonParams = new HashMap<String, Object>();
 
@@ -85,6 +79,68 @@ public class JsonStreamerEntity implements HttpEntity {
         this.elapsedField = TextUtils.isEmpty(elapsedField)
                 ? null
                 : escape(elapsedField);
+    }
+
+    // Curtosy of Simple-JSON: https://goo.gl/XoW8RF
+    // Changed a bit to suit our needs in this class.
+    static byte[] escape(String string) {
+        // If it's null, just return prematurely.
+        if (string == null) {
+            return JSON_NULL;
+        }
+
+        // Create a string builder to generate the escaped string.
+        StringBuilder sb = new StringBuilder(128);
+
+        // Surround with quotations.
+        sb.append('"');
+
+        int length = string.length(), pos = -1;
+        while (++pos < length) {
+            char ch = string.charAt(pos);
+            switch (ch) {
+                case '"':
+                    sb.append("\\\"");
+                    break;
+                case '\\':
+                    sb.append("\\\\");
+                    break;
+                case '\b':
+                    sb.append("\\b");
+                    break;
+                case '\f':
+                    sb.append("\\f");
+                    break;
+                case '\n':
+                    sb.append("\\n");
+                    break;
+                case '\r':
+                    sb.append("\\r");
+                    break;
+                case '\t':
+                    sb.append("\\t");
+                    break;
+                default:
+                    // Reference: https://www.unicode.org/versions/Unicode5.1.0/
+                    if ((ch <= '\u001F') || (ch >= '\u007F' && ch <= '\u009F') || (ch >= '\u2000' && ch <= '\u20FF')) {
+                        String intString = Integer.toHexString(ch);
+                        sb.append("\\u");
+                        int intLength = 4 - intString.length();
+                        for (int zero = 0; zero < intLength; zero++) {
+                            sb.append('0');
+                        }
+                        sb.append(intString.toUpperCase(Locale.US));
+                    } else {
+                        sb.append(ch);
+                    }
+                    break;
+            }
+        }
+
+        // Surround with quotations.
+        sb.append('"');
+
+        return sb.toString().getBytes();
     }
 
     /**
@@ -236,7 +292,7 @@ public class JsonStreamerEntity implements HttpEntity {
                 os.write((elapsedTime + "").getBytes());
             }
 
-            Log.i(LOG_TAG, "Uploaded JSON in " + Math.floor(elapsedTime / 1000) + " seconds");
+            AsyncHttpClient.log.i(LOG_TAG, "Uploaded JSON in " + Math.floor(elapsedTime / 1000) + " seconds");
         }
 
         // Close the JSON object.
@@ -331,67 +387,5 @@ public class JsonStreamerEntity implements HttpEntity {
 
     private void endMetaData(OutputStream os) throws IOException {
         os.write('"');
-    }
-
-    // Curtosy of Simple-JSON: http://goo.gl/XoW8RF
-    // Changed a bit to suit our needs in this class.
-    static byte[] escape(String string) {
-        // If it's null, just return prematurely.
-        if (string == null) {
-            return JSON_NULL;
-        }
-
-        // Create a string builder to generate the escaped string.
-        StringBuilder sb = new StringBuilder(128);
-
-        // Surround with quotations.
-        sb.append('"');
-
-        int length = string.length(), pos = -1;
-        while (++pos < length) {
-            char ch = string.charAt(pos);
-            switch (ch) {
-                case '"':
-                    sb.append("\\\"");
-                    break;
-                case '\\':
-                    sb.append("\\\\");
-                    break;
-                case '\b':
-                    sb.append("\\b");
-                    break;
-                case '\f':
-                    sb.append("\\f");
-                    break;
-                case '\n':
-                    sb.append("\\n");
-                    break;
-                case '\r':
-                    sb.append("\\r");
-                    break;
-                case '\t':
-                    sb.append("\\t");
-                    break;
-                default:
-                    // Reference: http://www.unicode.org/versions/Unicode5.1.0/
-                    if ((ch >= '\u0000' && ch <= '\u001F') || (ch >= '\u007F' && ch <= '\u009F') || (ch >= '\u2000' && ch <= '\u20FF')) {
-                        String intString = Integer.toHexString(ch);
-                        sb.append("\\u");
-                        int intLength = 4 - intString.length();
-                        for (int zero = 0; zero < intLength; zero++) {
-                            sb.append('0');
-                        }
-                        sb.append(intString.toUpperCase(Locale.US));
-                    } else {
-                        sb.append(ch);
-                    }
-                    break;
-            }
-        }
-
-        // Surround with quotations.
-        sb.append('"');
-
-        return sb.toString().getBytes();
     }
 }

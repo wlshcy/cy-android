@@ -16,7 +16,6 @@
 
 package com.google.gson;
 
-import com.google.gson.annotations.SerializedName;
 import com.google.gson.internal.Streams;
 import com.google.gson.stream.JsonWriter;
 import java.io.IOException;

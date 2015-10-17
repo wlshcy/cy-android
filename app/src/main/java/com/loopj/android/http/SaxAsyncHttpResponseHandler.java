@@ -1,13 +1,13 @@
 /*
     Android Asynchronous Http Client
     Copyright (c) 2011 James Smith <james@loopj.com>
-    http://loopj.com
+    https://loopj.com
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
     You may obtain a copy of the License at
 
-        http://www.apache.org/licenses/LICENSE-2.0
+        https://www.apache.org/licenses/LICENSE-2.0
 
     Unless required by applicable law or agreed to in writing, software
     distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,10 +18,6 @@
 
 package com.loopj.android.http;
 
-import android.util.Log;
-
-import org.apache.http.Header;
-import org.apache.http.HttpEntity;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
@@ -34,6 +30,9 @@ import java.io.InputStreamReader;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+
+import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.HttpEntity;
 
 /**
  * Provides interface to deserialize SAX responses, using AsyncHttpResponseHandler. Can be used like
@@ -54,23 +53,23 @@ import javax.xml.parsers.SAXParserFactory;
  *     });
  * </pre>
  *
- * @param <T> Handler extending {@link DefaultHandler}
- * @see DefaultHandler
- * @see AsyncHttpResponseHandler
+ * @param <T> Handler extending {@link org.xml.sax.helpers.DefaultHandler}
+ * @see org.xml.sax.helpers.DefaultHandler
+ * @see com.loopj.android.http.AsyncHttpResponseHandler
  */
 public abstract class SaxAsyncHttpResponseHandler<T extends DefaultHandler> extends AsyncHttpResponseHandler {
 
+    private final static String LOG_TAG = "SaxAsyncHttpRH";
     /**
      * Generic Type of handler
      */
     private T handler = null;
-    private final static String LOG_TAG = "SaxAsyncHttpResponseHandler";
 
     /**
      * Constructs new SaxAsyncHttpResponseHandler with given handler instance
      *
      * @param t instance of Handler extending DefaultHandler
-     * @see DefaultHandler
+     * @see org.xml.sax.helpers.DefaultHandler
      */
     public SaxAsyncHttpResponseHandler(T t) {
         super();
@@ -85,8 +84,8 @@ public abstract class SaxAsyncHttpResponseHandler<T extends DefaultHandler> exte
      *
      * @param entity returned HttpEntity
      * @return deconstructed response
-     * @throws IOException if there is problem assembling SAX response from stream
-     * @see HttpEntity
+     * @throws java.io.IOException if there is problem assembling SAX response from stream
+     * @see cz.msebera.android.httpclient.HttpEntity
      */
     @Override
     protected byte[] getResponseData(HttpEntity entity) throws IOException {
@@ -99,12 +98,12 @@ public abstract class SaxAsyncHttpResponseHandler<T extends DefaultHandler> exte
                     SAXParser sparser = sfactory.newSAXParser();
                     XMLReader rssReader = sparser.getXMLReader();
                     rssReader.setContentHandler(handler);
-                    inputStreamReader = new InputStreamReader(instream, DEFAULT_CHARSET);
+                    inputStreamReader = new InputStreamReader(instream, getCharset());
                     rssReader.parse(new InputSource(inputStreamReader));
                 } catch (SAXException e) {
-                    Log.e(LOG_TAG, "getResponseData exception", e);
+                    AsyncHttpClient.log.e(LOG_TAG, "getResponseData exception", e);
                 } catch (ParserConfigurationException e) {
-                    Log.e(LOG_TAG, "getResponseData exception", e);
+                    AsyncHttpClient.log.e(LOG_TAG, "getResponseData exception", e);
                 } finally {
                     AsyncHttpClient.silentCloseInputStream(instream);
                     if (inputStreamReader != null) {
@@ -144,6 +143,6 @@ public abstract class SaxAsyncHttpResponseHandler<T extends DefaultHandler> exte
     @Override
     public void onFailure(int statusCode, Header[] headers,
                           byte[] responseBody, Throwable error) {
-        onSuccess(statusCode, headers, handler);
+        onFailure(statusCode, headers, handler);
     }
 }

@@ -1,13 +1,13 @@
 /*
     Android Asynchronous Http Client
     Copyright (c) 2014 Marek Sebera <marek.sebera@gmail.com>
-    http://loopj.com
+    https://loopj.com
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
     You may obtain a copy of the License at
 
-        http://www.apache.org/licenses/LICENSE-2.0
+        https://www.apache.org/licenses/LICENSE-2.0
 
     Unless required by applicable law or agreed to in writing, software
     distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,24 +18,22 @@
 
 package com.loopj.android.http;
 
-import android.util.Log;
-
-import org.apache.http.Header;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.StatusLine;
-import org.apache.http.client.HttpResponseException;
-import org.apache.http.client.methods.HttpUriRequest;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.HttpEntity;
+import cz.msebera.android.httpclient.HttpResponse;
+import cz.msebera.android.httpclient.HttpStatus;
+import cz.msebera.android.httpclient.StatusLine;
+import cz.msebera.android.httpclient.client.HttpResponseException;
+import cz.msebera.android.httpclient.client.methods.HttpUriRequest;
+
 
 public abstract class RangeFileAsyncHttpResponseHandler extends FileAsyncHttpResponseHandler {
-    private static final String LOG_TAG = "RangeFileAsyncHttpResponseHandler";
+    private static final String LOG_TAG = "RangeFileAsyncHttpRH";
 
     private long current = 0;
     private boolean append = false;
@@ -67,7 +65,7 @@ public abstract class RangeFileAsyncHttpResponseHandler extends FileAsyncHttpRes
                         append = false;
                         current = 0;
                     } else {
-                        Log.v(LOG_TAG, AsyncHttpClient.HEADER_CONTENT_RANGE + ": " + header.getValue());
+                        AsyncHttpClient.log.v(LOG_TAG, AsyncHttpClient.HEADER_CONTENT_RANGE + ": " + header.getValue());
                     }
                     sendSuccessMessage(status.getStatusCode(), response.getAllHeaders(), getResponseData(response.getEntity()));
                 }
@@ -101,8 +99,8 @@ public abstract class RangeFileAsyncHttpResponseHandler extends FileAsyncHttpRes
     }
 
     public void updateRequestHeaders(HttpUriRequest uriRequest) {
-        if (mFile.exists() && mFile.canWrite())
-            current = mFile.length();
+        if (file.exists() && file.canWrite())
+            current = file.length();
         if (current > 0) {
             append = true;
             uriRequest.setHeader("Range", "bytes=" + current + "-");

@@ -1,13 +1,13 @@
 /*
     Android Asynchronous Http Client
     Copyright (c) 2011 James Smith <james@loopj.com>
-    http://loopj.com
+    https://loopj.com
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
     You may obtain a copy of the License at
 
-        http://www.apache.org/licenses/LICENSE-2.0
+        https://www.apache.org/licenses/LICENSE-2.0
 
     Unless required by applicable law or agreed to in writing, software
     distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,14 +17,6 @@
 */
 
 package com.loopj.android.http;
-
-import android.util.Log;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.utils.URLEncodedUtils;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.protocol.HTTP;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -42,6 +34,12 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+
+import cz.msebera.android.httpclient.HttpEntity;
+import cz.msebera.android.httpclient.client.entity.UrlEncodedFormEntity;
+import cz.msebera.android.httpclient.client.utils.URLEncodedUtils;
+import cz.msebera.android.httpclient.message.BasicNameValuePair;
+import cz.msebera.android.httpclient.protocol.HTTP;
 
 /**
  * A collection of string request parameters or files to send along with requests made from an
@@ -68,10 +66,10 @@ import java.util.concurrent.ConcurrentHashMap;
  * List&lt;String&gt; list = new ArrayList&lt;String&gt;(); // Ordered collection
  * list.add("Java");
  * list.add("C");
- * params.put("languages", list); // url params: "languages[]=Java&amp;languages[]=C"
+ * params.put("languages", list); // url params: "languages[0]=Java&amp;languages[1]=C"
  *
  * String[] colors = { "blue", "yellow" }; // Ordered collection
- * params.put("colors", colors); // url params: "colors[]=blue&amp;colors[]=yellow"
+ * params.put("colors", colors); // url params: "colors[0]=blue&amp;colors[1]=yellow"
  *
  * File[] files = { new File("pic.jpg"), new File("pic1.jpg") }; // Ordered collection
  * params.put("files", files); // url params: "files[]=pic.jpg&amp;files[]=pic1.jpg"
@@ -89,7 +87,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * params.put("users", listOfMaps); // url params: "users[][age]=30&amp;users[][gender]=male&amp;users[][age]=25&amp;users[][gender]=female"
  *
  * AsyncHttpClient client = new AsyncHttpClient();
- * client.post("http://myendpoint.com", params, responseHandler);
+ * client.post("https://myendpoint.com", params, responseHandler);
  * </pre>
  */
 public class RequestParams implements Serializable {
@@ -101,43 +99,17 @@ public class RequestParams implements Serializable {
             "application/json";
 
     protected final static String LOG_TAG = "RequestParams";
-    protected boolean isRepeatable;
-    protected boolean forceMultipartEntity = false;
-    protected boolean useJsonStreamer;
-    protected String elapsedFieldInJsonStreamer = "_elapsed";
-    protected boolean autoCloseInputStreams;
     protected final ConcurrentHashMap<String, String> urlParams = new ConcurrentHashMap<String, String>();
     protected final ConcurrentHashMap<String, StreamWrapper> streamParams = new ConcurrentHashMap<String, StreamWrapper>();
     protected final ConcurrentHashMap<String, FileWrapper> fileParams = new ConcurrentHashMap<String, FileWrapper>();
     protected final ConcurrentHashMap<String, List<FileWrapper>> fileArrayParams = new ConcurrentHashMap<String, List<FileWrapper>>();
     protected final ConcurrentHashMap<String, Object> urlParamsWithObjects = new ConcurrentHashMap<String, Object>();
+    protected boolean isRepeatable;
+    protected boolean forceMultipartEntity = false;
+    protected boolean useJsonStreamer;
+    protected String elapsedFieldInJsonStreamer = "_elapsed";
+    protected boolean autoCloseInputStreams;
     protected String contentEncoding = HTTP.UTF_8;
-
-    /**
-     * Sets content encoding for return value of {@link #getParamString()} and {@link
-     * #createFormEntity()} <p>&nbsp;</p> Default encoding is "UTF-8"
-     *
-     * @param encoding String constant from {@link HTTP}
-     */
-    public void setContentEncoding(final String encoding) {
-        if (encoding != null) {
-            this.contentEncoding = encoding;
-        } else {
-            Log.d(LOG_TAG, "setContentEncoding called with null attribute");
-        }
-    }
-
-    /**
-     * If set to true will force Content-Type header to `multipart/form-data`
-     * even if there are not Files or Streams to be send
-     * <p>&nbsp;</p>
-     * Default value is false
-     *
-     * @param force boolean, should declare content-type multipart/form-data even without files or streams present
-     */
-    public void setForceMultipartEntityContentType(boolean force) {
-        this.forceMultipartEntity = force;
-    }
 
     /**
      * Constructs a new empty {@code RequestParams} instance.
@@ -193,6 +165,32 @@ public class RequestParams implements Serializable {
     }
 
     /**
+     * Sets content encoding for return value of {@link #getParamString()} and {@link
+     * #createFormEntity()} <p>&nbsp;</p> Default encoding is "UTF-8"
+     *
+     * @param encoding String constant from {@link HTTP}
+     */
+    public void setContentEncoding(final String encoding) {
+        if (encoding != null) {
+            this.contentEncoding = encoding;
+        } else {
+            AsyncHttpClient.log.d(LOG_TAG, "setContentEncoding called with null attribute");
+        }
+    }
+
+    /**
+     * If set to true will force Content-Type header to `multipart/form-data`
+     * even if there are not Files or Streams to be send
+     * <p>&nbsp;</p>
+     * Default value is false
+     *
+     * @param force boolean, should declare content-type multipart/form-data even without files or streams present
+     */
+    public void setForceMultipartEntityContentType(boolean force) {
+        this.forceMultipartEntity = force;
+    }
+
+    /**
      * Adds a key/value string pair to the request.
      *
      * @param key   the key name for the new param.
@@ -228,11 +226,11 @@ public class RequestParams implements Serializable {
 
         if (key != null) {
             List<FileWrapper> fileWrappers = new ArrayList<FileWrapper>();
-            for (int i = 0; i < files.length; i++) {
-                if (files[i] == null || !files[i].exists()) {
+            for (File file : files) {
+                if (file == null || !file.exists()) {
                     throw new FileNotFoundException();
                 }
-                fileWrappers.add(new FileWrapper(files[i], contentType, customFileName));
+                fileWrappers.add(new FileWrapper(file, contentType, customFileName));
             }
             fileArrayParams.put(key, fileWrappers);
         }
@@ -460,7 +458,7 @@ public class RequestParams implements Serializable {
 
             result.append(entry.getKey());
             result.append("=");
-            result.append("FILE");
+            result.append("FILES(SIZE=").append(entry.getValue().size()).append(")");
         }
 
         List<BasicNameValuePair> params = getParamsList(null, urlParamsWithObjects);
@@ -512,7 +510,7 @@ public class RequestParams implements Serializable {
      *
      * @param progressHandler HttpResponseHandler for reporting progress on entity submit
      * @return HttpEntity resulting HttpEntity to be included along with {@link
-     * org.apache.http.client.methods.HttpEntityEnclosingRequestBase}
+     * cz.msebera.android.httpclient.client.methods.HttpEntityEnclosingRequestBase}
      * @throws IOException if one of the streams cannot be read
      */
     public HttpEntity getEntity(ResponseHandlerInterface progressHandler) throws IOException {
@@ -567,7 +565,7 @@ public class RequestParams implements Serializable {
         try {
             return new UrlEncodedFormEntity(getParamsList(), contentEncoding);
         } catch (UnsupportedEncodingException e) {
-            Log.e(LOG_TAG, "createFormEntity failed", e);
+            AsyncHttpClient.log.e(LOG_TAG, "createFormEntity failed", e);
             return null; // Can happen, if the 'contentEncoding' won't be HTTP.UTF_8
         }
     }

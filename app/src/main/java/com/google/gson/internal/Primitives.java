@@ -97,7 +97,7 @@ public final class Primitives {
     @SuppressWarnings("unchecked")
     Class<T> wrapped = (Class<T>) PRIMITIVE_TO_WRAPPER_TYPE.get(
         $Gson$Preconditions.checkNotNull(type));
-     return (wrapped == null) ? type : wrapped;
+    return (wrapped == null) ? type : wrapped;
   }
 
   /**

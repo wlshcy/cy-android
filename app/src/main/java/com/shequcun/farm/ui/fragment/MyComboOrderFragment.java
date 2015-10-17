@@ -23,12 +23,12 @@ import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.ToastHelper;
 import com.shequcun.farm.util.Utils;
 
-import org.apache.http.Header;
 
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnItemClick;
+import cz.msebera.android.httpclient.Header;
 
 /**
  * 我的订单——菜品订单

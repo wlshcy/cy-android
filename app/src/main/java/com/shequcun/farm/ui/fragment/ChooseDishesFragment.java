@@ -41,13 +41,13 @@ import com.shequcun.farm.model.PhotoModel;
 import com.shequcun.farm.ui.adapter.ChooseDishesAdapter;
 import com.shequcun.farm.util.*;
 
-import org.apache.http.Header;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import cz.msebera.android.httpclient.Header;
 
 /**
  * 选择菜品页
@@ -718,12 +718,8 @@ public class ChooseDishesFragment extends BaseFragment {
                 });
                 return false;
             } else if (status == 3) {
-//                choose_dishes_tip.setText(R.string.delievery_success);
-//                Drawable left = getActivity().getResources().getDrawable(R.drawable.icon_sigh);
-//                choose_dishes_tip.setCompoundDrawablesWithIntrinsicBounds(left, null, null, null);
                 choose_dishes_tip.setVisibility(View.GONE);
                 return false;
-//                entry.choose = true;
             } else if (status == 2) {
                 choose_dishes_tip.setText(R.string.choose_dishes_tip);
                 Drawable left = getActivity().getResources().getDrawable(R.drawable.icon_sigh);

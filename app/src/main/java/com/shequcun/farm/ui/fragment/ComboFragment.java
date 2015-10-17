@@ -25,13 +25,13 @@ import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.ToastHelper;
 import com.shequcun.farm.util.Utils;
 
-import org.apache.http.Header;
 
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
 import butterknife.OnItemClick;
+import cz.msebera.android.httpclient.Header;
 
 /**
  * 套餐页面
@@ -52,12 +52,15 @@ public class ComboFragment extends BaseFragment {
     @Override
     protected void initWidget(View v) {
         ((TextView) v.findViewById(R.id.title_center_text)).setText(R.string.choose_combo);
+
     }
 
     @Override
     protected void setWidgetLsn() {
         pView.setMode(PullToRefreshBase.Mode.PULL_FROM_END);
         pView.setOnRefreshListener(onRefrshLsn);
+//        pView.getLoadingLayoutProxy().setLastUpdatedLabel(
+//                "上次刷新时间");
         buildAdapter();
         requestComboList();
     }

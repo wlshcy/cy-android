@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,13 +21,11 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 public class Base64OutputStream extends FilterOutputStream {
+    private static final byte[] EMPTY = new byte[0];
     private final Base64.Coder coder;
     private final int flags;
-
     private byte[] buffer = null;
     private int bpos = 0;
-
-    private static byte[] EMPTY = new byte[0];
 
     /**
      * Performs Base64 encoding on the data written to the stream, writing the encoded data to
