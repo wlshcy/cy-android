@@ -98,7 +98,7 @@
     <string name="specialty">农庄优选</string>
     <string name="farm_info">农庄详情</string>
     <string name="spike">秒杀</string>
-    <string name="spike_error_tip">您已购买过该产品,不能重复购买!</string>
+    <string name="spike_error_tip">您已购买过该商品,请到“我的订单”中查看购买详情!</string>
     <string name="organic_farm_combo">有机农庄宅配套餐</string>
     <!--红包-->
     <string name="use_favorable_red_packets">使用优惠红包</string>

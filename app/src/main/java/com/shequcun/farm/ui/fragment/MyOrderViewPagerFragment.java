@@ -42,6 +42,9 @@ public class MyOrderViewPagerFragment extends BaseFragment {
         orderPager.addOnPageChangeListener(onPageChangeListener);
         orderPager.setOffscreenPageLimit(1);
         buildAdapter();
+        if (getArguments() != null) {
+            setCurrentItem(1);
+        }
     }
 
     @OnClick(R.id.back)

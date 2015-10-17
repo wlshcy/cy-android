@@ -101,10 +101,7 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
         RecommendEntry entry = adapter.getItem(position);
         if (entry == null)
             return;
-        if (entry.type == 2 && entry.bought) {
-            ToastHelper.showShort(getActivity(), R.string.spike_error_tip);
-            return;
-        }
+
         gotoFragmentByAnimation(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailFragment(), FarmSpecialtyDetailFragment.class.getName(), R.anim.slide_in_from_bottom, R.anim.slide_out_to_bottom);
 //        gotoFragmentByAnimation(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailFragment(), FarmSpecialtyDetailFragment.class.getName(),R.anim.rotate_in,R.anim.slide_out_to_bottom);
     }
@@ -147,19 +144,6 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
     }
 
     void buildCarouselAdapter(List<SlidesEntry> aList) {
-//        if (aList == null || aList.size() <= 0) {
-//            aList = new ArrayList<SlidesEntry>();
-//            SlidesEntry s = new SlidesEntry();
-//            aList.add(s);
-//            dismissImgProgress();
-//        }
-//        cAdapter = new CarouselAdapter(getActivity(), aList);
-//        cAdapter.buildOnClick(onClick);
-//        carousel_img.setAdapter(cAdapter, 0);
-//        carousel_img.setFlowIndicator(carousel_point);
-//        carousel_img.setOnViewSwitchListener(viewSwitchListener);
-//        cAdapter.setImageLoaderListener(imageLoaderListener);
-//        cAdapter.setWidth(DeviceInfo.getDeviceWidth(getActivity()));
         if (aList == null || aList.isEmpty()) {
             addSliderUrl(R.drawable.icon_combo_default);
             slider.setIndicatorVisibility(PagerIndicator.IndicatorVisibility.Invisible);
@@ -235,35 +219,6 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
         gotoFragmentByAdd(buildBundle(item.url), R.id.mainpage_ly, new AdFragment(), AdFragment.class.getName());
     }
 
-    private View.OnClickListener onClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-
-            if (!isLogin()) {
-                gotoFragmentByAdd(R.id.mainpage_ly, new LoginFragment(), LoginFragment.class.getName());
-                return;
-            }
-            SlidesEntry item = null;
-            if (v.getTag() instanceof SlidesEntry) {
-                item = (SlidesEntry) v.getTag();
-            }
-            if (item == null)
-                return;
-            if (TextUtils.isEmpty(item.url)) {
-                LinkEntry link = item.link;
-                if (link == null || link.type == 0)
-                    return;
-                if (link.type == 1) {//1.套餐详情,
-                    requestComboDetail(link.id);
-                } else if (link.type == 2) {//2.菜品详情
-                    requestSingleDishDetail(link.id);
-                }
-                return;
-            }
-
-            gotoFragmentByAdd(buildBundle(item.url), R.id.mainpage_ly, new AdFragment(), AdFragment.class.getName());
-        }
-    };
 
     Bundle buildBundle(final String adUrl) {
         Bundle bundle = new Bundle();
