@@ -167,7 +167,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
     private void addSliderUrl(String url) {
         DefaultSliderView textSliderView = new DefaultSliderView(getActivity());
         // initialize a SliderLayout
-        url = url+"?imageView2/2/"+DeviceInfo.getDeviceWidth(getActivity());
+        url = url + "?imageView2/2/" + DeviceInfo.getDeviceWidth(getActivity());
         textSliderView
                 .description("")
                 .image(url)
@@ -242,6 +242,11 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
 
                     if (!isLogin()) {
                         gotoFragmentByAdd(R.id.mainpage_ly, new LoginFragment(), LoginFragment.class.getName());
+                        return;
+                    }
+
+                    if (entry.type == 2 && entry.bought) {
+                        new com.shequcun.farm.dlg.AlertDialog().alertDialog(getActivity(), R.string.spike_error_tip);
                         return;
                     }
 

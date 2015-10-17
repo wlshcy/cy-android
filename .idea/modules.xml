@@ -3,8 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/youcai-android.iml" filepath="$PROJECT_DIR$/youcai-android.iml" />
-      <module fileurl="file://$PROJECT_DIR$/youcai-android-20150902.iml" filepath="$PROJECT_DIR$/youcai-android-20150902.iml" />
+      <module fileurl="file://$PROJECT_DIR$/librarySlider/librarySlider.iml" filepath="$PROJECT_DIR$/librarySlider/librarySlider.iml" />
+      <module fileurl="file://$PROJECT_DIR$/youcai-android-20150929.iml" filepath="$PROJECT_DIR$/youcai-android-20150929.iml" />
     </modules>
   </component>
 </project>

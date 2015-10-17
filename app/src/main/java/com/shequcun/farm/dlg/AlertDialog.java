@@ -53,5 +53,18 @@ public class AlertDialog {
                 });
     }
 
+    public void alertDialog(Context mAct, int resId) {
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(mAct);
+        builder.setTitle("提示");
+        builder.setMessage(resId);
+        builder.setNegativeButton("好的", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        builder.setNeutralButton("", null);
+        builder.create().show();
+    }
+
 
 }
