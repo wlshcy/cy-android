@@ -90,9 +90,8 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
         if (entry.detail != null) {
             if (!TextUtils.isEmpty(entry.detail.image)) {
                 String url = entry.detail.image + "?imageView2/2/w/" + DeviceInfo.getDeviceWidth(this.getActivity());
-//                String url = entry.detail.image + "?imageView2/2/w/480";
-                new BitmapAsyncTask(getActivity(),contentImgIv).execute(url);
-//                ImageLoader.getInstance().displayImage(url, contentImgIv, Constrants.image_display_options_disc);
+//                new BitmapAsyncTask(getActivity(),contentImgIv).execute(url);
+                ImageLoader.getInstance().displayImage(url, contentImgIv, Constrants.image_display_options_disc);
             }
             contentTv.setText(entry.detail.content);
         }
