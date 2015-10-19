@@ -15,8 +15,6 @@ public interface FlowIndicator extends ViewFlow.ViewSwitchListener {
      * The scroll position has been changed. A FlowIndicator may implement this
      * method to reflect the current position
      *
-     * @param oldh
-     * @param oldv
      * @param h
      */
     void onScrolled(int h);
