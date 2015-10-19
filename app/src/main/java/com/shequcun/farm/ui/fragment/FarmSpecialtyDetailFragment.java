@@ -2,9 +2,11 @@ package com.shequcun.farm.ui.fragment;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -16,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.Indicators.PagerIndicator;
@@ -29,8 +32,10 @@ import com.shequcun.farm.data.OtherInfo;
 import com.shequcun.farm.data.RecommendEntry;
 import com.shequcun.farm.datacenter.CacheManager;
 import com.shequcun.farm.db.RecommendItemKey;
+import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.platform.ShareContent;
 import com.shequcun.farm.platform.ShareManager;
+import com.shequcun.farm.task.BitmapAsyncTask;
 import com.shequcun.farm.ui.SqcFarmActivity;
 import com.shequcun.farm.ui.adapter.CarouselAdapter;
 import com.shequcun.farm.util.Constrants;
@@ -38,6 +43,9 @@ import com.shequcun.farm.util.DeviceInfo;
 import com.shequcun.farm.util.IntentUtil;
 import com.shequcun.farm.util.ToastHelper;
 import com.shequcun.farm.util.Utils;
+
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -82,7 +90,9 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
         if (entry.detail != null) {
             if (!TextUtils.isEmpty(entry.detail.image)) {
                 String url = entry.detail.image + "?imageView2/2/w/" + DeviceInfo.getDeviceWidth(this.getActivity());
-                ImageLoader.getInstance().displayImage(url, contentImgIv, Constrants.image_display_options_disc);
+//                String url = entry.detail.image + "?imageView2/2/w/480";
+                new BitmapAsyncTask(getActivity(),contentImgIv).execute(url);
+//                ImageLoader.getInstance().displayImage(url, contentImgIv, Constrants.image_display_options_disc);
             }
             contentTv.setText(entry.detail.content);
         }
@@ -244,9 +254,9 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 gotoHomePageDependPos(2);
-                                Bundle bundle=new Bundle();
+                                Bundle bundle = new Bundle();
 
-                                gotoFragmentByAdd(bundle,R.id.mainpage_ly, new MyOrderViewPagerFragment(), MyOrderViewPagerFragment.class.getName());
+                                gotoFragmentByAdd(bundle, R.id.mainpage_ly, new MyOrderViewPagerFragment(), MyOrderViewPagerFragment.class.getName());
                             }
                         });
                         return;
