@@ -3,30 +3,50 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/gray_ececec"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
     <include layout="@layout/common_title_ly" />
 
-    <com.common.widget.PullToRefreshListView
-        android:id="@+id/red_packets_lv"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingLeft="@dimen/px10"
-        android:paddingRight="@dimen/px10"
-        android:scrollbars="none"
-        android:divider="@color/gray_ececec"
-        android:dividerHeight="@dimen/px20"
-        android:listSelector="#0000"
-        android:background="@color/gray_ececec">
-    </com.common.widget.PullToRefreshListView>
-    <TextView
-        android:id="@+id/empty_list_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingTop="@dimen/px120"
-        android:layout_gravity="center"
-        android:gravity="top|center_horizontal"
-        android:text="@string/empty_red_packets"
-        android:visibility="gone" />
+
+    <com.common.widget.PullToRefreshScrollView xmlns:ptr="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/pView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/gray_ececec"
+        android:descendantFocusability="beforeDescendants"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        ptr:ptrAnimationStyle="flip">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.common.widget.ExpandableHeightListView
+                android:id="@+id/red_packets_lv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@color/gray_ececec"
+                android:dividerHeight="@dimen/px20"
+                android:listSelector="#0000"
+                android:paddingLeft="@dimen/px10"
+                android:paddingRight="@dimen/px10"
+                android:scrollbars="none"></com.common.widget.ExpandableHeightListView>
+
+
+            <TextView
+                android:id="@+id/empty_list_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="top|center_horizontal"
+                android:paddingTop="@dimen/px120"
+                android:text="@string/empty_red_packets"
+                android:visibility="gone" />
+
+        </LinearLayout>
+    </com.common.widget.PullToRefreshScrollView>
+
+
 </LinearLayout>

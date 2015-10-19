@@ -1,7 +1,6 @@
 package com.shequcun.farm.ui.fragment;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,11 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.common.widget.PullToRefreshAdapterViewBase;
+import com.common.widget.ExpandableHeightListView;
 import com.common.widget.PullToRefreshBase;
-import com.common.widget.PullToRefreshListView;
+import com.common.widget.PullToRefreshScrollView;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.shequcun.farm.R;
@@ -39,7 +39,7 @@ import cz.msebera.android.httpclient.Header;
  */
 public class RedPacketsListFragment extends BaseFragment {
     @Bind(R.id.red_packets_lv)
-    PullToRefreshListView redPacketsLv;
+    ExpandableHeightListView redPacketsLv;
     @Bind(R.id.title_center_text)
     TextView titleTv;
     @Bind(R.id.title_right_text)
@@ -47,6 +47,8 @@ public class RedPacketsListFragment extends BaseFragment {
     private RedPacketsAdapter adapter;
     @Bind(R.id.empty_list_view)
     View emptyView;
+    @Bind(R.id.pView)
+    PullToRefreshScrollView pView;
     public static final String KEY_TYPE = "type";
     public static final String KEY_ACTION = "action";
     /*1、2 选择红包(1.套餐优惠券, 2.单品优惠券)*/
@@ -79,13 +81,14 @@ public class RedPacketsListFragment extends BaseFragment {
 
     @Override
     protected void initWidget(View v) {
-        redPacketsLv.setMode(PullToRefreshBase.Mode.PULL_FROM_END);
+        pView.setMode(PullToRefreshBase.Mode.PULL_FROM_END);
         titleTv.setText(R.string.use_favorable_red_packets);
         rightTv.setText(R.string.use_rule);
         if (adapter == null) {
             adapter = new RedPacketsAdapter(getActivity());
         }
         redPacketsLv.setAdapter(adapter);
+        redPacketsLv.setExpanded(true);
     }
 
     @Override
@@ -93,9 +96,23 @@ public class RedPacketsListFragment extends BaseFragment {
         action = getActionFromParams();
         if (action != ACTION_LOOK)
             redPacketsLv.setOnItemClickListener(onItemClickListener);
-        redPacketsLv.setOnRefreshListener(onRefreshListener);
-        redPacketsLv.setOnRefreshingScrollToOriginal(onRefreshingScrollToOriginal);
+//        redPacketsLv.setOnRefreshListener(onRefreshListener);
+//        redPacketsLv.setOnRefreshingScrollToOriginal(onRefreshingScrollToOriginal);
 
+        pView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ScrollView>() {
+            @Override
+            public void onPullDownToRefresh(PullToRefreshBase<ScrollView> refreshView) {
+
+            }
+
+            @Override
+            public void onPullUpToRefresh(PullToRefreshBase<ScrollView> refreshView) {
+                if (adapter == null)
+                    return;
+                CouponEntry entry = (CouponEntry) adapter.getLastItem();
+                reuqestRedPacketsList(type, entry == null ? 0 : entry.id);
+            }
+        });
     }
 
     @OnClick({R.id.back, R.id.title_right_text})
@@ -112,30 +129,30 @@ public class RedPacketsListFragment extends BaseFragment {
         gotoFragmentByAdd(bundle, R.id.mainpage_ly, new SetWebViewFragment(), SetWebViewFragment.class.getName());
     }
 
-    private PullToRefreshAdapterViewBase.OnRefreshingScrollToOriginal onRefreshingScrollToOriginal = new PullToRefreshAdapterViewBase.OnRefreshingScrollToOriginal() {
-        @Override
-        public void onScrollToOriginal() {
-            redPacketsLv.onRefreshComplete();
-        }
-    };
-
-    private PullToRefreshBase.OnRefreshListener onRefreshListener = new PullToRefreshBase.OnRefreshListener() {
-        @Override
-        public void onRefresh(PullToRefreshBase refreshView) {
-            if (redPacketsLv.isHeaderShown()) {
-            } else {
-                CouponEntry entry = (CouponEntry) adapter.getLastItem();
-                reuqestRedPacketsList(type, entry == null ? 0 : entry.id);
-            }
-        }
-    };
+//    private PullToRefreshAdapterViewBase.OnRefreshingScrollToOriginal onRefreshingScrollToOriginal = new PullToRefreshAdapterViewBase.OnRefreshingScrollToOriginal() {
+//        @Override
+//        public void onScrollToOriginal() {
+//            redPacketsLv.onRefreshComplete();
+//        }
+//    };
+//
+//    private PullToRefreshBase.OnRefreshListener onRefreshListener = new PullToRefreshBase.OnRefreshListener() {
+//        @Override
+//        public void onRefresh(PullToRefreshBase refreshView) {
+//            if (redPacketsLv.isHeaderShown()) {
+//            } else {
+//                CouponEntry entry = (CouponEntry) adapter.getLastItem();
+//                reuqestRedPacketsList(type, entry == null ? 0 : entry.id);
+//            }
+//        }
+//    };
 
     private AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             if (adapter == null)
                 return;
-            CouponEntry entry = (CouponEntry) adapter.getItem(position - redPacketsLv.getRefreshableView().getHeaderViewsCount());
+            CouponEntry entry = (CouponEntry) adapter.getItem(position);
             if (entry == null)
                 return;
             if (entry.used)
@@ -169,7 +186,9 @@ public class RedPacketsListFragment extends BaseFragment {
             @Override
             public void onFinish() {
                 super.onFinish();
-                mHandler.sendEmptyMessageDelayed(0, 1000);
+//                mHandler.sendEmptyMessageDelayed(0, 1000);
+                if (pView != null)
+                    pView.onRefreshComplete();
             }
 
             @Override
@@ -244,12 +263,12 @@ public class RedPacketsListFragment extends BaseFragment {
         }
     }
 
-    private Handler mHandler = new Handler() {
-        public void handleMessage(android.os.Message msg) {
-            if (redPacketsLv != null)
-                redPacketsLv.onRefreshComplete();
-        }
-    };
+//    private Handler mHandler = new Handler() {
+//        public void handleMessage(android.os.Message msg) {
+//            if (redPacketsLv != null)
+//                redPacketsLv.onRefreshComplete();
+//        }
+//    };
 
     private int getTypeFromParams() {
         Bundle bundle = getArguments();
