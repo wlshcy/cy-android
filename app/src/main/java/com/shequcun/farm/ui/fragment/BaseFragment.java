@@ -8,7 +8,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.AlphaAnimation;
 
 import com.shequcun.farm.R;
 import com.shequcun.farm.util.HttpRequestUtil;
@@ -79,10 +78,13 @@ public abstract class BaseFragment extends Fragment {
             mmAct = mAct;
         }
         FragmentManager fm = mmAct.getSupportFragmentManager();
-        FragmentTransaction transaction = fm.beginTransaction();
-        transaction.add(id, fragment);
-        transaction.addToBackStack(tag);
-        transaction.commitAllowingStateLoss();
+        if (fm != null) {
+            FragmentTransaction transaction = fm.beginTransaction();
+            transaction.add(id, fragment);
+            transaction.addToBackStack(tag);
+            transaction.commitAllowingStateLoss();
+        }
+
     }
 
     protected void gotoFragmentByAdd(BaseFragment baseFragment, Class cls) {
@@ -185,18 +187,6 @@ public abstract class BaseFragment extends Fragment {
         super.onPause();
 //umeng统计页面
         MobclickAgent.onPageEnd(this.getClass().getSimpleName());
-    }
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-//        if (isVisibleToUser) {
-//            //umeng统计页面
-//            MobclickAgent.onPageStart(this.getClass().getSimpleName());
-//        } else {
-//            //umeng统计页面
-//            MobclickAgent.onPageEnd(this.getClass().getSimpleName());
-//        }
     }
 
     /**
