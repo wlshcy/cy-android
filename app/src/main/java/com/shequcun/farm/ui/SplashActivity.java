@@ -36,7 +36,7 @@ public class SplashActivity extends BaseFragmentActivity {
         mHandler.sendEmptyMessageDelayed(0, 1000);
         MobclickAgent.updateOnlineConfig(this);
         //umeng统计
-//        AnalyticsConfig.setAppkey(this, "55c870b067e58ec5440030b5");
+        AnalyticsConfig.setAppkey(this, "55c870b067e58ec5440030b5");
         /** 设置是否对日志信息进行加密, 默认false(不加密). */
         AnalyticsConfig.enableEncrypt(true);
     }

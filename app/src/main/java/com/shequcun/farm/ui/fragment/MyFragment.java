@@ -12,7 +12,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -25,6 +24,7 @@ import com.shequcun.farm.dlg.ConsultationDlg;
 import com.shequcun.farm.ui.adapter.MyAdapter;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
 import com.shequcun.farm.util.IntentUtil;
+import com.shequcun.farm.util.N7Utils;
 
 import butterknife.Bind;
 import butterknife.OnItemClick;
@@ -113,7 +113,7 @@ public class MyFragment extends BaseFragment {
         ((TextView) hView_1.findViewById(R.id.mobile_phone)).setText(uEntry != null ? uEntry.mobile : "");
         CircleImageView circleImageView = ((CircleImageView) hView_1.findViewById(R.id.my_head));
         if (uEntry != null && !TextUtils.isEmpty(uEntry.headimg)) {
-            ImageLoader.getInstance().displayImage(uEntry.headimg + "?imageview2/2/w/200", circleImageView);
+            ImageLoader.getInstance().displayImage(N7Utils.filter22UrlParams(uEntry.headimg,200), circleImageView);
             hView_1.findViewById(R.id.click_login_tv).setVisibility(View.GONE);
         }
         hView_1.findViewById(R.id.my_head).setOnClickListener(new AvoidDoubleClickListener() {
