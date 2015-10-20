@@ -46,4 +46,15 @@ public class ShareContent {
 	public void setImageId(int imageId) {
 		this.imageId = imageId;
 	}
+
+	@Override
+	public String toString() {
+		return "ShareContent{" +
+				"title='" + title + '\'' +
+				", urlImage='" + urlImage + '\'' +
+				", content='" + content + '\'' +
+				", targetUrl='" + targetUrl + '\'' +
+				", imageId=" + imageId +
+				'}';
+	}
 }
