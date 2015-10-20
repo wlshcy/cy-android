@@ -174,7 +174,7 @@ public class ChooseDishesFragment extends BaseFragment {
         int id = buildRequestID();
         RequestParams params = new RequestParams();
         params.add("combo_id", id + "");
-        final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
+//        final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
         HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "cai/itemlist", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] data) {
@@ -202,15 +202,15 @@ public class ChooseDishesFragment extends BaseFragment {
             @Override
             public void onStart() {
                 super.onStart();
-                if (pDlg != null)
-                    pDlg.show();
+//                if (pDlg != null)
+//                    pDlg.show();
             }
 
             @Override
             public void onFinish() {
                 super.onFinish();
-                if (pDlg != null)
-                    pDlg.dismiss();
+//                if (pDlg != null)
+//                    pDlg.dismiss();
                 if (pView != null)
                     pView.onRefreshComplete();
             }
