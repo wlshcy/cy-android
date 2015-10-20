@@ -27,7 +27,7 @@
 
         <TextView
             android:id="@+id/name_tv"
-            android:layout_width="@dimen/px222"
+            android:layout_width="@dimen/px180"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/px34"
             android:singleLine="true"
