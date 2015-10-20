@@ -370,7 +370,8 @@ public class ModifyOrderFragment extends BaseFragment {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("ComboEntry", entry);
                 popBackStack();
-                gotoFragmentByAnimation(bundle, R.id.mainpage_ly, new ChooseDishesFragment(), ChooseDishesFragment.class.getName(), R.anim.scale_left_bottom_in, R.anim.scale_left_bottom_out);
+//                gotoFragmentByAnimation(bundle, R.id.mainpage_ly, new ChooseDishesFragment(), ChooseDishesFragment.class.getName(), R.anim.scale_left_bottom_in, R.anim.scale_left_bottom_out);
+                gotoFragmentByAdd(bundle, R.id.mainpage_ly, new ChooseDishesFragment(), ChooseDishesFragment.class.getName());
             }
         });
         builder.setNeutralButton(R.string.cancel, null);

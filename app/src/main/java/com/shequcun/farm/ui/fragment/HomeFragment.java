@@ -90,7 +90,8 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
 //            gotoFragmentByAnimation(null, R.id.mainpage_ly, new LoginFragment(), LoginFragment.class.getName(), R.anim.scale_left_top_in, R.anim.scale_left_top_out);
 //            return;
 //        }
-        gotoFragmentByAnimation(null, R.id.mainpage_ly, new ComboFragment(), ComboFragment.class.getName(), R.anim.scale_left_top_in, R.anim.scale_left_top_out);
+        gotoFragmentByAdd(null, R.id.mainpage_ly, new ComboFragment(), ComboFragment.class.getName());
+//        gotoFragmentByAnimation(null, R.id.mainpage_ly, new ComboFragment(), ComboFragment.class.getName(), R.anim.scale_left_top_in, R.anim.scale_left_top_out);
     }
 
     @OnItemClick(R.id.gv)
@@ -101,7 +102,8 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
         if (entry == null)
             return;
 
-        gotoFragmentByAnimation(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailFragment(), FarmSpecialtyDetailFragment.class.getName(), R.anim.slide_in_from_bottom, R.anim.slide_out_to_bottom);
+        gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailFragment(), FarmSpecialtyDetailFragment.class.getName());
+//        gotoFragmentByAnimation(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailFragment(), FarmSpecialtyDetailFragment.class.getName(), R.anim.slide_in_from_bottom, R.anim.slide_out_to_bottom);
 //        gotoFragmentByAnimation(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailFragment(), FarmSpecialtyDetailFragment.class.getName(),R.anim.rotate_in,R.anim.slide_out_to_bottom);
     }
 
@@ -427,7 +429,8 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
                     ComboDetailEntry entry = JsonUtilsParser.fromJson(new String(data), ComboDetailEntry.class);
                     if (entry != null) {
                         if (TextUtils.isEmpty(entry.errmsg)) {
-                            gotoFragmentByAnimation(buildBundle_(entry.combo), R.id.mainpage_ly, new ComboSecondFragment(), ComboSecondFragment.class.getName(), R.anim.puff_in, R.anim.puff_out);
+                            //gotoFragmentByAnimation(buildBundle_(entry.combo), R.id.mainpage_ly, new ComboSecondFragment(), ComboSecondFragment.class.getName(), R.anim.puff_in, R.anim.puff_out);
+                            gotoFragmentByAdd(buildBundle_(entry.combo), R.id.mainpage_ly, new ComboSecondFragment(), ComboSecondFragment.class.getName());
                             return;
                         }
                         ToastHelper.showShort(getActivity(), entry.errmsg);

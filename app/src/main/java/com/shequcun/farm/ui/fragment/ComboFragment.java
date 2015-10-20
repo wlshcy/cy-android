@@ -82,12 +82,14 @@ public class ComboFragment extends BaseFragment {
         if (entry == null)
             return;
         if (buildIsMyComboClick(position)) {
-            gotoFragmentByAnimation(buildBundle(entry), R.id.mainpage_ly, new ChooseDishesFragment(), ChooseDishesFragment.class.getName(), R.anim.scale_left_bottom_in, R.anim.scale_left_bottom_out);
+//            gotoFragmentByAnimation(buildBundle(entry), R.id.mainpage_ly, new ChooseDishesFragment(), ChooseDishesFragment.class.getName(), R.anim.scale_left_bottom_in, R.anim.scale_left_bottom_out);
+            gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new ChooseDishesFragment(), ChooseDishesFragment.class.getName());
         } else {
 //            ComboSecondDialog dialog = new ComboSecondDialog(getActivity());
 //            dialog.addViewsToList(entry);
 //            dialog.show();
-            gotoFragmentByAnimation(buildBundle(entry), R.id.mainpage_ly, new ComboSecondFragment(), ComboSecondFragment.class.getName(), R.anim.puff_in, R.anim.puff_out);
+            //  gotoFragmentByAnimation(buildBundle(entry), R.id.mainpage_ly, new ComboSecondFragment(), ComboSecondFragment.class.getName(), R.anim.puff_in, R.anim.puff_out);
+            gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new ComboSecondFragment(), ComboSecondFragment.class.getName());
 //             gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new ComboSecondFragmentEx(), ComboSecondFragmentEx.class.getName());
         }
     }

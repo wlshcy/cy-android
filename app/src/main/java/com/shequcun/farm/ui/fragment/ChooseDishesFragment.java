@@ -717,6 +717,7 @@ public class ChooseDishesFragment extends BaseFragment {
     private void setBadgeView(boolean increment) {
         if (increment) {
             mBadgeViewShopCart.increment(1);
+
             mBadgeViewShopCart.show();
         } else {
             mBadgeViewShopCart.decrement(1);

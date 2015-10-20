@@ -60,6 +60,8 @@ public class Utils {
     }
 
     public static void setListViewHeightBasedOnChildren(ListView listView) {
+        if (listView == null)
+            return;
         ListAdapter listAdapter = listView.getAdapter();
         if (listAdapter == null)
             return;
