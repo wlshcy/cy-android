@@ -169,20 +169,12 @@ public class ShareManager {
         @Override
         protected Bitmap doInBackground(String... params) {
             String imgUrl = params[0];
-            HttpURLConnection connection = null;
             Bitmap bitmap = null;
             try {
-                URL url = new URL(imgUrl);
-                connection = (HttpURLConnection) url.openConnection();
-                connection.setConnectTimeout(5 * 1000);
-                connection.setReadTimeout(10 * 1000);
                 /**单纯的网络加载会出现大容量的bitmap，导致分享没反应*/
                 bitmap = ImageLoader.getInstance().loadImageSync(imgUrl);
             } catch (Exception e) {
                 return bitmap;
-            } finally {
-                if (connection != null)
-                    connection.disconnect();
             }
             return bitmap;
         }
