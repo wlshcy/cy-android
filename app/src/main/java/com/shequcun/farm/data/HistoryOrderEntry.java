@@ -49,4 +49,8 @@ public class HistoryOrderEntry implements Serializable {
     public String mobile;
 
     public String date;
+    /**
+     * 下单日期
+     */
+    public String placeAnOrderDate;
 }

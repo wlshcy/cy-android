@@ -19,7 +19,7 @@ public class ModifyOrderParams implements Serializable {
     public int order_type;
 
 
-    public void setParams(int id, String orderno, int type, int combo_id, int price, String combo_idx, int status, String date, String name, String mobile, String address,int order_type) {
+    public void setParams(int id, String orderno, int type, int combo_id, int price, String combo_idx, int status, String date, String name, String mobile, String address, int order_type, String placeAnOrderDate) {
         this.id = id;
         this.orderno = orderno;
         this.type = type;
@@ -32,6 +32,7 @@ public class ModifyOrderParams implements Serializable {
         this.mobile = mobile;
         this.address = address;
         this.order_type = order_type;
+        this.placeAnOrderDate = placeAnOrderDate;
     }
 
     /**
@@ -46,5 +47,10 @@ public class ModifyOrderParams implements Serializable {
      * 收货人地址
      */
     public String address;
+
+    /***
+     * 下单日期
+     */
+    public String placeAnOrderDate;
 
 }

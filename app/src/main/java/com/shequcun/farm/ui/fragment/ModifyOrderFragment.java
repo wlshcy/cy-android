@@ -293,24 +293,27 @@ public class ModifyOrderFragment extends BaseFragment {
     }
 
     void addHeaderView() {
-        View headView = LayoutInflater.from(getActivity()).inflate(R.layout.order_details_footer_ly, null);
-        ((TextView) headView.findViewById(R.id.distribution_date)).setText(hEntry.date);
-        mLv.addHeaderView(headView, null, false);
+        if (hEntry != null && !TextUtils.isEmpty(hEntry.date)) {
+            View headView = LayoutInflater.from(getActivity()).inflate(R.layout.order_details_footer_ly, null);
+            ((TextView) headView.findViewById(R.id.distribution_date)).setText(hEntry.date);
+            mLv.addHeaderView(headView, null, false);
+        }
     }
 
     void addFooter(int part) {
         View footerView = LayoutInflater.from(getActivity()).inflate(R.layout.order_details_footer_ly, null);
-        if (getOrderStatus() == 3 || getOrderStatus() == 5 || getOrderStatus() == 0) {
+//        if (getOrderStatus() == 3 || getOrderStatus() == 5 || getOrderStatus() == 0) {
+//
+//        } else if (getOrderStatus() == 2) {
+//            ((TextView) footerView.findViewById(R.id.distribution_date)).setText("配送中");
+//        } else {
+//            if (getOrderType() == 1) {
+//                //1.套餐订单 2.选菜订单, 3.单品订单, 4.自动选菜订单
+//                ((TextView) footerView.findViewById(R.id.distribution_date)).setText("配送日期:本周五配送");
+//            }
+//        }
 
-        } else if (getOrderStatus() == 2) {
-            ((TextView) footerView.findViewById(R.id.distribution_date)).setText("配送中");
-        } else {
-            if (getOrderType() == 1) {
-                //1.套餐订单 2.选菜订单, 3.单品订单, 4.自动选菜订单
-                ((TextView) footerView.findViewById(R.id.distribution_date)).setText("配送日期:本周五配送");
-            }
-        }
-
+        ((TextView) footerView.findViewById(R.id.distribution_date)).setText(hEntry.placeAnOrderDate);
         ((TextView) footerView.findViewById(R.id.number_copies)).setText("共" + part + "份");
         mLv.addFooterView(footerView, null, false);
     }

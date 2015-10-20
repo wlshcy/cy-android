@@ -40,7 +40,7 @@ public class MyOrderAdapter extends ArrayAdapter<HistoryOrderEntry> {
         if (entry != null) {
             vh.distribution_number_tv.setText("第" + entry.times + "次选品");
             if (entry.status == 0) {
-                entry.date = "下单日期:" + Utils.getTime(entry.json.get(entry.status + "").getAsLong());
+                //entry.date = "下单日期:" + Utils.getTime(entry.json.get(entry.status + "").getAsLong());
 //                vh.distribution_date.setText(entry.date);
             } else if (entry.status == 1) {
                 entry.date = "下单日期:" + Utils.getTime(entry.json.get(entry.status + "").getAsLong());
@@ -56,7 +56,9 @@ public class MyOrderAdapter extends ArrayAdapter<HistoryOrderEntry> {
             }
 
 //            entry.date = "下单日期:" + Utils.getTime(entry.json.get(0 + "").getAsLong());
-            vh.distribution_date.setText("下单日期:" + Utils.getTime(entry.json.get(0 + "").getAsLong()));
+
+            entry.placeAnOrderDate = "下单日期:" + Utils.getTime(entry.json.get(0 + "").getAsLong());
+            vh.distribution_date.setText(entry.placeAnOrderDate);
 
             if (TextUtils.isEmpty(entry.title)) {
                 vh.distribution_name.setVisibility(View.GONE);
