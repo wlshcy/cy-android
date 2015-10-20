@@ -112,9 +112,11 @@ public class DishesFragment extends BaseFragment {
     }
 
     public void addDataToAdapter(List<HistoryOrderEntry> aList) {
-        adapter.addAll(aList);
-        adapter.notifyDataSetChanged();
-        Utils.setListViewHeightBasedOnChildren(mLv);
+        if (aList != null && aList.size() > 0) {
+            adapter.addAll(aList);
+            adapter.notifyDataSetChanged();
+            Utils.setListViewHeightBasedOnChildren(mLv);
+        }
     }
 
 

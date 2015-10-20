@@ -65,15 +65,15 @@ public class MyFragment extends BaseFragment {
         }
         switch (position - mLv.getHeaderViewsCount()) {
             case 0://我的订单
-                gotoFragment(R.id.mainpage_ly, new MyOrderViewPagerFragment(), MyOrderViewPagerFragment.class.getName());
+                gotoFragmentByAdd(R.id.mainpage_ly, new MyOrderViewPagerFragment(), MyOrderViewPagerFragment.class.getName());
                 break;
             case 1://订单延期配送
-                gotoFragment(R.id.mainpage_ly, new OrderDelayFragment(), OrderDelayFragment.class.getName());
+                gotoFragmentByAdd(R.id.mainpage_ly, new OrderDelayFragment(), OrderDelayFragment.class.getName());
                 break;
             case 2://我的优惠红包
                 Bundle bundle1 = new Bundle();
                 bundle1.putInt(RedPacketsListFragment.KEY_ACTION, RedPacketsListFragment.ACTION_LOOK);
-                gotoFragment(bundle1, R.id.mainpage_ly, new RedPacketsListFragment(), RedPacketsListFragment.class.getName());
+                gotoFragmentByAdd(bundle1, R.id.mainpage_ly, new RedPacketsListFragment(), RedPacketsListFragment.class.getName());
                 break;
             case 3://拨打客服电话
                 ConsultationDlg.showCallTelDlg(getActivity());

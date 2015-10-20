@@ -80,6 +80,7 @@ public abstract class BaseFragment extends Fragment {
         FragmentManager fm = mmAct.getSupportFragmentManager();
         if (fm != null) {
             FragmentTransaction transaction = fm.beginTransaction();
+            transaction.setCustomAnimations(R.anim.slide_in_from_right, R.anim.slide_out_from_left, R.anim.slide_in_from_right, R.anim.slide_out_from_left);
             transaction.add(id, fragment);
             transaction.addToBackStack(tag);
             transaction.commitAllowingStateLoss();
