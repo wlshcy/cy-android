@@ -113,8 +113,10 @@ public class MyFragment extends BaseFragment {
         ((TextView) hView_1.findViewById(R.id.mobile_phone)).setText(uEntry != null ? uEntry.mobile : "");
         CircleImageView circleImageView = ((CircleImageView) hView_1.findViewById(R.id.my_head));
         if (uEntry != null && !TextUtils.isEmpty(uEntry.headimg)) {
-            ImageLoader.getInstance().displayImage(N7Utils.filter22UrlParams(uEntry.headimg,200), circleImageView);
+            ImageLoader.getInstance().displayImage(N7Utils.filter22UrlParams(uEntry.headimg, 200), circleImageView);
             hView_1.findViewById(R.id.click_login_tv).setVisibility(View.GONE);
+        } else {
+            circleImageView.setImageResource(R.color.white_f4f4f4);
         }
         hView_1.findViewById(R.id.my_head).setOnClickListener(new AvoidDoubleClickListener() {
             @Override

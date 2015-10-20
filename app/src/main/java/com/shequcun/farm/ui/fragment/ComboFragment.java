@@ -1,5 +1,9 @@
 package com.shequcun.farm.ui.fragment;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -20,6 +24,7 @@ import com.shequcun.farm.datacenter.CacheManager;
 import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.ui.adapter.ComboAdapter;
 import com.shequcun.farm.util.HttpRequestUtil;
+import com.shequcun.farm.util.IntentUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.ToastHelper;
@@ -52,7 +57,6 @@ public class ComboFragment extends BaseFragment {
     @Override
     protected void initWidget(View v) {
         ((TextView) v.findViewById(R.id.title_center_text)).setText(R.string.choose_combo);
-
     }
 
     @Override
@@ -63,6 +67,7 @@ public class ComboFragment extends BaseFragment {
 //                "上次刷新时间");
         buildAdapter();
         requestComboList();
+        doRegisterRefreshBrodcast();
     }
 
     @OnItemClick(R.id.mListView)
@@ -221,6 +226,44 @@ public class ComboFragment extends BaseFragment {
             requestComboList();
         }
     };
+
+
+    void doRegisterRefreshBrodcast() {
+        if (!mIsBind) {
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(IntentUtil.UPDATE_COMBO_PAGE);
+            getActivity().registerReceiver(mUpdateReceiver, intentFilter);
+            mIsBind = true;
+        }
+    }
+
+    private BroadcastReceiver mUpdateReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (TextUtils.isEmpty(action)) {
+                return;
+            }
+            if (action.equals(IntentUtil.UPDATE_COMBO_PAGE)) {
+                requestComboList();
+            }
+        }
+    };
+
+    private void doUnRegisterReceiver() {
+        if (mIsBind) {
+            getActivity().unregisterReceiver(mUpdateReceiver);
+            mIsBind = false;
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        doUnRegisterReceiver();
+    }
+
+    boolean mIsBind = false;
 
     ComboAdapter adapter;
     @Bind(R.id.mListView)

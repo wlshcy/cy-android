@@ -24,6 +24,9 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.common.widget.BadgeView;
+import com.common.widget.ExpandableHeightListView;
+import com.common.widget.PullToRefreshBase;
+import com.common.widget.PullToRefreshScrollView;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -100,6 +103,18 @@ public class ChooseDishesFragment extends BaseFragment {
         mShopCartIv.setOnClickListener(onClick);
         emptyView.setOnClickListener(onClick);
         option_dishes_tv.setOnClickListener(onClick);
+        pView.setMode(PullToRefreshBase.Mode.PULL_FROM_END);
+        pView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ScrollView>() {
+            @Override
+            public void onPullDownToRefresh(PullToRefreshBase<ScrollView> refreshView) {
+
+            }
+
+            @Override
+            public void onPullUpToRefresh(PullToRefreshBase<ScrollView> refreshView) {
+                requsetDishesList();
+            }
+        });
         requsetDishesList();
     }
 
@@ -196,12 +211,16 @@ public class ChooseDishesFragment extends BaseFragment {
                 super.onFinish();
                 if (pDlg != null)
                     pDlg.dismiss();
+                if (pView != null)
+                    pView.onRefreshComplete();
             }
         });
     }
 
     private void doAddDataToAdapter(List<DishesItemEntry> aList) {
+
         if (aList != null && aList.size() > 0) {
+            adapter.clear();
             adapter.addAll(aList);
             adapter.notifyDataSetChanged();
         }
@@ -221,6 +240,7 @@ public class ChooseDishesFragment extends BaseFragment {
             adapter = new ChooseDishesAdapter(getActivity());
         adapter.buildOnClickLsn(enabled, onGoodsImgLsn, mUpOnClickListener, mDownOnClickListener);
         mLv.setAdapter(adapter);
+        mLv.setExpanded(true);
     }
 
     AvoidDoubleClickListener onGoodsImgLsn = new AvoidDoubleClickListener() {
@@ -833,7 +853,7 @@ public class ChooseDishesFragment extends BaseFragment {
     @Bind(R.id.root_view)
     FrameLayout rootView;
     @Bind(R.id.mLv)
-    ListView mLv;
+    ExpandableHeightListView mLv;
     ChooseDishesAdapter adapter;
     @Bind(R.id.shop_cart_clear_tv)
     TextView mShopCartClearTv;//清空购物车
@@ -843,4 +863,6 @@ public class ChooseDishesFragment extends BaseFragment {
     BadgeView mBadgeViewShopCart;
     @Bind(R.id.shop_cart_iv)
     ImageView mShopCartIv;
+    @Bind(R.id.pView)
+    PullToRefreshScrollView pView;
 }

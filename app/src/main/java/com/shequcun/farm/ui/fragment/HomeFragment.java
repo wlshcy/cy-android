@@ -42,7 +42,6 @@ import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.ToastHelper;
 
 
-
 import java.util.List;
 
 import butterknife.Bind;
@@ -244,6 +243,7 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
     void requestHome(final int mode) {
         RequestParams params = new RequestParams();
         params.add("mode", mode + "");
+        params.add("length", "10");
         HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "cai/home", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int sCode, Header[] h, byte[] data) {
@@ -291,7 +291,10 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
         RequestParams params = new RequestParams();
         params.add("length", 15 + "");
         if (adapter != null && adapter.getCount() >= 1) {
-            params.add("lastid", adapter.getItem(adapter.getCount() - 1).id + "");
+//            params.add("lastid", adapter.getItem(adapter.getCount() - 1).id + "");
+            params.add("start", adapter.getCount() + "");
+        } else {
+            params.add("start", "0");
         }
         HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "cai/itemlist", new AsyncHttpResponseHandler() {
             @Override
