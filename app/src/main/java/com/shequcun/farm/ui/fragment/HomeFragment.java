@@ -102,8 +102,8 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
         if (entry == null)
             return;
 
-//        gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailFragment(), FarmSpecialtyDetailFragment.class.getName());
-        gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailViewPagerFragment(), FarmSpecialtyDetailViewPagerFragment.class.getName());
+        gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailFragment(), FarmSpecialtyDetailFragment.class.getName());
+//        gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailViewPagerFragment(), FarmSpecialtyDetailViewPagerFragment.class.getName());
 //        gotoFragmentByAnimation(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailFragment(), FarmSpecialtyDetailFragment.class.getName(), R.anim.slide_in_from_bottom, R.anim.slide_out_to_bottom);
 //        gotoFragmentByAnimation(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailFragment(), FarmSpecialtyDetailFragment.class.getName(),R.anim.rotate_in,R.anim.slide_out_to_bottom);
     }
@@ -392,7 +392,8 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
                     RecommendEntry entry = JsonUtilsParser.fromJson(new String(data), RecommendEntry.class);
                     if (entry != null) {
                         if (TextUtils.isEmpty(entry.errmsg)) {
-                            gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailViewPagerFragment(), FarmSpecialtyDetailViewPagerFragment.class.getName());
+//                            gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailViewPagerFragment(), FarmSpecialtyDetailViewPagerFragment.class.getName());
+                            gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailFragment(), FarmSpecialtyDetailViewPagerFragment.class.getName());
                         }
                     }
                 }
@@ -478,46 +479,6 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
         }
     };
 
-//    private ViewFlow.ViewSwitchListener viewSwitchListener = new ViewFlow.ViewSwitchListener() {
-//        @Override
-//        public void onSwitched(View view, int position) {
-//            if (cAdapter != null)
-//                cAdapter.setCurVisibleIndex(position);
-//            ViewFlow viewFlow = (ViewFlow) view.getParent();
-//            View view1 = viewFlow.getChildAt(position);
-//            if (view1 == null) return;
-//            View img = view1.findViewById(R.id.imgView);
-//            if (img == null) return;
-//            if (img.getTag() == null) {
-//                popImgProgress();
-//            } else {
-//                if (img.getTag() instanceof String) {
-//                    String s = (String) img.getTag();
-//                }
-//                dismissImgProgress();
-//            }
-//        }
-//    };
-
-//    private void dismissImgProgress() {
-//        if (imgProgress == null) return;
-//        if (imgProgress.getVisibility() == View.VISIBLE)
-//            imgProgress.setVisibility(View.GONE);
-//    }
-//
-//    private void popImgProgress() {
-//        if (imgProgress == null) return;
-//        if (imgProgress.getVisibility() == View.GONE)
-//            imgProgress.setVisibility(View.VISIBLE);
-//    }
-
-    /**
-     * 轮播的图片
-     */
-//    @Bind(R.id.carousel_img)
-//    ViewFlow carousel_img;
-//    @Bind(R.id.carousel_point)
-//    CircleFlowIndicator carousel_point;
     @Bind(R.id.pView)
     PullToRefreshScrollView pView;
     @Bind(R.id.gv)

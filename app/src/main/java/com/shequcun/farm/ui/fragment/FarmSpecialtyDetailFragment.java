@@ -13,6 +13,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -123,7 +125,9 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
 
     @OnClick(R.id.back)
     void back() {
+//        clearStack();
         popBackStack();
+//        startAnimation();
     }
 
     void buildCarouselAdapter() {
@@ -244,9 +248,9 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 gotoHomePageDependPos(2);
-                                Bundle bundle=new Bundle();
+                                Bundle bundle = new Bundle();
 
-                                gotoFragmentByAdd(bundle,R.id.mainpage_ly, new MyOrderViewPagerFragment(), MyOrderViewPagerFragment.class.getName());
+                                gotoFragmentByAdd(bundle, R.id.mainpage_ly, new MyOrderViewPagerFragment(), MyOrderViewPagerFragment.class.getName());
                             }
                         });
                         return;
@@ -424,6 +428,27 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
 //        if (imgProgress.getVisibility() == View.GONE)
 //            imgProgress.setVisibility(View.VISIBLE);
 //    }
+
+    void startAnimation() {
+        Animation anim = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_out_from_left);
+
+        anim.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                popBackStack();
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+        });
+        pView.setAnimation(anim);
+    }
 
     /**
      * 轮播的图片

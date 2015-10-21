@@ -6,11 +6,15 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
+import com.daimajia.slider.library.Tricks.ViewPagerEx;
 import com.shequcun.farm.R;
 import com.shequcun.farm.ui.adapter.FarmSpecialtyDetailViewPagerAdapter;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 
 /**
  * Created by mac on 15/10/20.
@@ -26,6 +30,7 @@ public class FarmSpecialtyDetailViewPagerFragment extends BaseFragment {
     @Override
     protected void setWidgetLsn() {
         buildAdapter();
+        vpg.setPageTransformer(true, new Page());
         vpg.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -67,6 +72,73 @@ public class FarmSpecialtyDetailViewPagerFragment extends BaseFragment {
             return;
         }
         vpg.setCurrentItem(position);
+    }
+
+
+    class Page implements ViewPager.PageTransformer {
+
+
+        private static final float MIN_SCALE = 0.85f;
+        private static final float MIN_ALPHA = 0.5f;
+        private static final float SCALE_FACTOR = 0.95f;
+        ViewPager mViewPager;
+
+        public Page(ViewPager mViewPager) {
+            this.mViewPager = mViewPager;
+        }
+
+        public Page(){
+
+        }
+
+        public void transformPage(View view, float position) {
+            int pageWidth = view.getWidth();
+            int pageHeight = view.getHeight();
+
+            if (position < -1) { // [-Infinity,-1)
+                // This page is way off-screen to the left.
+                view.setAlpha(0);
+
+            } else if (position <= 1) { // [-1,1]
+                // Modify the default slide transition to shrink the page as well
+                float scaleFactor = Math.max(MIN_SCALE, 1 - Math.abs(position));
+                float vertMargin = pageHeight * (1 - scaleFactor) / 2;
+                float horzMargin = pageWidth * (1 - scaleFactor) / 2;
+                if (position < 0) {
+                    view.setTranslationX(horzMargin - vertMargin / 2);
+                } else {
+                    view.setTranslationX(-horzMargin + vertMargin / 2);
+                }
+
+                // Scale the page down (between MIN_SCALE and 1)
+                view.setScaleX(scaleFactor);
+                view.setScaleY(scaleFactor);
+
+                // Fade the page relative to its size.
+                view.setAlpha(MIN_ALPHA +
+                        (scaleFactor - MIN_SCALE) /
+                                (1 - MIN_SCALE) * (1 - MIN_ALPHA));
+
+            } else { // (1,+Infinity]
+                // This page is way off-screen to the right.
+                view.setAlpha(0);
+            }
+
+//            if (position <= 0) {
+//                // apply zoom effect and offset translation only for pages to
+//                // the left
+//                final float transformValue = Math.abs(Math.abs(position) - 1) * (1.0f - SCALE_FACTOR) + SCALE_FACTOR;
+//                int pageWidth = mViewPager.getWidth();
+//                final float translateValue = position * -pageWidth;
+//                view.setScaleX(transformValue);
+//                view.setScaleY(transformValue);
+//                if (translateValue > -pageWidth) {
+//                    view.setTranslationX(translateValue);
+//                } else {
+//                    view.setTranslationX(0);
+//                }
+//            }
+        }
     }
 
 

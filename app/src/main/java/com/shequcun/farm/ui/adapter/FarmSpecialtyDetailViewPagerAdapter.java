@@ -1,13 +1,21 @@
 package com.shequcun.farm.ui.adapter;
 
+import android.annotation.TargetApi;
+import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
+import android.transition.ChangeBounds;
+import android.transition.ChangeImageTransform;
+import android.transition.TransitionInflater;
+import android.transition.TransitionSet;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 
+import com.shequcun.farm.R;
 import com.shequcun.farm.ui.fragment.FarmSpecialtyDetailFragment;
 import com.shequcun.farm.ui.fragment.TransparentFragment;
 
@@ -18,6 +26,7 @@ public class FarmSpecialtyDetailViewPagerAdapter extends FragmentPagerAdapter {
 
     Bundle bundle;
 
+    Context mContext;
     public FarmSpecialtyDetailViewPagerAdapter(FragmentManager fm, Bundle bundle) {
         super(fm);
         this.bundle = bundle;
@@ -29,6 +38,7 @@ public class FarmSpecialtyDetailViewPagerAdapter extends FragmentPagerAdapter {
         return mPageReferenceMap.get(index);
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     public Fragment getItem(int position) {
         Fragment f = getFragment(position);
@@ -38,7 +48,15 @@ public class FarmSpecialtyDetailViewPagerAdapter extends FragmentPagerAdapter {
         } else if (position == 1) {
             f = new FarmSpecialtyDetailFragment();
         }
+//        TransitionSet set = new TransitionSet();
+//        set.addTransition(new ChangeImageTransform());
+//        set.addTransition(new ChangeBounds());
+//        f.setExitTransition(set);
+
 //        args.putInt("list_type", mListType);
+      //  f.setSharedElementEnterTransition(TransitionInflater.from(getActivity()).inflateTransition(R.transition.change_image_transform))
+       // f.setExitTransition(TransitionInflater.from(f.getActivity()).inflateTransition(android.R.transition.explode));
+
         f.setArguments(bundle);
         mPageReferenceMap.put(position, f);
         return f;

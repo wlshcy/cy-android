@@ -25,6 +25,14 @@ public class UserGuideDialog extends Dialog {
         initViewPager();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+//        if (getWindow() == null)
+//            return;
+//        getWindow().setWindowAnimations(R.style.SetDialogEnterExitAnimation);
+    }
+
     private void initViewPager() {
         viewPager = (ViewPager) findViewById(R.id.welcome_viewpager);
         views = new ArrayList<View>();

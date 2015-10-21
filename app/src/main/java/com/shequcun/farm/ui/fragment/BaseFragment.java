@@ -41,6 +41,7 @@ public abstract class BaseFragment extends Fragment {
     protected View.OnTouchListener onRootViewTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
+
             return true;
         }
     };

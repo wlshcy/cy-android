@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.common.widget.PullToRefreshBase;
@@ -63,6 +64,12 @@ public class ComboFragment extends BaseFragment {
     protected void setWidgetLsn() {
         pView.setMode(PullToRefreshBase.Mode.PULL_FROM_END);
         pView.setOnRefreshListener(onRefrshLsn);
+//        pView.setOnPullEventListener(new PullToRefreshBase.OnPullEventListener<ScrollView>() {
+//            @Override
+//            public void onPullEvent(PullToRefreshBase<ScrollView> refreshView, PullToRefreshBase.State state, PullToRefreshBase.Mode direction) {
+//                ToastHelper.showShort(getActivity(),"shitshti");
+//            }
+//        });
 //        pView.getLoadingLayoutProxy().setLastUpdatedLabel(
 //                "上次刷新时间");
         buildAdapter();
@@ -264,6 +271,8 @@ public class ComboFragment extends BaseFragment {
         super.onDestroyView();
         doUnRegisterReceiver();
     }
+
+
 
     boolean mIsBind = false;
 
