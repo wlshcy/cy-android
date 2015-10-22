@@ -25,15 +25,6 @@
                 android:layout_marginTop="@dimen/px50"
                 android:src="@drawable/icon_small_logo" />
 
-            <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:layout_marginBottom="14dp"-->
-            <!--android:text="@string/login_tip"-->
-            <!--android:textColor="@android:color/black"-->
-            <!--android:textSize="@dimen/font26" />-->
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/px214"

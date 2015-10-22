@@ -22,6 +22,7 @@ import com.shequcun.farm.data.UserLoginEntry;
 import com.shequcun.farm.datacenter.CacheManager;
 import com.shequcun.farm.dlg.ConsultationDlg;
 import com.shequcun.farm.ui.adapter.MyAdapter;
+import com.shequcun.farm.ui.adapter.MyMainAdapter;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
 import com.shequcun.farm.util.IntentUtil;
 import com.shequcun.farm.util.N7Utils;
@@ -131,7 +132,7 @@ public class MyFragment extends BaseFragment {
     void buildAdapter() {
         addHeader();
         if (adapter == null)
-            adapter = new MyAdapter(getActivity(), getResources().getStringArray(R.array.my_array));
+            adapter = new MyMainAdapter(getActivity());
         mLv.setAdapter(adapter);
     }
 
@@ -184,7 +185,7 @@ public class MyFragment extends BaseFragment {
     boolean mIsBind = false;
     @Bind(R.id.mLv)
     ListView mLv;
-    MyAdapter adapter;
+    MyMainAdapter adapter;
     UserLoginEntry uEntry;
     View hView_1;
     View hView_2;
