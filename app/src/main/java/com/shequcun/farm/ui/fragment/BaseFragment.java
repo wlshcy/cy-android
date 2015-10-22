@@ -191,6 +191,14 @@ public abstract class BaseFragment extends Fragment {
         MobclickAgent.onPageEnd(this.getClass().getSimpleName());
     }
 
+    public Activity getBaseAct() {
+        Activity mmAct = getActivity();
+        if (mmAct == null) {
+            mmAct = mAct;
+        }
+        return mmAct;
+    }
+
     /**
      * 设置各个控制的监听
      */

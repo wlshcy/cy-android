@@ -59,7 +59,7 @@ public class MyComboOrderFragment extends BaseFragment {
     }
 
     void requestOrderNo() {
-        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "cai/mycombo", new AsyncHttpResponseHandler() {
+        HttpRequestUtil.getHttpClient(getBaseAct()).get(LocalParams.getBaseUrl() + "cai/mycombo", new AsyncHttpResponseHandler() {
 
             @Override
             public void onFinish() {
@@ -82,18 +82,18 @@ public class MyComboOrderFragment extends BaseFragment {
             @Override
             public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
                 if (sCode == 0) {
-                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
+                    ToastHelper.showShort(getBaseAct(), R.string.network_error_tip);
                     return;
                 }
 
-                ToastHelper.showShort(getActivity(), "请求失败,错误码" + sCode);
+                ToastHelper.showShort(getBaseAct(), "请求失败,错误码" + sCode);
             }
         });
     }
 
     void buildAdapter() {
         if (adapter == null)
-            adapter = new MyComboOrderAdapter(getActivity());
+            adapter = new MyComboOrderAdapter(getBaseAct());
         mLv.setAdapter(adapter);
     }
 
@@ -116,7 +116,7 @@ public class MyComboOrderFragment extends BaseFragment {
 //            if (entry.status == 1 || entry.status == 3 || entry.status == 0 || entry.status == 2) {
 //                gotoFragmentByAdd(buildBundle(buildOrderParams(entry)), R.id.mainpage_ly, new ModifyOrderFragment(), ModifyOrderFragment.class.getName());
 //            } else if (entry.status == 4) {
-//                ToastHelper.showShort(getActivity(), "您的订单已取消!");
+//                ToastHelper.showShort(getBaseAct(), "您的订单已取消!");
 //            }
 //        }
         if (entry != null) {
