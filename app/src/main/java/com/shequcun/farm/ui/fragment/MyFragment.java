@@ -76,7 +76,7 @@ public class MyFragment extends BaseFragment {
                 gotoFragmentByAdd(bundle1, R.id.mainpage_ly, new RedPacketsListFragment(), RedPacketsListFragment.class.getName());
                 break;
             case 3://拨打客服电话
-                ConsultationDlg.showCallTelDlg(getActivity());
+                ConsultationDlg.showCallTelDlg(getBaseAct());
                 break;
             case 4://地址管理
                 Bundle bundle = new Bundle();
@@ -108,8 +108,8 @@ public class MyFragment extends BaseFragment {
             mLv.removeHeaderView(hView_1);
         if (hView_2 != null)
             mLv.removeHeaderView(hView_2);
-        uEntry = new CacheManager(getActivity()).getUserLoginEntry();
-        hView_1 = LayoutInflater.from(getActivity()).inflate(R.layout.my_item_head_ly, null);
+        uEntry = new CacheManager(getBaseAct()).getUserLoginEntry();
+        hView_1 = LayoutInflater.from(getBaseAct()).inflate(R.layout.my_item_head_ly, null);
         ((TextView) hView_1.findViewById(R.id.mobile_phone)).setText(uEntry != null ? uEntry.mobile : "");
         CircleImageView circleImageView = ((CircleImageView) hView_1.findViewById(R.id.my_head));
         if (uEntry != null && !TextUtils.isEmpty(uEntry.headimg)) {
@@ -131,7 +131,7 @@ public class MyFragment extends BaseFragment {
     void buildAdapter() {
         addHeader();
         if (adapter == null)
-            adapter = new MyAdapter(getActivity(), getResources().getStringArray(R.array.my_array));
+            adapter = new MyAdapter(getBaseAct(), getResources().getStringArray(R.array.my_array));
         mLv.setAdapter(adapter);
     }
 
@@ -140,7 +140,7 @@ public class MyFragment extends BaseFragment {
         if (!mIsBind) {
             IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction(IntentUtil.UPDATE_MINE_PAGE);
-            getActivity().registerReceiver(mUpdateReceiver, intentFilter);
+            getBaseAct().registerReceiver(mUpdateReceiver, intentFilter);
             mIsBind = true;
         }
     }
@@ -160,14 +160,14 @@ public class MyFragment extends BaseFragment {
 
     private void doUnRegisterReceiver() {
         if (mIsBind) {
-            getActivity().unregisterReceiver(mUpdateReceiver);
+            getBaseAct().unregisterReceiver(mUpdateReceiver);
             mIsBind = false;
         }
     }
 
 
     void showLoginDlg() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getBaseAct());
         builder.setTitle("提示");
         builder.setMessage("亲,您还未登录哦!立刻登录?");
         builder.setNegativeButton("登录", new DialogInterface.OnClickListener() {

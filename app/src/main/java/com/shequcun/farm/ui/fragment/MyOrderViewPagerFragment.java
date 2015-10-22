@@ -86,8 +86,8 @@ public class MyOrderViewPagerFragment extends BaseFragment {
         if (orderPager != null)
             orderPager.setCurrentItem(position);
         ColorStateList gray =
-                getActivity().getResources().getColorStateList(R.color.gray_676767);
-        ColorStateList lightGreeColor = getActivity().getResources().getColorStateList(R.color.green_11C258);
+                getBaseAct().getResources().getColorStateList(R.color.gray_676767);
+        ColorStateList lightGreeColor = getBaseAct().getResources().getColorStateList(R.color.green_11C258);
         if (position == 0) {//菜品订单
             dishes_tv.setTextColor(lightGreeColor);
             shopping_tv.setTextColor(gray);

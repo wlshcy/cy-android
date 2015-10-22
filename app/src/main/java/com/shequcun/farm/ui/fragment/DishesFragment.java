@@ -74,7 +74,7 @@ public class DishesFragment extends BaseFragment {
             if (entry.status == 1 || entry.status == 3 || entry.status == 0 || entry.status == 2) {
                 gotoFragmentByAdd(buildBundle(buildOrderParams(entry)), R.id.mainpage_ly, new ModifyOrderFragment(), ModifyOrderFragment.class.getName());
             } else if (entry.status == 4) {
-                ToastHelper.showShort(getActivity(), "您的订单已取消!");
+                ToastHelper.showShort(getBaseAct(), "您的订单已取消!");
             }
         }
     }
@@ -104,7 +104,7 @@ public class DishesFragment extends BaseFragment {
 
     void buidlAdapter() {
         if (adapter == null) {
-            adapter = new MyOrderAdapter(getActivity());
+            adapter = new MyOrderAdapter(getBaseAct());
         }
         adapter.clear();
 //        adapter.buildPayOnClickLsn(lsn);
@@ -138,12 +138,12 @@ public class DishesFragment extends BaseFragment {
             if (pBar != null) {
                 pBar.setVisibility(View.GONE);
             }
-            ToastHelper.showShort(getActivity(), "请求数据失败.请稍后再试...");
+            ToastHelper.showShort(getBaseAct(), "请求数据失败.请稍后再试...");
             return;
         }
         RequestParams params = new RequestParams();
         params.add("orderno", orderno);
-        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "cai/choose", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.getHttpClient(getBaseAct()).get(LocalParams.getBaseUrl() + "cai/choose", params, new AsyncHttpResponseHandler() {
             @Override
             public void onFinish() {
                 super.onFinish();
@@ -166,7 +166,7 @@ public class DishesFragment extends BaseFragment {
                             return;
                         }
 
-                        ToastHelper.showShort(getActivity(), entry.errmsg);
+                        ToastHelper.showShort(getBaseAct(), entry.errmsg);
                     }
                 }
             }
@@ -174,10 +174,10 @@ public class DishesFragment extends BaseFragment {
             @Override
             public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
                 if (sCode == 0) {
-                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
+                    ToastHelper.showShort(getBaseAct(), R.string.network_error_tip);
                     return;
                 }
-                ToastHelper.showShort(getActivity(), "错误码" + sCode);
+                ToastHelper.showShort(getBaseAct(), "错误码" + sCode);
             }
         });
     }

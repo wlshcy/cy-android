@@ -62,7 +62,7 @@ public class ComboSecondFragment extends BaseFragment {
     void buildAdapter() {
         buildComboEntry();
         if (adapter == null)
-            adapter = new ComboSubAdapter(getActivity(), entry);
+            adapter = new ComboSubAdapter(getBaseAct(), entry);
         mLv.setAdapter(adapter);
     }
 

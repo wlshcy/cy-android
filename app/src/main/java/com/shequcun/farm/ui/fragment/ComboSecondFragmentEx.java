@@ -57,7 +57,7 @@ public class ComboSecondFragmentEx extends BaseFragment {
             return;
         m_Count = entry.weights.length;
         for (int i = 0; i < m_Count; ++i) {
-            View v = LayoutInflater.from(getActivity()).inflate(R.layout.combo_second_item_ly, null);
+            View v = LayoutInflater.from(getBaseAct()).inflate(R.layout.combo_second_item_ly, null);
             ImageView combo_img = (ImageView) v.findViewById(R.id.combo_img);
 
 //                if (combo_img != null && entry.wimgs != null && entry.wimgs.length > 0) {
@@ -114,7 +114,7 @@ public class ComboSecondFragmentEx extends BaseFragment {
 
             TextView distribution_weight = (TextView) v.findViewById(R.id.distribution_weight);
             String str = Utils.unitConversion(entry.weights[i]).replace("斤", "");
-            distribution_weight.setText(Utils.getSpanableSpan(str, "斤", ResUtil.dipToPixel(getActivity(), 35), ResUtil.dipToPixel(getActivity(), 14), 0xFF31C27C, 0xFF31C27C));
+            distribution_weight.setText(Utils.getSpanableSpan(str, "斤", ResUtil.dipToPixel(getBaseAct(), 35), ResUtil.dipToPixel(getBaseAct(), 14), 0xFF31C27C, 0xFF31C27C));
 
 //            if (vh.choose_dishes != null) {
 //                vh.choose_dishes.setTag(position);
@@ -138,13 +138,13 @@ public class ComboSecondFragmentEx extends BaseFragment {
 
     private void initPointLayout() {
         try {
-            int mPadding = ResUtil.dip2px(getActivity(), 3);
+            int mPadding = ResUtil.dip2px(getBaseAct(), 3);
             m_PointImgs = new ImageView[m_Count];
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) point_ayout.getLayoutParams();
             params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
             params.addRule(RelativeLayout.CENTER_HORIZONTAL);
 
-            int bottomMargin = ((DeviceInfo.getDeviceHeight(getActivity()) - ResUtil.dipToPixel(getActivity(), 424)) >> 1) * 2 / 3;
+            int bottomMargin = ((DeviceInfo.getDeviceHeight(getBaseAct()) - ResUtil.dipToPixel(getBaseAct(), 424)) >> 1) * 2 / 3;
             params.bottomMargin = bottomMargin;
 
             point_ayout.setLayoutParams(params);
@@ -152,7 +152,7 @@ public class ComboSecondFragmentEx extends BaseFragment {
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             lp.gravity = Gravity.CENTER;
             for (int i = 0; i < m_Count; i++) {
-                m_PointImgs[i] = new ImageView(getActivity());
+                m_PointImgs[i] = new ImageView(getBaseAct());
                 m_PointImgs[i].setLayoutParams(lp);
                 m_PointImgs[i].setPadding(mPadding, mPadding, mPadding,
                         mPadding);

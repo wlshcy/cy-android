@@ -124,10 +124,10 @@ public class AddressListFragment extends BaseFragment {
 
     @Override
     protected void setWidgetLsn() {
-        addAddress = LayoutInflater.from(getActivity()).inflate(R.layout.item_add_address, null);
+        addAddress = LayoutInflater.from(getBaseAct()).inflate(R.layout.item_add_address, null);
         addAddress.setVisibility(View.GONE);
         addressLv.addHeaderView(addAddress);
-        adapter = new MyAddressAdapter(getActivity());
+        adapter = new MyAddressAdapter(getBaseAct());
         if (action == Action.SELECT) {
             adapter.setShowDefaultIcon(true);
         }
@@ -184,8 +184,8 @@ public class AddressListFragment extends BaseFragment {
     }
 
     private void requestAddress() {
-        final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
-        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "user/v3/address", new AsyncHttpResponseHandler() {
+        final ProgressDlg pDlg = new ProgressDlg(getBaseAct(), "加载中...");
+        HttpRequestUtil.getHttpClient(getBaseAct()).get(LocalParams.getBaseUrl() + "user/v3/address", new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {
                 super.onStart();
@@ -209,7 +209,7 @@ public class AddressListFragment extends BaseFragment {
                         successAddress(entry.aList);
                         return;
                     } else {
-                        ToastHelper.showShort(getActivity(), entry.errmsg);
+                        ToastHelper.showShort(getBaseAct(), entry.errmsg);
                     }
                 }
             }
@@ -217,10 +217,10 @@ public class AddressListFragment extends BaseFragment {
             @Override
             public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
                 if (sCode == 0) {
-                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
+                    ToastHelper.showShort(getBaseAct(), R.string.network_error_tip);
                     return;
                 }
-                ToastHelper.showShort(getActivity(), "请求失败,错误码" + sCode);
+                ToastHelper.showShort(getBaseAct(), "请求失败,错误码" + sCode);
             }
         });
     }
@@ -244,11 +244,11 @@ public class AddressListFragment extends BaseFragment {
     }
 
     private void requestSetDefaultAddr(int id, final AddressEntry addressEntry) {
-        final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
+        final ProgressDlg pDlg = new ProgressDlg(getBaseAct(), "加载中...");
         RequestParams params = new RequestParams();
-        params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
+        params.add("_xsrf", PersistanceManager.getCookieValue(getBaseAct()));
         params.add("id", id + "");
-        HttpRequestUtil.getHttpClient(getActivity()).post(LocalParams.getBaseUrl() + "user/v3/address", params,
+        HttpRequestUtil.getHttpClient(getBaseAct()).post(LocalParams.getBaseUrl() + "user/v3/address", params,
                 new AsyncHttpResponseHandler() {
                     @Override
                     public void onStart() {
@@ -270,11 +270,11 @@ public class AddressListFragment extends BaseFragment {
                             BaseEntry entry = JsonUtilsParser.fromJson(new String(data), BaseEntry.class);
                             if (entry != null) {
                                 if (TextUtils.isEmpty(entry.errmsg)) {
-                                    new CacheManager(getActivity()).saveUserReceivingAddress(JsonUtilsParser.toJson(addressEntry).getBytes());
+                                    new CacheManager(getBaseAct()).saveUserReceivingAddress(JsonUtilsParser.toJson(addressEntry).getBytes());
                                     goback(addressEntry);
                                     return;
                                 } else {
-                                    ToastHelper.showShort(getActivity(), entry.errmsg);
+                                    ToastHelper.showShort(getBaseAct(), entry.errmsg);
                                 }
                             }
                         }
@@ -283,16 +283,16 @@ public class AddressListFragment extends BaseFragment {
                     @Override
                     public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
                         if (sCode == 0) {
-                            ToastHelper.showShort(getActivity(), R.string.network_error_tip);
+                            ToastHelper.showShort(getBaseAct(), R.string.network_error_tip);
                             return;
                         }
-                        ToastHelper.showShort(getActivity(), "请求失败,错误码" + sCode);
+                        ToastHelper.showShort(getBaseAct(), "请求失败,错误码" + sCode);
                     }
                 });
     }
 
     private void goback(AddressEntry entry) {
-        FragmentManager manager = getActivity().getSupportFragmentManager();
+        FragmentManager manager = getBaseAct().getSupportFragmentManager();
         if (manager != null) {
             List<Fragment> aList = manager.getFragments();
             if (aList != null && aList.size() > 0) {
@@ -327,11 +327,11 @@ public class AddressListFragment extends BaseFragment {
     private void addBroadcast() {
         IntentFilter intentFilter = new IntentFilter(IntentUtil.UPDATE_ADDRESS_REQUEST);
         intentFilter.addAction(IntentUtil.UPDATE_ADDRESS_REQUEST);
-        getActivity().registerReceiver(broadcastReceiver, intentFilter);
+        getBaseAct().registerReceiver(broadcastReceiver, intentFilter);
     }
 
     private void removeBroadcast() {
-        getActivity().unregisterReceiver(broadcastReceiver);
+        getBaseAct().unregisterReceiver(broadcastReceiver);
     }
 
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
@@ -342,7 +342,7 @@ public class AddressListFragment extends BaseFragment {
     };
 
     private void alertDelay(final int pos) {
-        final AlertDialog alert = new AlertDialog.Builder(getActivity()).create();
+        final AlertDialog alert = new AlertDialog.Builder(getBaseAct()).create();
         alert.show();
         alert.setCancelable(false);
         alert.getWindow().setContentView(R.layout.prompt_dialog);

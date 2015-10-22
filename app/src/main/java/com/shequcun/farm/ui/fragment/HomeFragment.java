@@ -120,7 +120,7 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
         if (!mIsBind) {
             IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction(IntentUtil.UPDATE_COMBO_PAGE);
-            getActivity().registerReceiver(mUpdateReceiver, intentFilter);
+            getBaseAct().registerReceiver(mUpdateReceiver, intentFilter);
             mIsBind = true;
         }
     }
@@ -140,7 +140,7 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
 
     private void doUnRegisterReceiver() {
         if (mIsBind) {
-            getActivity().unregisterReceiver(mUpdateReceiver);
+            getBaseAct().unregisterReceiver(mUpdateReceiver);
             mIsBind = false;
         }
     }
@@ -177,9 +177,9 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
     }
 
     private void addSliderUrl(SlidesEntry entry) {
-        DefaultSliderView textSliderView = new DefaultSliderView(getActivity());
+        DefaultSliderView textSliderView = new DefaultSliderView(getBaseAct());
         // initialize a SliderLayout
-        String url = entry.img + "?imageView2/2/" + DeviceInfo.getDeviceWidth(getActivity());
+        String url = entry.img + "?imageView2/2/" + DeviceInfo.getDeviceWidth(getBaseAct());
         textSliderView
                 .description("")
                 .image(url)
@@ -190,7 +190,7 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
     }
 
     private void addSliderUrl(int resId) {
-        DefaultSliderView textSliderView = new DefaultSliderView(getActivity());
+        DefaultSliderView textSliderView = new DefaultSliderView(getBaseAct());
         // initialize a SliderLayout
         textSliderView
                 .description("")
@@ -247,7 +247,7 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
         RequestParams params = new RequestParams();
         params.add("mode", mode + "");
         params.add("length", "10");
-        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "cai/home", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.getHttpClient(getBaseAct()).get(LocalParams.getBaseUrl() + "cai/home", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int sCode, Header[] h, byte[] data) {
                 if (data != null && data.length > 0) {
@@ -262,7 +262,7 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
                             updateMyComboStatus(hEntry.has_combo);
                             return;
                         }
-                        ToastHelper.showShort(getActivity(), hEntry.errmsg);
+                        ToastHelper.showShort(getBaseAct(), hEntry.errmsg);
                     }
                 }
             }
@@ -271,10 +271,10 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
             public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
                 buildCarouselAdapter(null);
                 if (sCode == 0) {
-                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
+                    ToastHelper.showShort(getBaseAct(), R.string.network_error_tip);
                     return;
                 }
-                ToastHelper.showShort(getActivity(), "请求失败.错误码" + sCode);
+                ToastHelper.showShort(getBaseAct(), "请求失败.错误码" + sCode);
             }
 
             @Override
@@ -299,7 +299,7 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
         } else {
             params.add("start", "0");
         }
-        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "cai/itemlist", new AsyncHttpResponseHandler() {
+        HttpRequestUtil.getHttpClient(getBaseAct()).get(LocalParams.getBaseUrl() + "cai/itemlist", new AsyncHttpResponseHandler() {
             @Override
             public void onFinish() {
                 super.onFinish();
@@ -323,17 +323,17 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
             @Override
             public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
                 if (sCode == 0) {
-                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
+                    ToastHelper.showShort(getBaseAct(), R.string.network_error_tip);
                     return;
                 }
-                ToastHelper.showShort(getActivity(), "哇,刷新失败了.请稍后重试.");
+                ToastHelper.showShort(getBaseAct(), "哇,刷新失败了.请稍后重试.");
             }
         });
     }
 
     void buildGridViewAdapter() {
         if (adapter == null)
-            adapter = new FarmSpecialtyAdapter(getActivity());
+            adapter = new FarmSpecialtyAdapter(getBaseAct());
         gv.setAdapter(adapter);
         gv.setExpanded(true);
     }
@@ -368,11 +368,11 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
 
 
     void requestSingleDishDetail(int id) {
-        final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
+        final ProgressDlg pDlg = new ProgressDlg(getBaseAct(), "加载中...");
         RequestParams params = new RequestParams();
         params.add("id", "" + id);
 
-        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "cai/itemdtl", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.getHttpClient(getBaseAct()).get(LocalParams.getBaseUrl() + "cai/itemdtl", params, new AsyncHttpResponseHandler() {
 
             @Override
             public void onStart() {
@@ -408,10 +408,10 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
 
 
     void requestComboDetail(int id) {
-        final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
+        final ProgressDlg pDlg = new ProgressDlg(getBaseAct(), "加载中...");
         RequestParams params = new RequestParams();
         params.add("id", "" + id);
-        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "cai/combodtl", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.getHttpClient(getBaseAct()).get(LocalParams.getBaseUrl() + "cai/combodtl", params, new AsyncHttpResponseHandler() {
 
             @Override
             public void onStart() {
@@ -435,7 +435,7 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
                             gotoFragmentByAdd(buildBundle_(entry.combo), R.id.mainpage_ly, new ComboSecondFragment(), ComboSecondFragment.class.getName());
                             return;
                         }
-                        ToastHelper.showShort(getActivity(), entry.errmsg);
+                        ToastHelper.showShort(getBaseAct(), entry.errmsg);
                     }
                 }
             }
@@ -443,10 +443,10 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
             @Override
             public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
                 if (sCode == 0) {
-                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
+                    ToastHelper.showShort(getBaseAct(), R.string.network_error_tip);
                     return;
                 }
-                ToastHelper.showShort(getActivity(), "请求失败,错误码" + sCode);
+                ToastHelper.showShort(getBaseAct(), "请求失败,错误码" + sCode);
             }
         });
     }
@@ -464,7 +464,7 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
      * @return
      */
     boolean isLogin() {
-        return new CacheManager(getActivity()).getUserLoginEntry() != null;
+        return new CacheManager(getBaseAct()).getUserLoginEntry() != null;
     }
 
     private CarouselAdapter.ImageLoaderListener imageLoaderListener = new CarouselAdapter.ImageLoaderListener() {

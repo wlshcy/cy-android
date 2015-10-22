@@ -127,7 +127,7 @@ public class PayFragment extends BaseFragment {
 
     private void makeOrder() {
         if (addressEntry == null) {
-            ToastHelper.showShort(getActivity(), "请完善您的收货地址!");
+            ToastHelper.showShort(getBaseAct(), "请完善您的收货地址!");
             return;
         }
 
@@ -161,9 +161,9 @@ public class PayFragment extends BaseFragment {
         if (entry != null && entry.info != null) {
             params.add("memo", entry.info.memo);
         }
-        params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
-        final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
-        HttpRequestUtil.getHttpClient(getActivity()).post(LocalParams.getBaseUrl() + "cai/order", params, new AsyncHttpResponseHandler() {
+        params.add("_xsrf", PersistanceManager.getCookieValue(getBaseAct()));
+        final ProgressDlg pDlg = new ProgressDlg(getBaseAct(), "加载中...");
+        HttpRequestUtil.getHttpClient(getBaseAct()).post(LocalParams.getBaseUrl() + "cai/order", params, new AsyncHttpResponseHandler() {
 
             @Override
             public void onStart() {
@@ -195,21 +195,21 @@ public class PayFragment extends BaseFragment {
                             doPay(alipay, orderEntry.wxpay);
                             mHandler.sendEmptyMessageDelayed(0, 30 * 60 * 1000);
                         } else {
-                            ToastHelper.showShort(getActivity(), orderEntry.errmsg);
+                            ToastHelper.showShort(getBaseAct(), orderEntry.errmsg);
                         }
                     }
                 } else {
-                    ToastHelper.showShort(getActivity(), "异常：状态" + sCode);
+                    ToastHelper.showShort(getBaseAct(), "异常：状态" + sCode);
                 }
             }
 
             @Override
             public void onFailure(int sCode, Header[] h, byte[] data, Throwable e) {
                 if (sCode == 0) {
-                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
+                    ToastHelper.showShort(getBaseAct(), R.string.network_error_tip);
                     return;
                 }
-                ToastHelper.showShort(getActivity(), "创建订单失败.错误码" + sCode);
+                ToastHelper.showShort(getBaseAct(), "创建订单失败.错误码" + sCode);
             }
         });
     }
@@ -238,7 +238,7 @@ public class PayFragment extends BaseFragment {
 
 
     void buildUserLoginEntry() {
-        uEntry = new CacheManager(getActivity()).getUserLoginEntry();
+        uEntry = new CacheManager(getBaseAct()).getUserLoginEntry();
     }
 
 
@@ -246,14 +246,14 @@ public class PayFragment extends BaseFragment {
         if (aUtils == null)
             aUtils = new AlipayUtils();
         aUtils.setHandler(mHandler);
-        aUtils.initAlipay(getActivity());
+        aUtils.initAlipay(getBaseAct());
     }
 
 
     void initWxPay() {
         if (wxPayUtils == null)
             wxPayUtils = new WxPayUtils();
-        wxPayUtils.initWxAPI(getActivity());
+        wxPayUtils.initWxAPI(getBaseAct());
     }
 
     private Handler mHandler = new Handler() {
@@ -273,22 +273,22 @@ public class PayFragment extends BaseFragment {
 
                     // 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
                     if (TextUtils.equals(resultStatus, "9000")) {
-                        ToastHelper.showShort(getActivity(), "支付成功");
+                        ToastHelper.showShort(getBaseAct(), "支付成功");
                         doPaySuccessful();
                     } else {
                         // 判断resultStatus 为非“9000”则代表可能支付失败
                         // “8000”代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认，最终交易是否成功以服务端异步通知为准（小概率状态）
                         if (TextUtils.equals(resultStatus, "8000")) {
-                            ToastHelper.showShort(getActivity(), "支付结果确认中");
+                            ToastHelper.showShort(getBaseAct(), "支付结果确认中");
                         } else {
                             // 其他值就可以判断为支付失败，包括用户主动取消支付，或者系统返回的错误
-                            ToastHelper.showShort(getActivity(), "支付失败");
+                            ToastHelper.showShort(getBaseAct(), "支付失败");
                         }
                     }
                     break;
                 }
                 case Constrants.SDK_CHECK_FLAG: {
-                    ToastHelper.showShort(getActivity(), "检查结果为：" + msg.obj);
+                    ToastHelper.showShort(getBaseAct(), "检查结果为：" + msg.obj);
                     break;
                 }
                 default:
@@ -300,7 +300,7 @@ public class PayFragment extends BaseFragment {
 
 
     void requestUserAddress() {
-        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "user/v3/address", new AsyncHttpResponseHandler() {
+        HttpRequestUtil.getHttpClient(getBaseAct()).get(LocalParams.getBaseUrl() + "user/v3/address", new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int sCode, Header[] h, byte[] data) {
                 if (data != null && data.length > 0) {
@@ -310,7 +310,7 @@ public class PayFragment extends BaseFragment {
                             successUserAddress(entry.aList);
                             return;
                         } else {
-                            ToastHelper.showShort(getActivity(), entry.errmsg);
+                            ToastHelper.showShort(getBaseAct(), entry.errmsg);
                         }
                     }
                 }
@@ -318,7 +318,7 @@ public class PayFragment extends BaseFragment {
 
             @Override
             public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
-                setAddressWidgetContent(new CacheManager(getActivity()).getUserReceivingAddress());
+                setAddressWidgetContent(new CacheManager(getBaseAct()).getUserReceivingAddress());
             }
         });
     }
@@ -427,7 +427,7 @@ public class PayFragment extends BaseFragment {
      */
     void createSingleOrder(final OtherInfo info) {
         if (addressEntry == null) {
-            ToastHelper.showShort(getActivity(), "请完善您的收货地址!");
+            ToastHelper.showShort(getBaseAct(), "请完善您的收货地址!");
             return;
         }
 
@@ -452,14 +452,14 @@ public class PayFragment extends BaseFragment {
         params.add("mobile", addressEntry.mobile);
         params.add("address", addressStr);
         params.add("extras", info.extras);
-        params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
+        params.add("_xsrf", PersistanceManager.getCookieValue(getBaseAct()));
         params.add("memo", info.memo);
         params.add("paytype", isAlipayPay ? "2" : "3");
         if (coupon_id > -1)
             params.add("coupon_id", coupon_id + "");
 
-        final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
-        HttpRequestUtil.getHttpClient(getActivity()).post(LocalParams.getBaseUrl() + "cai/order", params, new AsyncHttpResponseHandler() {
+        final ProgressDlg pDlg = new ProgressDlg(getBaseAct(), "加载中...");
+        HttpRequestUtil.getHttpClient(getBaseAct()).post(LocalParams.getBaseUrl() + "cai/order", params, new AsyncHttpResponseHandler() {
 
             @Override
             public void onStart() {
@@ -480,8 +480,8 @@ public class PayFragment extends BaseFragment {
                     if (orderEntry != null) {
                         if (TextUtils.isEmpty(orderEntry.errmsg)) {
                             if (info != null && info.type == 3) {
-                                new CacheManager(getActivity()).delRecommendToDisk();
-                                IntentUtil.sendUpdateFarmShoppingCartMsg(getActivity());
+                                new CacheManager(getBaseAct()).delRecommendToDisk();
+                                IntentUtil.sendUpdateFarmShoppingCartMsg(getBaseAct());
                             }
 
                             alipay = orderEntry.alipay;
@@ -490,7 +490,7 @@ public class PayFragment extends BaseFragment {
                             mHandler.sendEmptyMessageDelayed(0, 30 * 60 * 1000);
                             return;
                         }
-                        ToastHelper.showShort(getActivity(), orderEntry.errmsg);
+                        ToastHelper.showShort(getBaseAct(), orderEntry.errmsg);
                     }
                 }
             }
@@ -498,10 +498,10 @@ public class PayFragment extends BaseFragment {
             @Override
             public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
                 if (sCode == 0) {
-                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
+                    ToastHelper.showShort(getBaseAct(), R.string.network_error_tip);
                     return;
                 }
-                ToastHelper.showShort(getActivity(), "错误码" + sCode);
+                ToastHelper.showShort(getBaseAct(), "错误码" + sCode);
             }
         });
     }
@@ -511,10 +511,10 @@ public class PayFragment extends BaseFragment {
         params.add("orderno", entry.orderno);
         if (coupon_id > -1)
             params.add("coupon_id", coupon_id + "");
-        params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
+        params.add("_xsrf", PersistanceManager.getCookieValue(getBaseAct()));
         params.add("paytype", isAlipayPay ? "2" : "3");
-        final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
-        HttpRequestUtil.getHttpClient(getActivity()).post(LocalParams.getBaseUrl() + "cai/payorder", params, new AsyncHttpResponseHandler() {
+        final ProgressDlg pDlg = new ProgressDlg(getBaseAct(), "加载中...");
+        HttpRequestUtil.getHttpClient(getBaseAct()).post(LocalParams.getBaseUrl() + "cai/payorder", params, new AsyncHttpResponseHandler() {
 
             @Override
             public void onStart() {
@@ -540,14 +540,14 @@ public class PayFragment extends BaseFragment {
                             doPay(oEntry.alipay, oEntry.wxpay);
                             return;
                         }
-                        ToastHelper.showShort(getActivity(), oEntry.errmsg);
+                        ToastHelper.showShort(getBaseAct(), oEntry.errmsg);
                     }
                 }
             }
 
             @Override
             public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
-                ToastHelper.showShort(getActivity(), "获取支付内容失败");
+                ToastHelper.showShort(getBaseAct(), "获取支付内容失败");
             }
         });
     }
@@ -556,7 +556,7 @@ public class PayFragment extends BaseFragment {
         if (!mIsBind) {
             IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction(IntentUtil.UPDATE_WX_PAY_RESULT_MSG);
-            getActivity().registerReceiver(mUpdateReceiver, intentFilter);
+            getBaseAct().registerReceiver(mUpdateReceiver, intentFilter);
             mIsBind = true;
         }
     }
@@ -574,7 +574,7 @@ public class PayFragment extends BaseFragment {
                 if (payCode == 0) {//表示支付成功
                     doPaySuccessful();
                 } else if (payCode == -1) {//表示支付失败
-                    ToastHelper.showShort(getActivity(), "微信支付失败,请稍后重试...");
+                    ToastHelper.showShort(getBaseAct(), "微信支付失败,请稍后重试...");
                 }
 //                else if (payCode == -2) {//取消支付
 //
@@ -585,7 +585,7 @@ public class PayFragment extends BaseFragment {
 
     void doUnWxPayResultRegister() {
         if (mIsBind) {
-            getActivity().unregisterReceiver(mUpdateReceiver);
+            getBaseAct().unregisterReceiver(mUpdateReceiver);
             mIsBind = false;
         }
     }
@@ -612,7 +612,7 @@ public class PayFragment extends BaseFragment {
     }
 
     private void alertWxPayDlg() {
-        final AlertDialog alert = new AlertDialog.Builder(getActivity()).create();
+        final AlertDialog alert = new AlertDialog.Builder(getBaseAct()).create();
         alert.show();
         alert.setCancelable(false);
         alert.getWindow().setContentView(R.layout.prompt_dialog);

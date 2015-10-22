@@ -66,19 +66,19 @@ public class LoginFragment extends BaseFragment {
 
     @Override
     protected void setWidgetLsn() {
-        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        getBaseAct().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
     }
 
     @OnClick(R.id.back)
     void back(View v) {
-        Utils.hideVirtualKeyboard(getActivity(), v);
+        Utils.hideVirtualKeyboard(getBaseAct(), v);
         popBackStack();
     }
 
     @OnClick(R.id.obtain_verification_code)
     void doGetSmsCode() {
-        final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
-        HttpRequestUtil.getHttpClient(getActivity()).get(
+        final ProgressDlg pDlg = new ProgressDlg(getBaseAct(), "加载中...");
+        HttpRequestUtil.getHttpClient(getBaseAct()).get(
                 LocalParams.getBaseUrl() + "auth/init",
                 new AsyncHttpResponseHandler() {
                     @Override
@@ -97,7 +97,7 @@ public class LoginFragment extends BaseFragment {
                     public void onSuccess(int sCode, Header[] headers, byte[] data) {
                         for (Header h : headers) {
                             if (h.getName().equals("X-Xsrftoken")) {
-                                PersistanceManager.saveCookieValue(getActivity(), h.getValue());
+                                PersistanceManager.saveCookieValue(getBaseAct(), h.getValue());
                                 doGetSnsCode();
                                 break;
                             }
@@ -114,24 +114,24 @@ public class LoginFragment extends BaseFragment {
     void doLogin(View v) {
         final String mobileNumber = input_mobile_tel.getText().toString();
         if (TextUtils.isEmpty(mobileNumber) || mobileNumber.length() != 11) {
-            ToastHelper.showShort(getActivity(), R.string.mobile_phone_error);
+            ToastHelper.showShort(getBaseAct(), R.string.mobile_phone_error);
             return;
         }
         final String smsCode = sms_code_et.getText().toString();
         if (TextUtils.isEmpty(smsCode)) {
-            ToastHelper.showShort(getActivity(), R.string.sns_code_error);
+            ToastHelper.showShort(getBaseAct(), R.string.sns_code_error);
             return;
         }
-        Utils.hideVirtualKeyboard(getActivity(), v);
-        String xXsrfToken = PersistanceManager.getCookieValue(getActivity());
+        Utils.hideVirtualKeyboard(getBaseAct(), v);
+        String xXsrfToken = PersistanceManager.getCookieValue(getBaseAct());
         RequestParams params = new RequestParams();
         params.add("mobile", mobileNumber);
         params.add("smscode", smsCode);
 //        params.add("password", smsCode);
         params.add("_xsrf", xXsrfToken);
         if (!TextUtils.isEmpty(xXsrfToken)) {
-            final ProgressDlg pDlg = new ProgressDlg(getActivity(), "登录中...");
-            HttpRequestUtil.getHttpClient(getActivity()).post(LocalParams.getBaseUrl()
+            final ProgressDlg pDlg = new ProgressDlg(getBaseAct(), "登录中...");
+            HttpRequestUtil.getHttpClient(getBaseAct()).post(LocalParams.getBaseUrl()
                     + "auth/login", params, new AsyncHttpResponseHandler() {
                 @Override
                 public void onStart() {
@@ -155,16 +155,16 @@ public class LoginFragment extends BaseFragment {
                                 new String(body), UserLoginEntry.class);
                         if (lEntry != null) {
                             if (TextUtils.isEmpty(lEntry.errmsg)) {
-                                new CacheManager(getActivity()).saveUserLoginToDisk(body);
-                                IntentUtil.sendUpdateMyInfoMsg(getActivity());
-                                IntentUtil.sendUpdateComboMsg(getActivity());
-                                IntentUtil.sendUpdateFarmShoppingCartMsg(getActivity());
+                                new CacheManager(getBaseAct()).saveUserLoginToDisk(body);
+                                IntentUtil.sendUpdateMyInfoMsg(getBaseAct());
+                                IntentUtil.sendUpdateComboMsg(getBaseAct());
+                                IntentUtil.sendUpdateFarmShoppingCartMsg(getBaseAct());
                                 popBackStack();
                                 //umeng统计当用户使用自有账号登录时
                                 MobclickAgent.onProfileSignIn(lEntry.id + "");
                                 return;
                             } else {
-                                ToastHelper.showShort(getActivity(), lEntry.errmsg);
+                                ToastHelper.showShort(getBaseAct(), lEntry.errmsg);
                             }
                         }
                     }
@@ -172,7 +172,7 @@ public class LoginFragment extends BaseFragment {
 
                 @Override
                 public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
-                    ToastHelper.showShort(getActivity(), R.string.login_fail);
+                    ToastHelper.showShort(getBaseAct(), R.string.login_fail);
                 }
             });
         }
@@ -185,16 +185,16 @@ public class LoginFragment extends BaseFragment {
     void doGetSnsCode() {
         final String mobileNumber = input_mobile_tel.getText().toString();
         if (TextUtils.isEmpty(mobileNumber) || mobileNumber.length() > 11 || mobileNumber.length() < 11) {
-            ToastHelper.showShort(getActivity(), R.string.mobile_phone_error);
+            ToastHelper.showShort(getBaseAct(), R.string.mobile_phone_error);
             return;
         }
-        Utils.hideVirtualKeyboard(getActivity(), sms_code_et);
+        Utils.hideVirtualKeyboard(getBaseAct(), sms_code_et);
         RequestParams params = new RequestParams();
         params.add("mobile", mobileNumber);
         params.add("type", 5 + "");
-        params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
-        final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
-        HttpRequestUtil.getHttpClient(getActivity()).post(LocalParams.getBaseUrl() + "util/smscode", params, new AsyncHttpResponseHandler() {
+        params.add("_xsrf", PersistanceManager.getCookieValue(getBaseAct()));
+        final ProgressDlg pDlg = new ProgressDlg(getBaseAct(), "加载中...");
+        HttpRequestUtil.getHttpClient(getBaseAct()).post(LocalParams.getBaseUrl() + "util/smscode", params, new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {
                 super.onStart();
@@ -217,7 +217,7 @@ public class LoginFragment extends BaseFragment {
                             return;
                         } else {
                             stopTime();
-                            ToastHelper.showShort(getActivity(), sEntry.errmsg);
+                            ToastHelper.showShort(getBaseAct(), sEntry.errmsg);
                         }
                     }
                 }
@@ -225,7 +225,7 @@ public class LoginFragment extends BaseFragment {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                ToastHelper.showShort(getActivity(), "错误验证码" + statusCode);
+                ToastHelper.showShort(getBaseAct(), "错误验证码" + statusCode);
                 stopTime();
             }
         });

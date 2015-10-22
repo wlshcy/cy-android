@@ -42,7 +42,7 @@ public class RemarkFragment extends BaseFragment {
         ((TextView) v.findViewById(R.id.title_center_text)).setText(R.string.add_remark);
         leave_msg_to_farm.setText(getArguments().getString("RemarkTip"));
         ColorStateList green =
-                getActivity().getResources().getColorStateList(R.color.green_2bbc6a);
+                getBaseAct().getResources().getColorStateList(R.color.green_2bbc6a);
         save.setTextColor(green);
         save.setText(R.string.save);
     }
@@ -53,7 +53,7 @@ public class RemarkFragment extends BaseFragment {
 
     @OnClick({R.id.back, R.id.title_right_text})
     void back(View v) {
-        Utils.hideVirtualKeyboard(getActivity(), v);
+        Utils.hideVirtualKeyboard(getBaseAct(), v);
         if (v == save) {
             if (lsn != null) {
                 lsn.updateRemarkWidget(leave_msg_to_farm.getText().toString());
@@ -82,7 +82,7 @@ public class RemarkFragment extends BaseFragment {
     }
 
     private void alertQuitEdit() {
-        final AlertDialog alert = new AlertDialog.Builder(getActivity()).create();
+        final AlertDialog alert = new AlertDialog.Builder(getBaseAct()).create();
         alert.show();
         alert.setCancelable(false);
         alert.getWindow().setContentView(R.layout.prompt_dialog);
@@ -102,7 +102,7 @@ public class RemarkFragment extends BaseFragment {
                     @Override
                     public void onClick(View v) {
                         alert.dismiss();
-                        Utils.hideVirtualKeyboard(getActivity(), save);
+                        Utils.hideVirtualKeyboard(getBaseAct(), save);
                         popBackStack();
                     }
                 });

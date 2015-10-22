@@ -67,7 +67,7 @@ public class ComboFragment extends BaseFragment {
 //        pView.setOnPullEventListener(new PullToRefreshBase.OnPullEventListener<ScrollView>() {
 //            @Override
 //            public void onPullEvent(PullToRefreshBase<ScrollView> refreshView, PullToRefreshBase.State state, PullToRefreshBase.Mode direction) {
-//                ToastHelper.showShort(getActivity(),"shitshti");
+//                ToastHelper.showShort(getBaseAct(),"shitshti");
 //            }
 //        });
 //        pView.getLoadingLayoutProxy().setLastUpdatedLabel(
@@ -92,7 +92,7 @@ public class ComboFragment extends BaseFragment {
 //            gotoFragmentByAnimation(buildBundle(entry), R.id.mainpage_ly, new ChooseDishesFragment(), ChooseDishesFragment.class.getName(), R.anim.scale_left_bottom_in, R.anim.scale_left_bottom_out);
             gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new ChooseDishesFragment(), ChooseDishesFragment.class.getName());
         } else {
-//            ComboSecondDialog dialog = new ComboSecondDialog(getActivity());
+//            ComboSecondDialog dialog = new ComboSecondDialog(getBaseAct());
 //            dialog.addViewsToList(entry);
 //            dialog.show();
             //  gotoFragmentByAnimation(buildBundle(entry), R.id.mainpage_ly, new ComboSecondFragment(), ComboSecondFragment.class.getName(), R.anim.puff_in, R.anim.puff_out);
@@ -102,7 +102,7 @@ public class ComboFragment extends BaseFragment {
     }
 
     boolean isLogin() {
-        return new CacheManager(getActivity()).getUserLoginEntry() != null;
+        return new CacheManager(getBaseAct()).getUserLoginEntry() != null;
     }
 
     @OnClick(R.id.back)
@@ -113,7 +113,7 @@ public class ComboFragment extends BaseFragment {
 
     void buildAdapter() {
         if (adapter == null)
-            adapter = new ComboAdapter(getActivity());
+            adapter = new ComboAdapter(getBaseAct());
         mListView.setAdapter(adapter);
     }
 
@@ -128,8 +128,8 @@ public class ComboFragment extends BaseFragment {
      * 请求套餐列表
      */
     void requestComboList() {
-        final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
-        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "cai/combo", new AsyncHttpResponseHandler() {
+        final ProgressDlg pDlg = new ProgressDlg(getBaseAct(), "加载中...");
+        HttpRequestUtil.getHttpClient(getBaseAct()).get(LocalParams.getBaseUrl() + "cai/combo", new AsyncHttpResponseHandler() {
 
             @Override
             public void onStart() {
@@ -159,7 +159,7 @@ public class ComboFragment extends BaseFragment {
                             doAddDataToAdapter(entry.aList);
                             return;
                         }
-                        ToastHelper.showShort(getActivity(), entry.errmsg);
+                        ToastHelper.showShort(getBaseAct(), entry.errmsg);
                     }
                 }
             }
@@ -167,10 +167,10 @@ public class ComboFragment extends BaseFragment {
             @Override
             public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
                 if (sCode == 0) {
-                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
+                    ToastHelper.showShort(getBaseAct(), R.string.network_error_tip);
                     return;
                 }
-                ToastHelper.showShort(getActivity(), "错误码 " + sCode);
+                ToastHelper.showShort(getBaseAct(), "错误码 " + sCode);
             }
         });
     }
@@ -186,15 +186,15 @@ public class ComboFragment extends BaseFragment {
             adapter.notifyDataSetChanged();
             Utils.setListViewHeightBasedOnChildren(mListView);
             int size = aList.size();
-            UserLoginEntry entry = new CacheManager(getActivity()).getUserLoginEntry();
+            UserLoginEntry entry = new CacheManager(getBaseAct()).getUserLoginEntry();
             if (entry != null) {
                 entry.mycomboids = new int[size];
                 for (int i = 0; i < size; ++i) {
                     entry.mycomboids[i] = aList.get(i).id;
                 }
-                new CacheManager(getActivity()).saveUserLoginToDisk(JsonUtilsParser.toJson(entry).getBytes());
+                new CacheManager(getBaseAct()).saveUserLoginToDisk(JsonUtilsParser.toJson(entry).getBytes());
             }
-//            IntentUtil.sendUpdateMyInfoMsg(getActivity(), aList.get(0));
+//            IntentUtil.sendUpdateMyInfoMsg(getBaseAct(), aList.get(0));
         }
     }
 
@@ -241,7 +241,7 @@ public class ComboFragment extends BaseFragment {
         if (!mIsBind) {
             IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction(IntentUtil.UPDATE_COMBO_PAGE);
-            getActivity().registerReceiver(mUpdateReceiver, intentFilter);
+            getBaseAct().registerReceiver(mUpdateReceiver, intentFilter);
             mIsBind = true;
         }
     }
@@ -261,7 +261,7 @@ public class ComboFragment extends BaseFragment {
 
     private void doUnRegisterReceiver() {
         if (mIsBind) {
-            getActivity().unregisterReceiver(mUpdateReceiver);
+            getBaseAct().unregisterReceiver(mUpdateReceiver);
             mIsBind = false;
         }
     }

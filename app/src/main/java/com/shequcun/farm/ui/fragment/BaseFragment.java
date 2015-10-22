@@ -191,8 +191,8 @@ public abstract class BaseFragment extends Fragment {
         MobclickAgent.onPageEnd(this.getClass().getSimpleName());
     }
 
-    public Activity getBaseAct() {
-        Activity mmAct = getActivity();
+    public FragmentActivity getBaseAct() {
+        FragmentActivity mmAct = getActivity();
         if (mmAct == null) {
             mmAct = mAct;
         }
