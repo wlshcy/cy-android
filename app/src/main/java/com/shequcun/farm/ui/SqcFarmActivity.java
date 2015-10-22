@@ -55,7 +55,6 @@ public class SqcFarmActivity extends BaseFragmentActivity {
     }
 
     private void initWidget() {
-        ButterKnife.bind(this);
         buildAdapter();
         setWidgetLsn();
         initTipChooseCombo();
