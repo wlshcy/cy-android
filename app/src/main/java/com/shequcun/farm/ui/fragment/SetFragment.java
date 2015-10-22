@@ -65,8 +65,8 @@ public class SetFragment extends BaseFragment {
 
     void buildAdapter() {
         if (adapter == null)
-            adapter = new MyAdapter(getActivity(), getResources().getStringArray(R.array.set_array));
-        adapter.setVerName("V " + DeviceInfo.getVersion(getActivity()));
+            adapter = new MyAdapter(getBaseAct(), getResources().getStringArray(R.array.set_array));
+        adapter.setVerName("V " + DeviceInfo.getVersion(getBaseAct()));
         mLv.setAdapter(adapter);
     }
 
@@ -80,23 +80,23 @@ public class SetFragment extends BaseFragment {
 
 
     void checkVersion() {
-        final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加載中...");
+        final ProgressDlg pDlg = new ProgressDlg(getBaseAct(), "加載中...");
         RequestParams params = new RequestParams();
         params.add("apptype", "5");
         params.add("platform", "2");
-        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "app/version", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.getHttpClient(getBaseAct()).get(LocalParams.getBaseUrl() + "app/version", params, new AsyncHttpResponseHandler() {
             public void onSuccess(int sCode, Header[] h, byte[] data) {
                 if (data != null && data.length > 0) {
                     VersionEntry vEntry = JsonUtilsParser.fromJson(new String(data), VersionEntry.class);
                     if (vEntry != null) {
                         if (TextUtils.isEmpty(vEntry.errmsg)) {
-                            if (!TextUtils.isEmpty(vEntry.version) && vEntry.version.compareTo(DeviceInfo.getVersion(getActivity())) > 0) {
+                            if (!TextUtils.isEmpty(vEntry.version) && vEntry.version.compareTo(DeviceInfo.getVersion(getBaseAct())) > 0) {
                                 showUpdateDlg(vEntry);
                             } else {
-                                ToastHelper.showShort(getActivity(), "您的版本已是最新版本咯!");
+                                ToastHelper.showShort(getBaseAct(), "您的版本已是最新版本咯!");
                             }
                         } else {
-                            ToastHelper.showShort(getActivity(), vEntry.errmsg);
+                            ToastHelper.showShort(getBaseAct(), vEntry.errmsg);
                         }
                     }
                 }
@@ -106,10 +106,10 @@ public class SetFragment extends BaseFragment {
             @Override
             public void onFailure(int sCode, Header[] h, byte[] data, Throwable e) {
                 if (sCode == 0) {
-                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
+                    ToastHelper.showShort(getBaseAct(), R.string.network_error_tip);
                     return;
                 }
-                ToastHelper.showShort(getActivity(), "更新失敗,錯誤碼" + sCode);
+                ToastHelper.showShort(getBaseAct(), "更新失敗,錯誤碼" + sCode);
             }
 
             @Override
@@ -130,7 +130,7 @@ public class SetFragment extends BaseFragment {
     private void showUpdateDlg(final VersionEntry vEntry) {
         if (vEntry == null)
             return;
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getBaseAct());
         builder.setTitle("提示");
         builder.setMessage(vEntry.change);
         builder.setNegativeButton(R.string.update, new DialogInterface.OnClickListener() {
@@ -161,7 +161,7 @@ public class SetFragment extends BaseFragment {
 
     @OnClick(R.id.exit_login)
     void showExitDlg() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getBaseAct());
         builder.setTitle("提示");
         builder.setMessage("是否退出登录");
         builder.setNegativeButton("确认", new DialogInterface.OnClickListener() {
@@ -180,10 +180,10 @@ public class SetFragment extends BaseFragment {
 
     void doLogout() {
         RequestParams params = new RequestParams();
-        params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
+        params.add("_xsrf", PersistanceManager.getCookieValue(getBaseAct()));
 
-        final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
-        HttpRequestUtil.getHttpClient(getActivity()).post(LocalParams.getBaseUrl() + "auth/logout", params, new AsyncHttpResponseHandler() {
+        final ProgressDlg pDlg = new ProgressDlg(getBaseAct(), "加载中...");
+        HttpRequestUtil.getHttpClient(getBaseAct()).post(LocalParams.getBaseUrl() + "auth/logout", params, new AsyncHttpResponseHandler() {
 
             @Override
             public void onStart() {
@@ -206,15 +206,15 @@ public class SetFragment extends BaseFragment {
                         if (jObj != null) {
                             boolean logout = jObj.optBoolean("logout");
                             if (logout) {
-//                                PersistanceManager.saveCookieValue(getActivity(),"");
-                                ToastHelper.showShort(getActivity(), R.string.logout_success);
-                                new CacheManager(getActivity()).delUserLoginToDisk();
-                                IntentUtil.sendUpdateMyInfoMsg(getActivity());
-                                IntentUtil.sendUpdateComboMsg(getActivity());
-                                IntentUtil.sendUpdateFarmShoppingCartMsg(getActivity());
+//                                PersistanceManager.saveCookieValue(getBaseAct(),"");
+                                ToastHelper.showShort(getBaseAct(), R.string.logout_success);
+                                new CacheManager(getBaseAct()).delUserLoginToDisk();
+                                IntentUtil.sendUpdateMyInfoMsg(getBaseAct());
+                                IntentUtil.sendUpdateComboMsg(getBaseAct());
+                                IntentUtil.sendUpdateFarmShoppingCartMsg(getBaseAct());
                                 popBackStack();
                             } else {
-                                ToastHelper.showShort(getActivity(), R.string.logout_fail);
+                                ToastHelper.showShort(getBaseAct(), R.string.logout_fail);
                             }
                         }
 
@@ -230,10 +230,10 @@ public class SetFragment extends BaseFragment {
             public void onFailure(int sCode, Header[] h,
                                   byte[] data, Throwable error) {
                 if (sCode == 0) {
-                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
+                    ToastHelper.showShort(getBaseAct(), R.string.network_error_tip);
                     return;
                 }
-                ToastHelper.showShort(getActivity(), "退出失败,错误码" + sCode);
+                ToastHelper.showShort(getBaseAct(), "退出失败,错误码" + sCode);
             }
         });
     }
@@ -257,7 +257,7 @@ public class SetFragment extends BaseFragment {
                 break;
             case 2://幫助
                 gotoFragmentByAdd(buildBundle("https://store.shequcun.com/help/ychelp", R.string.help), R.id.mainpage_ly, new SetWebViewFragment(), SetWebViewFragment.class.getName());
-//                    ToastHelper.showShort(getActivity(), "坐等关于有菜帮助的内容");
+//                    ToastHelper.showShort(getBaseAct(), "坐等关于有菜帮助的内容");
                 break;
             case 3://問題反饋
                 gotoFragmentByAdd(R.id.mainpage_ly, new FeedbackFragment(), FeedbackFragment.class.getName());

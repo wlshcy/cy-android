@@ -85,7 +85,7 @@ public class RedPacketsListFragment extends BaseFragment {
         titleTv.setText(R.string.use_favorable_red_packets);
         rightTv.setText(R.string.use_rule);
         if (adapter == null) {
-            adapter = new RedPacketsAdapter(getActivity());
+            adapter = new RedPacketsAdapter(getBaseAct());
         }
         redPacketsLv.setAdapter(adapter);
         redPacketsLv.setExpanded(true);
@@ -157,7 +157,7 @@ public class RedPacketsListFragment extends BaseFragment {
                 return;
             if (entry.used)
                 return;
-            FragmentManager manager = getActivity().getSupportFragmentManager();
+            FragmentManager manager = getBaseAct().getSupportFragmentManager();
             if (manager != null) {
                 List<Fragment> aList = manager.getFragments();
                 if (aList != null && aList.size() > 0) {
@@ -182,7 +182,7 @@ public class RedPacketsListFragment extends BaseFragment {
             params.add("type", type + "");
         params.add("lastid", lastId + "");
         params.add("length", length + "");
-        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "cai/coupon", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.getHttpClient(getBaseAct()).get(LocalParams.getBaseUrl() + "cai/coupon", params, new AsyncHttpResponseHandler() {
             @Override
             public void onFinish() {
                 super.onFinish();
@@ -199,7 +199,7 @@ public class RedPacketsListFragment extends BaseFragment {
                     if (TextUtils.isEmpty(entry.errmsg)) {
                         successRedPacketsList(entry);
                     } else {
-                        ToastHelper.showShort(getActivity(), entry.errmsg);
+                        ToastHelper.showShort(getBaseAct(), entry.errmsg);
                     }
                 }
             }
@@ -207,10 +207,10 @@ public class RedPacketsListFragment extends BaseFragment {
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 if (statusCode == 0) {
-                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
+                    ToastHelper.showShort(getBaseAct(), R.string.network_error_tip);
                     return;
                 }
-                ToastHelper.showShort(getActivity(), "请求失败,错误码" + statusCode);
+                ToastHelper.showShort(getBaseAct(), "请求失败,错误码" + statusCode);
             }
         });
     }

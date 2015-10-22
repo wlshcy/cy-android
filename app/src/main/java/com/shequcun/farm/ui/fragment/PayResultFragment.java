@@ -124,7 +124,7 @@ public class PayResultFragment extends BaseFragment {
     }
 
     private void alertDialog(String content) {
-        final AlertDialog alert = new AlertDialog.Builder(getActivity()).create();
+        final AlertDialog alert = new AlertDialog.Builder(getBaseAct()).create();
         alert.show();
         alert.setCancelable(false);
         alert.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -156,7 +156,7 @@ public class PayResultFragment extends BaseFragment {
     }
 
     private void alertRedPacketsShare(int count, final String url, final String title, final String content) {
-        final AlertDialog alert = new AlertDialog.Builder(getActivity()).create();
+        final AlertDialog alert = new AlertDialog.Builder(getBaseAct()).create();
         alert.show();
         alert.setCancelable(false);
         alert.getWindow().setContentView(R.layout.prompt_redpackets_share);
@@ -181,9 +181,9 @@ public class PayResultFragment extends BaseFragment {
 
     private void requestRedPacktetShareUrl(String orderNo) {
         RequestParams params = new RequestParams();
-        params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
+        params.add("_xsrf", PersistanceManager.getCookieValue(getBaseAct()));
         params.add("orderno", orderNo);
-        HttpRequestUtil.getHttpClient(getActivity()).post(LocalParams.getBaseUrl() + "cai/coupon", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.getHttpClient(getBaseAct()).post(LocalParams.getBaseUrl() + "cai/coupon", params, new AsyncHttpResponseHandler() {
             @Override
             public void onFinish() {
                 super.onFinish();
@@ -198,7 +198,7 @@ public class PayResultFragment extends BaseFragment {
                         alertRedPacketsShare(entry.count, entry.url, entry.title, entry.content);
                     }
 //                    else {
-//                        ToastHelper.showShort(getActivity(), entry.errmsg);
+//                        ToastHelper.showShort(getBaseAct(), entry.errmsg);
 //                    }
                 }
             }
@@ -206,10 +206,10 @@ public class PayResultFragment extends BaseFragment {
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 //                if (statusCode == 0) {
-//                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
+//                    ToastHelper.showShort(getBaseAct(), R.string.network_error_tip);
 //                    return;
 //                }
-//                ToastHelper.showShort(getActivity(), "请求失败,错误码" + statusCode);
+//                ToastHelper.showShort(getBaseAct(), "请求失败,错误码" + statusCode);
             }
         });
     }
@@ -220,11 +220,11 @@ public class PayResultFragment extends BaseFragment {
         shareContent.setTargetUrl(url);
         shareContent.setTitle(title);
         shareContent.setContent(content);
-        ShareManager.shareByFrame(getActivity(), shareContent);
+        ShareManager.shareByFrame(getBaseAct(), shareContent);
     }
 
     public void showMyComboExpireAlertDlg() {
-        final android.app.AlertDialog alert = new android.app.AlertDialog.Builder(getActivity()).create();
+        final android.app.AlertDialog alert = new android.app.AlertDialog.Builder(getBaseAct()).create();
         alert.show();
         alert.setCancelable(false);
         alert.getWindow().setContentView(R.layout.my_combo_expire_alert_ly);

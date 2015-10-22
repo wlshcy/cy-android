@@ -41,13 +41,13 @@ public class ComboMongoliaLayerFragment extends BaseFragment {
 
     @OnClick(R.id.close)
     void back() {
-        PersistanceManager.saveIsShowLookupComboDetails(getActivity(), buildKey(), false);
+        PersistanceManager.saveIsShowLookupComboDetails(getBaseAct(), buildKey(), false);
         popBackStack();
     }
 
     @OnClick(R.id.look_combo_detail_tv)
     void lookComboDetail() {
-        PersistanceManager.saveIsShowLookupComboDetails(getActivity(), buildKey(), false);
+        PersistanceManager.saveIsShowLookupComboDetails(getBaseAct(), buildKey(), false);
         popBackStack();
         gotoFragmentByAdd(getArguments(), R.id.mainpage_ly, new WebViewFragment(), WebViewFragment.class.getName());
     }

@@ -13,6 +13,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -81,7 +83,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
             producingPlaceTv.setText("来自农庄：无");
         if (entry.detail != null) {
             if (!TextUtils.isEmpty(entry.detail.image)) {
-                String url = entry.detail.image + "?imageView2/2/w/" + DeviceInfo.getDeviceWidth(this.getActivity());
+                String url = entry.detail.image + "?imageView2/2/w/" + DeviceInfo.getDeviceWidth(this.getBaseAct());
                 ImageLoader.getInstance().displayImage(url, contentImgIv, Constrants.image_display_options_disc);
             }
             contentTv.setText(entry.detail.content);
@@ -97,7 +99,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
     private RecommendEntry readRecommendEntryFromDisk(RecommendEntry pEntry) {
         RecommendItemKey rItemKey = new RecommendItemKey();
         rItemKey.object = pEntry;
-        return new CacheManager(getActivity()).getRecommendEntry(rItemKey);
+        return new CacheManager(getBaseAct()).getRecommendEntry(rItemKey);
     }
 
     @Override
@@ -123,7 +125,9 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
 
     @OnClick(R.id.back)
     void back() {
+//        clearStack();
         popBackStack();
+//        startAnimation();
     }
 
     void buildCarouselAdapter() {
@@ -139,8 +143,8 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
 //            sEntry.img = entry.imgs[i];
 //            aList.add(sEntry);
 //        }
-//        cAdapter = new CarouselAdapter(getActivity(), aList);
-//        cAdapter.setWidth(DeviceInfo.getDeviceWidth(getActivity()));
+//        cAdapter = new CarouselAdapter(getBaseAct(), aList);
+//        cAdapter.setWidth(DeviceInfo.getDeviceWidth(getBaseAct()));
 //        carousel_img.setOnViewSwitchListener(viewSwitchListener);
 //        cAdapter.setImageLoaderListener(imageLoaderListener);
 //        carousel_img.setAdapter(cAdapter, 0);
@@ -157,9 +161,9 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
     }
 
     private void addSliderUrl(String url) {
-        DefaultSliderView textSliderView = new DefaultSliderView(getActivity());
+        DefaultSliderView textSliderView = new DefaultSliderView(getBaseAct());
         // initialize a SliderLayout
-        url = url + "?imageView2/2/" + DeviceInfo.getDeviceWidth(getActivity());
+        url = url + "?imageView2/2/" + DeviceInfo.getDeviceWidth(getBaseAct());
         textSliderView
                 .description("")
                 .image(url)
@@ -189,7 +193,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
                 sharecontent.setTitle(entry.title);
 //                sharecontent.setContent("孩子的餐桌我们的标准，走心，连蔬菜都这么有bigger！");
                 sharecontent.setContent(entry.descr);
-                ShareManager.shareByFrame(getActivity(), sharecontent);
+                ShareManager.shareByFrame(getBaseAct(), sharecontent);
             } else if (v == producingPlaceTv) {
                 gotoProducingPlaceFragment(entry.fid);
             }
@@ -201,10 +205,10 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
 //        if (entry != null && entry.count > 0) {
 //            RecommendItemKey itemKey = new RecommendItemKey();
 //            itemKey.object = entry;
-//            new CacheManager(getActivity()).saveRecommendToDisk(itemKey);
-//            IntentUtil.sendUpdateFarmShoppingCartMsg(getActivity());
+//            new CacheManager(getBaseAct()).saveRecommendToDisk(itemKey);
+//            IntentUtil.sendUpdateFarmShoppingCartMsg(getBaseAct());
 //        }
-        SqcFarmActivity mAct = (SqcFarmActivity) getActivity();
+        SqcFarmActivity mAct = (SqcFarmActivity) getBaseAct();
         mAct.buildRadioButtonStatus(pos);
     }
 
@@ -224,7 +228,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
         if (entry == null)
             return;
         if (entry.type == 2) {//秒杀菜品
-            final View childView = LayoutInflater.from(getActivity()).inflate(R.layout.pay_widget_ly, null);
+            final View childView = LayoutInflater.from(getBaseAct()).inflate(R.layout.pay_widget_ly, null);
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             params.gravity = Gravity.BOTTOM;
             pView.addView(childView, params);
@@ -240,13 +244,13 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
                     }
 
                     if (entry.type == 2 && entry.bought) {
-                        new com.shequcun.farm.dlg.AlertDialog().alertDialog(getActivity(), R.string.spike_error_tip, new DialogInterface.OnClickListener() {
+                        new com.shequcun.farm.dlg.AlertDialog().alertDialog(getBaseAct(), R.string.spike_error_tip, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 gotoHomePageDependPos(2);
-                                Bundle bundle=new Bundle();
+                                Bundle bundle = new Bundle();
 
-                                gotoFragmentByAdd(bundle,R.id.mainpage_ly, new MyOrderViewPagerFragment(), MyOrderViewPagerFragment.class.getName());
+                                gotoFragmentByAdd(bundle, R.id.mainpage_ly, new MyOrderViewPagerFragment(), MyOrderViewPagerFragment.class.getName());
                             }
                         });
                         return;
@@ -267,7 +271,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
                 }
             });
         } else if (entry.type == 1 && !entry.isShowDtlFooter) {//普通菜品
-            View childView = LayoutInflater.from(getActivity()).inflate(R.layout.shop_cart_widget_ly, null);
+            View childView = LayoutInflater.from(getBaseAct()).inflate(R.layout.shop_cart_widget_ly, null);
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             params.gravity = Gravity.BOTTOM;
             pView.addView(childView, params);
@@ -309,9 +313,9 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
                     if (entry.count > 0) {
                         RecommendItemKey itemKey = new RecommendItemKey();
                         itemKey.object = entry;
-                        new CacheManager(getActivity()).saveRecommendToDisk(itemKey);
-                        IntentUtil.sendUpdateFarmShoppingCartMsg(getActivity());
-                        ToastHelper.showShort(getActivity(), R.string.add_shop_cart_success);
+                        new CacheManager(getBaseAct()).saveRecommendToDisk(itemKey);
+                        IntentUtil.sendUpdateFarmShoppingCartMsg(getBaseAct());
+                        ToastHelper.showShort(getBaseAct(), R.string.add_shop_cart_success);
                     }
                 }
             });
@@ -346,7 +350,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
     }
 
     private void alertDialog(String content) {
-        final AlertDialog alert = new AlertDialog.Builder(getActivity()).create();
+        final AlertDialog alert = new AlertDialog.Builder(getBaseAct()).create();
         alert.show();
         alert.setCancelable(false);
         alert.getWindow().setContentView(R.layout.alert_dialog);
@@ -377,7 +381,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
      * @return
      */
     boolean isLogin() {
-        return new CacheManager(getActivity()).getUserLoginEntry() != null;
+        return new CacheManager(getBaseAct()).getUserLoginEntry() != null;
     }
 
     private CarouselAdapter.ImageLoaderListener imageLoaderListener = new CarouselAdapter.ImageLoaderListener() {
@@ -424,6 +428,27 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
 //        if (imgProgress.getVisibility() == View.GONE)
 //            imgProgress.setVisibility(View.VISIBLE);
 //    }
+
+    void startAnimation() {
+        Animation anim = AnimationUtils.loadAnimation(getBaseAct(), R.anim.slide_out_from_left);
+
+        anim.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                popBackStack();
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+        });
+        pView.setAnimation(anim);
+    }
 
     /**
      * 轮播的图片

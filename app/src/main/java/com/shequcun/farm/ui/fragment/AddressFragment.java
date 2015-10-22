@@ -97,7 +97,7 @@ public class AddressFragment extends BaseFragment {
     AvoidDoubleClickListener onClick = new AvoidDoubleClickListener() {
         @Override
         public void onViewClick(View v) {
-            Utils.hideVirtualKeyboard(getActivity(), v);
+            Utils.hideVirtualKeyboard(getBaseAct(), v);
             if (v == choose_zone_ll) {
                 requestRegionsList();
 //                gotoFragmentByAdd(R.id.mainpage_ly, new SearchFragment(), SearchFragment.class.getName());
@@ -120,7 +120,7 @@ public class AddressFragment extends BaseFragment {
     };
 
     private void selectRegionAlert(final String[] array) {
-        Dialog alertDialog = new AlertDialog.Builder(getActivity())
+        Dialog alertDialog = new AlertDialog.Builder(getBaseAct())
                 .setTitle("选择区域")
                 .setItems(array, new DialogInterface.OnClickListener() {
                     @Override
@@ -141,7 +141,7 @@ public class AddressFragment extends BaseFragment {
         RequestParams params = new RequestParams();
         params.add("range", "0");
         params.add("pid", "1");
-        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "util/region", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.getHttpClient(getBaseAct()).get(LocalParams.getBaseUrl() + "util/region", params, new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {
                 super.onStart();
@@ -167,7 +167,7 @@ public class AddressFragment extends BaseFragment {
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 if (statusCode == 0) {
-                    ToastHelper.showShort(getActivity(), "请检查您的网络后重试.");
+                    ToastHelper.showShort(getBaseAct(), "请检查您的网络后重试.");
                 }
             }
         });
@@ -185,35 +185,35 @@ public class AddressFragment extends BaseFragment {
     void upLoadAddressToServer() {
         name = name_edit.getText().toString().trim();
         if (TextUtils.isEmpty(name)) {
-            ToastHelper.showShort(getActivity(), R.string.input_name);
+            ToastHelper.showShort(getBaseAct(), R.string.input_name);
             return;
         }
         mobile = mobile_phone_edit.getText().toString().trim();
 
         if (TextUtils.isEmpty(mobile)) {
-            ToastHelper.showShort(getActivity(), R.string.input_mobile_phone);
+            ToastHelper.showShort(getBaseAct(), R.string.input_mobile_phone);
             return;
         }
         if (!PhoneUtil.isPhone(mobile)) {
-            ToastHelper.showShort(getActivity(), R.string.common_phone_format_error);
+            ToastHelper.showShort(getBaseAct(), R.string.common_phone_format_error);
             return;
         }
 
         region = regionTv.getText().toString().trim();
         if (TextUtils.isEmpty(region) || "点击选择".equals(region)) {
-            ToastHelper.showShort(getActivity(), R.string.choose_region);
+            ToastHelper.showShort(getBaseAct(), R.string.choose_region);
             return;
         }
 
         detailAddr = addressDetailEt.getText().toString().trim();
 
         if (TextUtils.isEmpty(detailAddr)) {
-            ToastHelper.showShort(getActivity(), R.string.input_building_number);
+            ToastHelper.showShort(getBaseAct(), R.string.input_building_number);
             return;
         }
 
 //        if (!checkDiff()) {
-//            ToastHelper.showShort(getActivity(), R.string.duplicate_address_content);
+//            ToastHelper.showShort(getBaseAct(), R.string.duplicate_address_content);
 //            return;
 //        }
 
@@ -221,22 +221,22 @@ public class AddressFragment extends BaseFragment {
 //        String union_NO = unit_number_edit.getText().toString();
 //
 //        if (TextUtils.isEmpty(union_NO)) {
-//            ToastHelper.showShort(getActivity(), R.string.input_union_number);
+//            ToastHelper.showShort(getBaseAct(), R.string.input_union_number);
 //            return;
 //        }
 //
 //        String house_NO = house_number_edit.getText().toString();
 //
 //        if (TextUtils.isEmpty(house_NO)) {
-//            ToastHelper.showShort(getActivity(), R.string.input_house_number);
+//            ToastHelper.showShort(getBaseAct(), R.string.input_house_number);
 //            return;
 //        }
 
         final RequestParams params = new RequestParams();
-        params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
+        params.add("_xsrf", PersistanceManager.getCookieValue(getBaseAct()));
         params.put("name", name);
         params.put("mobile", mobile);
-        if (entry != null){
+        if (entry != null) {
             params.put("id", entry.id);
             params.put("city", entry.city);
         }
@@ -260,8 +260,8 @@ public class AddressFragment extends BaseFragment {
 ////            params.put("unit", union_NO);
 ////            params.put("room", house_NO);
 //        }
-        final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
-        HttpRequestUtil.getHttpClient(getActivity()).post(LocalParams.getBaseUrl() + "user/v3/address", params, new AsyncHttpResponseHandler() {
+        final ProgressDlg pDlg = new ProgressDlg(getBaseAct(), "加载中...");
+        HttpRequestUtil.getHttpClient(getBaseAct()).post(LocalParams.getBaseUrl() + "user/v3/address", params, new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {
                 super.onStart();
@@ -291,7 +291,7 @@ public class AddressFragment extends BaseFragment {
                                 updateUserInfo(entry);
                                 return;
                             }
-                            ToastHelper.showShort(getActivity(), errmsg);
+                            ToastHelper.showShort(getBaseAct(), errmsg);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -302,10 +302,10 @@ public class AddressFragment extends BaseFragment {
             @Override
             public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
                 if (sCode == 0) {
-                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
+                    ToastHelper.showShort(getBaseAct(), R.string.network_error_tip);
                     return;
                 }
-                ToastHelper.showShort(getActivity(), "提交失败，错误码" + sCode);
+                ToastHelper.showShort(getBaseAct(), "提交失败，错误码" + sCode);
             }
         });
     }
@@ -355,7 +355,7 @@ public class AddressFragment extends BaseFragment {
     }
 
     void updateUserInfo(AddressEntry entry) {
-        FragmentManager manager = getActivity().getSupportFragmentManager();
+        FragmentManager manager = getBaseAct().getSupportFragmentManager();
         if (manager != null) {
             List<Fragment> aList = manager.getFragments();
             if (aList != null && aList.size() > 0) {
@@ -369,7 +369,7 @@ public class AddressFragment extends BaseFragment {
                 }
             }
         }
-        IntentUtil.sendUpdateAddressRequest(getActivity());
+        IntentUtil.sendUpdateAddressRequest(getBaseAct());
         popBackStack();
     }
 
@@ -412,14 +412,14 @@ public class AddressFragment extends BaseFragment {
         if (!mIsBind) {
             IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction("com.youcai.refresh.myaddress");
-            getActivity().registerReceiver(mUpdateReceiver, intentFilter);
+            getBaseAct().registerReceiver(mUpdateReceiver, intentFilter);
             mIsBind = true;
         }
     }
 
     private void doUnRegisterReceiver() {
         if (mIsBind) {
-            getActivity().unregisterReceiver(mUpdateReceiver);
+            getBaseAct().unregisterReceiver(mUpdateReceiver);
             mIsBind = false;
         }
     }
@@ -464,7 +464,7 @@ public class AddressFragment extends BaseFragment {
     }
 
     private void alertQuitEdit() {
-        final AlertDialog alert = new AlertDialog.Builder(getActivity()).create();
+        final AlertDialog alert = new AlertDialog.Builder(getBaseAct()).create();
         alert.show();
         alert.setCancelable(false);
         alert.getWindow().setContentView(R.layout.prompt_dialog);

@@ -58,7 +58,7 @@ public class WebViewFragment extends BaseFragment {
 
     @OnClick(R.id.title_right_text)
     void doClick() {
-        ConsultationDlg.showCallTelDlg(getActivity());
+        ConsultationDlg.showCallTelDlg(getBaseAct());
     }
 
     String[] buildUrl() {

@@ -76,7 +76,7 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
 
 
     void buildUserLoginEntry() {
-        uEntry = new CacheManager(getActivity()).getUserLoginEntry();
+        uEntry = new CacheManager(getBaseAct()).getUserLoginEntry();
     }
 
     /**
@@ -130,7 +130,7 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
 
     @OnClick(R.id.title_right_text)
     void callServicePhone() {
-        ConsultationDlg.showCallTelDlg(getActivity());
+        ConsultationDlg.showCallTelDlg(getBaseAct());
     }
 
     @OnClick(R.id.remark_ly)
@@ -157,7 +157,7 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
 
 
     void addFooter() {
-        View footerView = LayoutInflater.from(getActivity()).inflate(R.layout.order_details_footer_ly, null);
+        View footerView = LayoutInflater.from(getBaseAct()).inflate(R.layout.order_details_footer_ly, null);
         String delievery = buildComboDeliveryDate();
         if (TextUtils.isEmpty(delievery)) {
             ((TextView) footerView.findViewById(R.id.distribution_date)).setText("配送日期:  本周五配送");
@@ -176,9 +176,9 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
      */
     void addSparesFooter() {
         if (mOrderController != null && mOrderController.getOptionItems() != null && mOrderController.getOptionItems().size() > 0) {
-            mLv.addFooterView(LayoutInflater.from(getActivity()).inflate(R.layout.remark_footer_ly, null), null, false);
+            mLv.addFooterView(LayoutInflater.from(getBaseAct()).inflate(R.layout.remark_footer_ly, null), null, false);
             for (int i = 0; i < mOrderController.getOptionItems().size(); i++) {
-                View footerView = LayoutInflater.from(getActivity()).inflate(R.layout.order_details_item_ly, null);
+                View footerView = LayoutInflater.from(getBaseAct()).inflate(R.layout.order_details_item_ly, null);
                 ImageView goodImg = (ImageView) footerView.findViewById(R.id.goods_img);
                 ImageLoader.getInstance().displayImage(mOrderController.getOptionItems().get(i).imgs[0] + "?imageview2/2/w/180", goodImg);
                 ((TextView) footerView.findViewById(R.id.goods_name)).setText(mOrderController.getOptionItems().get(i).title);
@@ -190,7 +190,7 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
     }
 
     void addHeader() {
-        View v = LayoutInflater.from(getActivity()).inflate(R.layout.ucai_safe_tip_ly, null);
+        View v = LayoutInflater.from(getBaseAct()).inflate(R.layout.ucai_safe_tip_ly, null);
         mLv.addHeaderView(v, null, false);
     }
 
@@ -198,7 +198,7 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
     void buildAdapter() {
         addFooter();
         if (adapter == null) {
-            adapter = new OrderDetailsAdapter(getActivity());
+            adapter = new OrderDetailsAdapter(getBaseAct());
         }
         mLv.setAdapter(adapter);
         adapter.addAll(mOrderController.buildItems());
@@ -277,9 +277,9 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
         params.add("items", items);
         params.add("memo", remark_tv.getText().toString());
         params.add("spares", mOrderController.getOrderOptionItemString());
-        params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
-        final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
-        HttpRequestUtil.getHttpClient(getActivity()).post(LocalParams.getBaseUrl() + "cai/altorder", params, new AsyncHttpResponseHandler() {
+        params.add("_xsrf", PersistanceManager.getCookieValue(getBaseAct()));
+        final ProgressDlg pDlg = new ProgressDlg(getBaseAct(), "加载中...");
+        HttpRequestUtil.getHttpClient(getBaseAct()).post(LocalParams.getBaseUrl() + "cai/altorder", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int sCode, Header[] h, byte[] data) {
                 try {
@@ -292,7 +292,7 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
                                 gotoFragmentByAdd(buildBundle(orderno, getOrderMoney(), "", true, R.string.order_result, false), R.id.mainpage_ly, new PayResultFragment(), PayResultFragment.class.getName());
                                 return;
                             }
-                            ToastHelper.showShort(getActivity(), errmsg);
+                            ToastHelper.showShort(getBaseAct(), errmsg);
                         }
                     }
                 } catch (Exception e) {
@@ -304,10 +304,10 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
             @Override
             public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
                 if (sCode == 0) {
-                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
+                    ToastHelper.showShort(getBaseAct(), R.string.network_error_tip);
                     return;
                 }
-                ToastHelper.showShort(getActivity(), "修改订单失败,错误码" + sCode);
+                ToastHelper.showShort(getBaseAct(), "修改订单失败,错误码" + sCode);
             }
 
             @Override
@@ -339,12 +339,12 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
     private void createOrder() {
         RequestParams params = new RequestParams();
         params.add("spares", mOrderController.getOrderOptionItemString());
-        params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
+        params.add("_xsrf", PersistanceManager.getCookieValue(getBaseAct()));
         params.add("items", mOrderController.getOrderItemsString());
         params.add("memo", remark_tv.getText().toString());
         params.add("orderno", buildOrderCon());
-        final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
-        HttpRequestUtil.getHttpClient(getActivity()).post(LocalParams.getBaseUrl() + "cai/choose", params, new AsyncHttpResponseHandler() {
+        final ProgressDlg pDlg = new ProgressDlg(getBaseAct(), "加载中...");
+        HttpRequestUtil.getHttpClient(getBaseAct()).post(LocalParams.getBaseUrl() + "cai/choose", params, new AsyncHttpResponseHandler() {
 
             @Override
             public void onStart() {
@@ -370,21 +370,21 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
                                 return;
                             }
                         } else {
-                            ToastHelper.showShort(getActivity(), entry.errmsg);
+                            ToastHelper.showShort(getBaseAct(), entry.errmsg);
                         }
                     }
                 } else {
-                    ToastHelper.showShort(getActivity(), "异常：状态" + sCode);
+                    ToastHelper.showShort(getBaseAct(), "异常：状态" + sCode);
                 }
             }
 
             @Override
             public void onFailure(int sCode, Header[] headers, byte[] responseBody, Throwable error) {
                 if (sCode == 0) {
-                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
+                    ToastHelper.showShort(getBaseAct(), R.string.network_error_tip);
                     return;
                 }
-                ToastHelper.showShort(getActivity(), "创建订单失败.错误码" + sCode);
+                ToastHelper.showShort(getBaseAct(), "创建订单失败.错误码" + sCode);
             }
         });
     }

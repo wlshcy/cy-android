@@ -55,13 +55,14 @@ public class ComboSecondFragment extends BaseFragment {
     void OnItemClick(int pos) {
         if (entry != null) {
             entry.setPosition(pos);
-            gotoFragmentByAnimation(buildBundle(entry), R.id.mainpage_ly, new ChooseDishesFragment(), ChooseDishesFragment.class.getName(),R.anim.scale_left_bottom_in,R.anim.scale_left_bottom_out);
+//            gotoFragmentByAnimation(buildBundle(entry), R.id.mainpage_ly, new ChooseDishesFragment(), ChooseDishesFragment.class.getName(),R.anim.scale_left_bottom_in,R.anim.scale_left_bottom_out);
+            gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new ChooseDishesFragment(), ChooseDishesFragment.class.getName());
         }
     }
     void buildAdapter() {
         buildComboEntry();
         if (adapter == null)
-            adapter = new ComboSubAdapter(getActivity(), entry);
+            adapter = new ComboSubAdapter(getBaseAct(), entry);
         mLv.setAdapter(adapter);
     }
 

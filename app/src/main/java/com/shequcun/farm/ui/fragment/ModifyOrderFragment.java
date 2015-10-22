@@ -146,11 +146,11 @@ public class ModifyOrderFragment extends BaseFragment {
 
 
     void cancelOrder() {
-        final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
+        final ProgressDlg pDlg = new ProgressDlg(getBaseAct(), "加载中...");
         RequestParams params = new RequestParams();
         params.add("id", hEntry.id + "");
-        params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
-        HttpRequestUtil.getHttpClient(getActivity()).post(LocalParams.getBaseUrl() + "cai/delorder", params, new AsyncHttpResponseHandler() {
+        params.add("_xsrf", PersistanceManager.getCookieValue(getBaseAct()));
+        HttpRequestUtil.getHttpClient(getBaseAct()).post(LocalParams.getBaseUrl() + "cai/delorder", params, new AsyncHttpResponseHandler() {
 
             @Override
             public void onStart() {
@@ -171,11 +171,11 @@ public class ModifyOrderFragment extends BaseFragment {
                         String result = new String(data);
                         JSONObject jObj = new JSONObject(result);
                         if (TextUtils.isEmpty(jObj.optString("errmsg"))) {
-                            ToastHelper.showShort(getActivity(), R.string.cancel_order_success);
+                            ToastHelper.showShort(getBaseAct(), R.string.cancel_order_success);
                             popBackStack();
                             return;
                         }
-                        ToastHelper.showShort(getActivity(), jObj.optString("errmsg"));
+                        ToastHelper.showShort(getBaseAct(), jObj.optString("errmsg"));
 
                     }
                 } catch (Exception e) {
@@ -187,11 +187,11 @@ public class ModifyOrderFragment extends BaseFragment {
             @Override
             public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
                 if (sCode == 0) {
-                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
+                    ToastHelper.showShort(getBaseAct(), R.string.network_error_tip);
                     return;
                 }
 
-                ToastHelper.showShort(getActivity(), "错误码" + sCode);
+                ToastHelper.showShort(getBaseAct(), "错误码" + sCode);
             }
         });
     }
@@ -215,11 +215,11 @@ public class ModifyOrderFragment extends BaseFragment {
     }
 
     void requestOrderDetails() {
-        final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
+        final ProgressDlg pDlg = new ProgressDlg(getBaseAct(), "加载中...");
         RequestParams params = new RequestParams();
         params.add("orderno", getOrderNumber());
         // cai/v2/orderdtl  cai/orderdtl
-        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "cai/v2/orderdtl", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.getHttpClient(getBaseAct()).get(LocalParams.getBaseUrl() + "cai/v2/orderdtl", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] h, byte[] data) {
                 if (data != null && data.length > 0) {
@@ -231,7 +231,7 @@ public class ModifyOrderFragment extends BaseFragment {
 //                            addSparesFooter(entry.dIe);
 //                            return;
 //                        }
-//                        ToastHelper.showShort(getActivity(), entry.errmsg);
+//                        ToastHelper.showShort(getBaseAct(), entry.errmsg);
 //                    }
 
                     MyOrderDetailListEntry entry = JsonUtilsParser.fromJson(new String(data), MyOrderDetailListEntry.class);
@@ -264,7 +264,7 @@ public class ModifyOrderFragment extends BaseFragment {
                             }
                             return;
                         }
-                        ToastHelper.showShort(getActivity(), entry.errmsg);
+                        ToastHelper.showShort(getBaseAct(), entry.errmsg);
                     }
                 }
             }
@@ -272,10 +272,10 @@ public class ModifyOrderFragment extends BaseFragment {
             @Override
             public void onFailure(int sCode, Header[] headers, byte[] data, Throwable error) {
                 if (sCode == 0) {
-                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
+                    ToastHelper.showShort(getBaseAct(), R.string.network_error_tip);
                     return;
                 }
-                ToastHelper.showShort(getActivity(), "错误码" + sCode);
+                ToastHelper.showShort(getBaseAct(), "错误码" + sCode);
             }
 
             @Override
@@ -293,30 +293,25 @@ public class ModifyOrderFragment extends BaseFragment {
     }
 
     void addHeaderView() {
-        View headView = LayoutInflater.from(getActivity()).inflate(R.layout.order_details_footer_ly, null);
-        ((TextView) headView.findViewById(R.id.distribution_date)).setText(hEntry.date);
-        mLv.addHeaderView(headView, null, false);
+        if (hEntry != null && !TextUtils.isEmpty(hEntry.date) && mLv != null) {
+            View headView = LayoutInflater.from(getBaseAct()).inflate(R.layout.order_details_footer_ly, null);
+            ((TextView) headView.findViewById(R.id.distribution_date)).setText(hEntry.date);
+            mLv.addHeaderView(headView, null, false);
+        }
     }
 
     void addFooter(int part) {
-        View footerView = LayoutInflater.from(getActivity()).inflate(R.layout.order_details_footer_ly, null);
-        if (getOrderStatus() == 3 || getOrderStatus() == 5 || getOrderStatus() == 0) {
-
-        } else if (getOrderStatus() == 2) {
-            ((TextView) footerView.findViewById(R.id.distribution_date)).setText("配送中");
-        } else {
-            if (getOrderType() == 1) {
-                //1.套餐订单 2.选菜订单, 3.单品订单, 4.自动选菜订单
-                ((TextView) footerView.findViewById(R.id.distribution_date)).setText("配送日期:本周五配送");
-            }
+        if (getBaseAct() != null && mLv != null) {
+            View footerView = LayoutInflater.from(getBaseAct()).inflate(R.layout.order_details_footer_ly, null);
+            ((TextView) footerView.findViewById(R.id.distribution_date)).setText(hEntry.placeAnOrderDate);
+            ((TextView) footerView.findViewById(R.id.number_copies)).setText("共" + part + "份");
+            mLv.addFooterView(footerView, null, false);
         }
 
-        ((TextView) footerView.findViewById(R.id.number_copies)).setText("共" + part + "份");
-        mLv.addFooterView(footerView, null, false);
     }
 
     void buildAdapter(List<AlreadyPurchasedEntry> aList) {
-        if (aList == null || aList.size() <= 0 || hEntry == null)
+        if (aList == null || aList.size() <= 0 || hEntry == null || mLv==null)
             return;
         int part = 0;
         int allWeight = 0;
@@ -328,7 +323,7 @@ public class ModifyOrderFragment extends BaseFragment {
         addFooter(part);
         addHeaderView();
         if (adapter == null) {
-            adapter = new AlreadyPurchasedAdapter(getActivity());
+            adapter = new AlreadyPurchasedAdapter(getBaseAct());
         }
         mLv.setAdapter(adapter);
         adapter.addAll(aList);
@@ -350,14 +345,14 @@ public class ModifyOrderFragment extends BaseFragment {
 
     private void showConfirmDlg() {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getBaseAct());
         builder.setTitle("提示");
 //        builder.setMessage(R.string.choose_dishes_tip);
         builder.setMessage(R.string.re_choose_dishes_tip);
         builder.setNegativeButton(R.string.confirm, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-//                PhoneUtil.gotoCall(getActivity(), Constrants.Customer_Service_Phone);
+//                PhoneUtil.gotoCall(getBaseAct(), Constrants.Customer_Service_Phone);
                 ComboEntry entry = new ComboEntry();
                 entry.id = hEntry.combo_id;
                 entry.setPosition(0);
@@ -370,7 +365,8 @@ public class ModifyOrderFragment extends BaseFragment {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("ComboEntry", entry);
                 popBackStack();
-                gotoFragmentByAnimation(bundle, R.id.mainpage_ly, new ChooseDishesFragment(), ChooseDishesFragment.class.getName(), R.anim.scale_left_bottom_in, R.anim.scale_left_bottom_out);
+//                gotoFragmentByAnimation(bundle, R.id.mainpage_ly, new ChooseDishesFragment(), ChooseDishesFragment.class.getName(), R.anim.scale_left_bottom_in, R.anim.scale_left_bottom_out);
+                gotoFragmentByAdd(bundle, R.id.mainpage_ly, new ChooseDishesFragment(), ChooseDishesFragment.class.getName());
             }
         });
         builder.setNeutralButton(R.string.cancel, null);
@@ -383,9 +379,9 @@ public class ModifyOrderFragment extends BaseFragment {
 
     private void requestRedPacktetShareUrl(String orderNo) {
         RequestParams params = new RequestParams();
-        params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
+        params.add("_xsrf", PersistanceManager.getCookieValue(getBaseAct()));
         params.add("orderno", orderNo);
-        HttpRequestUtil.getHttpClient(getActivity()).post(LocalParams.getBaseUrl() + "cai/coupon", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.getHttpClient(getBaseAct()).post(LocalParams.getBaseUrl() + "cai/coupon", params, new AsyncHttpResponseHandler() {
             @Override
             public void onFinish() {
                 super.onFinish();
@@ -399,7 +395,7 @@ public class ModifyOrderFragment extends BaseFragment {
                     if (TextUtils.isEmpty(entry.errmsg)) {
                         useUmengToShare(entry.url, entry.title, entry.content);
                     } else {
-                        ToastHelper.showShort(getActivity(), entry.errmsg);
+                        ToastHelper.showShort(getBaseAct(), entry.errmsg);
                     }
                 }
             }
@@ -407,23 +403,23 @@ public class ModifyOrderFragment extends BaseFragment {
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 if (statusCode == 0) {
-                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
+                    ToastHelper.showShort(getBaseAct(), R.string.network_error_tip);
                     return;
                 }
-                ToastHelper.showShort(getActivity(), "请求失败,错误码" + statusCode);
+                ToastHelper.showShort(getBaseAct(), "请求失败,错误码" + statusCode);
             }
         });
     }
 
     private void useUmengToShare(String url, String title, String content) {
 //        if (shareController == null)
-//            shareController = new ShareUtil(getActivity());
+//            shareController = new ShareUtil(getBaseAct());
         ShareContent shareContent = new ShareContent();
         shareContent.setImageId(R.drawable.icon_share_redpackets_logo);
         shareContent.setTargetUrl(url);
         shareContent.setTitle(title);
         shareContent.setContent(content);
-        ShareManager.shareByFrame(getActivity(), shareContent);
+        ShareManager.shareByFrame(getBaseAct(), shareContent);
     }
 
 //    private SocializeListeners.SnsPostListener mSnsPostListener = new SocializeListeners.SnsPostListener() {
@@ -439,7 +435,7 @@ public class ModifyOrderFragment extends BaseFragment {
 //            if (eCode != StatusCode.ST_CODE_SUCCESSED) {
 //                showText = "分享失败 [" + eCode + "]";
 //            }
-//            ToastHelper.showShort(getActivity(), showText);
+//            ToastHelper.showShort(getBaseAct(), showText);
 //        }
 //    };
 
@@ -449,9 +445,9 @@ public class ModifyOrderFragment extends BaseFragment {
      */
     void addSparesFooter(List<AlreadyPurchasedEntry> aList) {
         if (aList != null && aList.size() > 0) {
-            mLv.addFooterView(LayoutInflater.from(getActivity()).inflate(R.layout.remark_footer_ly, null), null, false);
+            mLv.addFooterView(LayoutInflater.from(getBaseAct()).inflate(R.layout.remark_footer_ly, null), null, false);
             for (int i = 0; i < aList.size(); i++) {
-                View footerView = LayoutInflater.from(getActivity()).inflate(R.layout.order_details_item_ly, null);
+                View footerView = LayoutInflater.from(getBaseAct()).inflate(R.layout.order_details_item_ly, null);
                 ImageView goodsImg = (ImageView) footerView.findViewById(R.id.goods_img);
                 ImageLoader.getInstance().displayImage(aList.get(i).img + "?imageview2/2/w/180", goodsImg);
                 ((TextView) footerView.findViewById(R.id.goods_name)).setText(aList.get(i).title);

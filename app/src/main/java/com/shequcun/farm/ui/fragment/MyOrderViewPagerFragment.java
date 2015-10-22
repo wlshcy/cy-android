@@ -39,8 +39,11 @@ public class MyOrderViewPagerFragment extends BaseFragment {
 
     @Override
     protected void setWidgetLsn() {
-        orderPager.addOnPageChangeListener(onPageChangeListener);
-        orderPager.setOffscreenPageLimit(1);
+        if (orderPager != null) {
+            orderPager.addOnPageChangeListener(onPageChangeListener);
+            orderPager.setOffscreenPageLimit(1);
+        }
+
         buildAdapter();
         if (getArguments() != null) {
             setCurrentItem(1);
@@ -54,7 +57,8 @@ public class MyOrderViewPagerFragment extends BaseFragment {
 
     @OnClick({R.id.dishes_tv, R.id.shopping_tv})
     void doClick(View v) {
-        orderPager.setCurrentItem(v == dishes_tv ? 0 : 1);
+        if (orderPager != null)
+            orderPager.setCurrentItem(v == dishes_tv ? 0 : 1);
     }
 
     void buildAdapter() {
@@ -79,10 +83,11 @@ public class MyOrderViewPagerFragment extends BaseFragment {
     };
 
     private void setCurrentItem(int position) {
-        orderPager.setCurrentItem(position);
+        if (orderPager != null)
+            orderPager.setCurrentItem(position);
         ColorStateList gray =
-                getActivity().getResources().getColorStateList(R.color.gray_676767);
-        ColorStateList lightGreeColor = getActivity().getResources().getColorStateList(R.color.green_11C258);
+                getBaseAct().getResources().getColorStateList(R.color.gray_676767);
+        ColorStateList lightGreeColor = getBaseAct().getResources().getColorStateList(R.color.green_11C258);
         if (position == 0) {//菜品订单
             dishes_tv.setTextColor(lightGreeColor);
             shopping_tv.setTextColor(gray);

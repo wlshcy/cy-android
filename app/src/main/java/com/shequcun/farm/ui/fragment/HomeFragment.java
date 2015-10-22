@@ -90,7 +90,8 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
 //            gotoFragmentByAnimation(null, R.id.mainpage_ly, new LoginFragment(), LoginFragment.class.getName(), R.anim.scale_left_top_in, R.anim.scale_left_top_out);
 //            return;
 //        }
-        gotoFragmentByAnimation(null, R.id.mainpage_ly, new ComboFragment(), ComboFragment.class.getName(), R.anim.scale_left_top_in, R.anim.scale_left_top_out);
+        gotoFragmentByAdd(null, R.id.mainpage_ly, new ComboFragment(), ComboFragment.class.getName());
+//        gotoFragmentByAnimation(null, R.id.mainpage_ly, new ComboFragment(), ComboFragment.class.getName(), R.anim.scale_left_top_in, R.anim.scale_left_top_out);
     }
 
     @OnItemClick(R.id.gv)
@@ -101,7 +102,9 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
         if (entry == null)
             return;
 
-        gotoFragmentByAnimation(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailFragment(), FarmSpecialtyDetailFragment.class.getName(), R.anim.slide_in_from_bottom, R.anim.slide_out_to_bottom);
+        gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailFragment(), FarmSpecialtyDetailFragment.class.getName());
+//        gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailViewPagerFragment(), FarmSpecialtyDetailViewPagerFragment.class.getName());
+//        gotoFragmentByAnimation(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailFragment(), FarmSpecialtyDetailFragment.class.getName(), R.anim.slide_in_from_bottom, R.anim.slide_out_to_bottom);
 //        gotoFragmentByAnimation(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailFragment(), FarmSpecialtyDetailFragment.class.getName(),R.anim.rotate_in,R.anim.slide_out_to_bottom);
     }
 
@@ -117,7 +120,7 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
         if (!mIsBind) {
             IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction(IntentUtil.UPDATE_COMBO_PAGE);
-            getActivity().registerReceiver(mUpdateReceiver, intentFilter);
+            getBaseAct().registerReceiver(mUpdateReceiver, intentFilter);
             mIsBind = true;
         }
     }
@@ -137,7 +140,7 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
 
     private void doUnRegisterReceiver() {
         if (mIsBind) {
-            getActivity().unregisterReceiver(mUpdateReceiver);
+            getBaseAct().unregisterReceiver(mUpdateReceiver);
             mIsBind = false;
         }
     }
@@ -174,9 +177,9 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
     }
 
     private void addSliderUrl(SlidesEntry entry) {
-        DefaultSliderView textSliderView = new DefaultSliderView(getActivity());
+        DefaultSliderView textSliderView = new DefaultSliderView(getBaseAct());
         // initialize a SliderLayout
-        String url = entry.img + "?imageView2/2/" + DeviceInfo.getDeviceWidth(getActivity());
+        String url = entry.img + "?imageView2/2/" + DeviceInfo.getDeviceWidth(getBaseAct());
         textSliderView
                 .description("")
                 .image(url)
@@ -187,7 +190,7 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
     }
 
     private void addSliderUrl(int resId) {
-        DefaultSliderView textSliderView = new DefaultSliderView(getActivity());
+        DefaultSliderView textSliderView = new DefaultSliderView(getBaseAct());
         // initialize a SliderLayout
         textSliderView
                 .description("")
@@ -244,7 +247,7 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
         RequestParams params = new RequestParams();
         params.add("mode", mode + "");
         params.add("length", "10");
-        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "cai/home", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.getHttpClient(getBaseAct()).get(LocalParams.getBaseUrl() + "cai/home", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int sCode, Header[] h, byte[] data) {
                 if (data != null && data.length > 0) {
@@ -259,7 +262,7 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
                             updateMyComboStatus(hEntry.has_combo);
                             return;
                         }
-                        ToastHelper.showShort(getActivity(), hEntry.errmsg);
+                        ToastHelper.showShort(getBaseAct(), hEntry.errmsg);
                     }
                 }
             }
@@ -268,10 +271,10 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
             public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
                 buildCarouselAdapter(null);
                 if (sCode == 0) {
-                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
+                    ToastHelper.showShort(getBaseAct(), R.string.network_error_tip);
                     return;
                 }
-                ToastHelper.showShort(getActivity(), "请求失败.错误码" + sCode);
+                ToastHelper.showShort(getBaseAct(), "请求失败.错误码" + sCode);
             }
 
             @Override
@@ -296,7 +299,7 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
         } else {
             params.add("start", "0");
         }
-        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "cai/itemlist", new AsyncHttpResponseHandler() {
+        HttpRequestUtil.getHttpClient(getBaseAct()).get(LocalParams.getBaseUrl() + "cai/itemlist", new AsyncHttpResponseHandler() {
             @Override
             public void onFinish() {
                 super.onFinish();
@@ -320,17 +323,17 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
             @Override
             public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
                 if (sCode == 0) {
-                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
+                    ToastHelper.showShort(getBaseAct(), R.string.network_error_tip);
                     return;
                 }
-                ToastHelper.showShort(getActivity(), "哇,刷新失败了.请稍后重试.");
+                ToastHelper.showShort(getBaseAct(), "哇,刷新失败了.请稍后重试.");
             }
         });
     }
 
     void buildGridViewAdapter() {
         if (adapter == null)
-            adapter = new FarmSpecialtyAdapter(getActivity());
+            adapter = new FarmSpecialtyAdapter(getBaseAct());
         gv.setAdapter(adapter);
         gv.setExpanded(true);
     }
@@ -365,11 +368,11 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
 
 
     void requestSingleDishDetail(int id) {
-        final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
+        final ProgressDlg pDlg = new ProgressDlg(getBaseAct(), "加载中...");
         RequestParams params = new RequestParams();
         params.add("id", "" + id);
 
-        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "cai/itemdtl", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.getHttpClient(getBaseAct()).get(LocalParams.getBaseUrl() + "cai/itemdtl", params, new AsyncHttpResponseHandler() {
 
             @Override
             public void onStart() {
@@ -389,7 +392,8 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
                     RecommendEntry entry = JsonUtilsParser.fromJson(new String(data), RecommendEntry.class);
                     if (entry != null) {
                         if (TextUtils.isEmpty(entry.errmsg)) {
-                            gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailFragment(), FarmSpecialtyDetailFragment.class.getName());
+//                            gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailViewPagerFragment(), FarmSpecialtyDetailViewPagerFragment.class.getName());
+                            gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailFragment(), FarmSpecialtyDetailViewPagerFragment.class.getName());
                         }
                     }
                 }
@@ -404,10 +408,10 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
 
 
     void requestComboDetail(int id) {
-        final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
+        final ProgressDlg pDlg = new ProgressDlg(getBaseAct(), "加载中...");
         RequestParams params = new RequestParams();
         params.add("id", "" + id);
-        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "cai/combodtl", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.getHttpClient(getBaseAct()).get(LocalParams.getBaseUrl() + "cai/combodtl", params, new AsyncHttpResponseHandler() {
 
             @Override
             public void onStart() {
@@ -427,10 +431,11 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
                     ComboDetailEntry entry = JsonUtilsParser.fromJson(new String(data), ComboDetailEntry.class);
                     if (entry != null) {
                         if (TextUtils.isEmpty(entry.errmsg)) {
-                            gotoFragmentByAnimation(buildBundle_(entry.combo), R.id.mainpage_ly, new ComboSecondFragment(), ComboSecondFragment.class.getName(), R.anim.puff_in, R.anim.puff_out);
+                            //gotoFragmentByAnimation(buildBundle_(entry.combo), R.id.mainpage_ly, new ComboSecondFragment(), ComboSecondFragment.class.getName(), R.anim.puff_in, R.anim.puff_out);
+                            gotoFragmentByAdd(buildBundle_(entry.combo), R.id.mainpage_ly, new ComboSecondFragment(), ComboSecondFragment.class.getName());
                             return;
                         }
-                        ToastHelper.showShort(getActivity(), entry.errmsg);
+                        ToastHelper.showShort(getBaseAct(), entry.errmsg);
                     }
                 }
             }
@@ -438,10 +443,10 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
             @Override
             public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
                 if (sCode == 0) {
-                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
+                    ToastHelper.showShort(getBaseAct(), R.string.network_error_tip);
                     return;
                 }
-                ToastHelper.showShort(getActivity(), "请求失败,错误码" + sCode);
+                ToastHelper.showShort(getBaseAct(), "请求失败,错误码" + sCode);
             }
         });
     }
@@ -459,7 +464,7 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
      * @return
      */
     boolean isLogin() {
-        return new CacheManager(getActivity()).getUserLoginEntry() != null;
+        return new CacheManager(getBaseAct()).getUserLoginEntry() != null;
     }
 
     private CarouselAdapter.ImageLoaderListener imageLoaderListener = new CarouselAdapter.ImageLoaderListener() {
@@ -474,46 +479,6 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
         }
     };
 
-//    private ViewFlow.ViewSwitchListener viewSwitchListener = new ViewFlow.ViewSwitchListener() {
-//        @Override
-//        public void onSwitched(View view, int position) {
-//            if (cAdapter != null)
-//                cAdapter.setCurVisibleIndex(position);
-//            ViewFlow viewFlow = (ViewFlow) view.getParent();
-//            View view1 = viewFlow.getChildAt(position);
-//            if (view1 == null) return;
-//            View img = view1.findViewById(R.id.imgView);
-//            if (img == null) return;
-//            if (img.getTag() == null) {
-//                popImgProgress();
-//            } else {
-//                if (img.getTag() instanceof String) {
-//                    String s = (String) img.getTag();
-//                }
-//                dismissImgProgress();
-//            }
-//        }
-//    };
-
-//    private void dismissImgProgress() {
-//        if (imgProgress == null) return;
-//        if (imgProgress.getVisibility() == View.VISIBLE)
-//            imgProgress.setVisibility(View.GONE);
-//    }
-//
-//    private void popImgProgress() {
-//        if (imgProgress == null) return;
-//        if (imgProgress.getVisibility() == View.GONE)
-//            imgProgress.setVisibility(View.VISIBLE);
-//    }
-
-    /**
-     * 轮播的图片
-     */
-//    @Bind(R.id.carousel_img)
-//    ViewFlow carousel_img;
-//    @Bind(R.id.carousel_point)
-//    CircleFlowIndicator carousel_point;
     @Bind(R.id.pView)
     PullToRefreshScrollView pView;
     @Bind(R.id.gv)
