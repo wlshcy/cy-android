@@ -27,11 +27,12 @@
 
         <TextView
             android:id="@+id/name_tv"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/px180"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/px34"
+            android:singleLine="true"
             android:layout_toRightOf="@id/choose_iv"
-            android:text="1111"
+            android:text="name_name_name_name_name_"
             android:textColor="@color/common_text" />
 
         <TextView
@@ -41,7 +42,7 @@
             android:layout_marginLeft="@dimen/px72"
             android:layout_marginRight="@dimen/px24"
             android:layout_toRightOf="@id/name_tv"
-            android:text="1111"
+            android:text="14012345678"
             android:textColor="@color/common_text" />
 
         <TextView

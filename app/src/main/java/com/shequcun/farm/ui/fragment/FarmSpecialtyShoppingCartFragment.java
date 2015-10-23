@@ -69,13 +69,13 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment implements R
 
     @OnClick(R.id.title_right_text)
     void doClick() {
-        ConsultationDlg.showCallTelDlg(getActivity());
+        ConsultationDlg.showCallTelDlg(getBaseAct());
     }
 
     void addWidgetToView() {
         removeWidgetFromView();
         if (isLogin()) {
-            RecommendEntry[] rEntryArray = new CacheManager(getActivity()).getRecommendFromDisk();
+            RecommendEntry[] rEntryArray = new CacheManager(getBaseAct()).getRecommendFromDisk();
             if (rEntryArray != null && rEntryArray.length > 0) {
                 buildAdapter();
                 addDataToAdapter(rEntryArray);
@@ -83,13 +83,13 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment implements R
             } else {
                 resetWidgetStatus();
             }
-            shopCartView = LayoutInflater.from(getActivity()).inflate(R.layout.farm_shopping_cart_widget_ly, null);
+            shopCartView = LayoutInflater.from(getBaseAct()).inflate(R.layout.farm_shopping_cart_widget_ly, null);
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             params.addRule(RelativeLayout.CENTER_IN_PARENT);
             pView.addView(shopCartView, params);
         } else {
             resetWidgetStatus();
-            noLoginView = LayoutInflater.from(getActivity()).inflate(R.layout.no_login_ly, null);
+            noLoginView = LayoutInflater.from(getBaseAct()).inflate(R.layout.no_login_ly, null);
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             params.addRule(RelativeLayout.CENTER_IN_PARENT);
             pView.addView(noLoginView, params);
@@ -125,7 +125,7 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment implements R
 
     void addFooter(final int part) {
         if (footerView == null) {
-            footerView = LayoutInflater.from(getActivity()).inflate(R.layout.order_details_footer_ly, null);
+            footerView = LayoutInflater.from(getBaseAct()).inflate(R.layout.order_details_footer_ly, null);
             number_copies = (TextView) footerView.findViewById(R.id.number_copies);
             mLv.addFooterView(footerView, null, false);
             addSchildView();
@@ -151,12 +151,12 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment implements R
      * @return
      */
     boolean isLogin() {
-        return new CacheManager(getActivity()).getUserLoginEntry() != null;
+        return new CacheManager(getBaseAct()).getUserLoginEntry() != null;
     }
 
     void buildAdapter() {
         if (adapter == null)
-            adapter = new FarmSpecialtyShopCartAdapter(getActivity());
+            adapter = new FarmSpecialtyShopCartAdapter(getBaseAct());
         adapter.clear();
         adapter.buildOnClickLsn(onLookDtlLsn, onGoodsImgLsn, onAddGoodsLsn, onSubGoodsLsn);
         mLv.setAdapter(adapter);
@@ -171,7 +171,9 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment implements R
                 return;
             RecommendEntry entry = adapter.getItem(position);
             entry.isShowDtlFooter = true;
-            gotoFragmentByAnimation(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailFragment(), FarmSpecialtyDetailFragment.class.getName(), R.anim.slide_in_from_bottom, R.anim.slide_out_to_bottom);
+//            gotoFragmentByAnimation(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailFragment(), FarmSpecialtyDetailFragment.class.getName(), R.anim.slide_in_from_bottom, R.anim.slide_out_to_bottom);
+//            gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailViewPagerFragment(), FarmSpecialtyDetailViewPagerFragment.class.getName());
+            gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailFragment(), FarmSpecialtyDetailFragment.class.getName());
         }
     };
 
@@ -258,12 +260,12 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment implements R
             adapter.notifyDataSetChanged();
             ivDown.setVisibility(View.GONE);
             tvCount.setVisibility(View.GONE);
-            new CacheManager(getActivity()).delRecommendItemToDisk(zItem);
+            new CacheManager(getBaseAct()).delRecommendItemToDisk(zItem);
             if (adapter.getCount() < 1) {
                 addWidgetToView();
             }
         } else {
-            new CacheManager(getActivity()).saveRecommendToDisk(zItem);
+            new CacheManager(getBaseAct()).saveRecommendToDisk(zItem);
         }
         allMoney = isAdd ? allMoney + goodItem.price : allMoney - goodItem.price;
         updateWidget(isAdd ? ++allPart : --allPart, allMoney);
@@ -282,7 +284,7 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment implements R
         number_copies.setText("共" + part + "份");
         boolean isAddFreight = allMoney / 100 >= 99;
         allMoney = isAddFreight ? allMoney : allMoney + 1000;
-        Spannable spannable = Utils.getSpanableSpan("共付:", Utils.unitPeneyToYuan(allMoney), ResUtil.dip2px(getActivity(), 14), ResUtil.dip2px(getActivity(), 14), getResources().getColor(R.color.gray_a9a9a9), getResources().getColor(R.color.red_f36043));
+        Spannable spannable = Utils.getSpanableSpan("共付:", Utils.unitPeneyToYuan(allMoney), ResUtil.dip2px(getBaseAct(), 14), ResUtil.dip2px(getBaseAct(), 14), getResources().getColor(R.color.gray_a9a9a9), getResources().getColor(R.color.red_f36043));
         shop_cart_total_price_tv.setText(spannable);
         freight_money_tv.setText(isAddFreight ? R.string.no_freight : R.string.freight_money);
     }
@@ -291,7 +293,7 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment implements R
         if (!mIsBind) {
             IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction(IntentUtil.UPDATE_FARM_SHOPPING_CART_MSG);
-            getActivity().registerReceiver(mUpdateReceiver, intentFilter);
+            getBaseAct().registerReceiver(mUpdateReceiver, intentFilter);
             mIsBind = true;
         }
     }
@@ -317,7 +319,7 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment implements R
 
     private void doUnRegisterReceiver() {
         if (mIsBind) {
-            getActivity().unregisterReceiver(mUpdateReceiver);
+            getBaseAct().unregisterReceiver(mUpdateReceiver);
             mIsBind = false;
         }
     }
@@ -328,7 +330,7 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment implements R
      */
     void addSchildView() {
         if (sChilidView == null) {
-            sChilidView = LayoutInflater.from(getActivity()).inflate(R.layout.farm_shopping_cart_footer_ly, null);
+            sChilidView = LayoutInflater.from(getBaseAct()).inflate(R.layout.farm_shopping_cart_footer_ly, null);
             shop_cart_total_price_tv = (TextView) sChilidView.findViewById(R.id.shop_cart_total_price_tv);
             (sChilidView.findViewById(R.id.shop_cart_surpport_now_pay_tv)).setVisibility(View.GONE);
 
@@ -366,14 +368,14 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment implements R
 
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-            params.bottomMargin = ResUtil.dipToPixel(getActivity(), 5);
+            params.bottomMargin = ResUtil.dipToPixel(getBaseAct(), 5);
             pView.addView(sChilidView, params);
         }
     }
 
     public String getExtras() {
         String result = "";
-        RecommendEntry[] rEntryArray = new CacheManager(getActivity()).getRecommendFromDisk();
+        RecommendEntry[] rEntryArray = new CacheManager(getBaseAct()).getRecommendFromDisk();
         if (rEntryArray != null && rEntryArray.length > 0) {
             for (int i = 0; i < rEntryArray.length; ++i) {
                 RecommendEntry entry = rEntryArray[i];
@@ -397,7 +399,7 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment implements R
 
     void addHeader() {
         if (headView == null) {
-            headView = LayoutInflater.from(getActivity()).inflate(R.layout.ucai_safe_tip_ly, null);
+            headView = LayoutInflater.from(getBaseAct()).inflate(R.layout.ucai_safe_tip_ly, null);
             mLv.addHeaderView(headView, null, false);
         }
     }

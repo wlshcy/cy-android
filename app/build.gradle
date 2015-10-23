@@ -9,15 +9,9 @@ android {
         minSdkVersion 14
         targetSdkVersion 22
         versionCode 2
-        versionName "2.0.5"
+        versionName "2.1.0"
     }
-    buildTypes {
-        release {
-            minifyEnabled false
-            shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
+
     lintOptions {
         abortOnError false
         disable 'InvalidPackage'
@@ -28,8 +22,19 @@ android {
     }
     signingConfigs {
         shequcunrelease {
-            storeFile file("/Users/mac/Developer/workspace/youcai-android-20150902/app/sqc_farm_android.keystore")
-            keyAlias "sqc_farm_android"
+            storeFile file("/Users/cong/sqc/android/ycai/youcai-android/app/sqc_farm_android.keystore")
+            keyAlias "sqc_farm_android.keystore"
+            storePassword "Ysyhl9t"
+            keyPassword "Ysyhl9t"
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.shequcunrelease
         }
     }
 }

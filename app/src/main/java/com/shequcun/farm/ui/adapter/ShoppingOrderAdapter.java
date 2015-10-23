@@ -58,8 +58,8 @@ public class ShoppingOrderAdapter extends ArrayAdapter<HistoryOrderEntry> {
             }
 
             if (entry.status == 0) {
-                entry.date = "下单日期:" + Utils.getTime(entry.json.get(entry.status + "").getAsLong());
-                vh.distribution_date.setText(entry.date);
+//                entry.date = "下单日期:" + Utils.getTime(entry.json.get(entry.status + "").getAsLong());
+                vh.distribution_date.setText("下单日期:" + Utils.getTime(entry.json.get(entry.status + "").getAsLong()));
             } else if (entry.status == 1) {
                 entry.date = "付款日期:" + Utils.getTime(entry.json.get(entry.status + "").getAsLong());
                 vh.distribution_date.setText(entry.date);
@@ -72,6 +72,10 @@ public class ShoppingOrderAdapter extends ArrayAdapter<HistoryOrderEntry> {
             } else {
                 vh.distribution_date.setVisibility(View.GONE);
             }
+//            if (entry.status != 0)
+            entry.placeAnOrderDate = "下单日期:" + Utils.getTime(entry.json.get(entry.status + "").getAsLong());
+
+
         }
         return v;
     }

@@ -137,7 +137,7 @@ public class ShareManager {
     }
 
     private void clear() {
-        if (!mThumbBmp.isRecycled())
+        if (mThumbBmp!=null && !mThumbBmp.isRecycled())
             mThumbBmp.isRecycled();
         mThumbBmp = null;
     }

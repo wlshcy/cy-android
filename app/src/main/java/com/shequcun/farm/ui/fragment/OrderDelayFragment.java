@@ -56,7 +56,7 @@ public class OrderDelayFragment extends BaseFragment {
     @Override
     protected void initWidget(View v) {
         titleTv.setText(R.string.order_delay_delivery);
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.delay_list_header_textview, null);
+        View view = LayoutInflater.from(getBaseAct()).inflate(R.layout.delay_list_header_textview, null);
         comboLv.addHeaderView(view);
         requestGetDelayState(null);
     }
@@ -73,14 +73,14 @@ public class OrderDelayFragment extends BaseFragment {
 //    @OnClick(R.id.delay_tv)
 //    void doClick() {
 //        if (TextUtils.isEmpty(orderNo)) {
-//            ToastHelper.showShort(getActivity(), R.string.you_have_not_buy_combo);
+//            ToastHelper.showShort(getBaseAct(), R.string.you_have_not_buy_combo);
 //            return;
 //        }
 //        alertDelay();
 //    }
 
     private void alertDelay(final String orderNo) {
-        final AlertDialog alert = new AlertDialog.Builder(getActivity()).create();
+        final AlertDialog alert = new AlertDialog.Builder(getBaseAct()).create();
         alert.show();
         alert.setCancelable(false);
         alert.getWindow().setContentView(R.layout.prompt_dialog);
@@ -106,12 +106,12 @@ public class OrderDelayFragment extends BaseFragment {
     }
 
     private String readOrderNoFromDisk() {
-        UserLoginEntry userLoginEntry = new CacheManager(getActivity()).getUserLoginEntry();
+        UserLoginEntry userLoginEntry = new CacheManager(getBaseAct()).getUserLoginEntry();
         return userLoginEntry == null ? null : userLoginEntry.orderno;
     }
 
 //    private void requestMycombo() {
-//        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "cai/mycombo", new AsyncHttpResponseHandler() {
+//        HttpRequestUtil.getHttpClient(getBaseAct()).get(LocalParams.getBaseUrl() + "cai/mycombo", new AsyncHttpResponseHandler() {
 //
 //            @Override
 //            public void onStart() {
@@ -135,7 +135,7 @@ public class OrderDelayFragment extends BaseFragment {
 //                        else
 //                            disableDelayView(R.string.you_have_not_buy_combo);
 //                    } else {
-//                        ToastHelper.showShort(getActivity(), entry.errmsg);
+//                        ToastHelper.showShort(getBaseAct(), entry.errmsg);
 //                    }
 //                }
 //            }
@@ -144,17 +144,17 @@ public class OrderDelayFragment extends BaseFragment {
 //            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 //                disableDelayView(R.string.btn_delay_a_week_delivery);
 //                if (statusCode == 0) {
-//                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
+//                    ToastHelper.showShort(getBaseAct(), R.string.network_error_tip);
 //                    return;
 //                }
-//                ToastHelper.showShort(getActivity(), "请求失败,错误码" + statusCode);
+//                ToastHelper.showShort(getBaseAct(), "请求失败,错误码" + statusCode);
 //            }
 //        });
 //    }
 
 //    private void successMyCombo(List<ComboEntry> list) {
 //        if (delayAdapter == null) {
-//            delayAdapter = new DelayAdapter(getActivity());
+//            delayAdapter = new DelayAdapter(getBaseAct());
 //            delayAdapter.setDelayClick(delayClick);
 //            comboLv.setAdapter(delayAdapter);
 //        }
@@ -173,8 +173,8 @@ public class OrderDelayFragment extends BaseFragment {
         RequestParams params = new RequestParams();
         if (!TextUtils.isEmpty(orderNo))
             params.add("orderno", orderNo);
-        final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
-        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "cai/delay", params, new AsyncHttpResponseHandler() {
+        final ProgressDlg pDlg = new ProgressDlg(getBaseAct(), "加载中...");
+        HttpRequestUtil.getHttpClient(getBaseAct()).get(LocalParams.getBaseUrl() + "cai/delay", params, new AsyncHttpResponseHandler() {
 
             @Override
             public void onStart() {
@@ -202,10 +202,10 @@ public class OrderDelayFragment extends BaseFragment {
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 if (statusCode == 0) {
-                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
+                    ToastHelper.showShort(getBaseAct(), R.string.network_error_tip);
                     return;
                 }
-                ToastHelper.showShort(getActivity(), "请求失败,错误码" + statusCode);
+                ToastHelper.showShort(getBaseAct(), "请求失败,错误码" + statusCode);
             }
         });
     }
@@ -216,7 +216,7 @@ public class OrderDelayFragment extends BaseFragment {
             return;
         }
         if (delayAdapter == null) {
-            delayAdapter = new DelayAdapter(getActivity());
+            delayAdapter = new DelayAdapter(getBaseAct());
             delayAdapter.setDelayClick(delayClick);
             comboLv.setAdapter(delayAdapter);
         }
@@ -225,10 +225,10 @@ public class OrderDelayFragment extends BaseFragment {
 
     private void requestPostDelayOrder(String orderNo) {
         RequestParams params = new RequestParams();
-        params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
+        params.add("_xsrf", PersistanceManager.getCookieValue(getBaseAct()));
         params.add("orderno", orderNo);
-        final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
-        HttpRequestUtil.getHttpClient(getActivity()).post(LocalParams.getBaseUrl() + "cai/delay", params, new AsyncHttpResponseHandler() {
+        final ProgressDlg pDlg = new ProgressDlg(getBaseAct(), "加载中...");
+        HttpRequestUtil.getHttpClient(getBaseAct()).post(LocalParams.getBaseUrl() + "cai/delay", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String result = new String(responseBody);
@@ -253,10 +253,10 @@ public class OrderDelayFragment extends BaseFragment {
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 if (statusCode == 0) {
-                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
+                    ToastHelper.showShort(getBaseAct(), R.string.network_error_tip);
                     return;
                 }
-                ToastHelper.showShort(getActivity(), "请求失败,错误码" + statusCode);
+                ToastHelper.showShort(getBaseAct(), "请求失败,错误码" + statusCode);
             }
         });
     }

@@ -59,7 +59,7 @@ public class BrowseImageFragment extends BaseFragment {
         index = bundle.getInt(KEY_INDEX);
 //        cancel = bundle.getBoolean(KEY_CANCEL);
 //        if (!ImageLoader.getInstance().isInited())
-//            initImageLoader(getActivity());
+//            initImageLoader(getBaseAct());
     }
 
     @Override
@@ -72,7 +72,7 @@ public class BrowseImageFragment extends BaseFragment {
         ViewGroup group = (ViewGroup) view.findViewById(R.id.photos_tip_ll);
         tips = new ImageView[photos.size()];
         for (int i = 0; i < tips.length; i++) {
-            ImageView imageView = new ImageView(getActivity());
+            ImageView imageView = new ImageView(getBaseAct());
             imageView.setScaleType(ImageView.ScaleType.CENTER);
             imageView.setLayoutParams(new ViewGroup.LayoutParams(10, 10));
             tips[i] = imageView;
@@ -204,18 +204,18 @@ public class BrowseImageFragment extends BaseFragment {
     }
 
 //    private void altertDialog(final String url) {
-//        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+//        AlertDialog.Builder builder = new AlertDialog.Builder(getBaseAct());
 //        builder.setCancelable(true);
 //        builder.setItems(new String[]{getResources().getString(R.string.save_to_mobile)}, new DialogInterface.OnClickListener() {
 //            public void onClick(DialogInterface dialog, int which) {
-////                String result = ImageUtil.saveImage(getActivity(), url);
-//                String result = ImageUtil.saveImage(getActivity(), saveBitmap);
+////                String result = ImageUtil.saveImage(getBaseAct(), url);
+//                String result = ImageUtil.saveImage(getBaseAct(), saveBitmap);
 //                if (result != null) {
 //                    String txt = getResources().getString(R.string.image_has_been_saved_to_w_file).replaceAll("W", result);
-//                    Toast.makeText(getActivity(), txt, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getBaseAct(), txt, Toast.LENGTH_SHORT).show();
 //                    dialog.dismiss();
 //                } else {
-//                    Toast.makeText(getActivity(), R.string.image_saved_failure, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getBaseAct(), R.string.image_saved_failure, Toast.LENGTH_SHORT).show();
 //                }
 //            }
 //        });

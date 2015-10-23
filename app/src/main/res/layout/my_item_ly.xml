@@ -10,8 +10,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
+        android:drawablePadding="@dimen/px14"
         android:gravity="center_vertical"
-        android:paddingLeft="@dimen/px40"
+        android:paddingLeft="@dimen/px14"
         android:textColor="@android:color/black"
         android:textSize="@dimen/font28" />
 

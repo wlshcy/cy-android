@@ -85,6 +85,11 @@ public class RedPacketsAdapter extends BaseAdapter {
             vh.requiredCountTv.setTextColor(context.getResources().getColor(R.color.gray_cccccc));
             vh.flowerIv.setBackgroundResource(R.drawable.flower_stroke_gray);
         } else {
+            vh.count.setTextColor(context.getResources().getColor(R.color.red_fe786b));
+            vh.moneySymbolTv.setTextColor(context.getResources().getColor(R.color.red_fe786b));
+            vh.zheTv.setTextColor(context.getResources().getColor(R.color.red_fe786b));
+            vh.expiryDate.setTextColor(context.getResources().getColor(R.color.red_fe786b));
+            vh.requiredCountTv.setTextColor(context.getResources().getColor(R.color.red_fe786b));
             vh.flowerIv.setBackgroundResource(R.drawable.flower_stroke);
         }
         vh.expiryDate.setText("有效期至" + Utils.getTime(entry.expire));

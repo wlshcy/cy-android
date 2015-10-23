@@ -116,10 +116,12 @@ public class AdFragment extends BaseFragment {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case PROGRESS_LOADING:
-                    mProgressBar.setProgress(msg.arg1);
+                    if (mProgressBar != null)
+                        mProgressBar.setProgress(msg.arg1);
                     break;
                 case PROGRESS_SUCCESS:
-                    mProgressBar.setVisibility(View.GONE);
+                    if (mProgressBar != null)
+                        mProgressBar.setVisibility(View.GONE);
                     break;
                 default:
                     break;

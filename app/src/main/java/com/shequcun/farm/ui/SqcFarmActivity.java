@@ -55,17 +55,15 @@ public class SqcFarmActivity extends BaseFragmentActivity {
     }
 
     private void initWidget() {
-        ButterKnife.bind(this);
         buildAdapter();
         setWidgetLsn();
         initTipChooseCombo();
     }
 
-    private void initGuide(){
+    private void initGuide() {
         if (!PersistanceManager.getOnce(this)) {
-                UserGuideDialog userGuideDialog =  new UserGuideDialog(this);
-                userGuideDialog.show();
-                return;
+            UserGuideDialog userGuideDialog = new UserGuideDialog(this);
+            userGuideDialog.show();
         }
     }
 
@@ -90,7 +88,7 @@ public class SqcFarmActivity extends BaseFragmentActivity {
         }
     }
 
-    private void gotoComboFragment(int id, Fragment fragment, String tag){
+    private void gotoComboFragment(int id, Fragment fragment, String tag) {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.add(id, fragment);

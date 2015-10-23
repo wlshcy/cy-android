@@ -52,7 +52,7 @@ public class FeedbackFragment extends BaseFragment {
 
     @OnClick(R.id.back)
     void back() {
-        Utils.hideVirtualKeyboard(getActivity(), feedback_btn);
+        Utils.hideVirtualKeyboard(getBaseAct(), feedback_btn);
         checkQuit();
     }
 
@@ -69,7 +69,7 @@ public class FeedbackFragment extends BaseFragment {
     }
 
     private void alertQuitEdit() {
-        final AlertDialog alert = new AlertDialog.Builder(getActivity()).create();
+        final AlertDialog alert = new AlertDialog.Builder(getBaseAct()).create();
         alert.show();
         alert.setCancelable(false);
         alert.getWindow().setContentView(R.layout.prompt_dialog);
@@ -98,16 +98,16 @@ public class FeedbackFragment extends BaseFragment {
     void uploadFeedbackToServer() {
         String feedback = feedback_et.getText().toString();
         if (TextUtils.isEmpty(feedback)) {
-            ToastHelper.showShort(getActivity(), R.string.feedback_error_tip);
+            ToastHelper.showShort(getBaseAct(), R.string.feedback_error_tip);
             return;
         }
 
-        final ProgressDlg pDlg = new ProgressDlg(getActivity(), "加载中...");
+        final ProgressDlg pDlg = new ProgressDlg(getBaseAct(), "加载中...");
         RequestParams params = new RequestParams();
         params.add("type", "5");
         params.add("content", feedback);
-        params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
-        HttpRequestUtil.getHttpClient(getActivity()).post(LocalParams.getBaseUrl() + "app/feedback", params, new AsyncHttpResponseHandler() {
+        params.add("_xsrf", PersistanceManager.getCookieValue(getBaseAct()));
+        HttpRequestUtil.getHttpClient(getBaseAct()).post(LocalParams.getBaseUrl() + "app/feedback", params, new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {
                 super.onStart();
@@ -130,15 +130,15 @@ public class FeedbackFragment extends BaseFragment {
                             String errmsg = jObj.optString("errmsg");
                             if (TextUtils.isEmpty(errmsg)) {
                                 doPopStack();
-                                ToastHelper.showShort(getActivity(), R.string.tks_feedback_tip);
+                                ToastHelper.showShort(getBaseAct(), R.string.tks_feedback_tip);
 
                                 return;
                             }
 
-                            ToastHelper.showShort(getActivity(), errmsg);
+                            ToastHelper.showShort(getBaseAct(), errmsg);
                         }
                     } else {
-                        ToastHelper.showShort(getActivity(), "反馈失败.");
+                        ToastHelper.showShort(getBaseAct(), "反馈失败.");
                     }
                 } catch (Exception e) {
 
@@ -149,16 +149,16 @@ public class FeedbackFragment extends BaseFragment {
             @Override
             public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
                 if (sCode == 0) {
-                    ToastHelper.showShort(getActivity(), R.string.network_error_tip);
+                    ToastHelper.showShort(getBaseAct(), R.string.network_error_tip);
                     return;
                 }
-                ToastHelper.showShort(getActivity(), "反馈失败,错误码" + sCode);
+                ToastHelper.showShort(getBaseAct(), "反馈失败,错误码" + sCode);
             }
         });
     }
 
     void doPopStack() {
-        Utils.hideVirtualKeyboard(getActivity(), feedback_btn);
+        Utils.hideVirtualKeyboard(getBaseAct(), feedback_btn);
         popBackStack();
     }
 

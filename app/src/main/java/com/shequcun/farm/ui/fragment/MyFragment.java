@@ -22,6 +22,7 @@ import com.shequcun.farm.data.UserLoginEntry;
 import com.shequcun.farm.datacenter.CacheManager;
 import com.shequcun.farm.dlg.ConsultationDlg;
 import com.shequcun.farm.ui.adapter.MyAdapter;
+import com.shequcun.farm.ui.adapter.MyMainAdapter;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
 import com.shequcun.farm.util.IntentUtil;
 import com.shequcun.farm.util.N7Utils;
@@ -65,18 +66,18 @@ public class MyFragment extends BaseFragment {
         }
         switch (position - mLv.getHeaderViewsCount()) {
             case 0://我的订单
-                gotoFragment(R.id.mainpage_ly, new MyOrderViewPagerFragment(), MyOrderViewPagerFragment.class.getName());
+                gotoFragmentByAdd(R.id.mainpage_ly, new MyOrderViewPagerFragment(), MyOrderViewPagerFragment.class.getName());
                 break;
             case 1://订单延期配送
-                gotoFragment(R.id.mainpage_ly, new OrderDelayFragment(), OrderDelayFragment.class.getName());
+                gotoFragmentByAdd(R.id.mainpage_ly, new OrderDelayFragment(), OrderDelayFragment.class.getName());
                 break;
             case 2://我的优惠红包
                 Bundle bundle1 = new Bundle();
                 bundle1.putInt(RedPacketsListFragment.KEY_ACTION, RedPacketsListFragment.ACTION_LOOK);
-                gotoFragment(bundle1, R.id.mainpage_ly, new RedPacketsListFragment(), RedPacketsListFragment.class.getName());
+                gotoFragmentByAdd(bundle1, R.id.mainpage_ly, new RedPacketsListFragment(), RedPacketsListFragment.class.getName());
                 break;
             case 3://拨打客服电话
-                ConsultationDlg.showCallTelDlg(getActivity());
+                ConsultationDlg.showCallTelDlg(getBaseAct());
                 break;
             case 4://地址管理
                 Bundle bundle = new Bundle();
@@ -108,13 +109,15 @@ public class MyFragment extends BaseFragment {
             mLv.removeHeaderView(hView_1);
         if (hView_2 != null)
             mLv.removeHeaderView(hView_2);
-        uEntry = new CacheManager(getActivity()).getUserLoginEntry();
-        hView_1 = LayoutInflater.from(getActivity()).inflate(R.layout.my_item_head_ly, null);
+        uEntry = new CacheManager(getBaseAct()).getUserLoginEntry();
+        hView_1 = LayoutInflater.from(getBaseAct()).inflate(R.layout.my_item_head_ly, null);
         ((TextView) hView_1.findViewById(R.id.mobile_phone)).setText(uEntry != null ? uEntry.mobile : "");
         CircleImageView circleImageView = ((CircleImageView) hView_1.findViewById(R.id.my_head));
         if (uEntry != null && !TextUtils.isEmpty(uEntry.headimg)) {
-            ImageLoader.getInstance().displayImage(N7Utils.filter22UrlParams(uEntry.headimg,200), circleImageView);
+            ImageLoader.getInstance().displayImage(N7Utils.filter22UrlParams(uEntry.headimg, 200), circleImageView);
             hView_1.findViewById(R.id.click_login_tv).setVisibility(View.GONE);
+        } else {
+            circleImageView.setImageResource(R.color.white_f4f4f4);
         }
         hView_1.findViewById(R.id.my_head).setOnClickListener(new AvoidDoubleClickListener() {
             @Override
@@ -129,7 +132,7 @@ public class MyFragment extends BaseFragment {
     void buildAdapter() {
         addHeader();
         if (adapter == null)
-            adapter = new MyAdapter(getActivity(), getResources().getStringArray(R.array.my_array));
+            adapter = new MyMainAdapter(getActivity());
         mLv.setAdapter(adapter);
     }
 
@@ -138,7 +141,7 @@ public class MyFragment extends BaseFragment {
         if (!mIsBind) {
             IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction(IntentUtil.UPDATE_MINE_PAGE);
-            getActivity().registerReceiver(mUpdateReceiver, intentFilter);
+            getBaseAct().registerReceiver(mUpdateReceiver, intentFilter);
             mIsBind = true;
         }
     }
@@ -158,14 +161,14 @@ public class MyFragment extends BaseFragment {
 
     private void doUnRegisterReceiver() {
         if (mIsBind) {
-            getActivity().unregisterReceiver(mUpdateReceiver);
+            getBaseAct().unregisterReceiver(mUpdateReceiver);
             mIsBind = false;
         }
     }
 
 
     void showLoginDlg() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getBaseAct());
         builder.setTitle("提示");
         builder.setMessage("亲,您还未登录哦!立刻登录?");
         builder.setNegativeButton("登录", new DialogInterface.OnClickListener() {
@@ -182,7 +185,7 @@ public class MyFragment extends BaseFragment {
     boolean mIsBind = false;
     @Bind(R.id.mLv)
     ListView mLv;
-    MyAdapter adapter;
+    MyMainAdapter adapter;
     UserLoginEntry uEntry;
     View hView_1;
     View hView_2;
