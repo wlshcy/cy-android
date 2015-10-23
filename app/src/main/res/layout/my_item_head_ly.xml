@@ -27,7 +27,7 @@
                     android:layout_width="@dimen/px180"
                     android:layout_height="@dimen/px180"
                     android:layout_gravity="center"
-                    android:src="@color/white_f4f4f4" />
+                    android:src="@android:color/white" />
 
                 <TextView
                     android:id="@+id/click_login_tv"

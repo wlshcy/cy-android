@@ -1,8 +1,11 @@
 package com.shequcun.farm.ui.fragment;
 
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -29,6 +33,8 @@ import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.ToastHelper;
 
 import org.json.JSONObject;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -262,7 +268,27 @@ public class SetFragment extends BaseFragment {
             case 3://問題反饋
                 gotoFragmentByAdd(R.id.mainpage_ly, new FeedbackFragment(), FeedbackFragment.class.getName());
                 break;
+            case 4://给我们打分
+                gotoMaketApp();
+                break;
         }
+    }
+
+    private void gotoMaketApp() {
+        String appPackageName = getActivity().getPackageName();
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse("market://details?id=" + appPackageName));
+        if (checkIntentExist(getActivity(), intent)) {
+            startActivity(intent);
+        } else {
+            Toast.makeText(getActivity(), "您的手机未安装应用市场app", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public boolean checkIntentExist(Context context, Intent intent) {
+        PackageManager packageManager = context.getPackageManager();
+        List activities = packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+        return activities.size() > 0;
     }
 
     MyAdapter adapter;

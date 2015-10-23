@@ -20,6 +20,7 @@ import com.shequcun.farm.datacenter.CacheManager;
 import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
+import com.shequcun.farm.util.DeviceInfo;
 import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.IntentUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
@@ -28,7 +29,6 @@ import com.shequcun.farm.util.TimeCount;
 import com.shequcun.farm.util.ToastHelper;
 import com.shequcun.farm.util.Utils;
 import com.umeng.analytics.MobclickAgent;
-
 
 
 import butterknife.Bind;
@@ -126,8 +126,11 @@ public class LoginFragment extends BaseFragment {
         String xXsrfToken = PersistanceManager.getCookieValue(getBaseAct());
         RequestParams params = new RequestParams();
         params.add("mobile", mobileNumber);
-        params.add("smscode", smsCode);
-//        params.add("password", smsCode);
+        if (DeviceInfo.isDebuggable(getActivity())) {
+            params.add("password", smsCode);
+        } else {
+            params.add("smscode", smsCode);
+        }
         params.add("_xsrf", xXsrfToken);
         if (!TextUtils.isEmpty(xXsrfToken)) {
             final ProgressDlg pDlg = new ProgressDlg(getBaseAct(), "登录中...");
@@ -232,7 +235,7 @@ public class LoginFragment extends BaseFragment {
     }
 
     void startTime() {
-        if (tCount == null){
+        if (tCount == null) {
             obtain_verification_code.setTextColor(getResources().getColor(R.color.gray_3d3d3d));
             tCount = new TimeCount(60000, 1000, obtain_verification_code);
         }
