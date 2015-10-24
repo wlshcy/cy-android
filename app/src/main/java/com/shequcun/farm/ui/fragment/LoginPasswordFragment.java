@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -41,15 +40,18 @@ import cz.msebera.android.httpclient.Header;
  * 登录页面
  * Created by apple on 15/8/6.
  */
-public class LoginFragment extends BaseFragment {
-
+public class LoginPasswordFragment extends BaseFragment {
+    @Bind(R.id.mobile_et)
+    EditText mobileEt;
+    @Bind(R.id.password_et)
+    EditText passwordEt;
     @Bind(R.id.login_tv)
     TextView loginTv;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.login_ly, container, false);
+        View view = inflater.inflate(R.layout.login_password_ly, container, false);
         return view;
     }
 
@@ -60,20 +62,12 @@ public class LoginFragment extends BaseFragment {
 
     @Override
     protected void initWidget(View v) {
-//        ((TextView) v.findViewById(R.id.title_center_text)).setText(R.string.login);
-    }
-
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        stopTime();
     }
 
     @Override
     protected void setWidgetLsn() {
         getBaseAct().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        input_mobile_tel.addTextChangedListener(textWatcher);
+        mobileEt.addTextChangedListener(textWatcher);
     }
 
     private TextWatcher textWatcher = new TextWatcher() {
@@ -114,8 +108,13 @@ public class LoginFragment extends BaseFragment {
 //        popBackStack();
 //    }
 
-    @OnClick(R.id.obtain_verification_code)
-    void doGetSmsCode() {
+    @OnClick(R.id.login_tv)
+    void doGetSmsCode(final View v) {
+        String xsrf = PersistanceManager.getCookieValue(getActivity());
+        if (!TextUtils.isEmpty(xsrf)) {
+            doLogin(v);
+            return;
+        }
         final ProgressDlg pDlg = new ProgressDlg(getBaseAct(), "加载中...");
         HttpRequestUtil.getHttpClient(getBaseAct()).get(
                 LocalParams.getBaseUrl() + "auth/init",
@@ -137,7 +136,7 @@ public class LoginFragment extends BaseFragment {
                         for (Header h : headers) {
                             if (h.getName().equals("X-Xsrftoken")) {
                                 PersistanceManager.saveCookieValue(getBaseAct(), h.getValue());
-                                doGetSnsCode();
+                                doLogin(v);
                                 break;
                             }
                         }
@@ -149,27 +148,22 @@ public class LoginFragment extends BaseFragment {
                 });
     }
 
-    @OnClick(R.id.login_tv)
     void doLogin(View v) {
-        final String mobileNumber = input_mobile_tel.getText().toString();
+        final String mobileNumber = mobileEt.getText().toString();
         if (TextUtils.isEmpty(mobileNumber) || mobileNumber.length() != 11) {
             ToastHelper.showShort(getBaseAct(), R.string.mobile_phone_error);
             return;
         }
-        final String smsCode = sms_code_et.getText().toString();
+        final String smsCode = passwordEt.getText().toString();
         if (TextUtils.isEmpty(smsCode)) {
-            ToastHelper.showShort(getBaseAct(), R.string.sns_code_error);
+            ToastHelper.showShort(getBaseAct(), "");
             return;
         }
         Utils.hideVirtualKeyboard(getBaseAct(), v);
         String xXsrfToken = PersistanceManager.getCookieValue(getBaseAct());
         RequestParams params = new RequestParams();
         params.add("mobile", mobileNumber);
-        if (DeviceInfo.isDebuggable(getActivity())) {
-            params.add("password", smsCode);
-        } else {
-            params.add("smscode", smsCode);
-        }
+        params.add("password", smsCode);
         params.add("_xsrf", xXsrfToken);
         if (!TextUtils.isEmpty(xXsrfToken)) {
             final ProgressDlg pDlg = new ProgressDlg(getBaseAct(), "登录中...");
@@ -219,80 +213,4 @@ public class LoginFragment extends BaseFragment {
             });
         }
     }
-
-
-    /**
-     * 获取验证码
-     */
-    void doGetSnsCode() {
-        final String mobileNumber = input_mobile_tel.getText().toString();
-        if (TextUtils.isEmpty(mobileNumber) || mobileNumber.length() > 11 || mobileNumber.length() < 11) {
-            ToastHelper.showShort(getBaseAct(), R.string.mobile_phone_error);
-            return;
-        }
-        Utils.hideVirtualKeyboard(getBaseAct(), sms_code_et);
-        RequestParams params = new RequestParams();
-        params.add("mobile", mobileNumber);
-        params.add("type", 5 + "");
-        params.add("_xsrf", PersistanceManager.getCookieValue(getBaseAct()));
-        final ProgressDlg pDlg = new ProgressDlg(getBaseAct(), "加载中...");
-        HttpRequestUtil.getHttpClient(getBaseAct()).post(LocalParams.getBaseUrl() + "util/smscode", params, new AsyncHttpResponseHandler() {
-            @Override
-            public void onStart() {
-                super.onStart();
-                pDlg.show();
-            }
-
-            @Override
-            public void onFinish() {
-                super.onFinish();
-                pDlg.dismiss();
-            }
-
-            @Override
-            public void onSuccess(int statusCode, Header[] h, byte[] data) {
-                if (data != null && data.length > 0) {
-                    SmsCodeEntry sEntry = JsonUtilsParser.fromJson(new String(data), SmsCodeEntry.class);
-                    if (sEntry != null) {
-                        if (TextUtils.isEmpty(sEntry.errmsg)) {
-                            startTime();
-                            return;
-                        } else {
-                            stopTime();
-                            ToastHelper.showShort(getBaseAct(), sEntry.errmsg);
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                ToastHelper.showShort(getBaseAct(), "错误验证码" + statusCode);
-                stopTime();
-            }
-        });
-    }
-
-    void startTime() {
-        if (tCount == null) {
-            obtain_verification_code.setTextColor(getResources().getColor(R.color.gray_3d3d3d));
-            tCount = new TimeCount(60000, 1000, obtain_verification_code);
-        }
-        tCount.start();
-    }
-
-    private void stopTime() {
-        if (tCount != null) {
-            tCount.onFinish();
-            tCount = null;
-        }
-    }
-
-    TimeCount tCount;
-    @Bind(R.id.obtain_verification_code)
-    Button obtain_verification_code;
-    @Bind(R.id.sms_code_et)
-    EditText sms_code_et;
-    @Bind(R.id.input_mobile_tel)
-    EditText input_mobile_tel;
 }

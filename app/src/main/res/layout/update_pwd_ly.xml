@@ -5,7 +5,7 @@
     android:background="@android:color/white"
     android:orientation="vertical">
 
-    <!--<include layout="@layout/common_title_ly" />-->
+    <include layout="@layout/common_title_ly" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -16,14 +16,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
-            <!--<ImageView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:layout_marginBottom="@dimen/px20"-->
-            <!--android:layout_marginTop="@dimen/px50"-->
-            <!--android:src="@drawable/icon_small_logo" />-->
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -39,13 +31,13 @@
                     android:orientation="horizontal">
 
                     <EditText
-                        android:id="@+id/input_mobile_tel"
+                        android:id="@+id/password_et"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1.0"
                         android:background="@null"
                         android:digits="1234567890."
-                        android:hint="@string/input_mobile_phone"
+                        android:hint="输入新密码"
                         android:inputType="phone"
                         android:paddingLeft="13dp"
                         android:singleLine="true"
@@ -53,15 +45,6 @@
                         android:textColorHint="@color/gray_cecece"
                         android:textSize="@dimen/font28" />
 
-                    <Button
-                        android:id="@+id/obtain_verification_code"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/px36"
-                        android:background="@android:color/transparent"
-                        android:text="@string/get_sms_code"
-                        android:textColor="@color/green_11C258"
-                        android:textSize="@dimen/font28" />
                 </LinearLayout>
 
                 <View
@@ -72,12 +55,12 @@
                     android:background="@color/gray_c7c7c7" />
 
                 <EditText
-                    android:id="@+id/sms_code_et"
+                    android:id="@+id/new_password_et"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/px100"
                     android:background="@null"
                     android:digits="1234567890."
-                    android:hint="@string/sms_code"
+                    android:hint="确认新密码"
                     android:imeOptions="actionDone"
                     android:inputType="phone"
                     android:paddingLeft="13dp"
@@ -87,20 +70,53 @@
                     android:textSize="@dimen/font28" />
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/px20"
+                android:background="@drawable/edit_bg"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/smscode_et"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.0"
+                    android:background="@null"
+                    android:digits="1234567890."
+                    android:hint="请输入短信验证码"
+                    android:inputType="phone"
+                    android:paddingLeft="13dp"
+                    android:singleLine="true"
+                    android:textColor="@android:color/black"
+                    android:textColorHint="@color/gray_cecece"
+                    android:textSize="@dimen/font28" />
+
+                <Button
+                    android:id="@+id/get_smscode_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/px36"
+                    android:background="@android:color/transparent"
+                    android:text="@string/get_sms_code"
+                    android:textColor="@color/green_11C258"
+                    android:textSize="@dimen/font28" />
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/login_tv"
+                android:id="@+id/confirm_update_tv"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/px100"
                 android:layout_margin="10dp"
-                android:background="@drawable/edit_bg"
-                android:enabled="false"
+                android:background="@color/green_11C258"
                 android:gravity="center"
-                android:text="@string/login"
-                android:textColor="@color/gray_cecece"
+                android:text="确认修改密码"
+                android:textColor="@android:color/white"
                 android:textSize="@dimen/px30" />
 
         </LinearLayout>
 
     </ScrollView>
+
+
 </LinearLayout>

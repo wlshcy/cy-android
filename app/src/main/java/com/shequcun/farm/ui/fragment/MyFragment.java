@@ -123,7 +123,9 @@ public class MyFragment extends BaseFragment {
             @Override
             public void onViewClick(View v) {
                 if (uEntry == null)
-                    gotoFragment(R.id.mainpage_ly, new LoginFragment(), LoginFragment.class.getName());
+                    gotoLoginFragment();
+                else
+                    gotoUpdatePassword();
             }
         });
         mLv.addHeaderView(hView_1, null, false);
@@ -174,13 +176,20 @@ public class MyFragment extends BaseFragment {
         builder.setNegativeButton("登录", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                gotoFragment(R.id.mainpage_ly, new LoginFragment(), LoginFragment.class.getName());
+                gotoLoginFragment();
             }
         });
         builder.setNeutralButton("取消", null);
         builder.create().show();
     }
 
+    private void gotoLoginFragment() {
+        gotoFragment(R.id.mainpage_ly, new LoginMainFragment(), LoginMainFragment.class.getName());
+    }
+
+    private void gotoUpdatePassword() {
+        gotoFragment(R.id.mainpage_ly, new SettingUpdatePasswordFragment(), SettingUpdatePasswordFragment.class.getName());
+    }
 
     boolean mIsBind = false;
     @Bind(R.id.mLv)
