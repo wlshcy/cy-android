@@ -41,14 +41,16 @@ import cz.msebera.android.httpclient.Header;
  * Created by apple on 15/8/6.
  */
 public class LoginAllFragment extends BaseFragment {
-
+    private boolean isPwdLogin;
     @Bind(R.id.login_tv)
     TextView loginTv;
+    @Bind(R.id.change_login_tv)
+    TextView changeLoginTv;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.login_ly, container, false);
+        View view = inflater.inflate(R.layout.login_all_ly, container, false);
         return view;
     }
 
@@ -107,11 +109,29 @@ public class LoginAllFragment extends BaseFragment {
         loginTv.setTextColor(getResources().getColor(R.color.gray_cecece));
     }
 
-//    @OnClick(R.id.back)
-//    void back(View v) {
-//        Utils.hideVirtualKeyboard(getBaseAct(), v);
-//        popBackStack();
-//    }
+    @OnClick(R.id.change_login_tv)
+    void changeLogin() {
+        changeView();
+    }
+
+    private void changeView() {
+        if (isPwdLogin) {
+            obtain_verification_code.setVisibility(View.GONE);
+            sms_code_et.setHint(R.string.hint_password);
+            changeLoginTv.setText("手机登录");
+        } else {
+            obtain_verification_code.setVisibility(View.VISIBLE);
+            sms_code_et.setHint(R.string.sms_code);
+            changeLoginTv.setText("密码登录");
+        }
+        isPwdLogin = !isPwdLogin;
+    }
+
+    @OnClick(R.id.back)
+    void back(View v) {
+        Utils.hideVirtualKeyboard(getBaseAct(), v);
+        popBackStack();
+    }
 
     @OnClick(R.id.obtain_verification_code)
     void doGetSmsCode() {
@@ -164,7 +184,9 @@ public class LoginAllFragment extends BaseFragment {
         String xXsrfToken = PersistanceManager.getCookieValue(getBaseAct());
         RequestParams params = new RequestParams();
         params.add("mobile", mobileNumber);
-        if (DeviceInfo.isDebuggable(getActivity())) {
+        //debug模式则是密码登录
+        isPwdLogin = DeviceInfo.isDebuggable(getActivity());
+        if (isPwdLogin) {
             params.add("password", smsCode);
         } else {
             params.add("smscode", smsCode);

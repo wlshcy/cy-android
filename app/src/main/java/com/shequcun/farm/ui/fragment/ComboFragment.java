@@ -80,7 +80,7 @@ public class ComboFragment extends BaseFragment {
     @OnItemClick(R.id.mListView)
     void OnItemClick(int position) {
         if (!isLogin()) {
-            gotoFragmentByAdd(R.id.mainpage_ly, new LoginFragment(), LoginFragment.class.getName());
+            FragmentUtils.login(this);
             return;
         }
         if (adapter == null)

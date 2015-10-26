@@ -123,7 +123,7 @@ public class MyFragment extends BaseFragment {
             @Override
             public void onViewClick(View v) {
                 if (uEntry == null)
-                    gotoLoginFragment();
+                    FragmentUtils.login(MyFragment.this);
                 else
                     gotoUpdatePassword();
             }
@@ -176,15 +176,11 @@ public class MyFragment extends BaseFragment {
         builder.setNegativeButton("登录", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                gotoLoginFragment();
+                FragmentUtils.login(MyFragment.this);
             }
         });
         builder.setNeutralButton("取消", null);
         builder.create().show();
-    }
-
-    private void gotoLoginFragment() {
-        gotoFragment(R.id.mainpage_ly, new LoginMainFragment(), LoginMainFragment.class.getName());
     }
 
     private void gotoUpdatePassword() {

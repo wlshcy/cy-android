@@ -96,7 +96,7 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment implements R
             noLoginView.findViewById(R.id.go_login).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    gotoFragmentByAdd(R.id.mainpage_ly, new LoginFragment(), LoginFragment.class.getName());
+                    FragmentUtils.login(FarmSpecialtyShoppingCartFragment.this);
                 }
             });
         }

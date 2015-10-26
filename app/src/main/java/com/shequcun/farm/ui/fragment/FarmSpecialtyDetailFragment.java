@@ -247,7 +247,7 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
                 public void onClick(View view) {
 
                     if (!isLogin()) {
-                        gotoFragmentByAdd(R.id.mainpage_ly, new LoginFragment(), LoginFragment.class.getName());
+                        FragmentUtils.login(FarmSpecialtyDetailFragment.this);
                         return;
                     }
 

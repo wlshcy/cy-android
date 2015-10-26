@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+
+    <include layout="@layout/common_title_ly" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/px20"
+                android:layout_marginTop="@dimen/px50"
+                android:src="@drawable/icon_small_logo" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/px214"
+                android:layout_margin="@dimen/px20"
+                android:background="@drawable/edit_bg"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/px100"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/input_mobile_tel"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.0"
+                        android:background="@null"
+                        android:digits="1234567890."
+                        android:hint="@string/input_mobile_phone"
+                        android:inputType="phone"
+                        android:paddingLeft="13dp"
+                        android:singleLine="true"
+                        android:textColor="@android:color/black"
+                        android:textColorHint="@color/gray_cecece"
+                        android:textSize="@dimen/font28" />
+
+                    <Button
+                        android:id="@+id/obtain_verification_code"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/px36"
+                        android:background="@android:color/transparent"
+                        android:text="@string/get_sms_code"
+                        android:textColor="@color/green_11C258"
+                        android:textSize="@dimen/font28" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginLeft="@dimen/px36"
+                    android:layout_marginRight="@dimen/px36"
+                    android:background="@color/gray_c7c7c7" />
+
+                <EditText
+                    android:id="@+id/sms_code_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/px100"
+                    android:background="@null"
+                    android:digits="1234567890."
+                    android:hint="@string/sms_code"
+                    android:imeOptions="actionDone"
+                    android:inputType="phone"
+                    android:paddingLeft="13dp"
+                    android:singleLine="true"
+                    android:textColor="@android:color/black"
+                    android:textColorHint="@color/gray_cecece"
+                    android:textSize="@dimen/font28" />
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/login_tv"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/px100"
+                android:layout_margin="10dp"
+                android:background="@drawable/edit_bg"
+                android:enabled="false"
+                android:gravity="center"
+                android:text="@string/login"
+                android:textColor="@color/gray_cecece"
+                android:textSize="@dimen/px30" />
+
+            <TextView
+                android:id="@+id/change_login_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/px60"
+                android:layout_gravity="center_horizontal"
+                android:padding="10dp"
+                android:gravity="center"
+                android:text="密码登录"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/px30" />
+        </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>
