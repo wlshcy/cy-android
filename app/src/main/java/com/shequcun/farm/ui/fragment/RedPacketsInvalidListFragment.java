@@ -5,13 +5,10 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -25,7 +22,6 @@ import com.shequcun.farm.R;
 import com.shequcun.farm.data.CouponEntry;
 import com.shequcun.farm.data.RedPacketsEntry;
 import com.shequcun.farm.ui.adapter.RedPacketsAdapter;
-import com.shequcun.farm.util.AvoidDoubleClickListener;
 import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
@@ -42,7 +38,7 @@ import cz.msebera.android.httpclient.Header;
 /**
  * Created by cong on 15/9/7.
  */
-public class RedPacketsListFragment extends BaseFragment {
+public class RedPacketsInvalidListFragment extends BaseFragment {
     @Bind(R.id.red_packets_lv)
     ExpandableHeightListView redPacketsLv;
     @Bind(R.id.title_center_text)
@@ -75,7 +71,6 @@ public class RedPacketsListFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         type = getTypeFromParams();
-        payMoney = getPayMoney();
         reuqestRedPacketsList(type, 0);
     }
 
@@ -87,8 +82,7 @@ public class RedPacketsListFragment extends BaseFragment {
     @Override
     protected void initWidget(View v) {
         pView.setMode(PullToRefreshBase.Mode.PULL_FROM_END);
-        titleTv.setText(R.string.use_favorable_red_packets);
-        rightTv.setText(R.string.use_rule);
+        titleTv.setText("失效红包");
         if (adapter == null) {
             adapter = new RedPacketsAdapter(getBaseAct());
         }
@@ -185,6 +179,7 @@ public class RedPacketsListFragment extends BaseFragment {
         /*查看优惠券时不传type，查询出所有的优惠券*/
         if (type != 0)
             params.add("type", type + "");
+        params.add("usable", "0");
         params.add("lastid", lastId + "");
         params.add("length", length + "");
         HttpRequestUtil.getHttpClient(getBaseAct()).get(LocalParams.getBaseUrl() + "cai/coupon", params, new AsyncHttpResponseHandler() {
@@ -224,11 +219,6 @@ public class RedPacketsListFragment extends BaseFragment {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.empty_text_ly, null);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         emptyView.addView(view, layoutParams);
-        LinearLayout.LayoutParams layoutParams1 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        ImageView imageView = new ImageView(getActivity());
-        imageView.setImageResource(R.drawable.empty_divider);
-        emptyView.addView(imageView, layoutParams1);
-        emptyView.addView(getFooterView(), layoutParams);
         redPacketsLv.setEmptyView(emptyView);
     }
 
@@ -236,81 +226,19 @@ public class RedPacketsListFragment extends BaseFragment {
         if (entry == null)
             return;
         List<CouponEntry> list = entry.list;
-
         if (list == null || list.isEmpty()) {
-            if (redPacketsLv.getEmptyView() == null)
-                addEmptyView();
+            addEmptyView();
             return;
         }
-
-        ArrayList<CouponEntry> aList = new ArrayList<CouponEntry>();
-
-
-        for (int i = 0; i < list.size(); ++i) {
-            CouponEntry cEntry = list.get(i);
-            if (payMoney >= cEntry.charge) {
-                aList.add(cEntry);
-            }
-        }
-
-
-        if (curSize > 0 && curSize % length < length) return;
-        /*选择优惠券时*/
-        if (action != ACTION_LOOK) {
-            /*过滤出无效优惠券*/
-//            filterExpire(entry.list, entry.time);
-            filterExpire(aList != null && aList.size() > 0 ? aList : list, entry.time);
-        } else {
-            adapter.setServeTime(entry.time);
-        }
-//        adapter.addAll(entry.list);
-        redPacketsLv.addFooterView(getFooterView());
-        adapter.addAll(aList != null && aList.size() > 0 ? aList : list);
+        adapter.setServeTime(entry.time);
+        adapter.addAll(entry.list);
         curSize = adapter.getCount();
     }
-
-    private View getFooterView() {
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.invalid_red_packets_ly, null);
-        View invalidView = view.findViewById(R.id.invalid_red_packets_tv);
-        invalidView.setOnClickListener(onClickListener);
-        return view;
-    }
-
-    private View.OnClickListener onClickListener = new AvoidDoubleClickListener() {
-        @Override
-        public void onViewClick(View v) {
-            Bundle bundle = new Bundle();
-            bundle.putInt(KEY_TYPE, type);
-            FragmentUtils.invalidRedPacketsList(RedPacketsListFragment.this,bundle);
-        }
-    };
-
-    private void filterExpire(List<CouponEntry> list, long serveTime) {
-        Iterator<CouponEntry> i = list.iterator();
-        while (i.hasNext()) {
-            CouponEntry entry = i.next();
-            if (entry.used || (serveTime > 0 && entry.expire <= serveTime))
-                i.remove();
-        }
-    }
-
-//    private Handler mHandler = new Handler() {
-//        public void handleMessage(android.os.Message msg) {
-//            if (redPacketsLv != null)
-//                redPacketsLv.onRefreshComplete();
-//        }
-//    };
 
     private int getTypeFromParams() {
         Bundle bundle = getArguments();
         if (bundle == null) return 0;
         return bundle.getInt(KEY_TYPE);
-    }
-
-    private int getPayMoney() {
-        Bundle bundle = getArguments();
-        if (bundle == null) return 0;
-        return bundle.getInt("PayMoney");
     }
 
     private int getActionFromParams() {

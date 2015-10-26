@@ -35,15 +35,14 @@
                 android:scrollbars="none"></com.common.widget.ExpandableHeightListView>
 
 
-            <TextView
-                android:id="@+id/empty_list_view"
+            <LinearLayout
+                android:id="@+id/empty_ll"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:gravity="top|center_horizontal"
-                android:paddingTop="@dimen/px120"
-                android:text="@string/empty_red_packets"
-                android:visibility="gone" />
+                android:orientation="vertical"
+                android:visibility="gone"></LinearLayout>
 
         </LinearLayout>
     </com.common.widget.PullToRefreshScrollView>

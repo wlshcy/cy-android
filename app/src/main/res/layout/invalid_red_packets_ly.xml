@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:gravity="right"
+        android:text="没有更多红包"
+        android:textColor="@color/gray_bfbfbf"
+        android:textSize="@dimen/font28" />
+
+    <View
+        android:layout_width="10dp"
+        android:layout_height="1dp"></View>
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/invalid_red_packets_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:drawablePadding="@dimen/px8"
+            android:drawableRight="@drawable/icon_arrows_double_red"
+            android:gravity="left"
+            android:paddingBottom="@dimen/px40"
+            android:paddingTop="@dimen/px40"
+            android:text="查看失效红包"
+            android:textColor="@color/red_f36043"
+            android:textSize="@dimen/font28" />
+    </FrameLayout>
+</LinearLayout>
