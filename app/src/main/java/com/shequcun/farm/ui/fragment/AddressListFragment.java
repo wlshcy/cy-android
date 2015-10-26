@@ -100,7 +100,7 @@ public class AddressListFragment extends BaseFragment {
 
     @Override
     protected void initWidget(View v) {
-
+        titleTv.setText("地址管理");
     }
 
     private MyAddressAdapter.OnUpdateAddressListener onUpdateAddressListener = new MyAddressAdapter.OnUpdateAddressListener() {
@@ -133,8 +133,6 @@ public class AddressListFragment extends BaseFragment {
         }
         adapter.setOnUpdateAddressListener(onUpdateAddressListener);
         addressLv.setAdapter(adapter);
-
-        titleTv.setText(R.string.my_address);
         if (action == Action.SELECT) {
             adapter.setOnChooseAddressListener(onChooseAddressListener);
         }

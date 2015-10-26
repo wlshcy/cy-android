@@ -66,7 +66,7 @@
         android:paddingLeft="@dimen/px24"
         android:paddingRight="@dimen/px48"
         android:paddingTop="@dimen/px48"
-        android:src="@drawable/address_edit_selector"
+        android:src="@drawable/icon_edit"
          />
 </LinearLayout>
 

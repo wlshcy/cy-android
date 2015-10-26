@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -23,7 +22,6 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.AddressEntry;
-import com.shequcun.farm.data.RegionEntry;
 import com.shequcun.farm.data.RegionListEntry;
 import com.shequcun.farm.data.ZoneEntry;
 import com.shequcun.farm.datacenter.PersistanceManager;
@@ -43,6 +41,7 @@ import org.json.JSONObject;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import cz.msebera.android.httpclient.Header;
 
 /**
@@ -50,6 +49,9 @@ import cz.msebera.android.httpclient.Header;
  * Created by apple on 15/8/5.
  */
 public class AddressFragment extends BaseFragment {
+    @Bind(R.id.save_tv)
+    TextView saveTv;
+
     @Override
     public boolean onBackPressed() {
         return false;
@@ -58,7 +60,8 @@ public class AddressFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.address_ly, container, false);
+        View view = inflater.inflate(R.layout.address_ly, container, false);
+        return view;
     }
 
     protected void initWidget(View v) {
@@ -79,12 +82,13 @@ public class AddressFragment extends BaseFragment {
     @Override
     protected void setWidgetLsn() {
         title_center_text.setText(R.string.receiveing_address);
-        commit.setTextColor(getResources().getColor(R.color.green_2bc36c));
-        commit.setText(R.string.save);
+//        deleteTv.setTextColor(getResources().getColor(R.color.green_2bc36c));
+        deleteTv.setText("删除");
         doRegisterRefreshBrodcast();
         back.setOnClickListener(onClick);
-        commit.setOnClickListener(onClick);
+        deleteTv.setOnClickListener(onClick);
         choose_zone_ll.setOnClickListener(onClick);
+        saveTv.setOnClickListener(onClick);
     }
 
     @Override
@@ -113,8 +117,11 @@ public class AddressFragment extends BaseFragment {
 //                }
 //                popBackStack();
 
-            } else if (v == commit)
+            } else if (v == deleteTv) {
+
+            } else if (v == saveTv) {
                 upLoadAddressToServer();
+            }
             //(R.id.mainpage_ly, new ComboMongoliaLayerFragment(), ComboMongoliaLayerFragment.class.getName());
         }
     };
@@ -522,7 +529,7 @@ public class AddressFragment extends BaseFragment {
     @Bind(R.id.back)
     View back;
     @Bind(R.id.title_right_text)
-    TextView commit;
+    TextView deleteTv;
     @Bind(R.id.title_center_text)
     TextView title_center_text;
     private boolean znameDiff;

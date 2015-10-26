@@ -119,12 +119,12 @@
                     android:id="@+id/regionTv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:layout_marginLeft="@dimen/px20"
                     android:layout_marginRight="@dimen/px20"
-                    android:layout_gravity="center_vertical"
                     android:background="@null"
-                    android:textColor="@android:color/black"
                     android:hint="@string/input_your_region"
+                    android:textColor="@android:color/black"
                     android:textSize="@dimen/font28" />
                 <!--<TextView-->
                 <!--android:id="@+id/choose_zone_tv"-->
@@ -188,6 +188,19 @@
 
                     android:textSize="@dimen/font28" />
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/save_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/px48"
+                android:text="保存地址"
+                android:textColor="@color/green_11C258"
+                android:textSize="@dimen/px32"
+                android:paddingTop="@dimen/px32"
+                android:paddingBottom="@dimen/px32"
+                android:background="@drawable/common_top_bottom_line_selector"
+                android:gravity="center"/>
             <!--<View-->
             <!--android:layout_width="match_parent"-->
             <!--android:layout_height="1.0dp"-->

@@ -144,7 +144,7 @@ public abstract class BaseFragment extends Fragment {
 ////        ft.setCustomAnimations(R.anim.slide_in_from_bottom, R.anim.slide_out_to_top, R.anim.slide_out_to_bottom, R.anim.slide_out_to_bottom);
 //        ft.add(id, fragment);
 //        ft.addToBackStack(tag);
-////        ft.commit();
+////        ft.deleteTv();
 //        ft.commitAllowingStateLoss();
 //    }
 
