@@ -79,4 +79,5 @@ public class DishesItemEntry extends BaseEntry {
 //    modified
 //    int 修改时间
 //    1970年1月1日至今的毫秒数 1423458933975
+
 }

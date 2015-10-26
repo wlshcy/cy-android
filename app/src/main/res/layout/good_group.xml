@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white_f4f4f4"
+    android:padding="6dp">
+
+    <TextView
+        android:id="@+id/group"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:textColor="@color/gray_575757"
+        android:textSize="14sp"
+        android:visibility="visible" />
+
+
+    <TextView
+        android:id="@+id/refresh_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/px70"
+        android:drawableLeft="@drawable/icon_refresh_green"
+        android:drawablePadding="@dimen/px8"
+        android:text="换一批"
+        android:textColor="@color/green_11C258"
+        android:textSize="14sp"
+        android:visibility="visible" />
+
+</RelativeLayout>

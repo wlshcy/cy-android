@@ -188,7 +188,7 @@ public class MyFragment extends BaseFragment {
     }
 
     private void gotoUpdatePassword() {
-        gotoFragment(R.id.mainpage_ly, new SettingUpdatePasswordFragment(), SettingUpdatePasswordFragment.class.getName());
+        gotoFragment(R.id.mainpage_ly, new MatchGoodsPopFragment(), MatchGoodsPopFragment.class.getName());
     }
 
     boolean mIsBind = false;

@@ -15,11 +15,10 @@ import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.AbsListView;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -39,16 +38,23 @@ import com.shequcun.farm.data.goods.DishesListItemEntry;
 import com.shequcun.farm.datacenter.DisheDataCenter;
 import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.dlg.AlertDialog;
-import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.model.PhotoModel;
 import com.shequcun.farm.ui.adapter.ChooseDishesAdapter;
-import com.shequcun.farm.util.*;
-
+import com.shequcun.farm.util.AvoidDoubleClickListener;
+import com.shequcun.farm.util.DeviceInfo;
+import com.shequcun.farm.util.HttpRequestUtil;
+import com.shequcun.farm.util.JsonUtilsParser;
+import com.shequcun.farm.util.LocalParams;
+import com.shequcun.farm.util.PlaySoundUtils;
+import com.shequcun.farm.util.ResUtil;
+import com.shequcun.farm.util.ToastHelper;
+import com.shequcun.farm.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cz.msebera.android.httpclient.Header;
 
@@ -57,10 +63,13 @@ import cz.msebera.android.httpclient.Header;
  * Created by apple on 15/8/10.
  */
 public class ChooseDishesFragment extends BaseFragment {
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.choose_dishes_ly, container, false);
+        View view = inflater.inflate(R.layout.choose_dishes_ly, container, false);
+        return view;
     }
 
     @Override
@@ -129,6 +138,18 @@ public class ChooseDishesFragment extends BaseFragment {
         gotoFragmentByAdd(getArguments(), R.id.mainpage_ly, new WebViewFragment(), WebViewFragment.class.getName());
     }
 
+    @OnClick(R.id.reqired_select_rl)
+    void requiredSelectItem() {
+        ArrayList<DishesItemEntry> aList = new ArrayList<DishesItemEntry>();
+        for (int i = 0; i < adapter.getCount(); ++i) {
+            aList.add(adapter.getItem(i));
+        }
+        ArrayList<DishesItemEntry> chooseList = (ArrayList) mOrderController.getNoChooseDishesItems(aList);
+        Bundle bundle = new Bundle();
+        bundle.putString("orderno", entry.orderno);
+        bundle.putSerializable("chooseList", chooseList);
+        gotoFragmentByAdd(bundle, R.id.mainpage_ly, new MatchGoodsPopFragment(), MatchGoodsPopFragment.class.getName());
+    }
 
     boolean doPopUpStack() {
         if ((option_dishes_tip != null && option_dishes_tip.getVisibility() == View.VISIBLE) || (mShopCartClearTv != null && mShopCartClearTv.getVisibility() == View.VISIBLE)) {
@@ -503,7 +524,8 @@ public class ChooseDishesFragment extends BaseFragment {
             mBuyOrderTv.setText(R.string.small_market_buy);
             mBuyOrderTv.setTextColor(getResources().getColor(R.color.white_fefefe));
             mShopCartPriceTv.setText(R.string.choose_dishes_successful);
-            option_dishes_tv.setVisibility(View.VISIBLE);
+//            option_dishes_tv.setVisibility(View.VISIBLE);
+            reqiredSelectRl.setVisibility(View.VISIBLE);
         } else {
             option_dishes_tv.setVisibility(View.GONE);
             mBuyOrderTv.setBackgroundResource(R.drawable.shopping_cart_widget_selector_2);
@@ -763,7 +785,7 @@ public class ChooseDishesFragment extends BaseFragment {
 
     ModifyOrderParams buildOrderParams(ComboEntry entry) {
         ModifyOrderParams params = new ModifyOrderParams();
-        params.setParams(entry.id, entry.orderno, 1, entry.id, entry.prices[entry.getPosition()], entry.combo_idx, entry.status, null, null, null, null, 1,"下单日期:" + Utils.getTime(entry.json.get(entry.status + "").getAsLong()));
+        params.setParams(entry.id, entry.orderno, 1, entry.id, entry.prices[entry.getPosition()], entry.combo_idx, entry.status, null, null, null, null, 1, "下单日期:" + Utils.getTime(entry.json.get(entry.status + "").getAsLong()));
         return params;
     }
 
@@ -865,4 +887,6 @@ public class ChooseDishesFragment extends BaseFragment {
     ImageView mShopCartIv;
     @Bind(R.id.pView)
     PullToRefreshScrollView pView;
+    @Bind(R.id.reqired_select_rl)
+    RelativeLayout reqiredSelectRl;
 }

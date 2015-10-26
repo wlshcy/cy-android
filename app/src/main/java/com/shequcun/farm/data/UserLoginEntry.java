@@ -30,4 +30,6 @@ public class UserLoginEntry extends BaseEntry implements Serializable {
     public int mycomboids[];
     @SerializedName("orderno")
     public String orderno;
+    @SerializedName("haspwd")
+    public boolean haspwd;
 }
