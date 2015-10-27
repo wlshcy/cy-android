@@ -20,15 +20,16 @@
         android:childIndicatorLeft="0dp"
         android:groupIndicator="@null"
         android:scrollbarAlwaysDrawHorizontalTrack="false"
-        android:background="@color/white_f4f4f4"/>
+        android:background="@color/white_f4f4f4"
+        android:layout_marginBottom="54dp"/>
 
-    <TextView
-        android:id="@+id/selected_tv"
-        android:layout_width="match_parent"
-        android:layout_height="54dp"
-        android:layout_gravity="bottom"
-        android:background="@color/red_dc5439"
-        android:gravity="center"
-        android:text="选好了"
-        android:textColor="@android:color/white" />
+    <!--<TextView-->
+        <!--android:id="@+id/selected_tv"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="54dp"-->
+        <!--android:layout_gravity="bottom"-->
+        <!--android:background="@color/red_dc5439"-->
+        <!--android:gravity="center"-->
+        <!--android:text="选好了"-->
+        <!--android:textColor="@android:color/white" />-->
 </LinearLayout>

@@ -24,7 +24,10 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.shequcun.farm.R;
+import com.shequcun.farm.data.ComboEntry;
 import com.shequcun.farm.data.DishesItemEntry;
+import com.shequcun.farm.data.FixedComboEntry;
+import com.shequcun.farm.data.FixedListComboEntry;
 import com.shequcun.farm.data.goods.DishesListItemEntry;
 import com.shequcun.farm.datacenter.DisheDataCenter;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
@@ -49,8 +52,8 @@ public class MatchGoodsPopFragment extends BaseFragment {
     PinnedHeaderExpandableListView listLv;
     @Bind(R.id.empty_view)
     View emptyView;
-    @Bind(R.id.selected_tv)
-    TextView selectedTv;
+    //    @Bind(R.id.selected_tv)
+//    TextView selectedTv;
     private ArrayList<GoodGroup> groupList = new ArrayList<GoodGroup>();
     private ArrayList<List<DishesItemEntry>> childList = new ArrayList<>();
     private MyexpandableListAdapter adapter;
@@ -70,11 +73,17 @@ public class MatchGoodsPopFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        String orderno = getOrdernoParams();
-        if (!TextUtils.isEmpty(orderno))
-            requsetFixedDishesList(orderno);
+        loadFixedCombo();
         loadBackupDishes();
-//        refreshGoods();
+    }
+
+    private void loadFixedCombo() {
+        ComboEntry comboEntry = getComboEntryParams();
+        if (comboEntry == null) return;
+        if (comboEntry.isMine())
+            requsetFixedDishesList(comboEntry.orderno);
+        else
+            requestFixedCombo(comboEntry.id);
     }
 
     private void loadBackupDishes() {
@@ -97,6 +106,13 @@ public class MatchGoodsPopFragment extends BaseFragment {
         Bundle bundle = getArguments();
         if (bundle != null)
             return bundle.getString("orderno");
+        return null;
+    }
+
+    private ComboEntry getComboEntryParams() {
+        Bundle bundle = getArguments();
+        if (bundle != null)
+            return (ComboEntry) bundle.getSerializable("ComboEntry");
         return null;
     }
 
@@ -228,6 +244,51 @@ public class MatchGoodsPopFragment extends BaseFragment {
         super.onDestroyView();
     }
 
+    /**
+     * 如果不是来自我的套餐，则表明是第一次买套餐
+     *
+     * @param id
+     */
+    private void requestFixedCombo(int id) {
+        RequestParams params = new RequestParams();
+        params.add("id", "" + id);
+        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "cai/combodtl", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int sCode, Header[] h, byte[] data) {
+                if (data != null && data.length > 0) {
+                    FixedListComboEntry entry = JsonUtilsParser.fromJson(new String(data), FixedListComboEntry.class);
+                    if (entry != null) {
+                        if (TextUtils.isEmpty(entry.errmsg)) {
+                            parseToDishesItemEntry(entry.aList);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(int sCode, Header[] h, byte[] data, Throwable e) {
+
+            }
+        });
+    }
+
+    private List<DishesItemEntry> parseToDishesItemEntry(List<FixedComboEntry> aList) {
+        List<DishesItemEntry> list = new ArrayList<>();
+        for (FixedComboEntry entry : aList) {
+            DishesItemEntry tEntry = new DishesItemEntry();
+            tEntry.id = entry.id;
+            tEntry.imgs = new String[]{entry.img};
+            tEntry.title = entry.title;
+            list.add(tEntry);
+        }
+        return list;
+    }
+
+    /**
+     * 来自我的套餐
+     *
+     * @param orderno
+     */
     void requsetFixedDishesList(String orderno) {
         RequestParams params = new RequestParams();
 //      套餐固定菜品使用，套餐订单号
@@ -240,7 +301,10 @@ public class MatchGoodsPopFragment extends BaseFragment {
                     DishesListItemEntry entry = JsonUtilsParser.fromJson(new String(data), DishesListItemEntry.class);
                     if (entry != null) {
                         if (TextUtils.isEmpty(entry.errmsg)) {
-                            successFixedDishesList(entry);
+                            if (entry.aList == null || entry.aList.isEmpty()) {
+                                return;
+                            }
+                            successFixedDishesList(entry.aList);
                             return;
                         }
                         ToastHelper.showShort(getBaseAct(), entry.errmsg);
@@ -273,13 +337,8 @@ public class MatchGoodsPopFragment extends BaseFragment {
         });
     }
 
-    private void successFixedDishesList(DishesListItemEntry entry) {
-        if (entry.aList == null || entry.aList.isEmpty()) {
-//            groupList.remove(fixedGroup);
-//            adapter.notifyDataSetChanged();
-            return;
-        }
-        fixedList.addAll(entry.aList);
+    private void successFixedDishesList(List<DishesItemEntry> list) {
+        fixedList.addAll(list);
         adapter.notifyDataSetChanged();
     }
 

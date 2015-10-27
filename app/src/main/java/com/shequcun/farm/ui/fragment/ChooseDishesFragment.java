@@ -138,7 +138,6 @@ public class ChooseDishesFragment extends BaseFragment {
         gotoFragmentByAdd(getArguments(), R.id.mainpage_ly, new WebViewFragment(), WebViewFragment.class.getName());
     }
 
-    @OnClick(R.id.reqired_select_rl)
     void requiredSelectItem() {
         ArrayList<DishesItemEntry> aList = new ArrayList<DishesItemEntry>();
         for (int i = 0; i < adapter.getCount(); ++i) {
@@ -146,9 +145,9 @@ public class ChooseDishesFragment extends BaseFragment {
         }
         ArrayList<DishesItemEntry> chooseList = (ArrayList) mOrderController.getNoChooseDishesItems(aList);
         Bundle bundle = new Bundle();
-        bundle.putString("orderno", entry.orderno);
+        bundle.putSerializable("ComboEntry", entry);
         bundle.putSerializable("chooseList", chooseList);
-        gotoFragmentByAdd(bundle, R.id.mainpage_ly, new MatchGoodsPopFragment(), MatchGoodsPopFragment.class.getName());
+        gotoFragmentByAnimation(bundle, R.id.mainpage_ly, new MatchGoodsPopFragment(), MatchGoodsPopFragment.class.getName(),R.anim.abc_slide_in_bottom,R.anim.abc_fade_out);
     }
 
     boolean doPopUpStack() {
@@ -173,7 +172,8 @@ public class ChooseDishesFragment extends BaseFragment {
                 doPopUpStack();
             } else if (v == option_dishes_tv) {
                 if (option_dishes_tip.getVisibility() == View.GONE)
-                    popUpOptionsWidget();
+//                    popUpOptionsWidget();
+                    requiredSelectItem();
                 else
                     hideOptionWidget();
             }
@@ -524,8 +524,7 @@ public class ChooseDishesFragment extends BaseFragment {
             mBuyOrderTv.setText(R.string.small_market_buy);
             mBuyOrderTv.setTextColor(getResources().getColor(R.color.white_fefefe));
             mShopCartPriceTv.setText(R.string.choose_dishes_successful);
-//            option_dishes_tv.setVisibility(View.VISIBLE);
-            reqiredSelectRl.setVisibility(View.VISIBLE);
+            option_dishes_tv.setVisibility(View.VISIBLE);
         } else {
             option_dishes_tv.setVisibility(View.GONE);
             mBuyOrderTv.setBackgroundResource(R.drawable.shopping_cart_widget_selector_2);
@@ -887,6 +886,6 @@ public class ChooseDishesFragment extends BaseFragment {
     ImageView mShopCartIv;
     @Bind(R.id.pView)
     PullToRefreshScrollView pView;
-    @Bind(R.id.reqired_select_rl)
-    RelativeLayout reqiredSelectRl;
+//    @Bind(R.id.reqired_select_rl)
+//    RelativeLayout reqiredSelectRl;
 }

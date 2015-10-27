@@ -184,7 +184,10 @@ public class MyFragment extends BaseFragment {
     }
 
     private void gotoUpdatePassword() {
-        gotoFragment(R.id.mainpage_ly, new MatchGoodsPopFragment(), MatchGoodsPopFragment.class.getName());
+        UserLoginEntry userLoginEntry = new CacheManager(getActivity()).getUserLoginEntry();
+        if (userLoginEntry == null) return;
+        if (userLoginEntry.haspwd||!TextUtils.isEmpty(userLoginEntry.mobile))
+            gotoFragment(R.id.mainpage_ly, new SettingUpdatePasswordFragment(), SettingUpdatePasswordFragment.class.getName());
     }
 
     boolean mIsBind = false;
