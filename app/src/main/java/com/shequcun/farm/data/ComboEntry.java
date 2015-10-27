@@ -3,6 +3,8 @@ package com.shequcun.farm.data;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Map;
+
 /**
  * 套餐数据结构
  * Created by apple on 15/8/12.
@@ -84,8 +86,14 @@ public class ComboEntry extends BaseEntry {
     @SerializedName("status")
     public int status;//0.未付款, 1.待配送, 2.配送中, 3.配送完成, 4.取消订单
 
+    /**
+     * Caused by: java.lang.ClassCastException: com.google.gson.JsonObject.members - class com.google.gson.internal.LinkedTreeMap not compatible with class java.util.LinkedHashMap
+     */
+//    @SerializedName("chgtime")
+//    public JsonObject json;
+
     @SerializedName("chgtime")
-    public JsonObject json;
+    public Map<String,Long> chgtime;
 
     @SerializedName("con")
     public String con;//套餐订单号
