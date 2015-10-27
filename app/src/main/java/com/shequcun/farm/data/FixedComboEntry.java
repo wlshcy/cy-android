@@ -32,4 +32,7 @@ public class FixedComboEntry {
     public String unit;//个
     @SerializedName("iid")
     public int iid;
+
+    @SerializedName("imgs")
+    public String imgs[];
 }

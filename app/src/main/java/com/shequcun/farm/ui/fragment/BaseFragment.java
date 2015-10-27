@@ -9,11 +9,14 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.shequcun.farm.R;
+import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.util.HttpRequestUtil;
 import com.umeng.analytics.MobclickAgent;
 
 import butterknife.ButterKnife;
+import cz.msebera.android.httpclient.Header;
 
 /**
  * Created by apple on 15/8/3.
@@ -197,6 +200,30 @@ public abstract class BaseFragment extends Fragment {
             mmAct = mAct;
         }
         return mmAct;
+    }
+
+    protected ProgressDlg progressDlg;
+
+    class AsyncHttpResponseHandlerIntercept extends AsyncHttpResponseHandler {
+
+        @Override
+        public void onStart() {
+            super.onStart();
+            if (progressDlg == null)
+                progressDlg = new ProgressDlg(getActivity(), "加载中...");
+            progressDlg.show();
+        }
+
+        @Override
+        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+            progressDlg.dismiss();
+        }
+
+        @Override
+        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+            progressDlg.dismiss();
+//需要跳转到其他界面
+        }
     }
 
     /**

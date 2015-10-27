@@ -277,7 +277,7 @@ public class MatchGoodsPopFragment extends BaseFragment {
         for (FixedComboEntry entry : aList) {
             DishesItemEntry tEntry = new DishesItemEntry();
             tEntry.id = entry.id;
-            tEntry.imgs = new String[]{entry.img};
+            tEntry.imgs = entry.imgs;
             tEntry.title = entry.title;
             list.add(tEntry);
         }

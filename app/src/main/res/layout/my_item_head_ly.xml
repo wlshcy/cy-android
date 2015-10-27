@@ -22,12 +22,27 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/px84">
 
-                <com.common.widget.CircleImageView
-                    android:id="@+id/my_head"
-                    android:layout_width="@dimen/px180"
-                    android:layout_height="@dimen/px180"
-                    android:layout_gravity="center"
-                    android:src="@android:color/white" />
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center">
+
+                    <com.common.widget.CircleImageView
+                        android:id="@+id/my_head"
+                        android:layout_width="@dimen/px180"
+                        android:layout_height="@dimen/px180"
+                        android:src="@android:color/white" />
+
+                    <View
+                        android:id="@+id/red_dot_view"
+                        android:layout_width="@dimen/px20"
+                        android:layout_height="@dimen/px20"
+                        android:layout_gravity="top|right"
+                        android:layout_marginRight="12dp"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/red_oval"
+                        android:visibility="gone"></View>
+                </FrameLayout>
 
                 <TextView
                     android:id="@+id/click_login_tv"
@@ -37,8 +52,8 @@
                     android:gravity="center"
                     android:text="点击登录"
                     android:textColor="@color/black_131313"
-                    android:textSize="@dimen/font30"
-                    />
+                    android:textSize="@dimen/font30" />
+
             </FrameLayout>
 
             <TextView

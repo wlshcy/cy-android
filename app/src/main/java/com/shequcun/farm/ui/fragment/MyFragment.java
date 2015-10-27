@@ -119,6 +119,7 @@ public class MyFragment extends BaseFragment {
         } else {
             circleImageView.setImageResource(R.color.white_f4f4f4);
         }
+        showReddot(false);
         hView_1.findViewById(R.id.my_head).setOnClickListener(new AvoidDoubleClickListener() {
             @Override
             public void onViewClick(View v) {
@@ -129,6 +130,14 @@ public class MyFragment extends BaseFragment {
             }
         });
         mLv.addHeaderView(hView_1, null, false);
+    }
+
+    private void showReddot(boolean hasPwd){
+        if (!hasPwd){
+            hView_1.findViewById(R.id.red_dot_view).setVisibility(View.VISIBLE);
+        }else {
+            hView_1.findViewById(R.id.red_dot_view).setVisibility(View.GONE);
+        }
     }
 
     void buildAdapter() {

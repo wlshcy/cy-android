@@ -22,6 +22,7 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.AddressEntry;
+import com.shequcun.farm.data.BaseEntry;
 import com.shequcun.farm.data.RegionListEntry;
 import com.shequcun.farm.data.ZoneEntry;
 import com.shequcun.farm.datacenter.PersistanceManager;
@@ -118,7 +119,7 @@ public class AddressFragment extends BaseFragment {
 //                popBackStack();
 
             } else if (v == deleteTv) {
-
+                requestDeladdr(entry.id + "");
             } else if (v == saveTv) {
                 upLoadAddressToServer();
             }
@@ -494,6 +495,31 @@ public class AddressFragment extends BaseFragment {
                         popBackStack();
                     }
                 });
+    }
+
+    private void requestDeladdr(String id) {
+        RequestParams params = new RequestParams();
+        params.add("id", id);
+        params.add("_xsrf", PersistanceManager.getCookieValue(getActivity()));
+        HttpRequestUtil.getHttpClient(getActivity()).post(LocalParams.getBaseUrl() + "user/deladdr", params, new AsyncHttpResponseHandlerIntercept() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                super.onSuccess(statusCode, headers, responseBody);
+                String result = new String(responseBody);
+                BaseEntry entry = JsonUtilsParser.fromJson(result, BaseEntry.class);
+                if (entry != null) {
+                    if (TextUtils.isEmpty(entry.errcode)) {
+                        IntentUtil.sendUpdateAddressRequest(getActivity());
+                        popBackStack();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                super.onFailure(statusCode, headers, responseBody, error);
+            }
+        });
     }
 
 

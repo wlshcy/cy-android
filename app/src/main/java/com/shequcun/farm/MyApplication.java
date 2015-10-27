@@ -3,6 +3,7 @@ package com.shequcun.farm;
 import android.app.Application;
 import android.content.IntentFilter;
 
+import com.shequcun.farm.http.HttpAction;
 import com.shequcun.farm.receiver.NetworkReceiver;
 import com.umeng.analytics.MobclickAgent;
 
@@ -17,6 +18,7 @@ public class MyApplication extends Application {
         //umeng统计禁止默认的页面统计方式
         MobclickAgent.openActivityDurationTrack(false);
         registNetworkReceiver();
+        new HttpAction(getApplicationContext()).init();
     }
 
     private void registNetworkReceiver() {
