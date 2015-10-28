@@ -18,11 +18,11 @@
         android:textSize="@dimen/font26"
         android:visibility="gone" />
 
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:src="@drawable/icon_ribbon" />
-
 
     <TextView
         android:id="@+id/add_address_ly"

@@ -14,6 +14,12 @@ import com.shequcun.farm.util.Utils;
  */
 public class AlertDialog {
 
+    public void alertOutOfFixedRemains(Activity mAct, int remains) {
+        String content = mAct.getResources().getString(R.string.out_of_fixed_remain);
+        content = content.replace("A", Utils.unitConversion(remains));//mOrderController.getReqWeight()
+        alertDialog(mAct, content);
+    }
+
     public void alertOutOfReqWeight(Activity mAct, int weight) {
         String content = mAct.getResources().getString(R.string.out_of_required_weight);
         content = content.replace("A", Utils.unitConversion(weight));//mOrderController.getReqWeight()

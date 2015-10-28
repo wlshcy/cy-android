@@ -13,6 +13,7 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.shequcun.farm.R;
 import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.util.HttpRequestUtil;
+import com.shequcun.farm.util.ToastHelper;
 import com.umeng.analytics.MobclickAgent;
 
 import butterknife.ButterKnife;
@@ -221,7 +222,13 @@ public abstract class BaseFragment extends Fragment {
 
         @Override
         public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+//            如果要加载框，子类必须调用父类的方法或者不覆写父类的方法
             progressDlg.dismiss();
+            if (statusCode == 0) {
+                ToastHelper.showShort(getBaseAct(), R.string.network_error_tip);
+                return;
+            }
+            ToastHelper.showShort(getBaseAct(), "错误码 " + statusCode);
 //需要跳转到其他界面
         }
     }

@@ -15,4 +15,8 @@ public class FragmentUtils {
     public static void invalidRedPacketsList(BaseFragment baseFragment, Bundle bundle) {
         baseFragment.gotoFragmentByAdd(bundle, R.id.mainpage_ly, new RedPacketsInvalidListFragment(), RedPacketsInvalidListFragment.class.getName());
     }
+
+    public static void changePwd(BaseFragment baseFragment) {
+        baseFragment.gotoFragmentByAdd(R.id.mainpage_ly, new SettingUpdatePasswordFragment(), SettingUpdatePasswordFragment.class.getName());
+    }
 }

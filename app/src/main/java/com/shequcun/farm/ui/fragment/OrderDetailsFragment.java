@@ -14,7 +14,11 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.shequcun.farm.R;
+import com.shequcun.farm.data.AddressEntry;
+import com.shequcun.farm.data.AddressListEntry;
+import com.shequcun.farm.data.BaseEntry;
 import com.shequcun.farm.data.ComboEntry;
+import com.shequcun.farm.data.DishesItemEntry;
 import com.shequcun.farm.data.OrderEntry;
 import com.shequcun.farm.data.OtherInfo;
 import com.shequcun.farm.data.PayParams;
@@ -25,6 +29,7 @@ import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.dlg.ConsultationDlg;
 import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.ui.adapter.OrderDetailsAdapter;
+import com.shequcun.farm.util.AvoidDoubleClickListener;
 import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
@@ -32,6 +37,9 @@ import com.shequcun.farm.util.ToastHelper;
 import com.shequcun.farm.util.Utils;
 
 import org.json.JSONObject;
+
+import java.util.Iterator;
+import java.util.Set;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -62,6 +70,12 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
         entry = buildEntry();
         buildUserLoginEntry();
         showBottomWidget();
+        /**我的套餐，选品才需要地址，如果支付会在支付页面有地址*/
+        if (uEntry.mycomboids != null && uEntry.mycomboids.length > 0) {
+            requestDefaultAddr();
+        } else {
+            pAddressView.setVisibility(View.GONE);
+        }
     }
 
     @OnClick(R.id.back)
@@ -124,6 +138,15 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
 
     @Override
     protected void setWidgetLsn() {
+//        UserLoginEntry
+//        if (TextUtils.isEmpty(entry.name) || TextUtils.isEmpty(hEntry.address) || TextUtils.isEmpty(hEntry.mobile)) {
+//            pAddressView.setVisibility(View.GONE);
+//        } else {
+//            addressLy.setVisibility(View.VISIBLE);
+//            addressee_info.setText(hEntry.name + "  " + hEntry.mobile);
+//            String addressStr = hEntry.address;
+//            address.setText("地址: " + addressStr);
+//        }
         buildAdapter();
     }
 
@@ -167,7 +190,7 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
         int part = mOrderController.getItemsCount();
         ((TextView) footerView.findViewById(R.id.number_copies)).setText("共" + part + "份");
         mLv.addFooterView(footerView, null, false);
-
+        addFooterFixedList();
         addSparesFooter();
     }
 
@@ -192,6 +215,30 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
     void addHeader() {
         View v = LayoutInflater.from(getBaseAct()).inflate(R.layout.ucai_safe_tip_ly, null);
         mLv.addHeaderView(v, null, false);
+    }
+
+    void addFooterFixedList() {
+        Set set = mOrderController.getFixedItems();
+        if (set.size() > 0) {
+            View view = LayoutInflater.from(getBaseAct()).inflate(R.layout.remark_footer_ly, null);
+            TextView textView = (TextView) view.findViewById(R.id.title_tv);
+            textView.setText("固定蔬菜");
+            mLv.addFooterView(view);
+        }
+        Iterator it = set.iterator();
+        while (it.hasNext()) {
+            DishesItemEntry entry = (DishesItemEntry) it.next();
+            if (entry == null)
+                continue;
+            View headerView = LayoutInflater.from(getBaseAct()).inflate(R.layout.order_details_item_ly, null);
+            ImageView goodImg = (ImageView) headerView.findViewById(R.id.goods_img);
+            if (entry.imgs != null && entry.imgs.length > 0)
+                ImageLoader.getInstance().displayImage(entry.imgs[0] + "?imageview2/2/w/180", goodImg);
+            ((TextView) headerView.findViewById(R.id.goods_name)).setText(entry.title);
+            ((TextView) headerView.findViewById(R.id.goods_price)).setText(entry.quantity + entry.unit + "/份");
+            headerView.findViewById(R.id.goods_count).setVisibility(View.GONE);
+            mLv.addFooterView(headerView);
+        }
     }
 
 
@@ -264,7 +311,7 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
     Bundle buildBundle(String orderno, int orderMoney, String alipay, boolean isRecoDishes, int titleId, boolean isLast) {
         Bundle bundle = new Bundle();
         PayParams payParams = new PayParams();
-        payParams.isLast=isLast;
+        payParams.isLast = isLast;
         payParams.setParams(orderno, orderMoney, alipay, isRecoDishes, titleId, false);
         bundle.putSerializable("PayParams", payParams);
         return bundle;
@@ -400,6 +447,60 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
         }
     }
 
+    private void requestDefaultAddr() {
+        HttpRequestUtil.getHttpClient(getBaseAct()).get(LocalParams.getBaseUrl() + "user/v3/address",
+                new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int sCode, Header[] h, byte[] data) {
+                        String result = new String(data);
+                        AddressListEntry entry = JsonUtilsParser.fromJson(result, AddressListEntry.class);
+                        if (entry != null) {
+                            if (TextUtils.isEmpty(entry.errmsg)) {
+                                if (entry.aList != null && !entry.aList.isEmpty()) {
+                                    for (AddressEntry o : entry.aList) {
+                                        if (o.isDefault) {
+                                            updateAddressLy(o);
+                                            return;
+                                        }
+                                    }
+                                    addAddressLy();
+                                } else {
+                                    addAddressLy();
+                                }
+                            } else {
+                                ToastHelper.showShort(getBaseAct(), entry.errmsg);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
+                        if (sCode == 0) {
+                            ToastHelper.showShort(getBaseAct(), R.string.network_error_tip);
+                            return;
+                        }
+                        ToastHelper.showShort(getBaseAct(), "请求失败,错误码" + sCode);
+                    }
+                });
+    }
+
+    private void addAddressLy() {
+        addAddressLy.setVisibility(View.VISIBLE);
+        addAddressLy.setOnClickListener(new AvoidDoubleClickListener() {
+            @Override
+            public void onViewClick(View v) {
+
+            }
+        });
+        addressLy.setVisibility(View.GONE);
+    }
+
+    private void updateAddressLy(AddressEntry hEntry) {
+        addressLy.setVisibility(View.VISIBLE);
+        addressee_info.setText(hEntry.name + "  " + hEntry.mobile);
+        String addressStr = hEntry.address;
+        address.setText("地址: " + addressStr);
+    }
 
     ComboEntry entry;
     @Bind(R.id.title_center_text)
@@ -424,4 +525,15 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
 
     @Bind(R.id.remark_tv)
     TextView remark_tv;
+
+    @Bind(R.id.addressee_ly)
+    View addressLy;
+    @Bind(R.id.add_address_ly)
+    View addAddressLy;
+    @Bind(R.id.addressee_info)
+    TextView addressee_info;
+    @Bind(R.id.address)
+    TextView address;
+    @Bind(R.id.pAddressView)
+    View pAddressView;
 }

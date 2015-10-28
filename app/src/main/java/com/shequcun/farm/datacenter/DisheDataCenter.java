@@ -5,6 +5,7 @@ import com.shequcun.farm.data.goods.Order;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 已选择菜品数据中心
@@ -38,7 +39,7 @@ public class DisheDataCenter {
         return mOrder.getOptionItemsString();
     }
 
-    public List<DishesItemEntry> getOptionItems(){
+    public List<DishesItemEntry> getOptionItems() {
         return mOrder.getOptionItems();
     }
 
@@ -71,7 +72,6 @@ public class DisheDataCenter {
     }
 
     public DishesItemEntry getItemById(int id) {
-
         return mOrder.getItemById(id);
     }
 
@@ -91,6 +91,10 @@ public class DisheDataCenter {
 
     public void addItem(DishesItemEntry item) {
         mOrder.addItem(item);
+    }
+
+    public void addFixedItem(DishesItemEntry item) {
+        mOrder.addFixedItem(item);
     }
 
     public boolean reachReqWeight() {
@@ -171,5 +175,19 @@ public class DisheDataCenter {
         mOrder.clearOptionItems();
     }
 
+    public Order getOrder() {
+        return mOrder;
+    }
 
+    public boolean containFixedItem(Object o) {
+        return mOrder.containFixedItem(o);
+    }
+
+    public boolean removeFixedItem(Object o) {
+        return mOrder.removeFixedItem(o);
+    }
+
+    public Set getFixedItems() {
+        return mOrder.getFixedItems();
+    }
 }

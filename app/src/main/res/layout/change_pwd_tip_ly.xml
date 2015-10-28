@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/change_pwd_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/px70"
+        android:background="#7cbefd"
+        android:paddingBottom="@dimen/px20"
+        android:paddingTop="@dimen/px20"
+        android:text="为保证您的账户安全请设置密码，只需10秒。"
+        android:textColor="#dceeff" />
+</LinearLayout>

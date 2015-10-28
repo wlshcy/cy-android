@@ -33,6 +33,8 @@ import com.shequcun.farm.R;
 import com.shequcun.farm.anim.ArcTranslateAnimation;
 import com.shequcun.farm.data.ComboEntry;
 import com.shequcun.farm.data.DishesItemEntry;
+import com.shequcun.farm.data.FixedComboEntry;
+import com.shequcun.farm.data.FixedListComboEntry;
 import com.shequcun.farm.data.ModifyOrderParams;
 import com.shequcun.farm.data.goods.DishesListItemEntry;
 import com.shequcun.farm.datacenter.DisheDataCenter;
@@ -51,6 +53,8 @@ import com.shequcun.farm.util.ToastHelper;
 import com.shequcun.farm.util.Utils;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import butterknife.Bind;
@@ -63,7 +67,6 @@ import cz.msebera.android.httpclient.Header;
  * Created by apple on 15/8/10.
  */
 public class ChooseDishesFragment extends BaseFragment {
-
 
     @Nullable
     @Override
@@ -94,6 +97,11 @@ public class ChooseDishesFragment extends BaseFragment {
         buildAdapter(enabled);
         if (!enabled)
             setWidgetEnableStatus();
+        if (entry.isMine()) {
+            requsetFixedDishesList(entry.orderno);
+        } else {
+            requestFixedCombo(entry.id);
+        }
     }
 
     boolean isShowComboIntroduce() {
@@ -113,6 +121,7 @@ public class ChooseDishesFragment extends BaseFragment {
         emptyView.setOnClickListener(onClick);
         option_dishes_tv.setOnClickListener(onClick);
         pView.setMode(PullToRefreshBase.Mode.PULL_FROM_END);
+        pView.setMode(PullToRefreshBase.Mode.DISABLED);
         pView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ScrollView>() {
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<ScrollView> refreshView) {
@@ -121,7 +130,7 @@ public class ChooseDishesFragment extends BaseFragment {
 
             @Override
             public void onPullUpToRefresh(PullToRefreshBase<ScrollView> refreshView) {
-                requsetDishesList();
+//                requsetDishesList();
             }
         });
         requsetDishesList();
@@ -147,7 +156,7 @@ public class ChooseDishesFragment extends BaseFragment {
         Bundle bundle = new Bundle();
         bundle.putSerializable("ComboEntry", entry);
         bundle.putSerializable("chooseList", chooseList);
-        gotoFragmentByAnimation(bundle, R.id.mainpage_ly, new MatchGoodsPopFragment(), MatchGoodsPopFragment.class.getName(),R.anim.abc_slide_in_bottom,R.anim.abc_fade_out);
+        gotoFragmentByAnimation(bundle, R.id.mainpage_ly, new MatchGoodsPopFragment(), MatchGoodsPopFragment.class.getName(), R.anim.abc_slide_in_bottom, R.anim.abc_fade_out);
     }
 
     boolean doPopUpStack() {
@@ -172,8 +181,8 @@ public class ChooseDishesFragment extends BaseFragment {
                 doPopUpStack();
             } else if (v == option_dishes_tv) {
                 if (option_dishes_tip.getVisibility() == View.GONE)
-//                    popUpOptionsWidget();
-                    requiredSelectItem();
+                    popUpOptionsWidget();
+//                    requiredSelectItem();
                 else
                     hideOptionWidget();
             }
@@ -241,8 +250,9 @@ public class ChooseDishesFragment extends BaseFragment {
     private void doAddDataToAdapter(List<DishesItemEntry> aList) {
 
         if (aList != null && aList.size() > 0) {
-            adapter.clear();
+//            adapter.clear();
             adapter.addAll(aList);
+            sortAdapter(adapter);
             adapter.notifyDataSetChanged();
         }
 
@@ -296,6 +306,9 @@ public class ChooseDishesFragment extends BaseFragment {
         containerLl = (LinearLayout) scrollView.findViewById(R.id.container_ll);
         List<DishesItemEntry> aList = new ArrayList<DishesItemEntry>();
         for (int i = 0; i < adapter.getCount(); ++i) {
+            /**过滤出固定菜品*/
+            if (adapter.getItem(i).isFixedVisible == View.VISIBLE)
+                continue;
             aList.add(adapter.getItem(i));
         }
         adapter.addAll();
@@ -407,7 +420,6 @@ public class ChooseDishesFragment extends BaseFragment {
                 PlaySoundUtils.doPlay(getBaseAct(), R.raw.pop);
                 shopChartIconScaleAnimation(v);
             }
-            animationFly(v);
         }
     };
 
@@ -544,6 +556,14 @@ public class ChooseDishesFragment extends BaseFragment {
         }
     }
 
+    private DishesItemEntry getDishesItemEntryByPostion(View v) {
+        if (v.getTag() instanceof Integer) {
+            int position = (int) v.getTag();
+            return adapter.getItem(position);
+        }
+        return null;
+    }
+
     /**
      * 点击＋时刷新UI
      */
@@ -552,22 +572,45 @@ public class ChooseDishesFragment extends BaseFragment {
             int position = (int) v.getTag();
             View pView = mLv.getChildAt(position + mLv.getHeaderViewsCount()
                     - mLv.getFirstVisiblePosition());
-            if (pView == null)
+            if (pView == null) {
                 return;
+            }
+            DishesItemEntry item = adapter.getItem(position);
             TextView tvCount = (TextView) pView.findViewById(R.id.goods_count);// 显示数量
-            tvCount.setVisibility(View.VISIBLE);
-            pView.findViewById(R.id.goods_sub).setVisibility(View.VISIBLE);
             String count = tvCount.getText().toString();
             int intCount = Integer.parseInt(count) + 1;
-            DishesItemEntry item = adapter.getItem(position);
-            mOrderController.addItem(item);
-            mOrderController.removeOptionItem(item);
+            if (item.isFixedVisible == View.GONE) {
+                mOrderController.addItem(item);
+                mOrderController.removeOptionItem(item);
+                /**固定菜品*/
+            } else {
+                upFixedCount(intCount, item, tvCount, pView);
+                return;
+            }
+            tvCount.setVisibility(View.VISIBLE);
+            pView.findViewById(R.id.goods_sub).setVisibility(View.VISIBLE);
             item.setCount(intCount);
             tvCount.setText(String.valueOf(intCount));
             setBadgeView(true);
             updateBuyOrderStatus();
         }
     }
+
+    private void upFixedCount(int count, DishesItemEntry item, TextView tvCount, View pView) {
+        item.remains = 3;
+        if (count >= item.remains) {
+            new AlertDialog().alertOutOfFixedRemains(getBaseAct(), item.remains);
+        } else {
+            if (!mOrderController.containFixedItem(item)) {
+                mOrderController.addFixedItem(item);
+            }
+            item.setCount(count);
+            tvCount.setText(String.valueOf(count));
+            tvCount.setVisibility(View.VISIBLE);
+            pView.findViewById(R.id.goods_sub).setVisibility(View.VISIBLE);
+        }
+    }
+
 
     private boolean checkReqWeight(int lastWeight) {
         /*超过最大要求份数*/
@@ -626,7 +669,13 @@ public class ChooseDishesFragment extends BaseFragment {
         int intCount = Integer.parseInt(count) - 1;
         DishesItemEntry goodItem = adapter.getItem(position);
         goodItem.setCount(intCount);
-        mOrderController.removeItemById(goodItem.id);
+        if (goodItem.isFixedVisible == View.GONE) {
+            mOrderController.removeItemById(goodItem.id);
+        } else {
+            /**移除固定菜品*/
+            if (intCount < 1)
+                mOrderController.removeFixedItem(goodItem);
+        }
         int visibility = intCount == 0 ? View.GONE : View.VISIBLE;
         pView.findViewById(R.id.goods_sub).setVisibility(visibility);
         tvCount.setVisibility(visibility);
@@ -724,12 +773,27 @@ public class ChooseDishesFragment extends BaseFragment {
      * 购物车变大动画
      */
     private void shopChartIconScaleAnimation(View v) {
+        DishesItemEntry entry = getDishesItemEntryByPostion(v);
+        boolean play;
+        /**固定菜品不播放动画*/
+        if (entry != null && entry.isFixedVisible == View.VISIBLE) {
+            play = false;
+        } else {
+            play = true;
+        }
+        if (play)
+            playShopCartAnimation();
+        upCountUpdateUI(v);
+        if (play)
+            animationFly(v);
+    }
+
+    private void playShopCartAnimation() {
         Animation scale = new ScaleAnimation(0.6f, 1.2f, 0.6f, 1.2f,
                 Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
                 0.5f);
         scale.setDuration(200);
         mShopCartIv.startAnimation(scale);
-        upCountUpdateUI(v);
     }
 
     /**
@@ -798,7 +862,12 @@ public class ChooseDishesFragment extends BaseFragment {
         mShopCartIv.setEnabled(false);
         mShopCartPriceTv.setText(null);
         mBuyOrderTv.setTextColor(getBaseAct().getResources().getColorStateList(R.color.gray_d8d8d8));
-        mBuyOrderTv.setText(R.string.has_chosen_dishes);
+        //过了选菜日了,上期配送的也完成了,这期的没选
+        if (entry.status == 2 && entry.choose == false) {
+            mBuyOrderTv.setText(entry.reason);
+        } else {
+            mBuyOrderTv.setText(R.string.has_chosen_dishes);
+        }
         mBuyOrderTv.setEnabled(false);
     }
 
@@ -856,6 +925,124 @@ public class ChooseDishesFragment extends BaseFragment {
                 }
             }
         }
+    }
+
+    /**
+     * 如果不是来自我的套餐，则表明是第一次买套餐
+     *
+     * @param id
+     */
+    private void requestFixedCombo(int id) {
+        RequestParams params = new RequestParams();
+        params.add("id", "" + id);
+        HttpRequestUtil.getHttpClient(getActivity()).get(LocalParams.getBaseUrl() + "cai/combodtl", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int sCode, Header[] h, byte[] data) {
+                if (data != null && data.length > 0) {
+                    FixedListComboEntry entry = JsonUtilsParser.fromJson(new String(data), FixedListComboEntry.class);
+                    if (entry != null) {
+                        if (TextUtils.isEmpty(entry.errmsg)) {
+                            List<DishesItemEntry> list = parseToDishesItemEntry(entry.aList);
+                            updateFixedList(list, true);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(int sCode, Header[] h, byte[] data, Throwable e) {
+            }
+        });
+    }
+
+    private List<DishesItemEntry> parseToDishesItemEntry(List<FixedComboEntry> aList) {
+        List<DishesItemEntry> list = new ArrayList<>();
+        for (FixedComboEntry entry : aList) {
+            DishesItemEntry tEntry = new DishesItemEntry();
+            tEntry.id = entry.id;
+            tEntry.imgs = entry.imgs;
+            tEntry.title = entry.title;
+            tEntry.isFixedVisible = View.VISIBLE;
+            tEntry.packw = entry.quantity;
+            tEntry.remains = entry.remains;
+            tEntry.unit = entry.unit;
+            tEntry.quantity = entry.quantity;
+            list.add(tEntry);
+        }
+        return list;
+    }
+
+    /**
+     * 来自我的套餐
+     *
+     * @param orderno
+     */
+    void requsetFixedDishesList(String orderno) {
+        RequestParams params = new RequestParams();
+//      套餐固定菜品使用，套餐订单号
+        params.add("orderno", orderno);
+        HttpRequestUtil.getHttpClient(getBaseAct()).get(LocalParams.getBaseUrl() + "cai/itemlist", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] data) {
+                if (data != null && data.length > 0) {
+                    DishesListItemEntry entry = JsonUtilsParser.fromJson(new String(data), DishesListItemEntry.class);
+                    if (entry != null) {
+                        if (TextUtils.isEmpty(entry.errmsg)) {
+                            if (entry.aList == null || entry.aList.isEmpty()) {
+                                return;
+                            }
+                            updateFixedList(entry.aList, true);
+                            return;
+                        }
+                        ToastHelper.showShort(getBaseAct(), entry.errmsg);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+            }
+        });
+    }
+
+    private void updateFixedList(List<DishesItemEntry> list, boolean reloadFixedVisible) {
+        /**设定为固定菜品*/
+        if (reloadFixedVisible) {
+            for (DishesItemEntry o : list) {
+                o.isFixedVisible = View.VISIBLE;
+                /**最后一次选菜品*/
+//                if (isLastChoose()) {
+                o.isLastChoose = true;
+                mOrderController.addFixedItem(o);
+//                }
+            }
+        }
+        adapter.addAll(list);
+        sortAdapter(adapter);
+        adapter.notifyDataSetChanged();
+    }
+
+    private void sortAdapter(ChooseDishesAdapter adapter) {
+        adapter.sort(new Comparator<DishesItemEntry>() {
+            @Override
+            public int compare(DishesItemEntry lhs, DishesItemEntry rhs) {
+                DishesItemEntry entry = lhs;
+                DishesItemEntry entry1 = rhs;
+                return entry.isFixedVisible - entry1.isFixedVisible;
+            }
+        });
+    }
+
+    private boolean isLastChoose() {
+        if (entry.choose) {
+            if (++entry.times == entry.duration * entry.shipday.length)
+                return true;
+        } else {
+            if (entry.times == entry.duration * entry.shipday.length)
+                return true;
+        }
+        return false;
     }
 
     @Bind(R.id.option_dishes_tv)

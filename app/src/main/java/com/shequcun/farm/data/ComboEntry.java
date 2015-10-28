@@ -98,4 +98,9 @@ public class ComboEntry extends BaseEntry {
     @SerializedName("con")
     public String con;//套餐订单号
     public OtherInfo info;
+
+    @SerializedName("reason")
+    public String reason;
+    @SerializedName("times")
+    public int times;
 }

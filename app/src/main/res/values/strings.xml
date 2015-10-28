@@ -55,6 +55,7 @@
     <string name="out_of_maxpacks">亲,该菜品库存不足,请选其他菜品吧</string>
     <string name="out_of_remains">亲,该菜品剩余不足,请选其他菜品吧</string>
     <string name="out_of_required_weight1">亲,选该菜品会超过A的,\n换换其他的吧！^^</string>
+    <string name="out_of_fixed_remain">亲,该菜品已经超过最大份数</string>
     <!-- 收货地址 -->
     <string name="my_address">我的地址</string>
     <string name="common_phone_format_error">请输入正确的手机格式</string>

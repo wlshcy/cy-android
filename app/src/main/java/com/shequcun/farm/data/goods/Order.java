@@ -4,12 +4,15 @@ import com.google.gson.annotations.SerializedName;
 import com.shequcun.farm.data.DishesItemEntry;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 public class Order {
     @SerializedName("items")
     private List<DishesItemEntry> items = new ArrayList<DishesItemEntry>();
+    private Set<DishesItemEntry> fixedItems = new HashSet<>();
     @SerializedName("mobile")
     private String mobile;
     @SerializedName("descr")
@@ -21,6 +24,15 @@ public class Order {
 
     public DishesItemEntry getItemById(int id) {
         for (DishesItemEntry it : items) {
+            if (id == it.id) {
+                return it;
+            }
+        }
+        return null;
+    }
+
+    public DishesItemEntry getFixedItemById(int id) {
+        for (DishesItemEntry it : fixedItems) {
             if (id == it.id) {
                 return it;
             }
@@ -100,6 +112,10 @@ public class Order {
             items = new ArrayList<DishesItemEntry>();
         }
         items.add(item);
+    }
+
+    public void addFixedItem(DishesItemEntry item) {
+        fixedItems.add(item);
     }
 
     public void addOptionItem(DishesItemEntry item) {
@@ -182,7 +198,6 @@ public class Order {
     }
 
 
-
     public void clearOptionItems() {
         if (optionItems != null)
             optionItems.clear();
@@ -212,5 +227,17 @@ public class Order {
     public String toString() {
         return "Order [items=" + items + ", mobile=" + mobile + ", descr="
                 + descr + "]";
+    }
+
+    public boolean containFixedItem(Object o) {
+        return fixedItems.contains(o);
+    }
+
+    public boolean removeFixedItem(Object o){
+        return fixedItems.remove(o);
+    }
+
+    public Set<DishesItemEntry> getFixedItems() {
+        return fixedItems;
     }
 }

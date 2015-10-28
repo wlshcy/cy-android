@@ -71,7 +71,7 @@ public class RedPacketsInvalidListFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         type = getTypeFromParams();
-        reuqestRedPacketsList(type, 0);
+        requstRedPacketsList(type, 0);
     }
 
     @Override
@@ -109,7 +109,7 @@ public class RedPacketsInvalidListFragment extends BaseFragment {
                 if (adapter == null)
                     return;
                 CouponEntry entry = (CouponEntry) adapter.getLastItem();
-                reuqestRedPacketsList(type, entry == null ? 0 : entry.id);
+                requstRedPacketsList(type, entry == null ? 0 : entry.id);
             }
         });
     }
@@ -174,7 +174,7 @@ public class RedPacketsInvalidListFragment extends BaseFragment {
         }
     };
 
-    private void reuqestRedPacketsList(int type, int lastId) {
+    private void requstRedPacketsList(int type, int lastId) {
         RequestParams params = new RequestParams();
         /*查看优惠券时不传type，查询出所有的优惠券*/
         if (type != 0)

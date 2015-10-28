@@ -6,7 +6,8 @@
     android:orientation="vertical">
 
     <include layout="@layout/common_title_ly" />
-    <!--<include layout="@layout/address_widget_ly"/>-->
+
+    <include layout="@layout/address_widget_ly" />
 
     <ListView
         android:id="@+id/mLv"

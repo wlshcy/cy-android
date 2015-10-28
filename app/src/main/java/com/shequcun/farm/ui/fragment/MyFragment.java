@@ -21,13 +21,14 @@ import com.shequcun.farm.R;
 import com.shequcun.farm.data.UserLoginEntry;
 import com.shequcun.farm.datacenter.CacheManager;
 import com.shequcun.farm.dlg.ConsultationDlg;
-import com.shequcun.farm.ui.adapter.MyAdapter;
 import com.shequcun.farm.ui.adapter.MyMainAdapter;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
 import com.shequcun.farm.util.IntentUtil;
 import com.shequcun.farm.util.N7Utils;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.OnItemClick;
 
 /**
@@ -43,11 +44,31 @@ public class MyFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.my_ly, container, false);
+        View view = inflater.inflate(R.layout.my_ly, container, false);
+        return view;
     }
 
     @Override
     protected void initWidget(View v) {
+    }
+
+    private void addFooterChangePwdTip() {
+        UserLoginEntry userLoginEntry = new CacheManager(getActivity()).getUserLoginEntry();
+        if (userLoginEntry != null) {
+            View view = LayoutInflater.from(getActivity()).inflate(R.layout.change_pwd_tip_ly, null);
+            view.setOnClickListener(new AvoidDoubleClickListener() {
+                @Override
+                public void onViewClick(View v) {
+                    gotoChangePwd();
+                }
+            });
+            if (userLoginEntry.haspwd) {
+                if (mLv.getFooterViewsCount() > 0)
+                    mLv.removeFooterView(view);
+            } else {
+                mLv.addFooterView(view);
+            }
+        }
     }
 
     @Override
@@ -126,22 +147,23 @@ public class MyFragment extends BaseFragment {
                 if (uEntry == null)
                     FragmentUtils.login(MyFragment.this);
                 else
-                    gotoUpdatePassword();
+                    gotoChangePwd1();
             }
         });
         mLv.addHeaderView(hView_1, null, false);
     }
 
-    private void showReddot(boolean hasPwd){
-        if (!hasPwd){
+    private void showReddot(boolean hasPwd) {
+        if (!hasPwd) {
             hView_1.findViewById(R.id.red_dot_view).setVisibility(View.VISIBLE);
-        }else {
+        } else {
             hView_1.findViewById(R.id.red_dot_view).setVisibility(View.GONE);
         }
     }
 
     void buildAdapter() {
         addHeader();
+        addFooterChangePwdTip();
         if (adapter == null)
             adapter = new MyMainAdapter(getActivity());
         mLv.setAdapter(adapter);
@@ -166,6 +188,7 @@ public class MyFragment extends BaseFragment {
             }
             if (action.equals("com.youcai.refresh")) {
                 addHeader();
+                addFooterChangePwdTip();
             }
         }
     };
@@ -192,11 +215,15 @@ public class MyFragment extends BaseFragment {
         builder.create().show();
     }
 
-    private void gotoUpdatePassword() {
+    private void gotoChangePwd1() {
         UserLoginEntry userLoginEntry = new CacheManager(getActivity()).getUserLoginEntry();
         if (userLoginEntry == null) return;
-        if (userLoginEntry.haspwd||!TextUtils.isEmpty(userLoginEntry.mobile))
-            gotoFragment(R.id.mainpage_ly, new SettingUpdatePasswordFragment(), SettingUpdatePasswordFragment.class.getName());
+        if (userLoginEntry.haspwd || !TextUtils.isEmpty(userLoginEntry.mobile))
+            gotoChangePwd();
+    }
+
+    void gotoChangePwd() {
+        FragmentUtils.changePwd(this);
     }
 
     boolean mIsBind = false;

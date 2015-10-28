@@ -29,6 +29,7 @@ public class ChooseDishesAdapter extends ArrayAdapter<DishesItemEntry> {
 
     DishesItemEntry entry;
     boolean enabled;
+    int tmpVisible = -1;
 
     public ChooseDishesAdapter(Context context) {
         super(context, R.layout.goods_item_ly);
@@ -45,6 +46,7 @@ public class ChooseDishesAdapter extends ArrayAdapter<DishesItemEntry> {
     @Override
     public View getView(int position, View v, ViewGroup parent) {
         ViewHolder vh;
+        entry = getItem(position);
         if (v == null) {
             v = LayoutInflater.from(getContext()).inflate(R.layout.goods_item_ly, null);
             vh = new ViewHolder(v);
@@ -52,7 +54,6 @@ public class ChooseDishesAdapter extends ArrayAdapter<DishesItemEntry> {
         } else {
             vh = (ViewHolder) v.getTag();
         }
-        entry = getItem(position);
 
         vh.goodsImg.setTag(position);
         vh.goodsImg.setOnClickListener(onGoodsImgLsn);
@@ -85,6 +86,24 @@ public class ChooseDishesAdapter extends ArrayAdapter<DishesItemEntry> {
             vh.goodsSub.setVisibility(View.GONE);
             vh.goodsCount.setText("0");
             vh.goodsCount.setVisibility(View.GONE);
+        }
+        vh.fixedIconTv.setVisibility(entry.isFixedVisible);
+        /**分割固定菜品和普通菜品*/
+        if (tmpVisible == View.VISIBLE && entry.isFixedVisible == View.GONE) {
+            vh.separateView.setVisibility(View.VISIBLE);
+        } else {
+            vh.separateView.setVisibility(View.GONE);
+        }
+        tmpVisible = entry.isFixedVisible;
+        if (entry.isLastChoose) {
+            vh.goodsAdd.setEnabled(false);
+            vh.goodsAdd.setImageResource(R.drawable.icon_add_gray);
+            vh.goodsCount.setText(entry.remains + "");
+            vh.goodsCount.setVisibility(View.VISIBLE);
+            vh.goodsPrice.setText(entry.quantity + entry.unit + "/份");
+        } else {
+            vh.goodsAdd.setEnabled(true);
+            vh.goodsAdd.setImageResource(R.drawable.icon_add);
         }
         return v;
     }
@@ -123,7 +142,13 @@ public class ChooseDishesAdapter extends ArrayAdapter<DishesItemEntry> {
     View.OnClickListener onAddGoodsLsn;
     View.OnClickListener onSubGoodsLsn;
 
-    class ViewHolder {
+    /**
+     * This class contains all butterknife-injected Views & Layouts from layout file 'goods_item_ly.xml'
+     * for easy to all layout elements.
+     *
+     * @author ButterKnifeZelezny, plugin for Android Studio by Avast Developers (http://github.com/avast)
+     */
+    static class ViewHolder {
         @Bind(R.id.goods_img)
         ImageView goodsImg;
         @Bind(R.id.goods_name)
@@ -138,6 +163,11 @@ public class ChooseDishesAdapter extends ArrayAdapter<DishesItemEntry> {
         TextView goodsCount;
         @Bind(R.id.goods_add)
         ImageView goodsAdd;
+        @Bind(R.id.fixed_goods_icon_tv)
+        TextView fixedIconTv;
+
+        @Bind(R.id.separate_view)
+        View separateView;
 
         String lastImageUrl;
 
