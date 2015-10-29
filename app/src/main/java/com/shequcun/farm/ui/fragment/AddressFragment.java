@@ -52,6 +52,8 @@ import cz.msebera.android.httpclient.Header;
 public class AddressFragment extends BaseFragment {
     @Bind(R.id.save_tv)
     TextView saveTv;
+    public static final int KEY_ONLY_SAVE = 1;
+    private int key = 0;
 
     @Override
     public boolean onBackPressed() {
@@ -77,6 +79,9 @@ public class AddressFragment extends BaseFragment {
             if (entry != null) {
                 setWidgetContent(entry);
             }
+            key = bundle.getInt("key");
+            if (key == KEY_ONLY_SAVE)
+                deleteTv.setVisibility(View.GONE);
         }
     }
 

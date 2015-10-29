@@ -1,5 +1,11 @@
 package com.shequcun.farm.ui.fragment;
 
+import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -9,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -30,6 +37,7 @@ import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.ui.adapter.OrderDetailsAdapter;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
 import com.shequcun.farm.util.HttpRequestUtil;
+import com.shequcun.farm.util.IntentUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.ToastHelper;
@@ -55,8 +63,9 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
     }
 
     @Override
-    public boolean onBackPressed() {
-        return false;
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        addBroadcast();
     }
 
     @Override
@@ -69,11 +78,54 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
         buildUserLoginEntry();
         showBottomWidget();
         /**我的套餐，选品才需要地址，如果支付会在支付页面有地址*/
-        if (uEntry.mycomboids != null && uEntry.mycomboids.length > 0) {
+        if (isMyCombo()) {
             requestDefaultAddr();
         } else {
             pAddressView.setVisibility(View.GONE);
         }
+    }
+
+    private void addBroadcast() {
+        IntentFilter intentFilter = new IntentFilter(IntentUtil.UPDATE_ADDRESS_REQUEST);
+        intentFilter.addAction(IntentUtil.UPDATE_ADDRESS_REQUEST);
+        getBaseAct().registerReceiver(broadcastReceiver, intentFilter);
+    }
+
+    private void removeBroadcast() {
+        getBaseAct().unregisterReceiver(broadcastReceiver);
+    }
+
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            requestDefaultAddr();
+        }
+    };
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        removeBroadcast();
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        return false;
+    }
+
+    boolean isMyCombo() {
+        if (uEntry != null) {
+            if (uEntry.mycomboids != null) {
+                int curComboId = getComboId();
+                int length = uEntry.mycomboids.length;
+                for (int i = 0; i < length; i++) {
+                    if (curComboId == uEntry.mycomboids[i]) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return (entry != null) ? entry.isMine() : false;
     }
 
     @OnClick(R.id.back)
@@ -169,6 +221,33 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
             gotoFragmentByAdd(getArguments(), R.id.mainpage_ly, new PayFragment(), PayFragment.class.getName());
             return;
         }
+        if (!checkAddress()) {
+            Toast.makeText(getActivity(), "请选择地址", Toast.LENGTH_LONG).show();
+            return;
+        }
+        //用户修改菜品时没有变更地址，弹出提示框：配送地址是否正确？确认后再提交。
+        if (!isDiffAddress)
+            showAddressDialog();
+        else
+            submit();
+    }
+
+    private void showAddressDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getBaseAct());
+        builder.setTitle("提示");
+        builder.setMessage("配送地址是否正确？");
+        builder.setNegativeButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                submit();
+            }
+        });
+        builder.setNeutralButton("取消", null);
+        builder.create().show();
+    }
+
+
+    private void submit() {
         if (isCreateOrder()) {
             createOrder();
         } else {
@@ -176,6 +255,13 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
         }
     }
 
+    private boolean checkAddress() {
+        if (addressEntry == null) return false;
+        if (TextUtils.isEmpty(addressEntry.name)) return false;
+        if (TextUtils.isEmpty(addressEntry.mobile)) return false;
+        if (TextUtils.isEmpty(addressEntry.address)) return false;
+        return true;
+    }
 
     void addFooter() {
         View footerView = LayoutInflater.from(getBaseAct()).inflate(R.layout.order_details_footer_ly, null);
@@ -320,6 +406,9 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
         params.add("memo", remark_tv.getText().toString());
         params.add("spares", mOrderController.getOrderOptionItemString());
         params.add("_xsrf", PersistanceManager.getCookieValue(getBaseAct()));
+        params.add("name", addressEntry.name);
+        params.add("mobile", addressEntry.mobile);
+        params.add("address", addressEntry.address);
         params.add("addon", mOrderController.getComboMatchItemString());
         final ProgressDlg pDlg = new ProgressDlg(getBaseAct(), "加载中...");
         HttpRequestUtil.getHttpClient(getBaseAct()).post(LocalParams.getBaseUrl() + "cai/altorder", params, new AsyncHttpResponseHandler() {
@@ -385,9 +474,11 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
         params.add("_xsrf", PersistanceManager.getCookieValue(getBaseAct()));
         params.add("items", mOrderController.getOrderItemsString());
         params.add("memo", remark_tv.getText().toString());
+        params.add("name", addressEntry.name);
+        params.add("mobile", addressEntry.mobile);
+        params.add("address", addressEntry.address);
         params.add("orderno", buildOrderCon());
         params.add("addon", mOrderController.getComboMatchItemString());
-
         final ProgressDlg pDlg = new ProgressDlg(getBaseAct(), "加载中...");
         HttpRequestUtil.getHttpClient(getBaseAct()).post(LocalParams.getBaseUrl() + "cai/choose", params, new AsyncHttpResponseHandler() {
 
@@ -457,12 +548,14 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
                                 if (entry.aList != null && !entry.aList.isEmpty()) {
                                     for (AddressEntry o : entry.aList) {
                                         if (o.isDefault) {
+                                            defaultAddressEntry = o;
                                             updateAddressLy(o);
                                             return;
                                         }
                                     }
                                     addAddressLy();
                                 } else {
+                                    /**没有地址，则添加地址*/
                                     addAddressLy();
                                 }
                             } else {
@@ -483,21 +576,36 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
     }
 
     private void addAddressLy() {
+        /**选择或添加了新的地址*/
+        isDiffAddress = true;
         addAddressLy.setVisibility(View.VISIBLE);
-        addAddressLy.setOnClickListener(new AvoidDoubleClickListener() {
-            @Override
-            public void onViewClick(View v) {
-
-            }
-        });
         addressLy.setVisibility(View.GONE);
     }
 
+    @OnClick(R.id.add_address_ly)
+    void doClick() {
+        gotoFragmentByAdd(R.id.mainpage_ly, new AddressListFragment(), AddressListFragment.class.getName());
+    }
+
+    @OnClick(R.id.addressee_ly)
+    void doModifyAddress() {
+        Bundle bundle = new Bundle();
+        bundle.putInt(AddressListFragment.Action.KEY, AddressListFragment.Action.SELECT);
+        gotoFragmentByAdd(bundle, R.id.mainpage_ly, new AddressListFragment(), AddressListFragment.class.getName());
+    }
+
     private void updateAddressLy(AddressEntry hEntry) {
+        this.addressEntry = hEntry;
+        addAddressLy.setVisibility(View.GONE);
         addressLy.setVisibility(View.VISIBLE);
         addressee_info.setText(hEntry.name + "  " + hEntry.mobile);
         String addressStr = hEntry.address;
         address.setText("地址: " + addressStr);
+        if (defaultAddressEntry != null && !TextUtils.isEmpty(defaultAddressEntry.address)) {
+            if (!defaultAddressEntry.address.equals(hEntry.address)) {
+                isDiffAddress = true;
+            }
+        }
     }
 
     ComboEntry entry;
@@ -534,4 +642,10 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
     TextView address;
     @Bind(R.id.pAddressView)
     View pAddressView;
+    /**
+     * 是否变更了地址
+     */
+    private boolean isDiffAddress;
+    private AddressEntry addressEntry;
+    private AddressEntry defaultAddressEntry;
 }

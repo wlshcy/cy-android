@@ -156,9 +156,11 @@ public class AddressListFragment extends BaseFragment {
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-          if (v == addAddress) {
+            if (v == addAddress) {
                 AddressFragment fragment = new AddressFragment();
-                gotoFragmentByAdd(fragment, fragment.getClass());
+                Bundle bundle = new Bundle();
+                bundle.putInt("key", AddressFragment.KEY_ONLY_SAVE);
+                gotoFragmentByAdd(bundle,fragment, fragment.getClass());
             }
         }
     };
@@ -236,7 +238,7 @@ public class AddressListFragment extends BaseFragment {
 //            else
 //                goneAddAddressView();
         }
-        Collections.sort(list,new AddressComparator());
+        Collections.sort(list, new AddressComparator());
         adapter.clear();
         adapter.addAll(list);
     }
@@ -270,6 +272,7 @@ public class AddressListFragment extends BaseFragment {
                                 if (TextUtils.isEmpty(entry.errmsg)) {
                                     new CacheManager(getBaseAct()).saveUserReceivingAddress(JsonUtilsParser.toJson(addressEntry).getBytes());
                                     goback(addressEntry);
+                                    IntentUtil.sendUpdateAddressRequest(getActivity());
                                     return;
                                 } else {
                                     ToastHelper.showShort(getBaseAct(), entry.errmsg);

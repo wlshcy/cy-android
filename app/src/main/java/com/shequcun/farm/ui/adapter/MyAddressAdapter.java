@@ -61,12 +61,14 @@ public class MyAddressAdapter extends BaseAdapter {
         vh.name.setText(entry.name);
         vh.mobile.setText(entry.mobile);
         vh.address.setText(entry.city + entry.region + entry.address);
-        if (entry.isDefault && showDefaultIcon) {
-            vh.choose.setImageResource(R.drawable.icon_choose);
-        } else {
-            if (!showDefaultIcon) {
-                vh.choose.setVisibility(View.GONE);
+        if (showDefaultIcon) {
+            if (entry.isDefault) {
+                vh.choose.setImageResource(R.drawable.icon_choose);
+            } else {
+                vh.choose.setImageBitmap(null);
             }
+        } else {
+            vh.choose.setVisibility(View.GONE);
         }
         vh.update.setTag(entry);
         vh.update.setOnClickListener(new View.OnClickListener() {
