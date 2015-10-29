@@ -16,9 +16,8 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.AddressEntry;
 import com.shequcun.farm.data.AddressListEntry;
-import com.shequcun.farm.data.BaseEntry;
 import com.shequcun.farm.data.ComboEntry;
-import com.shequcun.farm.data.DishesItemEntry;
+import com.shequcun.farm.data.FixedComboEntry;
 import com.shequcun.farm.data.OrderEntry;
 import com.shequcun.farm.data.OtherInfo;
 import com.shequcun.farm.data.PayParams;
@@ -38,8 +37,7 @@ import com.shequcun.farm.util.Utils;
 
 import org.json.JSONObject;
 
-import java.util.Iterator;
-import java.util.Set;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -218,26 +216,24 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
     }
 
     void addFooterFixedList() {
-        Set set = mOrderController.getFixedItems();
-        if (set.size() > 0) {
+        List<FixedComboEntry> aList = mOrderController.getComboMatchItems();
+        if (aList != null && aList.size() > 0) {
             View view = LayoutInflater.from(getBaseAct()).inflate(R.layout.remark_footer_ly, null);
             TextView textView = (TextView) view.findViewById(R.id.title_tv);
             textView.setText("固定蔬菜");
             mLv.addFooterView(view);
-        }
-        Iterator it = set.iterator();
-        while (it.hasNext()) {
-            DishesItemEntry entry = (DishesItemEntry) it.next();
-            if (entry == null)
-                continue;
-            View headerView = LayoutInflater.from(getBaseAct()).inflate(R.layout.order_details_item_ly, null);
-            ImageView goodImg = (ImageView) headerView.findViewById(R.id.goods_img);
-            if (entry.imgs != null && entry.imgs.length > 0)
-                ImageLoader.getInstance().displayImage(entry.imgs[0] + "?imageview2/2/w/180", goodImg);
-            ((TextView) headerView.findViewById(R.id.goods_name)).setText(entry.title);
-            ((TextView) headerView.findViewById(R.id.goods_price)).setText(entry.quantity + entry.unit + "/份");
-            headerView.findViewById(R.id.goods_count).setVisibility(View.GONE);
-            mLv.addFooterView(headerView);
+            for (FixedComboEntry entry : aList) {
+                if (entry == null)
+                    continue;
+                View headerView = LayoutInflater.from(getBaseAct()).inflate(R.layout.order_details_item_ly, null);
+                ImageView goodImg = (ImageView) headerView.findViewById(R.id.goods_img);
+                if (entry.imgs != null && entry.imgs.length > 0)
+                    ImageLoader.getInstance().displayImage(entry.imgs[0] + "?imageview2/2/w/180", goodImg);
+                ((TextView) headerView.findViewById(R.id.goods_name)).setText(entry.title);
+                ((TextView) headerView.findViewById(R.id.goods_price)).setText(entry.quantity + entry.unit + "/份");
+                headerView.findViewById(R.id.goods_count).setVisibility(View.GONE);
+                mLv.addFooterView(headerView);
+            }
         }
     }
 
@@ -320,11 +316,11 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
     void modifyOrder(final String orderno) {
         RequestParams params = new RequestParams();
         params.add("orderno", orderno);
-        String items = mOrderController.getOrderItemsString();
-        params.add("items", items);
+        params.add("items", mOrderController.getOrderItemsString());
         params.add("memo", remark_tv.getText().toString());
         params.add("spares", mOrderController.getOrderOptionItemString());
         params.add("_xsrf", PersistanceManager.getCookieValue(getBaseAct()));
+        params.add("addon", mOrderController.getComboMatchItemString());
         final ProgressDlg pDlg = new ProgressDlg(getBaseAct(), "加载中...");
         HttpRequestUtil.getHttpClient(getBaseAct()).post(LocalParams.getBaseUrl() + "cai/altorder", params, new AsyncHttpResponseHandler() {
             @Override
@@ -390,6 +386,8 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
         params.add("items", mOrderController.getOrderItemsString());
         params.add("memo", remark_tv.getText().toString());
         params.add("orderno", buildOrderCon());
+        params.add("addon", mOrderController.getComboMatchItemString());
+
         final ProgressDlg pDlg = new ProgressDlg(getBaseAct(), "加载中...");
         HttpRequestUtil.getHttpClient(getBaseAct()).post(LocalParams.getBaseUrl() + "cai/choose", params, new AsyncHttpResponseHandler() {
 

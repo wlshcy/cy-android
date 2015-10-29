@@ -155,6 +155,7 @@ public class PayFragment extends BaseFragment {
         params.add("mobile", addressEntry.mobile);
         params.add("address", addressStr);
         params.add("spares", mOrderController.getOrderOptionItemString());
+        params.add("addon",mOrderController.getComboMatchItemString());
         params.add("paytype", isAlipayPay ? "2" : "3");
         if (coupon_id >= 0)
             params.add("coupon_id", coupon_id + "");

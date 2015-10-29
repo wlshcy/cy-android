@@ -259,7 +259,8 @@ public class MatchGoodsPopFragment extends BaseFragment {
                     FixedListComboEntry entry = JsonUtilsParser.fromJson(new String(data), FixedListComboEntry.class);
                     if (entry != null) {
                         if (TextUtils.isEmpty(entry.errmsg)) {
-                            parseToDishesItemEntry(entry.aList);
+//                            parseToDishesItemEntry(entry.aList);
+
                         }
                     }
                 }
@@ -272,17 +273,17 @@ public class MatchGoodsPopFragment extends BaseFragment {
         });
     }
 
-    private List<DishesItemEntry> parseToDishesItemEntry(List<FixedComboEntry> aList) {
-        List<DishesItemEntry> list = new ArrayList<>();
-        for (FixedComboEntry entry : aList) {
-            DishesItemEntry tEntry = new DishesItemEntry();
-            tEntry.id = entry.id;
-            tEntry.imgs = entry.imgs;
-            tEntry.title = entry.title;
-            list.add(tEntry);
-        }
-        return list;
-    }
+//    private List<DishesItemEntry> parseToDishesItemEntry(List<FixedComboEntry> aList) {
+//        List<DishesItemEntry> list = new ArrayList<>();
+//        for (FixedComboEntry entry : aList) {
+//            DishesItemEntry tEntry = new DishesItemEntry();
+//            tEntry.id = entry.id;
+//            tEntry.imgs = entry.imgs;
+//            tEntry.title = entry.title;
+//            list.add(tEntry);
+//        }
+//        return list;
+//    }
 
     /**
      * 来自我的套餐
@@ -507,8 +508,7 @@ public class MatchGoodsPopFragment extends BaseFragment {
         ImageView goodsImg;
         @Bind(R.id.goods_name)
         TextView goodsName;
-        @Bind(R.id.fixed_goods_icon_tv)
-        TextView fixedGoodsIconTv;
+
         @Bind(R.id.goods_price)
         TextView goodsPrice;
         @Bind(R.id.lookDtlLy)

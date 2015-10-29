@@ -29,7 +29,6 @@ public class ChooseDishesAdapter extends ArrayAdapter<DishesItemEntry> {
 
     DishesItemEntry entry;
     boolean enabled;
-    int tmpVisible = -1;
 
     public ChooseDishesAdapter(Context context) {
         super(context, R.layout.goods_item_ly);
@@ -72,8 +71,6 @@ public class ChooseDishesAdapter extends ArrayAdapter<DishesItemEntry> {
                     /*刷新图片*/
                 InnerImageLoadingListener innerImageLoadingListener = new InnerImageLoadingListener(vh);
                 ImageLoader.getInstance().displayImage(url, vh.goodsImg, innerImageLoadingListener);
-            } else {
-                    /*不需要重新加载图片*/
             }
             vh.goodsName.setText(entry.title);
             vh.goodsPrice.setText(Utils.unitConversion(entry.packw) + "/份");
@@ -87,24 +84,27 @@ public class ChooseDishesAdapter extends ArrayAdapter<DishesItemEntry> {
             vh.goodsCount.setText("0");
             vh.goodsCount.setVisibility(View.GONE);
         }
-        vh.fixedIconTv.setVisibility(entry.isFixedVisible);
+
         /**分割固定菜品和普通菜品*/
-        if (tmpVisible == View.VISIBLE && entry.isFixedVisible == View.GONE) {
-            vh.separateView.setVisibility(View.VISIBLE);
-        } else {
-            vh.separateView.setVisibility(View.GONE);
-        }
-        tmpVisible = entry.isFixedVisible;
-        if (entry.isLastChoose) {
-            vh.goodsAdd.setEnabled(false);
-            vh.goodsAdd.setImageResource(R.drawable.icon_add_gray);
-            vh.goodsCount.setText(entry.remains + "");
-            vh.goodsCount.setVisibility(View.VISIBLE);
-            vh.goodsPrice.setText(entry.quantity + entry.unit + "/份");
-        } else {
-            vh.goodsAdd.setEnabled(true);
-            vh.goodsAdd.setImageResource(R.drawable.icon_add);
-        }
+//        if (tmpVisible == View.VISIBLE && entry.isFixedVisible == View.GONE) {
+//            vh.separateView.setVisibility(View.VISIBLE);
+//        } else {
+//            vh.separateView.setVisibility(View.GONE);
+//        }
+//        tmpVisible = entry.isFixedVisible;
+//        if (entry.isLastChoose) {
+//            vh.goodsAdd.setEnabled(false);
+//            vh.goodsAdd.setImageResource(R.drawable.icon_add_gray);
+//            vh.goodsCount.setText(entry.remains + "");
+//            vh.goodsCount.setVisibility(View.VISIBLE);
+//            vh.goodsPrice.setText(entry.quantity + entry.unit + "/份");
+//        } else {
+//            vh.goodsAdd.setEnabled(true);
+//            vh.goodsAdd.setImageResource(R.drawable.icon_add);
+//        }
+
+        vh.goodsAdd.setEnabled(true);
+        vh.goodsAdd.setImageResource(R.drawable.icon_add);
         return v;
     }
 
@@ -163,11 +163,9 @@ public class ChooseDishesAdapter extends ArrayAdapter<DishesItemEntry> {
         TextView goodsCount;
         @Bind(R.id.goods_add)
         ImageView goodsAdd;
-        @Bind(R.id.fixed_goods_icon_tv)
-        TextView fixedIconTv;
 
-        @Bind(R.id.separate_view)
-        View separateView;
+//        @Bind(R.id.separate_view)
+//        View separateView;
 
         String lastImageUrl;
 

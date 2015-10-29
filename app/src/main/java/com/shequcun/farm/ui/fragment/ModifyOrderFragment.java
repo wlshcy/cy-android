@@ -223,16 +223,6 @@ public class ModifyOrderFragment extends BaseFragment {
             @Override
             public void onSuccess(int statusCode, Header[] h, byte[] data) {
                 if (data != null && data.length > 0) {
-//                    AlreadyPurchasedListEntry entry = JsonUtilsParser.fromJson(new String(data), AlreadyPurchasedListEntry.class);
-//                    if (entry != null) {
-//                        if (TextUtils.isEmpty(entry.errmsg)) {
-//                            setRedPacketsView(entry.cpflag);
-//                            buildAdapter(entry.aList);
-//                            addSparesFooter(entry.dIe);
-//                            return;
-//                        }
-//                        ToastHelper.showShort(getBaseAct(), entry.errmsg);
-//                    }
 
                     MyOrderDetailListEntry entry = JsonUtilsParser.fromJson(new String(data), MyOrderDetailListEntry.class);
 

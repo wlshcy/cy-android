@@ -1,7 +1,5 @@
 package com.shequcun.farm.data;
 
-import android.view.View;
-
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -31,9 +29,6 @@ public class DishesItemEntry extends BaseEntry {
     public String imgs[];
     /*份数*/
     private int count;
-
-    public int isFixedVisible = View.GONE;
-    public boolean isLastChoose = false;
 
     public void setCount(int count) {
         this.count = count;

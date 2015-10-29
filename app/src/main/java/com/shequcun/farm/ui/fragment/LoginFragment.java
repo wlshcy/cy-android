@@ -165,11 +165,13 @@ public class LoginFragment extends BaseFragment {
         String xXsrfToken = PersistanceManager.getCookieValue(getBaseAct());
         RequestParams params = new RequestParams();
         params.add("mobile", mobileNumber);
-        if (DeviceInfo.isDebuggable(getActivity())) {
-            params.add("password", smsCode);
-        } else {
-            params.add("smscode", smsCode);
-        }
+//        if (DeviceInfo.isDebuggable(getActivity())) {
+//            params.add("password", smsCode);
+//        } else {
+//            params.add("smscode", smsCode);
+//        }
+
+        params.add("smscode", smsCode);
         params.add("_xsrf", xXsrfToken);
         if (!TextUtils.isEmpty(xXsrfToken)) {
             final ProgressDlg pDlg = new ProgressDlg(getBaseAct(), "登录中...");

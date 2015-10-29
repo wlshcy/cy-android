@@ -2,6 +2,7 @@ package com.shequcun.farm.data.goods;
 
 import com.google.gson.annotations.SerializedName;
 import com.shequcun.farm.data.DishesItemEntry;
+import com.shequcun.farm.data.FixedComboEntry;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -12,11 +13,13 @@ import java.util.Set;
 public class Order {
     @SerializedName("items")
     private List<DishesItemEntry> items = new ArrayList<DishesItemEntry>();
-    private Set<DishesItemEntry> fixedItems = new HashSet<>();
     @SerializedName("mobile")
     private String mobile;
     @SerializedName("descr")
     private String descr;
+
+
+    private List<FixedComboEntry> fItems = new ArrayList<FixedComboEntry>();
     /**
      * 备选菜容量
      */
@@ -31,14 +34,14 @@ public class Order {
         return null;
     }
 
-    public DishesItemEntry getFixedItemById(int id) {
-        for (DishesItemEntry it : fixedItems) {
-            if (id == it.id) {
-                return it;
-            }
-        }
-        return null;
-    }
+//    public DishesItemEntry getFixedItemById(int id) {
+//        for (DishesItemEntry it : fixedItems) {
+//            if (id == it.id) {
+//                return it;
+//            }
+//        }
+//        return null;
+//    }
 
     public String getItemsString() {
         String result = "";
@@ -65,13 +68,16 @@ public class Order {
     }
 
     public void clear() {
-
         for (DishesItemEntry it : items) {
             it.setCount(0);
         }
 
         clearOptionItems();
         items.clear();
+
+        if (fItems != null)
+            fItems.clear();
+        fItems = null;
     }
 
     public int getItemsCount() {
@@ -114,9 +120,9 @@ public class Order {
         items.add(item);
     }
 
-    public void addFixedItem(DishesItemEntry item) {
-        fixedItems.add(item);
-    }
+//    public void addFixedItem(DishesItemEntry item) {
+//        fixedItems.add(item);
+//    }
 
     public void addOptionItem(DishesItemEntry item) {
         if (optionItems == null) {
@@ -149,6 +155,20 @@ public class Order {
         return optionItems;
     }
 
+    public String getComboMatchItemString() {
+        String result = "";
+        int i = 0;
+        List<FixedComboEntry> aList = getComboMatchItems();
+        for (FixedComboEntry item : aList) {
+            i++;
+            if (i == aList.size()) {
+                result += item.id + ":" + item.count;
+                break;
+            }
+            result += item.id + ":" + item.count + ",";
+        }
+        return result;
+    }
 
     public List<DishesItemEntry> getItems() {
         return items;
@@ -229,15 +249,32 @@ public class Order {
                 + descr + "]";
     }
 
-    public boolean containFixedItem(Object o) {
-        return fixedItems.contains(o);
+
+    public void addComboMatchItem(FixedComboEntry fEntry) {
+        if (fItems == null)
+            fItems = new ArrayList<FixedComboEntry>();
+        fItems.add(fEntry);
     }
 
-    public boolean removeFixedItem(Object o){
-        return fixedItems.remove(o);
+    public void removeComboMatchItem(FixedComboEntry fEntry) {
+        if (fItems != null && fItems.contains(fEntry))
+            fItems.remove(fEntry);
     }
 
-    public Set<DishesItemEntry> getFixedItems() {
-        return fixedItems;
+
+    public List<FixedComboEntry> getComboMatchItems() {
+        return fItems;
     }
+
+//    public boolean containFixedItem(Object o) {
+//        return fixedItems.contains(o);
+//    }
+//
+//    public boolean removeFixedItem(Object o) {
+//        return fixedItems.remove(o);
+//    }
+//
+//    public Set<DishesItemEntry> getFixedItems() {
+//        return fixedItems;
+//    }
 }
