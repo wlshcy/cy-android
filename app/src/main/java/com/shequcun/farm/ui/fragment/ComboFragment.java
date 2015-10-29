@@ -271,11 +271,7 @@ public class ComboFragment extends BaseFragment {
         super.onDestroyView();
         doUnRegisterReceiver();
     }
-
-
-
     boolean mIsBind = false;
-
     ComboAdapter adapter;
     @Bind(R.id.mListView)
     ListView mListView;

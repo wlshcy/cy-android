@@ -199,7 +199,6 @@ public class ChooseDishesFragment extends BaseFragment {
     }
 
     private void doAddDataToAdapter(List<DishesItemEntry> aList) {
-
         if (aList != null && aList.size() > 0) {
             adapter.addAll(aList);
             adapter.notifyDataSetChanged();
@@ -239,8 +238,6 @@ public class ChooseDishesFragment extends BaseFragment {
             gotoFragmentByAnimation(budle, R.id.mainpage_ly, new BrowseImageFragment(), BrowseImageFragment.class.getName(), R.anim.puff_in, R.anim.puff_out);
         }
     };
-
-
     /**
      * 弹出备选菜品对话框
      */
@@ -405,7 +402,6 @@ public class ChooseDishesFragment extends BaseFragment {
         arcAnim.setDuration(700);
         arcAnim.setFillAfter(true);
         arcAnim.setAnimationListener(new Animation.AnimationListener() {
-
             @Override
             public void onAnimationStart(Animation animation) {
             }
@@ -468,7 +464,6 @@ public class ChooseDishesFragment extends BaseFragment {
         }
         toggleBuyOrder(mOrderController.reachReqWeight());
     }
-
 
     /**
      * 转换下单按钮的可见性
@@ -554,7 +549,6 @@ public class ChooseDishesFragment extends BaseFragment {
         }
         return false;
     }
-
 
     private View.OnClickListener mDownOnClickListener = new View.OnClickListener() {
         @Override
@@ -866,8 +860,6 @@ public class ChooseDishesFragment extends BaseFragment {
             goodsPrice.setText(entry.quantity + entry.unit + "/份");
             final View goods_add = headView.findViewById(R.id.goods_add);
             final TextView goods_count = (TextView) headView.findViewById(R.id.goods_count);
-
-
             final View goods_sub = headView.findViewById(R.id.goods_sub);
             goods_sub.setTag(entry);
             goods_sub.setOnClickListener(new View.OnClickListener() {

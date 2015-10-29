@@ -93,7 +93,6 @@ public class ChooseDishesAdapter extends ArrayAdapter<DishesItemEntry> {
 //        }
 //        tmpVisible = entry.isFixedVisible;
 //        if (entry.isLastChoose) {
-//            vh.goodsAdd.setEnabled(false);
 //            vh.goodsAdd.setImageResource(R.drawable.icon_add_gray);
 //            vh.goodsCount.setText(entry.remains + "");
 //            vh.goodsCount.setVisibility(View.VISIBLE);
@@ -103,8 +102,7 @@ public class ChooseDishesAdapter extends ArrayAdapter<DishesItemEntry> {
 //            vh.goodsAdd.setImageResource(R.drawable.icon_add);
 //        }
 
-        vh.goodsAdd.setEnabled(true);
-        vh.goodsAdd.setImageResource(R.drawable.icon_add);
+        vh.goodsAdd.setEnabled(enabled);
         return v;
     }
 
