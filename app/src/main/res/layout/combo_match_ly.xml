@@ -20,20 +20,43 @@
         android:layout_toRightOf="@+id/goods_img"
         android:orientation="vertical">
 
+
         <TextView
             android:id="@+id/goods_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:text="title"
             android:textColor="@color/black_444444"
             android:textSize="@dimen/font30" />
 
-        <TextView
-            android:id="@+id/goods_price"
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/px14"
-            android:textColor="@color/gray_9a9a9a"
-            android:textSize="@dimen/font26" />
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/goods_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="30斤/份"
+                android:textColor="@color/gray_9a9a9a"
+                android:textSize="@dimen/font26" />
+
+            <TextView
+                android:layout_width="62dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/px18"
+                android:background="@drawable/gray_585858_corner_bg"
+                android:padding="3dp"
+                android:text="套餐搭配"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/font28" />
+
+
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout

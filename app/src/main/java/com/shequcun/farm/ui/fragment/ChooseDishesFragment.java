@@ -18,7 +18,6 @@ import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -53,12 +52,9 @@ import com.shequcun.farm.util.ToastHelper;
 import com.shequcun.farm.util.Utils;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cz.msebera.android.httpclient.Header;
 
@@ -67,12 +63,10 @@ import cz.msebera.android.httpclient.Header;
  * Created by apple on 15/8/10.
  */
 public class ChooseDishesFragment extends BaseFragment {
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.choose_dishes_ly, container, false);
-        return view;
+        return inflater.inflate(R.layout.choose_dishes_ly, container, false);
     }
 
     @Override
@@ -120,19 +114,7 @@ public class ChooseDishesFragment extends BaseFragment {
         mShopCartIv.setOnClickListener(onClick);
         emptyView.setOnClickListener(onClick);
         option_dishes_tv.setOnClickListener(onClick);
-        pView.setMode(PullToRefreshBase.Mode.PULL_FROM_END);
         pView.setMode(PullToRefreshBase.Mode.DISABLED);
-        pView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ScrollView>() {
-            @Override
-            public void onPullDownToRefresh(PullToRefreshBase<ScrollView> refreshView) {
-
-            }
-
-            @Override
-            public void onPullUpToRefresh(PullToRefreshBase<ScrollView> refreshView) {
-//                requsetDishesList();
-            }
-        });
         requsetDishesList();
     }
 
@@ -146,19 +128,6 @@ public class ChooseDishesFragment extends BaseFragment {
     void gotoWebViewFragment() {
         gotoFragmentByAdd(getArguments(), R.id.mainpage_ly, new WebViewFragment(), WebViewFragment.class.getName());
     }
-
-    void requiredSelectItem() {
-        ArrayList<DishesItemEntry> aList = new ArrayList<DishesItemEntry>();
-        for (int i = 0; i < adapter.getCount(); ++i) {
-            aList.add(adapter.getItem(i));
-        }
-        ArrayList<DishesItemEntry> chooseList = (ArrayList) mOrderController.getNoChooseDishesItems(aList);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("ComboEntry", entry);
-        bundle.putSerializable("chooseList", chooseList);
-        gotoFragmentByAnimation(bundle, R.id.mainpage_ly, new MatchGoodsPopFragment(), MatchGoodsPopFragment.class.getName(), R.anim.abc_slide_in_bottom, R.anim.abc_fade_out);
-    }
-
     boolean doPopUpStack() {
         if ((option_dishes_tip != null && option_dishes_tip.getVisibility() == View.VISIBLE) || (mShopCartClearTv != null && mShopCartClearTv.getVisibility() == View.VISIBLE)) {
             hideShopCart();
@@ -182,7 +151,6 @@ public class ChooseDishesFragment extends BaseFragment {
             } else if (v == option_dishes_tv) {
                 if (option_dishes_tip.getVisibility() == View.GONE)
                     popUpOptionsWidget();
-//                    requiredSelectItem();
                 else
                     hideOptionWidget();
             }
@@ -204,7 +172,6 @@ public class ChooseDishesFragment extends BaseFragment {
         int id = buildRequestID();
         RequestParams params = new RequestParams();
         params.add("combo_id", id + "");
-//        final ProgressDlg pDlg = new ProgressDlg(getBaseAct(), "加载中...");
         HttpRequestUtil.getHttpClient(getBaseAct()).get(LocalParams.getBaseUrl() + "cai/itemlist", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] data) {
@@ -228,31 +195,13 @@ public class ChooseDishesFragment extends BaseFragment {
                 }
                 ToastHelper.showShort(getBaseAct(), "错误码 " + sCode);
             }
-
-            @Override
-            public void onStart() {
-                super.onStart();
-//                if (pDlg != null)
-//                    pDlg.show();
-            }
-
-            @Override
-            public void onFinish() {
-                super.onFinish();
-//                if (pDlg != null)
-//                    pDlg.dismiss();
-                if (pView != null)
-                    pView.onRefreshComplete();
-            }
         });
     }
 
     private void doAddDataToAdapter(List<DishesItemEntry> aList) {
 
         if (aList != null && aList.size() > 0) {
-//            adapter.clear();
             adapter.addAll(aList);
-            sortAdapter(adapter);
             adapter.notifyDataSetChanged();
         }
 
@@ -287,7 +236,6 @@ public class ChooseDishesFragment extends BaseFragment {
             Bundle budle = new Bundle();
             budle.putSerializable(BrowseImageFragment.KEY_PHOTOS, photos);
             budle.putInt(BrowseImageFragment.KEY_INDEX, position);
-//            gotoFragmentByAdd(budle, R.id.mainpage_ly, new BrowseImageFragment(), BrowseImageFragment.class.getName());
             gotoFragmentByAnimation(budle, R.id.mainpage_ly, new BrowseImageFragment(), BrowseImageFragment.class.getName(), R.anim.puff_in, R.anim.puff_out);
         }
     };
@@ -306,9 +254,6 @@ public class ChooseDishesFragment extends BaseFragment {
         containerLl = (LinearLayout) scrollView.findViewById(R.id.container_ll);
         List<DishesItemEntry> aList = new ArrayList<DishesItemEntry>();
         for (int i = 0; i < adapter.getCount(); ++i) {
-            /**过滤出固定菜品*/
-            if (adapter.getItem(i).isFixedVisible == View.VISIBLE)
-                continue;
             aList.add(adapter.getItem(i));
         }
         adapter.addAll();
@@ -395,8 +340,6 @@ public class ChooseDishesFragment extends BaseFragment {
             containerLl.addView(LayoutInflater.from(getBaseAct()).inflate(R.layout.common_line, null));
         }
     }
-
-
     private boolean goNext = true;
     private View.OnClickListener mUpOnClickListener = new View.OnClickListener() {
         @Override
@@ -555,15 +498,6 @@ public class ChooseDishesFragment extends BaseFragment {
             mShopCartPriceTv.setText(shopCartTip);
         }
     }
-
-    private DishesItemEntry getDishesItemEntryByPostion(View v) {
-        if (v.getTag() instanceof Integer) {
-            int position = (int) v.getTag();
-            return adapter.getItem(position);
-        }
-        return null;
-    }
-
     /**
      * 点击＋时刷新UI
      */
@@ -579,14 +513,8 @@ public class ChooseDishesFragment extends BaseFragment {
             TextView tvCount = (TextView) pView.findViewById(R.id.goods_count);// 显示数量
             String count = tvCount.getText().toString();
             int intCount = Integer.parseInt(count) + 1;
-            if (item.isFixedVisible == View.GONE) {
-                mOrderController.addItem(item);
-                mOrderController.removeOptionItem(item);
-                /**固定菜品*/
-            } else {
-                upFixedCount(intCount, item, tvCount, pView);
-                return;
-            }
+            mOrderController.addItem(item);
+            mOrderController.removeOptionItem(item);
             tvCount.setVisibility(View.VISIBLE);
             pView.findViewById(R.id.goods_sub).setVisibility(View.VISIBLE);
             item.setCount(intCount);
@@ -595,22 +523,6 @@ public class ChooseDishesFragment extends BaseFragment {
             updateBuyOrderStatus();
         }
     }
-
-    private void upFixedCount(int count, DishesItemEntry item, TextView tvCount, View pView) {
-        item.remains = 3;
-        if (count >= item.remains) {
-            new AlertDialog().alertOutOfFixedRemains(getBaseAct(), item.remains);
-        } else {
-            if (!mOrderController.containFixedItem(item)) {
-                mOrderController.addFixedItem(item);
-            }
-            item.setCount(count);
-            tvCount.setText(String.valueOf(count));
-            tvCount.setVisibility(View.VISIBLE);
-            pView.findViewById(R.id.goods_sub).setVisibility(View.VISIBLE);
-        }
-    }
-
 
     private boolean checkReqWeight(int lastWeight) {
         /*超过最大要求份数*/
@@ -669,13 +581,7 @@ public class ChooseDishesFragment extends BaseFragment {
         int intCount = Integer.parseInt(count) - 1;
         DishesItemEntry goodItem = adapter.getItem(position);
         goodItem.setCount(intCount);
-        if (goodItem.isFixedVisible == View.GONE) {
-            mOrderController.removeItemById(goodItem.id);
-        } else {
-            /**移除固定菜品*/
-            if (intCount < 1)
-                mOrderController.removeFixedItem(goodItem);
-        }
+        mOrderController.removeItemById(goodItem.id);
         int visibility = intCount == 0 ? View.GONE : View.VISIBLE;
         pView.findViewById(R.id.goods_sub).setVisibility(visibility);
         tvCount.setVisibility(visibility);
@@ -773,19 +679,9 @@ public class ChooseDishesFragment extends BaseFragment {
      * 购物车变大动画
      */
     private void shopChartIconScaleAnimation(View v) {
-        DishesItemEntry entry = getDishesItemEntryByPostion(v);
-        boolean play;
-        /**固定菜品不播放动画*/
-        if (entry != null && entry.isFixedVisible == View.VISIBLE) {
-            play = false;
-        } else {
-            play = true;
-        }
-        if (play)
-            playShopCartAnimation();
+        playShopCartAnimation();
         upCountUpdateUI(v);
-        if (play)
-            animationFly(v);
+        animationFly(v);
     }
 
     private void playShopCartAnimation() {
@@ -848,7 +744,7 @@ public class ChooseDishesFragment extends BaseFragment {
 
     ModifyOrderParams buildOrderParams(ComboEntry entry) {
         ModifyOrderParams params = new ModifyOrderParams();
-        params.setParams(entry.id, entry.orderno, 1, entry.id, entry.prices[entry.getPosition()], entry.combo_idx, entry.status, null, null, null, null, 1, "下单日期:" + Utils.getTime(entry.chgtime.get(entry.status + "")));
+        params.setParams(entry.id, entry.orderno, 1, entry.id, entry.prices[entry.getPosition()], entry.combo_idx, entry.status, null, null, null, null, 1, "下单日期:" + Utils.getTime(entry.chgtime.get(entry.status + "")),null);
         return params;
     }
 
@@ -942,8 +838,7 @@ public class ChooseDishesFragment extends BaseFragment {
                     FixedListComboEntry entry = JsonUtilsParser.fromJson(new String(data), FixedListComboEntry.class);
                     if (entry != null) {
                         if (TextUtils.isEmpty(entry.errmsg)) {
-                            List<DishesItemEntry> list = parseToDishesItemEntry(entry.aList);
-                            updateFixedList(list, true);
+                            addHeader(entry.aList);
                         }
                     }
                 }
@@ -954,22 +849,67 @@ public class ChooseDishesFragment extends BaseFragment {
             }
         });
     }
-
-    private List<DishesItemEntry> parseToDishesItemEntry(List<FixedComboEntry> aList) {
-        List<DishesItemEntry> list = new ArrayList<>();
+    private void addHeader(List<FixedComboEntry> aList) {
+        if (aList == null || aList.size() <= 0)
+            return;
         for (FixedComboEntry entry : aList) {
-            DishesItemEntry tEntry = new DishesItemEntry();
-            tEntry.id = entry.id;
-            tEntry.imgs = entry.imgs;
-            tEntry.title = entry.title;
-            tEntry.isFixedVisible = View.VISIBLE;
-            tEntry.packw = entry.quantity;
-            tEntry.remains = entry.remains;
-            tEntry.unit = entry.unit;
-            tEntry.quantity = entry.quantity;
-            list.add(tEntry);
+            View headView = LayoutInflater.from(getBaseAct()).inflate(R.layout.combo_match_ly, null);
+            ImageView goods_img = (ImageView) headView.findViewById(R.id.goods_img);
+
+            if (entry != null && entry.imgs != null && entry.imgs.length > 0) {
+                String url = entry.imgs[0] + "?imageview2/2/w/180";
+                ImageLoader.getInstance().displayImage(url, goods_img);
+            }
+            TextView goodsName = (TextView) headView.findViewById(R.id.goods_name);
+            goodsName.setText(entry.title);
+            TextView goodsPrice = (TextView) headView.findViewById(R.id.goods_price);
+            goodsPrice.setText(entry.quantity + entry.unit + "/份");
+            final View goods_add = headView.findViewById(R.id.goods_add);
+            final TextView goods_count = (TextView) headView.findViewById(R.id.goods_count);
+
+
+            final View goods_sub = headView.findViewById(R.id.goods_sub);
+            goods_sub.setTag(entry);
+            goods_sub.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FixedComboEntry tmpEntry = (FixedComboEntry) v.getTag();
+                    tmpEntry.count--;
+                    if (tmpEntry.count <= 0) {
+                        tmpEntry.count = 0;
+                        goods_count.setVisibility(View.GONE);
+                        goods_count.setText("0");
+                        goods_sub.setVisibility(View.GONE);
+                        mOrderController.removeComboMatchItem(tmpEntry);
+                    } else {
+                        goods_count.setVisibility(View.VISIBLE);
+                        goods_count.setText(tmpEntry.count + "");
+                        mOrderController.removeComboMatchItem(tmpEntry);
+                        mOrderController.addComboMatchItem(tmpEntry);
+                    }
+
+                }
+            });
+            goods_add.setTag(entry);
+            goods_add.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FixedComboEntry tmpEntry = (FixedComboEntry) v.getTag();
+                    tmpEntry.count++;
+                    if (tmpEntry.count >= tmpEntry.remains) {
+                        new AlertDialog().alertOutOfFixedRemains(getBaseAct(), tmpEntry.remains);
+                        return;
+                    }
+                    goods_count.setVisibility(View.VISIBLE);
+                    goods_count.setText(tmpEntry.count + "");
+                    goods_sub.setVisibility(View.VISIBLE);
+
+                    mOrderController.removeComboMatchItem(tmpEntry);
+                    mOrderController.addComboMatchItem(tmpEntry);
+                }
+            });
+            mLv.addHeaderView(headView, null, false);
         }
-        return list;
     }
 
     /**
@@ -985,13 +925,13 @@ public class ChooseDishesFragment extends BaseFragment {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] data) {
                 if (data != null && data.length > 0) {
-                    DishesListItemEntry entry = JsonUtilsParser.fromJson(new String(data), DishesListItemEntry.class);
+                    FixedListComboEntry entry = JsonUtilsParser.fromJson(new String(data), FixedListComboEntry.class);
                     if (entry != null) {
                         if (TextUtils.isEmpty(entry.errmsg)) {
                             if (entry.aList == null || entry.aList.isEmpty()) {
                                 return;
                             }
-                            updateFixedList(entry.aList, true);
+                            addHeader(entry.aList);
                             return;
                         }
                         ToastHelper.showShort(getBaseAct(), entry.errmsg);
@@ -1005,46 +945,6 @@ public class ChooseDishesFragment extends BaseFragment {
             }
         });
     }
-
-    private void updateFixedList(List<DishesItemEntry> list, boolean reloadFixedVisible) {
-        /**设定为固定菜品*/
-        if (reloadFixedVisible) {
-            for (DishesItemEntry o : list) {
-                o.isFixedVisible = View.VISIBLE;
-                /**最后一次选菜品*/
-//                if (isLastChoose()) {
-                o.isLastChoose = true;
-                mOrderController.addFixedItem(o);
-//                }
-            }
-        }
-        adapter.addAll(list);
-        sortAdapter(adapter);
-        adapter.notifyDataSetChanged();
-    }
-
-    private void sortAdapter(ChooseDishesAdapter adapter) {
-        adapter.sort(new Comparator<DishesItemEntry>() {
-            @Override
-            public int compare(DishesItemEntry lhs, DishesItemEntry rhs) {
-                DishesItemEntry entry = lhs;
-                DishesItemEntry entry1 = rhs;
-                return entry.isFixedVisible - entry1.isFixedVisible;
-            }
-        });
-    }
-
-    private boolean isLastChoose() {
-        if (entry.choose) {
-            if (++entry.times == entry.duration * entry.shipday.length)
-                return true;
-        } else {
-            if (entry.times == entry.duration * entry.shipday.length)
-                return true;
-        }
-        return false;
-    }
-
     @Bind(R.id.option_dishes_tv)
     TextView option_dishes_tv;
     boolean enabled;
@@ -1073,6 +973,4 @@ public class ChooseDishesFragment extends BaseFragment {
     ImageView mShopCartIv;
     @Bind(R.id.pView)
     PullToRefreshScrollView pView;
-//    @Bind(R.id.reqired_select_rl)
-//    RelativeLayout reqiredSelectRl;
 }

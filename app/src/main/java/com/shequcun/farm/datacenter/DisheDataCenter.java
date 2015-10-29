@@ -1,11 +1,10 @@
 package com.shequcun.farm.datacenter;
 
 import com.shequcun.farm.data.DishesItemEntry;
+import com.shequcun.farm.data.FixedComboEntry;
 import com.shequcun.farm.data.goods.Order;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * 已选择菜品数据中心
@@ -93,9 +92,6 @@ public class DisheDataCenter {
         mOrder.addItem(item);
     }
 
-    public void addFixedItem(DishesItemEntry item) {
-        mOrder.addFixedItem(item);
-    }
 
     public boolean reachReqWeight() {
         int weight = mOrder.getItemsWeight();
@@ -179,15 +175,22 @@ public class DisheDataCenter {
         return mOrder;
     }
 
-    public boolean containFixedItem(Object o) {
-        return mOrder.containFixedItem(o);
+
+    public void addComboMatchItem(FixedComboEntry fEntry) {
+        mOrder.addComboMatchItem(fEntry);
     }
 
-    public boolean removeFixedItem(Object o) {
-        return mOrder.removeFixedItem(o);
+    public void removeComboMatchItem(FixedComboEntry fEntry) {
+        mOrder.removeComboMatchItem(fEntry);
     }
 
-    public Set getFixedItems() {
-        return mOrder.getFixedItems();
+
+    public List<FixedComboEntry> getComboMatchItems() {
+        return mOrder.getComboMatchItems();
     }
+
+    public String getComboMatchItemString(){
+        return mOrder.getComboMatchItemString();
+    }
+
 }

@@ -78,9 +78,9 @@ public class FarmSpecialtyDetailViewPagerFragment extends BaseFragment {
     class Page implements ViewPager.PageTransformer {
 
 
-        private static final float MIN_SCALE = 0.85f;
-        private static final float MIN_ALPHA = 0.5f;
-        private static final float SCALE_FACTOR = 0.95f;
+        private  final float MIN_SCALE = 0.85f;
+        private  final float MIN_ALPHA = 0.5f;
+        private  final float SCALE_FACTOR = 0.95f;
         ViewPager mViewPager;
 
         public Page(ViewPager mViewPager) {
