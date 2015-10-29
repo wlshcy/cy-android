@@ -48,9 +48,14 @@ public class HistoryOrderEntry implements Serializable {
     @SerializedName("mobile")
     public String mobile;
 
+    @SerializedName("addon")
+    public java.util.ArrayList<FixedComboEntry> fList;
+
     public String date;
     /**
      * 下单日期
      */
     public String placeAnOrderDate;
+
+
 }

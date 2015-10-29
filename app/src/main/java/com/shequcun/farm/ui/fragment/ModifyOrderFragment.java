@@ -20,6 +20,7 @@ import com.shequcun.farm.data.AlreadyPurchasedEntry;
 import com.shequcun.farm.data.AlreadyPurchasedListEntry;
 import com.shequcun.farm.data.ComboEntry;
 import com.shequcun.farm.data.CouponShareEntry;
+import com.shequcun.farm.data.FixedComboEntry;
 import com.shequcun.farm.data.ModifyOrderParams;
 import com.shequcun.farm.data.MyOrderDetailListEntry;
 import com.shequcun.farm.data.OtherInfo;
@@ -301,7 +302,7 @@ public class ModifyOrderFragment extends BaseFragment {
     }
 
     void buildAdapter(List<AlreadyPurchasedEntry> aList) {
-        if (aList == null || aList.size() <= 0 || hEntry == null || mLv==null)
+        if (aList == null || aList.size() <= 0 || hEntry == null || mLv == null)
             return;
         int part = 0;
         int allWeight = 0;
@@ -434,6 +435,27 @@ public class ModifyOrderFragment extends BaseFragment {
      * 添加备选菜
      */
     void addSparesFooter(List<AlreadyPurchasedEntry> aList) {
+        if (hEntry != null && hEntry.fList != null && hEntry.fList.size() > 0) {
+            if (aList != null && aList.size() > 0) {
+                View view = LayoutInflater.from(getBaseAct()).inflate(R.layout.remark_footer_ly, null);
+                TextView textView = (TextView) view.findViewById(R.id.title_tv);
+                textView.setText("固定蔬菜");
+                mLv.addFooterView(view);
+                for (FixedComboEntry entry : hEntry.fList) {
+                    if (entry == null)
+                        continue;
+                    View headerView = LayoutInflater.from(getBaseAct()).inflate(R.layout.order_details_item_ly, null);
+                    ImageView goodImg = (ImageView) headerView.findViewById(R.id.goods_img);
+                    if (entry.imgs != null && entry.imgs.length > 0)
+                        ImageLoader.getInstance().displayImage(entry.imgs[0] + "?imageview2/2/w/180", goodImg);
+                    ((TextView) headerView.findViewById(R.id.goods_name)).setText(entry.title);
+                    ((TextView) headerView.findViewById(R.id.goods_price)).setText(entry.quantity + entry.unit + "/份");
+                    headerView.findViewById(R.id.goods_count).setVisibility(View.GONE);
+                    mLv.addFooterView(headerView);
+                }
+            }
+        }
+
         if (aList != null && aList.size() > 0) {
             mLv.addFooterView(LayoutInflater.from(getBaseAct()).inflate(R.layout.remark_footer_ly, null), null, false);
             for (int i = 0; i < aList.size(); i++) {
