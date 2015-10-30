@@ -20,6 +20,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.UserLoginEntry;
 import com.shequcun.farm.datacenter.CacheManager;
+import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.dlg.ConsultationDlg;
 import com.shequcun.farm.ui.adapter.MyMainAdapter;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
@@ -66,16 +67,21 @@ public class MyFragment extends BaseFragment {
                 }
             });
             if (userLoginEntry.haspwd) {
-                if (mLv.getFooterViewsCount() > 0 && footView != null)
-                    mLv.removeFooterView(footView);
+                removeFooterChangePwdTip();
             } else {
-                if (mLv.getFooterViewsCount() < 1)
-                    mLv.addFooterView(footView);
+                //查看过修改密码
+                if (PersistanceManager.getClickChangePwdFlag(getActivity()) == false)
+                    if (mLv.getFooterViewsCount() < 1)
+                        mLv.addFooterView(footView);
             }
         } else {
-            if (mLv.getFooterViewsCount() > 0 && footView != null)
-                mLv.removeFooterView(footView);
+            removeFooterChangePwdTip();
         }
+    }
+
+    private void removeFooterChangePwdTip() {
+        if (mLv.getFooterViewsCount() > 0 && footView != null)
+            mLv.removeFooterView(footView);
     }
 
     @Override
@@ -231,6 +237,9 @@ public class MyFragment extends BaseFragment {
 
     void gotoChangePwd() {
         FragmentUtils.changePwd(this);
+        //查看到修改密码标志位
+        PersistanceManager.saveClickChangePwdFlag(getActivity(), true);
+        removeFooterChangePwdTip();
     }
 
     boolean mIsBind = false;
