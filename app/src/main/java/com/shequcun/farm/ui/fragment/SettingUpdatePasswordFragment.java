@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.shequcun.farm.R;
@@ -22,6 +23,7 @@ import com.shequcun.farm.datacenter.CacheManager;
 import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.util.HttpRequestUtil;
+import com.shequcun.farm.util.IntentUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.TimeCount;
@@ -80,7 +82,8 @@ public class SettingUpdatePasswordFragment extends BaseFragment {
     }
 
     @OnClick(R.id.back)
-    public void back() {
+    public void back(View v) {
+        Utils.hideVirtualKeyboard(getBaseAct(), v);
         popBackStack();
     }
 
@@ -189,6 +192,8 @@ public class SettingUpdatePasswordFragment extends BaseFragment {
                     if (TextUtils.isEmpty(entry.errcode)) {
                         Toast.makeText(getActivity(), "修改密码成功", Toast.LENGTH_SHORT).show();
                         popBackStack();
+                        saveUserLogin();
+                        IntentUtil.sendUpdateMyInfoMsg(getActivity());
                     } else {
                         Toast.makeText(getActivity(), entry.errmsg, Toast.LENGTH_SHORT).show();
                     }
@@ -200,5 +205,13 @@ public class SettingUpdatePasswordFragment extends BaseFragment {
 
             }
         });
+    }
+
+    private void saveUserLogin(){
+        CacheManager cacheManager = new CacheManager(getActivity());
+        UserLoginEntry userLoginEntry = cacheManager.getUserLoginEntry();
+        userLoginEntry.haspwd = true;
+        String json = JsonUtilsParser.toJson(userLoginEntry);
+        cacheManager.saveUserLoginToDisk(json.getBytes());
     }
 }

@@ -229,7 +229,6 @@ public class AddressListFragment extends BaseFragment {
         adapter.clear();
         if (list == null || list.size() <= 0) {
             showAddAddressView();
-            return;
         } else if (list.size() >= maxLen) {
             goneAddAddressView();
         } else {

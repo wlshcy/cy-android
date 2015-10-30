@@ -20,6 +20,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.UserLoginEntry;
 import com.shequcun.farm.datacenter.CacheManager;
+import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.dlg.ConsultationDlg;
 import com.shequcun.farm.ui.adapter.MyMainAdapter;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
@@ -52,23 +53,35 @@ public class MyFragment extends BaseFragment {
     protected void initWidget(View v) {
     }
 
+    private View footView;
+
     private void addFooterChangePwdTip() {
         UserLoginEntry userLoginEntry = new CacheManager(getActivity()).getUserLoginEntry();
         if (userLoginEntry != null) {
-            View view = LayoutInflater.from(getActivity()).inflate(R.layout.change_pwd_tip_ly, null);
-            view.setOnClickListener(new AvoidDoubleClickListener() {
+            if (footView == null)
+                footView = LayoutInflater.from(getActivity()).inflate(R.layout.change_pwd_tip_ly, null);
+            footView.setOnClickListener(new AvoidDoubleClickListener() {
                 @Override
                 public void onViewClick(View v) {
                     gotoChangePwd();
                 }
             });
             if (userLoginEntry.haspwd) {
-                if (mLv.getFooterViewsCount() > 0)
-                    mLv.removeFooterView(view);
+                removeFooterChangePwdTip();
             } else {
-                mLv.addFooterView(view);
+                //查看过修改密码
+                if (PersistanceManager.getClickChangePwdFlag(getActivity()) == false)
+                    if (mLv.getFooterViewsCount() < 1)
+                        mLv.addFooterView(footView);
             }
+        } else {
+            removeFooterChangePwdTip();
         }
+    }
+
+    private void removeFooterChangePwdTip() {
+        if (mLv.getFooterViewsCount() > 0 && footView != null)
+            mLv.removeFooterView(footView);
     }
 
     @Override
@@ -224,6 +237,9 @@ public class MyFragment extends BaseFragment {
 
     void gotoChangePwd() {
         FragmentUtils.changePwd(this);
+        //查看到修改密码标志位
+        PersistanceManager.saveClickChangePwdFlag(getActivity(), true);
+        removeFooterChangePwdTip();
     }
 
     boolean mIsBind = false;
