@@ -10,7 +10,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.shequcun.farm.R;
-import com.shequcun.farm.ui.adapter.MyOrderViewPagerAdapter;
+import com.shequcun.farm.ui.adapter.ViewPagerAdapter;
+
+import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -35,6 +37,25 @@ public class MyOrderViewPagerFragment extends BaseFragment {
     @Override
     protected void initWidget(View v) {
         ((TextView) v.findViewById(R.id.title_center_text)).setText(R.string.my_order);
+        View myComboView = LayoutInflater.from(getBaseAct()).inflate(R.layout.my_order_listview_ly, null);
+        new MyComboOrderViewHolder(this, myComboView);
+        View boughtOrderView = LayoutInflater.from(getBaseAct()).inflate(R.layout.my_order_listview_ly, null);
+        new ShoppingOrderViewHolder(this, boughtOrderView);
+        ArrayList<View> aList = new ArrayList<>();
+        aList.add(myComboView);
+        aList.add(boughtOrderView);
+        buildAdapter(aList);
+    }
+
+
+    void buildAdapter(ArrayList<View> aList) {
+        ViewPagerAdapter vpAdapter = new ViewPagerAdapter(aList);
+        orderPager.setAdapter(vpAdapter);
+        orderPager.addOnPageChangeListener(onPageChangeListener);
+
+        if (getArguments() != null) {
+            setCurrentItem(1);
+        }
     }
 
     @Override
@@ -42,11 +63,6 @@ public class MyOrderViewPagerFragment extends BaseFragment {
         if (orderPager != null) {
             orderPager.addOnPageChangeListener(onPageChangeListener);
             orderPager.setOffscreenPageLimit(1);
-        }
-
-        buildAdapter();
-        if (getArguments() != null) {
-            setCurrentItem(1);
         }
     }
 
@@ -61,10 +77,6 @@ public class MyOrderViewPagerFragment extends BaseFragment {
             orderPager.setCurrentItem(v == dishes_tv ? 0 : 1);
     }
 
-    void buildAdapter() {
-        adpter = new MyOrderViewPagerAdapter(getChildFragmentManager());
-        orderPager.setAdapter(adpter);
-    }
 
     ViewPager.OnPageChangeListener onPageChangeListener = new ViewPager.OnPageChangeListener() {
         @Override
@@ -107,7 +119,6 @@ public class MyOrderViewPagerFragment extends BaseFragment {
      */
     @Bind(R.id.shopping_tv)
     TextView shopping_tv;
-    MyOrderViewPagerAdapter adpter;
     @Bind(R.id.orderPager)
     ViewPager orderPager;
 }

@@ -1,11 +1,8 @@
 package com.shequcun.farm.ui.fragment;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
@@ -27,31 +24,23 @@ import com.shequcun.farm.util.Utils;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import butterknife.OnItemClick;
 import cz.msebera.android.httpclient.Header;
 
 /**
- * 购买订单
- * Created by apple on 15/8/8.
+ * Created by mac on 15/10/30.
  */
-public class ShoppingOrderFragment extends BaseFragment {
+public class ShoppingOrderViewHolder {
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.my_order_listview_ly, container, false);
+    BaseFragment fragment;
+
+    public ShoppingOrderViewHolder(BaseFragment fragment, View view) {
+        this.fragment = fragment;
+        ButterKnife.bind(this, view);
+        setWidgetLsn();
     }
 
-    @Override
-    public boolean onBackPressed() {
-        return false;
-    }
-
-    @Override
-    protected void initWidget(View v) {
-    }
-
-    @Override
     protected void setWidgetLsn() {
         buildAdapter();
         scroll_view.setMode(PullToRefreshBase.Mode.PULL_FROM_END);
@@ -59,23 +48,10 @@ public class ShoppingOrderFragment extends BaseFragment {
         requestOrderEntry();
     }
 
-    @OnItemClick(R.id.mLv)
-    void OnItemClick(int position) {
-        if (adapter == null)
-            return;
-        HistoryOrderEntry entry = adapter.getItem(position);
-        if (entry != null) {
-            if (entry.status == 1 || entry.status == 3 || entry.status == 0 || entry.status == 2) {
-                gotoFragmentByAdd(buildBundle(buildOrderParams(entry)), R.id.mainpage_ly, new ModifyOrderFragment(), ModifyOrderFragment.class.getName());
-            } else if (entry.status == 4) {
-                ToastHelper.showShort(getBaseAct(), "您的订单已取消!");
-            }
-        }
-    }
 
     void buildAdapter() {
         if (adapter == null) {
-            adapter = new ShoppingOrderAdapter(getBaseAct());
+            adapter = new ShoppingOrderAdapter(fragment.getBaseAct());
         }
         adapter.clear();
         mLv.setAdapter(adapter);
@@ -105,13 +81,15 @@ public class ShoppingOrderFragment extends BaseFragment {
     };
 
     public void requestOrderEntry() {
+        if(fragment==null)
+            return;
         RequestParams params = new RequestParams();
         if (adapter != null && adapter.getCount() >= 1) {
             params.add("lastid", adapter.getItem(adapter.getCount() - 1).id + "");
         }
         params.add("length", "20");
         params.add("type", "2");
-        HttpRequestUtil.getHttpClient(getBaseAct()).get(LocalParams.getBaseUrl() + "cai/order", params, new AsyncHttpResponseHandler() {
+        HttpRequestUtil.getHttpClient(fragment.getBaseAct()).get(LocalParams.getBaseUrl() + "cai/order", params, new AsyncHttpResponseHandler() {
             @Override
             public void onFinish() {
                 super.onFinish();
@@ -133,7 +111,7 @@ public class ShoppingOrderFragment extends BaseFragment {
                             }
                             return;
                         }
-                        ToastHelper.showShort(getBaseAct(), entry.errmsg);
+                        ToastHelper.showShort(fragment.getBaseAct(), entry.errmsg);
                     }
                 }
             }
@@ -141,18 +119,34 @@ public class ShoppingOrderFragment extends BaseFragment {
             @Override
             public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
                 if (sCode == 0) {
-                    ToastHelper.showShort(getBaseAct(), R.string.network_error_tip);
+                    ToastHelper.showShort(fragment.getBaseAct(), R.string.network_error_tip);
                     return;
                 }
-                ToastHelper.showShort(getBaseAct(), "错误码" + sCode);
+                ToastHelper.showShort(fragment.getBaseAct(), "错误码" + sCode);
             }
         });
+    }
+
+    @OnItemClick(R.id.mLv)
+    void OnItemClick(int position) {
+        if (fragment == null)
+            return;
+        if (adapter == null)
+            return;
+        HistoryOrderEntry entry = adapter.getItem(position);
+        if (entry != null) {
+            if (entry.status == 1 || entry.status == 3 || entry.status == 0 || entry.status == 2) {
+                fragment.gotoFragmentByAdd(buildBundle(buildOrderParams(entry)), R.id.mainpage_ly, new ModifyOrderFragment(), ModifyOrderFragment.class.getName());
+            } else if (entry.status == 4) {
+                ToastHelper.showShort(fragment.getBaseAct(), "您的订单已取消!");
+            }
+        }
     }
 
 
     ModifyOrderParams buildOrderParams(HistoryOrderEntry entry) {
         ModifyOrderParams params = new ModifyOrderParams();
-        params.setParams(entry.id, entry.orderno, entry.item_type, entry.combo_id, entry.price, entry.combo_idx, entry.status, entry.date, entry.name, entry.mobile, entry.address, entry.type,entry.placeAnOrderDate,entry.fList);
+        params.setParams(entry.id, entry.orderno, entry.item_type, entry.combo_id, entry.price, entry.combo_idx, entry.status, entry.date, entry.name, entry.mobile, entry.address, entry.type, entry.placeAnOrderDate, entry.fList);
         return params;
     }
 
