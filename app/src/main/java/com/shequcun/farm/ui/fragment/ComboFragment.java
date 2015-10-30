@@ -150,7 +150,8 @@ public class ComboFragment extends BaseFragment {
             @Override
             public void onSuccess(int sCode, Header[] headers, byte[] data) {
                 if (data != null && data.length > 0) {
-                    ComboListEntry entry = JsonUtilsParser.fromJson(new String(data), ComboListEntry.class);
+                    String reuslt = new String(data);
+                    ComboListEntry entry = JsonUtilsParser.fromJson(reuslt, ComboListEntry.class);
                     if (entry != null) {
                         if (TextUtils.isEmpty(entry.errmsg)) {
                             if (adapter != null)

@@ -409,7 +409,8 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
         params.add("name", addressEntry.name);
         params.add("mobile", addressEntry.mobile);
         params.add("address", addressEntry.address);
-        params.add("addon", mOrderController.getComboMatchItemString());
+        String addon = mOrderController.getComboMatchItemString();
+        params.add("addon", addon);
         final ProgressDlg pDlg = new ProgressDlg(getBaseAct(), "加载中...");
         HttpRequestUtil.getHttpClient(getBaseAct()).post(LocalParams.getBaseUrl() + "cai/altorder", params, new AsyncHttpResponseHandler() {
             @Override

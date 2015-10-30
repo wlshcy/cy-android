@@ -353,6 +353,9 @@ public class ModifyOrderFragment extends BaseFragment {
                 entry.prices[0] = hEntry.price;
                 entry.combo_idx = hEntry.combo_idx;
                 entry.orderno = hEntry.orderno;
+                entry.times = hEntry.times;
+                entry.duration = hEntry.duration;
+                entry.shipday = hEntry.shipday;
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("ComboEntry", entry);
                 popBackStack();

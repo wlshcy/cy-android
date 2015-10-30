@@ -18,6 +18,10 @@ public class ModifyOrderParams implements Serializable {
     public int status;
     public int order_type;
 
+    public int shipday[];
+    public int times;
+    public int duration;
+
 
     public void setParams(int id, String orderno, int type, int combo_id, int price, String combo_idx, int status, String date, String name, String mobile, String address, int order_type, String placeAnOrderDate, java.util.ArrayList<FixedComboEntry> fList) {
         this.id = id;
