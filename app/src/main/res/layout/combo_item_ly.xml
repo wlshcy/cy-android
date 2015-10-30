@@ -30,7 +30,7 @@
                 android:layout_marginLeft="@dimen/px40"
                 android:gravity="center"
                 android:textColor="@color/white_f4f4f4"
-                android:drawableLeft="@drawable/icon_combo_green"/>
+                android:drawableLeft="@drawable/green_rectangle_11c258_bg"/>
 
             <TextView
                 android:id="@+id/combo_name"
