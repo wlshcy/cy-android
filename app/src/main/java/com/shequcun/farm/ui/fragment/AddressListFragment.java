@@ -160,7 +160,7 @@ public class AddressListFragment extends BaseFragment {
                 AddressFragment fragment = new AddressFragment();
                 Bundle bundle = new Bundle();
                 bundle.putInt("key", AddressFragment.KEY_ONLY_SAVE);
-                gotoFragmentByAdd(bundle,fragment, fragment.getClass());
+                gotoFragmentByAdd(bundle, fragment, fragment.getClass());
             }
         }
     };
@@ -226,20 +226,16 @@ public class AddressListFragment extends BaseFragment {
     }
 
     private void successAddress(ArrayList<AddressEntry> list) {
-        if (list == null || list.isEmpty()) {
+        adapter.clear();
+        if (list == null || list.size() <= 0) {
             showAddAddressView();
             return;
         } else if (list.size() >= maxLen) {
             goneAddAddressView();
         } else {
-            /*设置显示添加地址item*/
-//            if (action == Action.SETTING)
             showAddAddressView();
-//            else
-//                goneAddAddressView();
         }
         Collections.sort(list, new AddressComparator());
-        adapter.clear();
         adapter.addAll(list);
     }
 

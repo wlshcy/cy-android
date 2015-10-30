@@ -519,6 +519,7 @@ public class AddressFragment extends BaseFragment {
                 if (entry != null) {
                     if (TextUtils.isEmpty(entry.errcode)) {
                         IntentUtil.sendUpdateAddressRequest(getActivity());
+
                         popBackStack();
                     }
                 }
