@@ -17,13 +17,13 @@ public class ViewPagerAdapter extends PagerAdapter {
 
     public void clear() {
 
-	this.views.clear();
-	this.notifyDataSetChanged();
+        this.views.clear();
+        this.notifyDataSetChanged();
     }
 
     public void replace(ArrayList<View> views) {
-	this.views.clear();
-	this.views.addAll(views);
+        this.views.clear();
+        this.views.addAll(views);
     }
 
     /**
@@ -31,10 +31,10 @@ public class ViewPagerAdapter extends PagerAdapter {
      */
     @Override
     public int getCount() {
-	if (views != null) {
-	    return views.size();
-	}
-	return 0;
+        if (views != null) {
+            return views.size();
+        }
+        return 0;
     }
 
     /**
@@ -42,12 +42,12 @@ public class ViewPagerAdapter extends PagerAdapter {
      */
     @Override
     public Object instantiateItem(View view, int position) {
-	if (view == null) {
-	    return null;
-	}
-	((ViewPager) view).addView(views.get(position), 0);
+        if (view == null) {
+            return null;
+        }
+        ((ViewPager) view).addView(views.get(position), 0);
 
-	return views.get(position);
+        return views.get(position);
     }
 
     /**
@@ -55,7 +55,7 @@ public class ViewPagerAdapter extends PagerAdapter {
      */
     @Override
     public boolean isViewFromObject(View view, Object arg1) {
-	return (view == arg1);
+        return (view == arg1);
     }
 
     /**
@@ -63,13 +63,13 @@ public class ViewPagerAdapter extends PagerAdapter {
      */
     @Override
     public void destroyItem(View view, int position, Object arg2) {
-	try {
-	    if (views.size() > 0) {
-		((ViewPager) view).removeView(views.get(position));
-	    }
-	} catch (Exception e) {
-	    e.printStackTrace();
-	}
+        try {
+            if (views.size() > 0) {
+                ((ViewPager) view).removeView(views.get(position));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
