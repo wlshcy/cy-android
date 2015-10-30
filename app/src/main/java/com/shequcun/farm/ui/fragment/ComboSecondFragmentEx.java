@@ -39,7 +39,7 @@ public class ComboSecondFragmentEx extends BaseFragment {
     @Override
     protected void setWidgetLsn() {
         addViewsToList(buildComboEntry());
-        viewpager.addOnPageChangeListener(onPageChangeListener);
+        viewpager.setOnPageChangeListener(onPageChangeListener);
     }
 
     @Override

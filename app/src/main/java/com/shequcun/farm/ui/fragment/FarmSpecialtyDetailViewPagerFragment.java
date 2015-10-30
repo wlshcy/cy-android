@@ -31,7 +31,7 @@ public class FarmSpecialtyDetailViewPagerFragment extends BaseFragment {
     protected void setWidgetLsn() {
         buildAdapter();
         vpg.setPageTransformer(true, new Page());
-        vpg.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        vpg.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 

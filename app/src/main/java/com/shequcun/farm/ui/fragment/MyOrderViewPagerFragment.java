@@ -51,7 +51,7 @@ public class MyOrderViewPagerFragment extends BaseFragment {
     void buildAdapter(ArrayList<View> aList) {
         ViewPagerAdapter vpAdapter = new ViewPagerAdapter(aList);
         orderPager.setAdapter(vpAdapter);
-        orderPager.addOnPageChangeListener(onPageChangeListener);
+        orderPager.setOnPageChangeListener(onPageChangeListener);
 
         if (getArguments() != null) {
             setCurrentItem(1);
@@ -61,7 +61,7 @@ public class MyOrderViewPagerFragment extends BaseFragment {
     @Override
     protected void setWidgetLsn() {
         if (orderPager != null) {
-            orderPager.addOnPageChangeListener(onPageChangeListener);
+            orderPager.setOnPageChangeListener(onPageChangeListener);
             orderPager.setOffscreenPageLimit(1);
         }
     }

@@ -58,7 +58,8 @@ public abstract class BaseViewPagerFragment extends BaseFragment implements View
         aList.add(view);
         ViewPagerAdapter vpAdapter = new ViewPagerAdapter(aList);
         viewpager.setAdapter(vpAdapter);
-        viewpager.addOnPageChangeListener(this);
+//        viewpager.setOn(this);
+        viewpager.setOnPageChangeListener(this);
         viewpager.setCurrentItem(1);
     }
 

@@ -44,7 +44,7 @@ public class BrowseImageFragment extends BaseFragment {
 
     @Override
     protected void setWidgetLsn() {
-        mViewPager.addOnPageChangeListener(onPageChangeListener);
+        mViewPager.setOnPageChangeListener(onPageChangeListener);
     }
 
 

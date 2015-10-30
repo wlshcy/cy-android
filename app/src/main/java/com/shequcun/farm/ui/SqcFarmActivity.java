@@ -98,7 +98,7 @@ public class SqcFarmActivity extends BaseFragmentActivity {
 
     void setWidgetLsn() {
         radiogroup.setOnCheckedChangeListener(checkedChangeListener);
-        hVpager.addOnPageChangeListener(pageChangeLsn);
+        hVpager.setOnPageChangeListener(pageChangeLsn);
         hVpager.setOffscreenPageLimit(3);
         buildRadioButtonStatus(0);
     }
