@@ -27,6 +27,7 @@ import com.daimajia.slider.library.Indicators.PagerIndicator;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
+import com.daimajia.slider.library.Transformers.BaseTransformer;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.ComboEntry;
@@ -158,13 +159,24 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
 //        carousel_img.setAdapter(cAdapter, 0);
 //        carousel_img.setFlowIndicator(carousel_point);
         if (entry == null || entry.imgs == null || entry.imgs.length < 1) return;
-        for (String url : entry.imgs) {
-            addSliderUrl(url);
+        if (entry.imgs.length == 1) {
+            addSliderUrl(entry.imgs[0]);
+            slider.setIndicatorVisibility(PagerIndicator.IndicatorVisibility.Invisible);
+            slider.setPagerTransformer(false, new BaseTransformer() {
+                @Override
+                protected void onTransform(View view, float position) {
+                    //空是为了防止loop
+                }
+            });
+        } else {
+            for (String url : entry.imgs) {
+                addSliderUrl(url);
+            }
+            slider.setPresetTransformer(SliderLayout.Transformer.Accordion);
+            slider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
+            slider.setCustomAnimation(new DescriptionAnimation());
+            slider.setDuration(4000);
         }
-        slider.setPresetTransformer(SliderLayout.Transformer.Accordion);
-        slider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
-        slider.setCustomAnimation(new DescriptionAnimation());
-        slider.setDuration(4000);
 
     }
 

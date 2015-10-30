@@ -52,22 +52,29 @@ public class MyFragment extends BaseFragment {
     protected void initWidget(View v) {
     }
 
+    private View footView;
+
     private void addFooterChangePwdTip() {
         UserLoginEntry userLoginEntry = new CacheManager(getActivity()).getUserLoginEntry();
         if (userLoginEntry != null) {
-            View view = LayoutInflater.from(getActivity()).inflate(R.layout.change_pwd_tip_ly, null);
-            view.setOnClickListener(new AvoidDoubleClickListener() {
+            if (footView == null)
+                footView = LayoutInflater.from(getActivity()).inflate(R.layout.change_pwd_tip_ly, null);
+            footView.setOnClickListener(new AvoidDoubleClickListener() {
                 @Override
                 public void onViewClick(View v) {
                     gotoChangePwd();
                 }
             });
             if (userLoginEntry.haspwd) {
-                if (mLv.getFooterViewsCount() > 0)
-                    mLv.removeFooterView(view);
+                if (mLv.getFooterViewsCount() > 0 && footView != null)
+                    mLv.removeFooterView(footView);
             } else {
-                mLv.addFooterView(view);
+                if (mLv.getFooterViewsCount() < 1)
+                    mLv.addFooterView(footView);
             }
+        } else {
+            if (mLv.getFooterViewsCount() > 0 && footView != null)
+                mLv.removeFooterView(footView);
         }
     }
 

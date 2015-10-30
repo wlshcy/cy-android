@@ -4,15 +4,19 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -115,16 +119,19 @@ public class LoginAllFragment extends BaseFragment {
     }
 
     private void changeView() {
-        if (isPwdLogin) {
+        if (!isPwdLogin) {
             obtain_verification_code.setVisibility(View.GONE);
             sms_code_et.setHint(R.string.hint_password);
             changeLoginTv.setText("手机登录");
+            sms_code_et.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD | InputType.TYPE_CLASS_TEXT);
+            isPwdLogin = true;
         } else {
             obtain_verification_code.setVisibility(View.VISIBLE);
             sms_code_et.setHint(R.string.sms_code);
+            sms_code_et.setInputType(InputType.TYPE_CLASS_NUMBER);
             changeLoginTv.setText("密码登录");
+            isPwdLogin = false;
         }
-        isPwdLogin = !isPwdLogin;
     }
 
     @OnClick(R.id.back)
@@ -177,7 +184,13 @@ public class LoginAllFragment extends BaseFragment {
         }
         final String smsCode = sms_code_et.getText().toString();
         if (TextUtils.isEmpty(smsCode)) {
-            ToastHelper.showShort(getBaseAct(), R.string.sns_code_error);
+            String tip;
+            if (isPwdLogin) {
+                tip = "请输入密码";
+            } else {
+                tip = "请输入合法的验证码";
+            }
+            Toast.makeText(getActivity(), tip, Toast.LENGTH_LONG).show();
             return;
         }
         Utils.hideVirtualKeyboard(getBaseAct(), v);
@@ -185,10 +198,12 @@ public class LoginAllFragment extends BaseFragment {
         RequestParams params = new RequestParams();
         params.add("mobile", mobileNumber);
         //debug模式则是密码登录
-        isPwdLogin = DeviceInfo.isDebuggable(getActivity());
+//        isPwdLogin = DeviceInfo.isDebuggable(getActivity());
         if (isPwdLogin) {
+            Log.e("login", "密码登录");
             params.add("password", smsCode);
         } else {
+            Log.e("login", "验证码登录");
             params.add("smscode", smsCode);
         }
         params.add("_xsrf", xXsrfToken);
@@ -240,7 +255,6 @@ public class LoginAllFragment extends BaseFragment {
             });
         }
     }
-
 
     /**
      * 获取验证码

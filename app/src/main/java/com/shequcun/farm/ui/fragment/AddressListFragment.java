@@ -228,7 +228,6 @@ public class AddressListFragment extends BaseFragment {
     private void successAddress(ArrayList<AddressEntry> list) {
         if (list == null || list.isEmpty()) {
             showAddAddressView();
-            return;
         } else if (list.size() >= maxLen) {
             goneAddAddressView();
         } else {
