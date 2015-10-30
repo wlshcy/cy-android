@@ -18,7 +18,6 @@
     <string name="input_building_number">请输入您的楼号及门牌号</string>
 
     <string name="login">登录</string>
-    <string name="passwrod_login">密码登录</string>
     <string name="hint_password">请输入密码</string>
     <string name="get_sms_code">获取验证码</string>
     <string name="sms_code">验证码</string>
@@ -57,10 +56,8 @@
     <string name="out_of_required_weight1">亲,选该菜品会超过A的,\n换换其他的吧！^^</string>
     <string name="out_of_fixed_remain">亲,该菜品已经超过最大份数</string>
     <!-- 收货地址 -->
-    <string name="my_address">我的地址</string>
     <string name="common_phone_format_error">请输入正确的手机格式</string>
     <string name="combo_introduce">套餐介绍</string>
-    <string name="shopping_combo">购买套餐</string>
     <string name="add_address">单击此处添加您的收货地址!</string>
     <string name="address_add">添加地址</string>
     <string name="submit_immediately">立即提交</string>
@@ -123,7 +120,6 @@
     <string name="red_packets_rule">红包使用规则</string>
     <!--我的地址-->
     <string name="save">保存</string>
-    <string name="save_address">保存地址</string>
     <string name="contract">联系人</string>
     <string name="receive_address">收货地址</string>
     <string name="input_receive_name">请填写收货人姓名</string>
@@ -131,7 +127,6 @@
     <string name="input_receive_mobile">请填写收货人手机号</string>
     <string name="street_address">街道地址</string>
     <string name="sample_building_room">例:广渠路63号,2-A502</string>
-    <string name="hint_input_street_and_zone_name">请输入：街道，小区名称</string>
     <string name="prompt_delete_address">您确定删除该地址？</string>
 
     <string name="shopping_cart_empty">您的购物车是空的哦.</string>

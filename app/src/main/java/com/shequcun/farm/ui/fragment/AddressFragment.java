@@ -63,8 +63,7 @@ public class AddressFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.address_ly, container, false);
-        return view;
+        return inflater.inflate(R.layout.address_ly, container, false);
     }
 
     protected void initWidget(View v) {
@@ -83,12 +82,17 @@ public class AddressFragment extends BaseFragment {
             if (key == KEY_ONLY_SAVE)
                 deleteTv.setVisibility(View.GONE);
         }
+
+        if (bundle == null || entry == null) {
+            deleteTv.setVisibility(View.GONE);
+        }
     }
 
     @Override
     protected void setWidgetLsn() {
         title_center_text.setText(R.string.receiveing_address);
 //        deleteTv.setTextColor(getResources().getColor(R.color.green_2bc36c));
+
         deleteTv.setText("删除");
         doRegisterRefreshBrodcast();
         back.setOnClickListener(onClick);
@@ -515,6 +519,7 @@ public class AddressFragment extends BaseFragment {
                 if (entry != null) {
                     if (TextUtils.isEmpty(entry.errcode)) {
                         IntentUtil.sendUpdateAddressRequest(getActivity());
+
                         popBackStack();
                     }
                 }
