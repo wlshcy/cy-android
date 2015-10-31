@@ -93,6 +93,7 @@ public class DishesFragment extends BaseFragment {
         return null;
     }
 
+
     MyComboOrder buildMyComboOrder() {
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -125,10 +126,9 @@ public class DishesFragment extends BaseFragment {
     ModifyOrderParams buildOrderParams(HistoryOrderEntry entry) {
         ModifyOrderParams params = new ModifyOrderParams();
         MyComboOrder mEntry = buildMyComboOrder();
-
-        params.setParams(entry.id, buildOrderNo(), 1, entry.combo_id, entry.price, entry.combo_idx, entry.status, entry.date, entry.name, entry.mobile
-                , entry.address, entry.type, entry.placeAnOrderDate, entry.fList, mEntry != null ? mEntry.shipday : null, mEntry != null ? mEntry.times : 0,
-                mEntry != null ? mEntry.con : null, mEntry != null ? mEntry.duration : 0
+        params.setParams(entry.id, entry.orderno, 1, entry.combo_id, entry.price, entry.combo_idx, entry.status, entry.date, entry.name, entry.mobile
+                , entry.address, entry.type, entry.placeAnOrderDate, entry.fList, mEntry != null ? mEntry.shipday : null, entry.times,
+                buildOrderNo(), mEntry != null ? mEntry.duration : 0
         );
         return params;
     }

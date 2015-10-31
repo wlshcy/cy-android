@@ -12,8 +12,6 @@ public class HistoryOrderEntry implements Serializable {
 
     @SerializedName("status")
     public int status;//0.未付款, 1.待配送, 2.配送中, 3.配送完成, 4.取消订单
-    @SerializedName("times")
-    public int times;
     @SerializedName("combo_idx")
     public String combo_idx;
 
@@ -50,6 +48,10 @@ public class HistoryOrderEntry implements Serializable {
 
     @SerializedName("addon")
     public java.util.ArrayList<FixedComboEntry> fList;
+
+    @SerializedName("times")
+    public int times;
+
 
     public String date;
     /**
