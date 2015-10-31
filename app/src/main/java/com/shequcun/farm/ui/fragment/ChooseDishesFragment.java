@@ -4,7 +4,6 @@ import android.graphics.Color;
 import android.graphics.PointF;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -35,7 +34,9 @@ import com.shequcun.farm.data.DishesItemEntry;
 import com.shequcun.farm.data.FixedComboEntry;
 import com.shequcun.farm.data.FixedListComboEntry;
 import com.shequcun.farm.data.ModifyOrderParams;
+import com.shequcun.farm.data.UserLoginEntry;
 import com.shequcun.farm.data.goods.DishesListItemEntry;
+import com.shequcun.farm.datacenter.CacheManager;
 import com.shequcun.farm.datacenter.DisheDataCenter;
 import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.dlg.AlertDialog;
@@ -63,7 +64,6 @@ import cz.msebera.android.httpclient.Header;
  * Created by apple on 15/8/10.
  */
 public class ChooseDishesFragment extends BaseFragment {
-    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.choose_dishes_ly, container, false);
@@ -91,11 +91,27 @@ public class ChooseDishesFragment extends BaseFragment {
         buildAdapter(enabled);
         if (!enabled)
             setWidgetEnableStatus();
-        if (entry.isMine()) {
-            requsetFixedDishesList(entry.orderno);
+        if (isMyCombo()) {
+            requsetFixedDishesList(entry.con);
         } else {
             requestFixedCombo(entry.id);
         }
+    }
+
+    boolean isMyCombo() {
+        UserLoginEntry uEntry = new CacheManager(getActivity()).getUserLoginEntry();
+        if (uEntry != null) {
+            if (uEntry.mycomboids != null) {
+                int curComboId = entry.id;
+                int length = uEntry.mycomboids.length;
+                for (int i = 0; i < length; i++) {
+                    if (curComboId == uEntry.mycomboids[i]) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return (entry != null) ? entry.isMine() : false;
     }
 
     boolean isShowComboIntroduce() {
@@ -748,6 +764,7 @@ public class ChooseDishesFragment extends BaseFragment {
         params.times = entry.times;
         params.duration = entry.duration;
         params.shipday = entry.shipday;
+        params.con = entry.con;
         return params;
     }
 
@@ -884,8 +901,10 @@ public class ChooseDishesFragment extends BaseFragment {
             goodsPrice.setText(entry.quantity + entry.unit + "/份");
             final ImageView goods_add = (ImageView) headView.findViewById(R.id.goods_add);
             final TextView goods_count = (TextView) headView.findViewById(R.id.goods_count);
-            if (isLastChoose()) {
-                goods_add.setImageResource(R.drawable.icon_add_gray);
+            if (!enabled){
+                goods_add.setEnabled(false);
+            }else if (isLastChoose()) {
+//                goods_add.setImageResource(R.drawable.icon_add_gray);
                 goods_add.setEnabled(false);
                 goods_count.setText(entry.remains + "");
                 goods_count.setVisibility(View.VISIBLE);
@@ -943,21 +962,23 @@ public class ChooseDishesFragment extends BaseFragment {
      *
      * @param orderno
      */
-    void requsetFixedDishesList(String orderno) {
+    void requsetFixedDishesList(String con) {
         RequestParams params = new RequestParams();
 //      套餐固定菜品使用，套餐订单号
-        params.add("orderno", orderno);
+        params.add("orderno", con);
+        params.add("mode", "2");
         HttpRequestUtil.getHttpClient(getBaseAct()).get(LocalParams.getBaseUrl() + "cai/itemlist", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] data) {
                 if (data != null && data.length > 0) {
-                    FixedListComboEntry entry = JsonUtilsParser.fromJson(new String(data), FixedListComboEntry.class);
+                    String result = new String(data);
+                    FixedListComboEntry entry = JsonUtilsParser.fromJson(result, FixedListComboEntry.class);
                     if (entry != null) {
                         if (TextUtils.isEmpty(entry.errmsg)) {
-                            if (entry.aList == null || entry.aList.isEmpty()) {
+                            if (entry.items == null || entry.items.isEmpty()) {
                                 return;
                             }
-                            addHeader(entry.aList);
+                            addHeader(entry.items);
                             return;
                         }
                         ToastHelper.showShort(getBaseAct(), entry.errmsg);

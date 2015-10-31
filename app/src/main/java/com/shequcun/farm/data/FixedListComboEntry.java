@@ -11,4 +11,7 @@ import java.util.List;
 public class FixedListComboEntry extends BaseEntry{
     @SerializedName("combo_items")
     public List<FixedComboEntry> aList;
+    /**为cai/itemlist接口用*/
+    @SerializedName("items")
+    public List<FixedComboEntry> items;
 }

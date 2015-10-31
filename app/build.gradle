@@ -24,6 +24,8 @@ android {
         shequcunrelease {
             storeFile file("/Users/cong/sqc/android/ycai/youcai-android/app/sqc_farm_android.keystore")
             keyAlias "sqc_farm_android.keystore"
+            storePassword "Ysyhl9t"
+            keyPassword "Ysyhl9t"
         }
     }
 
@@ -38,7 +40,6 @@ android {
 }
 
 dependencies {
-
     compile 'cz.msebera.android:httpclient:4.3.3'
     compile files('libs/uCaiSDK.jar')
     compile 'com.umeng.analytics:analytics:latest.integration'

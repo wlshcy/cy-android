@@ -21,8 +21,8 @@ public class FixedComboEntry {
     public String img;
     @SerializedName("unit")
     public String unit;//个
-    @SerializedName("iid")
-    public int iid;
+    @SerializedName("ciid")
+    public int ciid;
     @SerializedName("remains")
     public int remains;
     @SerializedName("imgs")

@@ -256,6 +256,14 @@ public class LoginAllFragment extends BaseFragment {
         }
     }
 
+//    private void saveUserLogin(){//调试用
+//        CacheManager cacheManager = new CacheManager(getActivity());
+//        UserLoginEntry userLoginEntry = cacheManager.getUserLoginEntry();
+//        userLoginEntry.haspwd = false;
+//        String json = JsonUtilsParser.toJson(userLoginEntry);
+//        cacheManager.saveUserLoginToDisk(json.getBytes());
+//    }
+
     /**
      * 获取验证码
      */
