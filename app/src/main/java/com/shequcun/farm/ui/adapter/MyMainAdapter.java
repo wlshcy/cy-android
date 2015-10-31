@@ -46,8 +46,10 @@ public class MyMainAdapter extends ArrayAdapter<MyMainAdapter.MyItem> {
             vh = (ViewHolder) v.getTag();
         }
         MyItem myItem = getItem(position);
+        vh.my_title.setPadding(ResUtil.dipToPixel(getContext(),10),0,0,0);
         vh.my_title.setText(myItem.name);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
             vh.my_title.setCompoundDrawablesWithIntrinsicBounds(getContext().getDrawable(myItem.imgId), null, null, null);
         } else {
             vh.my_title.setCompoundDrawablesWithIntrinsicBounds(getContext().getResources().getDrawable(myItem.imgId), null, null, null);
