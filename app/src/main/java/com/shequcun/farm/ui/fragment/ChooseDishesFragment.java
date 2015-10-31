@@ -760,11 +760,7 @@ public class ChooseDishesFragment extends BaseFragment {
         ModifyOrderParams params = new ModifyOrderParams();
         int price = entry.prices[entry.getPosition()];
         String time = "下单日期:" + Utils.getTime(entry.chgtime.get(entry.status + ""));
-        params.setParams(entry.id, entry.orderno, 1, entry.id, price, entry.combo_idx, entry.status, null, null, null, null, 1, time, null);
-        params.times = entry.times;
-        params.duration = entry.duration;
-        params.shipday = entry.shipday;
-        params.con = entry.con;
+        params.setParams(entry.id, entry.orderno, 1, entry.id, price, entry.combo_idx, entry.status, null, null, null, null, 1, time, null, entry.shipday, entry.times, entry.con, entry.duration);
         return params;
     }
 

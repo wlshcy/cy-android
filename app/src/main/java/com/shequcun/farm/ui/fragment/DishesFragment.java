@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -19,12 +18,7 @@ import com.shequcun.farm.R;
 import com.shequcun.farm.data.HistoryOrderEntry;
 import com.shequcun.farm.data.ModifyOrderParams;
 import com.shequcun.farm.data.MyComboOrder;
-import com.shequcun.farm.data.MyComboOrderListEntry;
 import com.shequcun.farm.data.OrderListEntry;
-import com.shequcun.farm.data.RecommendEntry;
-import com.shequcun.farm.data.UserLoginEntry;
-import com.shequcun.farm.datacenter.CacheManager;
-import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.ui.adapter.MyOrderAdapter;
 import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
@@ -32,14 +26,11 @@ import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.ToastHelper;
 import com.shequcun.farm.util.Utils;
 
-
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnItemClick;
-import butterknife.OnItemSelected;
 import cz.msebera.android.httpclient.Header;
 
 /**
@@ -102,6 +93,17 @@ public class DishesFragment extends BaseFragment {
         return null;
     }
 
+    MyComboOrder buildMyComboOrder() {
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            MyComboOrder entry = (MyComboOrder) bundle.getSerializable("MyComboOrderEntry");
+            if (entry != null) {
+                return entry;
+            }
+        }
+        return null;
+    }
+
     void buidlAdapter() {
         if (adapter == null) {
             adapter = new MyOrderAdapter(getBaseAct());
@@ -122,7 +124,12 @@ public class DishesFragment extends BaseFragment {
 
     ModifyOrderParams buildOrderParams(HistoryOrderEntry entry) {
         ModifyOrderParams params = new ModifyOrderParams();
-        params.setParams(entry.id, buildOrderNo(), 1, entry.combo_id, entry.price, entry.combo_idx, entry.status, entry.date, entry.name, entry.mobile, entry.address, entry.type, entry.placeAnOrderDate,entry.fList);
+        MyComboOrder mEntry = buildMyComboOrder();
+
+        params.setParams(entry.id, buildOrderNo(), 1, entry.combo_id, entry.price, entry.combo_idx, entry.status, entry.date, entry.name, entry.mobile
+                , entry.address, entry.type, entry.placeAnOrderDate, entry.fList, mEntry != null ? mEntry.shipday : null, mEntry != null ? mEntry.times : 0,
+                mEntry != null ? mEntry.con : null, mEntry != null ? mEntry.duration : 0
+        );
         return params;
     }
 
