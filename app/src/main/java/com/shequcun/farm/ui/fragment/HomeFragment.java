@@ -57,8 +57,6 @@ import cz.msebera.android.httpclient.Header;
 public class HomeFragment extends BaseFragment implements BaseSliderView.OnSliderClickListener {
     @Bind(R.id.slider)
     SliderLayout slider;
-    @Bind(R.id.custom_indicator2)
-    PagerIndicator customIndicator2;
 
     @Nullable
     @Override
@@ -77,7 +75,6 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
     @Override
     protected void setWidgetLsn() {
         doRegisterRefreshBrodcast();
-//        pView.setMode(PullToRefreshBase.Mode.PULL_FROM_END);
         pView.setMode(PullToRefreshBase.Mode.BOTH);
         pView.setOnRefreshListener(onRefrshLsn);
         buildGridViewAdapter();
@@ -86,12 +83,7 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
 
     @OnClick({R.id.no_combo_iv, R.id.has_combo_iv})
     void doClick() {
-//        if (!isLogin()) {
-//            gotoFragmentByAnimation(null, R.id.mainpage_ly, new LoginFragment(), LoginFragment.class.getName(), R.anim.scale_left_top_in, R.anim.scale_left_top_out);
-//            return;
-//        }
         gotoFragmentByAdd(null, R.id.mainpage_ly, new ComboFragment(), ComboFragment.class.getName());
-//        gotoFragmentByAnimation(null, R.id.mainpage_ly, new ComboFragment(), ComboFragment.class.getName(), R.anim.scale_left_top_in, R.anim.scale_left_top_out);
     }
 
     @OnItemClick(R.id.gv)
@@ -101,11 +93,7 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
         RecommendEntry entry = adapter.getItem(position);
         if (entry == null)
             return;
-
         gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailFragment(), FarmSpecialtyDetailFragment.class.getName());
-//        gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailViewPagerFragment(), FarmSpecialtyDetailViewPagerFragment.class.getName());
-//        gotoFragmentByAnimation(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailFragment(), FarmSpecialtyDetailFragment.class.getName(), R.anim.slide_in_from_bottom, R.anim.slide_out_to_bottom);
-//        gotoFragmentByAnimation(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailFragment(), FarmSpecialtyDetailFragment.class.getName(),R.anim.rotate_in,R.anim.slide_out_to_bottom);
     }
 
 
@@ -239,7 +227,6 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
         @Override
         public void onPullUpToRefresh(PullToRefreshBase refreshView) {
             requestRecomendDishes();
-//            requestHome(1);
         }
     };
 
@@ -294,12 +281,11 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
         RequestParams params = new RequestParams();
         params.add("length", 15 + "");
         if (adapter != null && adapter.getCount() >= 1) {
-//            params.add("lastid", adapter.getItem(adapter.getCount() - 1).id + "");
             params.add("start", adapter.getCount() + "");
         } else {
             params.add("start", "0");
         }
-        HttpRequestUtil.getHttpClient(getBaseAct()).get(LocalParams.getBaseUrl() + "cai/itemlist", new AsyncHttpResponseHandler() {
+        HttpRequestUtil.getHttpClient(getBaseAct()).get(LocalParams.getBaseUrl() + "cai/itemlist", params, new AsyncHttpResponseHandler() {
             @Override
             public void onFinish() {
                 super.onFinish();
@@ -313,8 +299,11 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
                     RecommentListEntry entry = JsonUtilsParser.fromJson(new String(data), RecommentListEntry.class);
                     if (entry != null) {
                         if (TextUtils.isEmpty(entry.errmsg)) {
+                            if (entry.aList == null || entry.aList.size() <= 0) {
+                                ToastHelper.showShort(getBaseAct(), R.string.no_more_goods);
+                                return;
+                            }
                             addDataToAdapter(entry.aList);
-                            return;
                         }
                     }
                 }
@@ -339,9 +328,9 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
     }
 
     void addDataToAdapter(List<RecommendEntry> aList) {
-        if (adapter != null) {
-            adapter.clear();
-        }
+//        if (adapter != null) {
+//            adapter.clear();
+//        }
         if (aList != null && aList.size() > 0) {
             adapter.addAll(aList);
             adapter.notifyDataSetChanged();
