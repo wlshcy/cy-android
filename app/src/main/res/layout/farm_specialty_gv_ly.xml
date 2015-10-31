@@ -10,5 +10,6 @@
     android:paddingLeft="@dimen/px20"
     android:paddingRight="@dimen/px20"
     android:paddingBottom="@dimen/px20"
+    android:listSelector="@android:color/transparent"
     android:stretchMode="columnWidth"
     android:verticalSpacing="@dimen/px20" />
