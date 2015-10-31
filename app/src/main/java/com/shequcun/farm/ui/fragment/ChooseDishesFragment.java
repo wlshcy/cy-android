@@ -871,12 +871,13 @@ public class ChooseDishesFragment extends BaseFragment {
     }
 
     private boolean isLastChoose() {
-        if (entry.choose) {
+
+        if (entry.choose && entry.shipday != null && entry.shipday.length > 0) {
             if ((++entry.times) == entry.duration * entry.shipday.length) {
                 return true;
             }
         } else {
-            if (entry.times == entry.duration * entry.shipday.length) {
+            if (entry.shipday != null && entry.shipday.length > 0 && entry.times == entry.duration * entry.shipday.length) {
                 return true;
             }
         }
@@ -901,9 +902,9 @@ public class ChooseDishesFragment extends BaseFragment {
             goodsPrice.setText(entry.quantity + entry.unit + "/份");
             final ImageView goods_add = (ImageView) headView.findViewById(R.id.goods_add);
             final TextView goods_count = (TextView) headView.findViewById(R.id.goods_count);
-            if (!enabled){
+            if (!enabled) {
                 goods_add.setEnabled(false);
-            }else if (isLastChoose()) {
+            } else if (isLastChoose()) {
 //                goods_add.setImageResource(R.drawable.icon_add_gray);
                 goods_add.setEnabled(false);
                 goods_count.setText(entry.remains + "");
@@ -960,7 +961,7 @@ public class ChooseDishesFragment extends BaseFragment {
     /**
      * 来自我的套餐
      *
-     * @param orderno
+     * @param con
      */
     void requsetFixedDishesList(String con) {
         RequestParams params = new RequestParams();
