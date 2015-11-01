@@ -54,7 +54,7 @@ public class MyFragment extends BaseFragment {
         changePwdTip();
     }
 
-    private void changePwdTip(){
+    private void changePwdTip() {
         UserLoginEntry userLoginEntry = getUserLoginEntry();
         if (userLoginEntry != null) {
             if (userLoginEntry.haspwd) {
@@ -122,10 +122,11 @@ public class MyFragment extends BaseFragment {
     void onItemClick(int position) {
         if (adapter == null || mLv == null)
             return;
-//        if (uEntry == null) {
+        if (uEntry == null) {
+            FragmentUtils.login(this);
 //            showLoginDlg();
-//            return;
-//        }
+            return;
+        }
         switch (position - mLv.getHeaderViewsCount()) {
             case 0://我的订单
                 gotoFragmentByAdd(R.id.mainpage_ly, new MyOrderViewPagerFragment(), MyOrderViewPagerFragment.class.getName());

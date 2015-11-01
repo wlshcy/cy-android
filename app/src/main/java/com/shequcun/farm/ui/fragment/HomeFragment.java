@@ -30,6 +30,7 @@ import com.shequcun.farm.data.LinkEntry;
 import com.shequcun.farm.data.RecommendEntry;
 import com.shequcun.farm.data.RecommentListEntry;
 import com.shequcun.farm.data.SlidesEntry;
+import com.shequcun.farm.data.UserLoginEntry;
 import com.shequcun.farm.datacenter.CacheManager;
 import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.platform.UmengCountEvent;
@@ -91,6 +92,10 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
 //            gotoFragmentByAnimation(null, R.id.mainpage_ly, new LoginFragment(), LoginFragment.class.getName(), R.anim.scale_left_top_in, R.anim.scale_left_top_out);
 //            return;
 //        }
+        if (!isLogin()) {
+            FragmentUtils.login(this);
+            return;
+        }
         gotoFragmentByAdd(null, R.id.mainpage_ly, new ComboFragment(), ComboFragment.class.getName());
 //        gotoFragmentByAnimation(null, R.id.mainpage_ly, new ComboFragment(), ComboFragment.class.getName(), R.anim.scale_left_top_in, R.anim.scale_left_top_out);
     }
@@ -202,6 +207,10 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
 
     @Override
     public void onSliderClick(BaseSliderView slider) {
+        if (!isLogin()) {
+            FragmentUtils.login(this);
+            return;
+        }
         if (slider.getParamObj() == null) return;
         SlidesEntry entry = (SlidesEntry) slider.getParamObj();
         gotoAdFragment(entry);

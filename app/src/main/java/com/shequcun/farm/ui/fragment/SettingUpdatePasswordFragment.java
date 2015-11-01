@@ -34,6 +34,7 @@ import com.shequcun.farm.util.Utils;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import butterknife.OnTextChanged;
 import cz.msebera.android.httpclient.Header;
 
 /**
@@ -70,6 +71,7 @@ public class SettingUpdatePasswordFragment extends BaseFragment {
 
     @Override
     protected void setWidgetLsn() {
+        darkSmscode();
         passwordEt.addTextChangedListener(textWatcher);
         newPasswordEt.addTextChangedListener(textWatcher1);
     }
@@ -87,7 +89,7 @@ public class SettingUpdatePasswordFragment extends BaseFragment {
 
         @Override
         public void afterTextChanged(Editable s) {
-            if (s.length() > 0 && newPasswordEt.getText().length() > 0)
+            if (s.length() > maxLength - 1 && newPasswordEt.getText().length() > maxLength - 1)
                 lightSmscode();
             else
                 darkSmscode();
@@ -107,7 +109,7 @@ public class SettingUpdatePasswordFragment extends BaseFragment {
 
         @Override
         public void afterTextChanged(Editable s) {
-            if (s.length() > 0 && passwordEt.getText().length() > 0)
+            if (s.length() > maxLength - 1 && passwordEt.getText().length() > maxLength - 1)
                 lightSmscode();
             else
                 darkSmscode();
@@ -116,12 +118,12 @@ public class SettingUpdatePasswordFragment extends BaseFragment {
 
     private void darkSmscode() {
         getSmscodeBtn.setTextColor(getResources().getColor(R.color.gray_3d3d3d));
-        getSmscodeBtn.setEnabled(false);
+//        getSmscodeBtn.setEnabled(false);
     }
 
     private void lightSmscode() {
         getSmscodeBtn.setTextColor(getResources().getColor(R.color.green_11C258));
-        getSmscodeBtn.setEnabled(true);
+//        getSmscodeBtn.setEnabled(true);
 
     }
 
@@ -135,9 +137,11 @@ public class SettingUpdatePasswordFragment extends BaseFragment {
 
     private String checkInputPwd() {
         password = passwordEt.getText().toString().trim();
-        if (TextUtils.isEmpty(password)) return "请输入新密码";
+        if (TextUtils.isEmpty(password) || password.length() < maxLength)
+            return "请输入不少于" + maxLength + "位新密码";
         String newPassword = newPasswordEt.getText().toString().trim();
-        if (TextUtils.isEmpty(newPassword)) return "请输入确认密码";
+        if (TextUtils.isEmpty(newPassword) || newPassword.length() < maxLength)
+            return "请输入不少于" + maxLength + "位确认密码";
         if (password.equals(newPassword) == false) return "确认密码与新密码不相同";
         return null;
     }
