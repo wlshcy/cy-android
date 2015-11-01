@@ -84,6 +84,7 @@ public class RedPacketsAdapter extends BaseAdapter {
             vh.expiryDate.setTextColor(context.getResources().getColor(R.color.gray_cccccc));
             vh.requiredCountTv.setTextColor(context.getResources().getColor(R.color.gray_cccccc));
             vh.flowerIv.setBackgroundResource(R.drawable.flower_stroke_gray);
+            vh.logoIv.setImageResource(R.drawable.logo_gray);
         } else {
             vh.count.setTextColor(context.getResources().getColor(R.color.red_fe786b));
             vh.moneySymbolTv.setTextColor(context.getResources().getColor(R.color.red_fe786b));
@@ -91,6 +92,7 @@ public class RedPacketsAdapter extends BaseAdapter {
             vh.expiryDate.setTextColor(context.getResources().getColor(R.color.red_fe786b));
             vh.requiredCountTv.setTextColor(context.getResources().getColor(R.color.red_fe786b));
             vh.flowerIv.setBackgroundResource(R.drawable.flower_stroke);
+            vh.logoIv.setImageResource(R.drawable.logo);
         }
         vh.expiryDate.setText("有效期至" + Utils.getTime(entry.expire));
         return convertView;
@@ -123,6 +125,8 @@ public class RedPacketsAdapter extends BaseAdapter {
         TextView targetTv;
         @Bind(R.id.flower_iv)
         ImageView flowerIv;
+        @Bind(R.id.logo_iv)
+        ImageView logoIv;
 
         public ViewHolder(View convertView) {
             ButterKnife.bind(this, convertView);

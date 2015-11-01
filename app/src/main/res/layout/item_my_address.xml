@@ -67,6 +67,7 @@
         android:paddingRight="@dimen/px48"
         android:paddingTop="@dimen/px48"
         android:src="@drawable/icon_edit"
+        android:background="@drawable/list_bg"
          />
 </LinearLayout>
 

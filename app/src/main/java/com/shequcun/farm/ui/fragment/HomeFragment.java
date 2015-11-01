@@ -32,6 +32,7 @@ import com.shequcun.farm.data.RecommentListEntry;
 import com.shequcun.farm.data.SlidesEntry;
 import com.shequcun.farm.datacenter.CacheManager;
 import com.shequcun.farm.dlg.ProgressDlg;
+import com.shequcun.farm.platform.UmengCountEvent;
 import com.shequcun.farm.ui.adapter.CarouselAdapter;
 import com.shequcun.farm.ui.adapter.FarmSpecialtyAdapter;
 import com.shequcun.farm.util.DeviceInfo;
@@ -204,6 +205,7 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
         if (slider.getParamObj() == null) return;
         SlidesEntry entry = (SlidesEntry) slider.getParamObj();
         gotoAdFragment(entry);
+        UmengCountEvent.onClickHomeBanner(getActivity());
     }
 
     private void gotoAdFragment(SlidesEntry item) {

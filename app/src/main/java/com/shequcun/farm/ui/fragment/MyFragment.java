@@ -51,38 +51,66 @@ public class MyFragment extends BaseFragment {
 
     @Override
     protected void initWidget(View v) {
+        changePwdTip();
     }
 
-    private View footView;
-
-    private void addFooterChangePwdTip() {
-        UserLoginEntry userLoginEntry = new CacheManager(getActivity()).getUserLoginEntry();
+    private void changePwdTip(){
+        UserLoginEntry userLoginEntry = getUserLoginEntry();
         if (userLoginEntry != null) {
-            if (footView == null)
-                footView = LayoutInflater.from(getActivity()).inflate(R.layout.change_pwd_tip_ly, null);
-            footView.setOnClickListener(new AvoidDoubleClickListener() {
-                @Override
-                public void onViewClick(View v) {
-                    gotoChangePwd();
-                }
-            });
             if (userLoginEntry.haspwd) {
-                removeFooterChangePwdTip();
+                hidChangePwdTip();
             } else {
                 //查看过修改密码
                 if (PersistanceManager.getClickChangePwdFlag(getActivity()) == false)
-                    if (mLv.getFooterViewsCount() < 1)
-                        mLv.addFooterView(footView);
+                    showChangePwdTip();
             }
         } else {
-            removeFooterChangePwdTip();
+            hidChangePwdTip();
         }
     }
 
-    private void removeFooterChangePwdTip() {
-        if (mLv.getFooterViewsCount() > 0 && footView != null)
-            mLv.removeFooterView(footView);
+//    private View footView;
+
+//    private void addFooterChangePwdTip() {
+//        UserLoginEntry userLoginEntry = getUserLoginEntry();
+//        if (userLoginEntry != null) {
+//            if (footView == null)
+//                footView = LayoutInflater.from(getActivity()).inflate(R.layout.change_pwd_tip_ly, null);
+//            footView.setOnClickListener(new AvoidDoubleClickListener() {
+//                @Override
+//                public void onViewClick(View v) {
+//                    gotoChangePwd();
+//                }
+//            });
+//            if (userLoginEntry.haspwd) {
+//                removeFooterChangePwdTip();
+//            } else {
+//                //查看过修改密码
+//                if (PersistanceManager.getClickChangePwdFlag(getActivity()) == false)
+//                    if (mLv.getFooterViewsCount() < 1)
+//                        mLv.addFooterView(footView);
+//            }
+//        } else {
+//            removeFooterChangePwdTip();
+//        }
+//    }
+
+    private void hidChangePwdTip() {
+        changePwdTv.setVisibility(View.GONE);
     }
+
+    private void showChangePwdTip() {
+        changePwdTv.setVisibility(View.VISIBLE);
+    }
+
+    private UserLoginEntry getUserLoginEntry() {
+        return new CacheManager(getActivity()).getUserLoginEntry();
+    }
+
+//    private void removeFooterChangePwdTip() {
+//        if (mLv.getFooterViewsCount() > 0 && footView != null)
+//            mLv.removeFooterView(footView);
+//    }
 
     @Override
     protected void setWidgetLsn() {
@@ -94,10 +122,10 @@ public class MyFragment extends BaseFragment {
     void onItemClick(int position) {
         if (adapter == null || mLv == null)
             return;
-        if (uEntry == null) {
-            showLoginDlg();
-            return;
-        }
+//        if (uEntry == null) {
+//            showLoginDlg();
+//            return;
+//        }
         switch (position - mLv.getHeaderViewsCount()) {
             case 0://我的订单
                 gotoFragmentByAdd(R.id.mainpage_ly, new MyOrderViewPagerFragment(), MyOrderViewPagerFragment.class.getName());
@@ -153,7 +181,10 @@ public class MyFragment extends BaseFragment {
         } else {
             circleImageView.setImageResource(R.color.white_f4f4f4);
         }
-        showReddot(false);
+        if (getUserLoginEntry() != null)
+            showReddot(false);
+        else
+            showReddot(true);
         hView_1.findViewById(R.id.my_head).setOnClickListener(new AvoidDoubleClickListener() {
             @Override
             public void onViewClick(View v) {
@@ -176,7 +207,6 @@ public class MyFragment extends BaseFragment {
 
     void buildAdapter() {
         addHeader();
-        addFooterChangePwdTip();
         if (adapter == null)
             adapter = new MyMainAdapter(getActivity());
         mLv.setAdapter(adapter);
@@ -201,7 +231,7 @@ public class MyFragment extends BaseFragment {
             }
             if (action.equals("com.youcai.refresh")) {
                 addHeader();
-                addFooterChangePwdTip();
+                changePwdTip();
             }
         }
     };
@@ -235,16 +265,19 @@ public class MyFragment extends BaseFragment {
             gotoChangePwd();
     }
 
+    @OnClick(R.id.change_pwd_tv)
     void gotoChangePwd() {
         FragmentUtils.changePwd(this);
         //查看到修改密码标志位
         PersistanceManager.saveClickChangePwdFlag(getActivity(), true);
-        removeFooterChangePwdTip();
+        hidChangePwdTip();
     }
 
     boolean mIsBind = false;
     @Bind(R.id.mLv)
     ListView mLv;
+    @Bind(R.id.change_pwd_tv)
+    TextView changePwdTv;
     MyMainAdapter adapter;
     UserLoginEntry uEntry;
     View hView_1;

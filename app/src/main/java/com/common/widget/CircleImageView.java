@@ -238,9 +238,16 @@ public class CircleImageView extends ImageView {
         mDrawableRect.set(mBorderWidth + getPaddingLeft(), mBorderWidth + getPaddingLeft(), mBorderRect.width() - mBorderWidth - getPaddingLeft(), mBorderRect.height() - mBorderWidth - getPaddingLeft());
         mDrawableRadius = Math.min(mDrawableRect.height() / 2, mDrawableRect.width() / 2);
 
+        paintBorder = new Paint();
+        paintBorder.setAntiAlias(true);
+        this.setLayerType(LAYER_TYPE_SOFTWARE, paintBorder);
+        paintBorder.setShadowLayer(4.0f, 0.0f, 2.0f, Color.BLACK);
+
         updateShaderMatrix();
         invalidate();
     }
+
+    private Paint paintBorder;
 
     private void updateShaderMatrix() {
         float scale;
