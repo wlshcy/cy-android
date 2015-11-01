@@ -956,8 +956,11 @@ public class ChooseDishesFragment extends BaseFragment {
 
     /**
      * 来自我的套餐
+<<<<<<< Updated upstream
      *
      * @param con
+=======
+>>>>>>> Stashed changes
      */
     void requsetFixedDishesList(String con) {
         RequestParams params = new RequestParams();
