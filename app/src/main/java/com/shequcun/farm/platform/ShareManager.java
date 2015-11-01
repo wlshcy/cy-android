@@ -8,6 +8,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -30,7 +32,9 @@ import java.net.URL;
  */
 public class ShareManager {
     private IWXAPI api;
-    /**150就会导致>32k*/
+    /**
+     * 150就会导致>32k
+     */
     private static final int THUMB_SIZE = 120;
     private Bitmap mThumbBmp;
     private static ShareManager instance;
@@ -105,6 +109,7 @@ public class ShareManager {
         alert.show();
 //        alert.setCancelable(false);
         alert.setCanceledOnTouchOutside(true);
+        alert.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
         alert.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         alert.getWindow().setContentView(R.layout.prompt_share_frame);
         alert.getWindow().findViewById(R.id.wxTv).setOnClickListener(new AvoidDoubleClickListener() {
@@ -137,7 +142,7 @@ public class ShareManager {
     }
 
     private void clear() {
-        if (mThumbBmp!=null && !mThumbBmp.isRecycled())
+        if (mThumbBmp != null && !mThumbBmp.isRecycled())
             mThumbBmp.isRecycled();
         mThumbBmp = null;
     }
