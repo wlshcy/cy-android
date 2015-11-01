@@ -81,7 +81,7 @@ public class ShoppingOrderViewHolder {
     };
 
     public void requestOrderEntry() {
-        if(fragment==null)
+        if (fragment == null)
             return;
         RequestParams params = new RequestParams();
         if (adapter != null && adapter.getCount() >= 1) {
@@ -146,7 +146,7 @@ public class ShoppingOrderViewHolder {
 
     ModifyOrderParams buildOrderParams(HistoryOrderEntry entry) {
         ModifyOrderParams params = new ModifyOrderParams();
-        params.setParams(entry.id, entry.orderno, entry.item_type, entry.combo_id, entry.price, entry.combo_idx, entry.status, entry.date, entry.name, entry.mobile, entry.address, entry.type, entry.placeAnOrderDate, entry.fList);
+        params.setParams(entry.id, entry.orderno, entry.item_type, entry.combo_id, entry.price, entry.combo_idx, entry.status, entry.date, entry.name, entry.mobile, entry.address, entry.type, entry.placeAnOrderDate, entry.fList, null, 0, null, 0);
         return params;
     }
 

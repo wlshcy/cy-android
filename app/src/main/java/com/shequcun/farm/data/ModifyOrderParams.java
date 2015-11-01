@@ -24,7 +24,7 @@ public class ModifyOrderParams implements Serializable {
     public String con;
 
 
-    public void setParams(int id, String orderno, int type, int combo_id, int price, String combo_idx, int status, String date, String name, String mobile, String address, int order_type, String placeAnOrderDate, java.util.ArrayList<FixedComboEntry> fList) {
+    public void setParams(int id, String orderno, int type, int combo_id, int price, String combo_idx, int status, String date, String name, String mobile, String address, int order_type, String placeAnOrderDate, java.util.ArrayList<FixedComboEntry> fList, int shipday[], int times, String con, int duration) {
         this.id = id;
         this.orderno = orderno;
         this.type = type;
@@ -39,6 +39,10 @@ public class ModifyOrderParams implements Serializable {
         this.order_type = order_type;
         this.placeAnOrderDate = placeAnOrderDate;
         this.fList = fList;
+        this.shipday = shipday;
+        this.times = times;
+        this.con = con;
+        this.duration = duration;
     }
 
     /**

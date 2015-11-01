@@ -12,7 +12,8 @@
         android:layout_gravity="center_vertical"
         android:drawablePadding="@dimen/px14"
         android:gravity="center_vertical"
-        android:paddingLeft="@dimen/px14"
+        android:paddingLeft="@dimen/px40"
+
         android:textColor="@android:color/black"
         android:textSize="@dimen/font28" />
 

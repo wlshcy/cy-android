@@ -33,4 +33,10 @@ public class MyComboOrder extends BaseEntry {
     @SerializedName("status")
     public int status;
 
+    @SerializedName("shipday")
+    public int[] shipday;//配送日	单位：日/周
+
+    @SerializedName("duration")
+    public int duration;
+
 }

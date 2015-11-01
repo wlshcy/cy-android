@@ -51,14 +51,6 @@ public class MyComboOrderViewHolder {
         if (adapter == null || fgt == null)
             return;
         MyComboOrder entry = adapter.getItem(position);
-//        HistoryOrderEntry entry = adapter.getItem(position);
-//        if (entry != null) {
-//            if (entry.status == 1 || entry.status == 3 || entry.status == 0 || entry.status == 2) {
-//                gotoFragmentByAdd(buildBundle(buildOrderParams(entry)), R.id.mainpage_ly, new ModifyOrderFragment(), ModifyOrderFragment.class.getName());
-//            } else if (entry.status == 4) {
-//                ToastHelper.showShort(getBaseAct(), "您的订单已取消!");
-//            }
-//        }
         if (entry != null) {
             Bundle bundle = new Bundle();
             bundle.putSerializable("MyComboOrderEntry", entry);

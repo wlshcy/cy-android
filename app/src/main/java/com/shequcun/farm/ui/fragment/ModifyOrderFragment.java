@@ -355,12 +355,18 @@ public class ModifyOrderFragment extends BaseFragment {
                 entry.orderno = hEntry.orderno;
                 entry.times = hEntry.times;
                 entry.duration = hEntry.duration;
+//                if (hEntry.shipday != null && hEntry.shipday.length > 0) {
+//                    int length = hEntry.shipday.length;
+//                    entry.shipday = new int[length];
+//                    for (int j = 0; j < length; j++) {
+//                        entry.shipday[j] = hEntry.shipday[j];
+//                    }
+//                }
                 entry.shipday = hEntry.shipday;
-                entry.con = hEntry.con;
+                entry.con = TextUtils.isEmpty(hEntry.con) ? entry.orderno : hEntry.con;
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("ComboEntry", entry);
                 popBackStack();
-//                gotoFragmentByAnimation(bundle, R.id.mainpage_ly, new ChooseDishesFragment(), ChooseDishesFragment.class.getName(), R.anim.scale_left_bottom_in, R.anim.scale_left_bottom_out);
                 gotoFragmentByAdd(bundle, R.id.mainpage_ly, new ChooseDishesFragment(), ChooseDishesFragment.class.getName());
             }
         });

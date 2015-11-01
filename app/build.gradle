@@ -24,8 +24,6 @@ android {
         shequcunrelease {
             storeFile file("/Users/cong/sqc/android/ycai/youcai-android/app/sqc_farm_android.keystore")
             keyAlias "sqc_farm_android.keystore"
-            storePassword "Ysyhl9t"
-            keyPassword "Ysyhl9t"
         }
     }
 
