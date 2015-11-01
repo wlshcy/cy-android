@@ -744,7 +744,7 @@ public class ChooseDishesFragment extends BaseFragment {
         } else {
             choose_dishes_tip.setVisibility(View.GONE);
         }
-        return false;
+        return true;
     }
 
     boolean isChooseNextDishes() {
