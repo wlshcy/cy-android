@@ -722,6 +722,7 @@ public class ChooseDishesFragment extends BaseFragment {
 
     boolean setChooseDishesContent(View v) {
         final TextView choose_dishes_tip = (TextView) v.findViewById(R.id.choose_dishes_tip);
+        mBuyOrderTv.setText(R.string.has_chosen_dishes);
         if (isChooseNextDishes()) return true;
         int status = buildStatus();
         choose_dishes_tip.setVisibility(View.VISIBLE);
@@ -745,6 +746,7 @@ public class ChooseDishesFragment extends BaseFragment {
         } else {
             choose_dishes_tip.setVisibility(View.GONE);
         }
+        mBuyOrderTv.setText(entry.reason);
         return true;
     }
 
@@ -776,12 +778,12 @@ public class ChooseDishesFragment extends BaseFragment {
         mShopCartIv.setEnabled(false);
         mShopCartPriceTv.setText(null);
         mBuyOrderTv.setTextColor(getBaseAct().getResources().getColorStateList(R.color.gray_d8d8d8));
-        //过了选菜日了,上期配送的也完成了,这期的没选
-        if (entry.status == 2 && entry.choose == false) {
-            mBuyOrderTv.setText(entry.reason);
-        } else {
-            mBuyOrderTv.setText(R.string.has_chosen_dishes);
-        }
+//        //过了选菜日了,上期配送的也完成了,这期的没选
+//        if (entry.status == 2 && entry.choose == false) {
+//            mBuyOrderTv.setText(entry.reason);
+//        } else {
+//            mBuyOrderTv.setText(R.string.has_chosen_dishes);
+//        }
         mBuyOrderTv.setEnabled(false);
     }
 
