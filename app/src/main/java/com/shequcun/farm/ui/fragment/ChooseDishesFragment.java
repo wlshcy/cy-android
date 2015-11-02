@@ -123,12 +123,32 @@ public class ChooseDishesFragment extends BaseFragment {
 
     @Override
     protected void setWidgetLsn() {
-        mShopCartIv.setOnClickListener(onClick);
-        emptyView.setOnClickListener(onClick);
-        option_dishes_tv.setOnClickListener(onClick);
         pView.setMode(PullToRefreshBase.Mode.DISABLED);
         requsetDishesList();
     }
+
+    @OnClick(R.id.empty_view)
+    void doHandleEmptyEvent() {
+        doPopUpStack();
+    }
+
+    @OnClick(R.id.shop_cart_iv)
+    void doHandleShopCartEvent() {
+        if (mShopCartClearTv.getVisibility() == View.GONE) {
+            hideOptionWidget();
+            popupShoppingCart();
+        } else
+            hideShopCart();
+    }
+
+    @OnClick(R.id.option_dishes_tv)
+    void doHandleOptionDishesEvent() {
+        if (option_dishes_tip.getVisibility() == View.GONE)
+            popUpOptionsWidget();
+        else
+            hideOptionWidget();
+    }
+
 
     @OnClick(R.id.back)
     void back() {
@@ -149,27 +169,6 @@ public class ChooseDishesFragment extends BaseFragment {
         }
         return false;
     }
-
-    View.OnClickListener onClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if (v == mShopCartIv) {
-                if (mShopCartClearTv.getVisibility() == View.GONE) {
-                    hideOptionWidget();
-                    popupShoppingCart();
-                } else
-                    hideShopCart();
-            } else if (v == emptyView) {
-                doPopUpStack();
-            } else if (v == option_dishes_tv) {
-                if (option_dishes_tip.getVisibility() == View.GONE)
-                    popUpOptionsWidget();
-                else
-                    hideOptionWidget();
-            }
-        }
-
-    };
 
     int buildRequestID() {
         if (entry == null)
@@ -437,10 +436,8 @@ public class ChooseDishesFragment extends BaseFragment {
     private void hideShopCart() {
         mShopCartClearTv.setVisibility(View.GONE);
         emptyView.setVisibility(View.GONE);
-        LinearLayout popupShopCartLl = (LinearLayout) rootView
-                .findViewById(R.id.shop_cart_container_ll);
-        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) popupShopCartLl
-                .getLayoutParams();
+        LinearLayout popupShopCartLl = (LinearLayout) rootView.findViewById(R.id.shop_cart_container_ll);
+        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) popupShopCartLl.getLayoutParams();
         lp.bottomMargin = 0;
         popupShopCartLl.setLayoutParams(lp);
         popupShopCartLl.removeAllViews();
@@ -770,12 +767,7 @@ public class ChooseDishesFragment extends BaseFragment {
         mShopCartIv.setEnabled(false);
         mShopCartPriceTv.setText(null);
         mBuyOrderTv.setTextColor(getBaseAct().getResources().getColorStateList(R.color.gray_d8d8d8));
-        //过了选菜日了,上期配送的也完成了,这期的没选
-        if (entry.status == 2 && entry.choose == false) {
-            mBuyOrderTv.setText(entry.reason);
-        } else {
-            mBuyOrderTv.setText(R.string.has_chosen_dishes);
-        }
+        mBuyOrderTv.setText((entry.status == 2 && !entry.choose) ? entry.reason : "本期菜品已选");
         mBuyOrderTv.setEnabled(false);
     }
 
@@ -863,7 +855,6 @@ public class ChooseDishesFragment extends BaseFragment {
     }
 
     private boolean isLastChoose() {
-
         if (entry.choose && entry.shipday != null && entry.shipday.length > 0) {
             if ((++entry.times) == entry.duration * entry.shipday.length) {
                 return true;
@@ -885,11 +876,9 @@ public class ChooseDishesFragment extends BaseFragment {
             ImageView goods_img = (ImageView) headView.findViewById(R.id.goods_img);
 
             if (entry != null && entry.imgs != null && entry.imgs.length > 0) {
-                String url = entry.imgs[0] + "?imageview2/2/w/180";
-                ImageLoader.getInstance().displayImage(url, goods_img);
+                ImageLoader.getInstance().displayImage(entry.imgs[0] + "?imageview2/2/w/180", goods_img);
             }
-            TextView goodsName = (TextView) headView.findViewById(R.id.goods_name);
-            goodsName.setText(entry.title);
+            ((TextView) headView.findViewById(R.id.goods_name)).setText(entry.title);
             TextView goodsPrice = (TextView) headView.findViewById(R.id.goods_price);
             goodsPrice.setText(entry.quantity + entry.unit + "/份");
             final ImageView goods_add = (ImageView) headView.findViewById(R.id.goods_add);
