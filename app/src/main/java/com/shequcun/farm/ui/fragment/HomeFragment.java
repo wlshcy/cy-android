@@ -36,6 +36,7 @@ import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.platform.UmengCountEvent;
 import com.shequcun.farm.ui.adapter.CarouselAdapter;
 import com.shequcun.farm.ui.adapter.FarmSpecialtyAdapter;
+import com.shequcun.farm.util.ClickUtil;
 import com.shequcun.farm.util.DeviceInfo;
 import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.IntentUtil;
@@ -195,6 +196,9 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
 
     @Override
     public void onSliderClick(BaseSliderView slider) {
+        if (ClickUtil.isFastDoubleClick()) {
+            return;
+        }
         if (!isLogin()) {
             FragmentUtils.login(this);
             return;

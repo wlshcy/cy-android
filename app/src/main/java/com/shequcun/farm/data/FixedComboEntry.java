@@ -25,6 +25,8 @@ public class FixedComboEntry {
     public int ciid;
     @SerializedName("remains")
     public int remains;
+    @SerializedName("amount")
+    public int amount;
     @SerializedName("imgs")
     public String imgs[];
 

@@ -100,7 +100,7 @@ public class ChooseDishesFragment extends BaseFragment {
 
     boolean isMyCombo() {
         return entry.isMine();
-//        /**! 这样判断是否是我的套餐是有问题的，如果从广告的套餐跳转过来，也会当成我的套餐来处理了*/
+        /**! 这样判断是否是我的套餐是有问题的，如果从广告的套餐跳转过来，也会当成我的套餐来处理了*/
 //        UserLoginEntry uEntry = new CacheManager(getActivity()).getUserLoginEntry();
 //        if (uEntry != null) {
 //            if (uEntry.mycomboids != null) {
