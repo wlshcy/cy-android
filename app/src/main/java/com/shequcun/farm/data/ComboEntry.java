@@ -100,7 +100,7 @@ public class ComboEntry extends BaseEntry {
     public OtherInfo info;
 
     @SerializedName("reason")
-    public String reason;
+    public int reason;
     @SerializedName("times")
     public int times;
 }

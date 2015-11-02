@@ -722,32 +722,64 @@ public class ChooseDishesFragment extends BaseFragment {
 
     boolean setChooseDishesContent(View v) {
         final TextView choose_dishes_tip = (TextView) v.findViewById(R.id.choose_dishes_tip);
-        mBuyOrderTv.setText(R.string.has_chosen_dishes);
         if (isChooseNextDishes()) return true;
-        int status = buildStatus();
         choose_dishes_tip.setVisibility(View.VISIBLE);
-        mBuyOrderTv.setText(entry.reason);
-        if (status == 1) {
-            choose_dishes_tip.setText(R.string.has_choosen_dishes_tip);
-            choose_dishes_tip.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    gotoFragmentByAdd(buildBundle(buildOrderParams(entry)), R.id.mainpage_ly, new ModifyOrderFragment(), ModifyOrderFragment.class.getName());
+        mBuyOrderTv.setText(R.string.has_chosen_dishes);
+        switch (entry.status) {
+            //1.待配送
+            case 1:
+                choose_dishes_tip.setText("您已选过本期菜品,如需更改请点击.");
+                choose_dishes_tip.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        gotoFragmentByAdd(buildBundle(buildOrderParams(entry)), R.id.mainpage_ly, new ModifyOrderFragment(), ModifyOrderFragment.class.getName());
+                    }
+                });
+                break;
+            //2.配送中
+            case 2:
+                String tip1 = "";
+                if (entry.shipday != null && entry.shipday.length > 0) {
+                    String day = "";
+                    for (int i = 0; i < entry.shipday.length; i++) {
+                        if (i == 0) {
+                            day += entry.shipday[i];
+                        } else {
+                            day += "," + entry.shipday[i];
+                        }
+                    }
+                    tip1 = "本期选菜时间已过,请于下周" + day + "开始下期选菜";
                 }
-            });
-            return false;
-        } else if (status == 3) {
-            choose_dishes_tip.setVisibility(View.GONE);
-            return false;
-        } else if (status == 2) {
-            choose_dishes_tip.setText(R.string.choose_dishes_tip);
-            Drawable left = getBaseAct().getResources().getDrawable(R.drawable.icon_sigh);
-            choose_dishes_tip.setCompoundDrawablesWithIntrinsicBounds(left, null, null, null);
-            return false;
-        } else {
-            choose_dishes_tip.setVisibility(View.GONE);
+                choose_dishes_tip.setText(tip1);
+                Drawable left = getBaseAct().getResources().getDrawable(R.drawable.icon_sigh);
+                choose_dishes_tip.setCompoundDrawablesWithIntrinsicBounds(left, null, null, null);
+                break;
+            //3.配送完成（choose就为true了，不会出现的情况）
+            case 3:
+                choose_dishes_tip.setText("本期菜品已经配送完成");
+                Drawable left1 = getBaseAct().getResources().getDrawable(R.drawable.icon_sigh);
+                choose_dishes_tip.setCompoundDrawablesWithIntrinsicBounds(left1, null, null, null);
+                break;
+            default:
+                choose_dishes_tip.setVisibility(View.GONE);
+                return true;
         }
-        return true;
+        //不能选菜原因：1.本周已选菜（status=1时，可以变更菜品/cai/altorder），2.已过选菜日，3.已延期配送
+        switch (entry.reason) {
+            case 1:
+                if (entry.status == 1)
+                    mBuyOrderTv.setText("本周已选菜");
+                break;
+            case 2:
+                mBuyOrderTv.setText("已过选菜日");
+                break;
+            case 3:
+                mBuyOrderTv.setText("已延期配送");
+                break;
+            default:
+                break;
+        }
+        return false;
     }
 
     boolean isChooseNextDishes() {
