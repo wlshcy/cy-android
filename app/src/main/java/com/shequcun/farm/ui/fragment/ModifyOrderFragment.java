@@ -355,13 +355,6 @@ public class ModifyOrderFragment extends BaseFragment {
                 entry.orderno = hEntry.orderno;
                 entry.times = hEntry.times;
                 entry.duration = hEntry.duration;
-//                if (hEntry.shipday != null && hEntry.shipday.length > 0) {
-//                    int length = hEntry.shipday.length;
-//                    entry.shipday = new int[length];
-//                    for (int j = 0; j < length; j++) {
-//                        entry.shipday[j] = hEntry.shipday[j];
-//                    }
-//                }
                 entry.shipday = hEntry.shipday;
                 entry.con = TextUtils.isEmpty(hEntry.con) ? entry.orderno : hEntry.con;
                 Bundle bundle = new Bundle();
