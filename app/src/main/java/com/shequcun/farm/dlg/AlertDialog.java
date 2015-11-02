@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.shequcun.farm.R;
@@ -47,6 +49,7 @@ public class AlertDialog {
         final android.app.AlertDialog alert = new android.app.AlertDialog.Builder(mAct).create();
         alert.show();
         alert.setCancelable(false);
+        alert.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT);
         alert.getWindow().setContentView(R.layout.alert_dialog);
         TextView tv = (TextView) alert.getWindow().findViewById(R.id.content_tv);
         tv.setText(content);

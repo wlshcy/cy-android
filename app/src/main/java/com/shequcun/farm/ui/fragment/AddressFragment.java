@@ -128,13 +128,39 @@ public class AddressFragment extends BaseFragment {
 //                popBackStack();
 
             } else if (v == deleteTv) {
-                requestDeladdr(entry.id + "");
+                alertDelete();
             } else if (v == saveTv) {
                 upLoadAddressToServer();
             }
             //(R.id.mainpage_ly, new ComboMongoliaLayerFragment(), ComboMongoliaLayerFragment.class.getName());
         }
     };
+
+    private void alertDelete() {
+        final AlertDialog alert = new AlertDialog.Builder(getBaseAct()).create();
+        alert.show();
+        alert.setCancelable(false);
+        alert.getWindow().setContentView(R.layout.prompt_dialog);
+        ((TextView) alert.getWindow().findViewById(R.id.content_tv))
+                .setText("确定删除地址？");
+        alert.getWindow().findViewById(R.id.no)
+                .setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        alert.dismiss();
+                    }
+                });
+        alert.getWindow().findViewById(R.id.yes)
+                .setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        requestDeladdr(entry.id + "");
+                        alert.dismiss();
+                    }
+                });
+    }
 
     private void selectRegionAlert(final String[] array) {
         Dialog alertDialog = new AlertDialog.Builder(getBaseAct())

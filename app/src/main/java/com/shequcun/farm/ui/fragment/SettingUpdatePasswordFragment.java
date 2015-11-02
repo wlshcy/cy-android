@@ -2,7 +2,9 @@ package com.shequcun.farm.ui.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +34,7 @@ import com.shequcun.farm.util.Utils;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import butterknife.OnTextChanged;
 import cz.msebera.android.httpclient.Header;
 
 /**
@@ -57,6 +60,7 @@ public class SettingUpdatePasswordFragment extends BaseFragment {
     private String password;
     private String smscode;
     private TimeCount tCount;
+    private int maxLength = 6;
 
     @Nullable
     @Override
@@ -67,17 +71,78 @@ public class SettingUpdatePasswordFragment extends BaseFragment {
 
     @Override
     protected void setWidgetLsn() {
+        darkSmscode();
+        passwordEt.addTextChangedListener(textWatcher);
+        newPasswordEt.addTextChangedListener(textWatcher1);
+    }
+
+    private TextWatcher textWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            if (s.length() > maxLength - 1 && newPasswordEt.getText().length() > maxLength - 1)
+                lightSmscode();
+            else
+                darkSmscode();
+        }
+    };
+
+    private TextWatcher textWatcher1 = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            if (s.length() > maxLength - 1 && passwordEt.getText().length() > maxLength - 1)
+                lightSmscode();
+            else
+                darkSmscode();
+        }
+    };
+
+    private void darkSmscode() {
+        getSmscodeBtn.setTextColor(getResources().getColor(R.color.gray_3d3d3d));
+//        getSmscodeBtn.setEnabled(false);
+    }
+
+    private void lightSmscode() {
+        getSmscodeBtn.setTextColor(getResources().getColor(R.color.green_11C258));
+//        getSmscodeBtn.setEnabled(true);
 
     }
 
     private String checkInput() {
-        password = passwordEt.getText().toString().trim();
-        if (TextUtils.isEmpty(password)) return "请输入新密码";
-        String newPassword = newPasswordEt.getText().toString().trim();
-        if (TextUtils.isEmpty(newPassword)) return "请输入确认密码";
-        if (password.equals(newPassword) == false) return "确认密码与新密码不相同";
+        String result = checkInputPwd();
+        if (result != null) return result;
         smscode = smscodeEt.getText().toString().trim();
         if (TextUtils.isEmpty(smscode)) return "请输入短信验证码";
+        return null;
+    }
+
+    private String checkInputPwd() {
+        password = passwordEt.getText().toString().trim();
+        if (TextUtils.isEmpty(password) || password.length() < maxLength)
+            return "请输入不少于" + maxLength + "位新密码";
+        String newPassword = newPasswordEt.getText().toString().trim();
+        if (TextUtils.isEmpty(newPassword) || newPassword.length() < maxLength)
+            return "请输入不少于" + maxLength + "位确认密码";
+        if (password.equals(newPassword) == false) return "确认密码与新密码不相同";
         return null;
     }
 
@@ -99,6 +164,11 @@ public class SettingUpdatePasswordFragment extends BaseFragment {
 
     @OnClick(R.id.get_smscode_btn)
     public void getSmscode() {
+        String result = checkInputPwd();
+        if (result != null) {
+            Toast.makeText(getActivity(), result, Toast.LENGTH_SHORT).show();
+            return;
+        }
         UserLoginEntry userLoginEntry = new CacheManager(getActivity()).getUserLoginEntry();
         if (!TextUtils.isEmpty(userLoginEntry.mobile))
             requestSnsCode(userLoginEntry.mobile);
@@ -207,7 +277,7 @@ public class SettingUpdatePasswordFragment extends BaseFragment {
         });
     }
 
-    private void saveUserLogin(){
+    private void saveUserLogin() {
         CacheManager cacheManager = new CacheManager(getActivity());
         UserLoginEntry userLoginEntry = cacheManager.getUserLoginEntry();
         userLoginEntry.haspwd = true;

@@ -30,6 +30,7 @@ import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.ToastHelper;
 import com.shequcun.farm.util.Utils;
+import com.umeng.analytics.MobclickAgent;
 
 
 import java.util.List;

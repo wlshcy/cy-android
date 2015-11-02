@@ -36,9 +36,10 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1.0"
                         android:background="@null"
-                        android:hint="输入新密码"
+                        android:hint="输入不少于6位新密码"
                         android:inputType="textPassword"
                         android:paddingLeft="13dp"
+                        android:maxLength="6"
                         android:singleLine="true"
                         android:textColor="@android:color/black"
                         android:textColorHint="@color/gray_cecece"
@@ -58,10 +59,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/px100"
                     android:background="@null"
-                    android:hint="确认新密码"
+                    android:hint="请输入不少于6位确认密码"
                     android:imeOptions="actionDone"
                     android:inputType="textPassword"
                     android:paddingLeft="13dp"
+                    android:maxLength="6"
                     android:singleLine="true"
                     android:textColor="@android:color/black"
                     android:textColorHint="@color/gray_cecece"
@@ -70,7 +72,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/px100"
                 android:layout_margin="@dimen/px20"
                 android:background="@drawable/edit_bg"
                 android:orientation="horizontal">

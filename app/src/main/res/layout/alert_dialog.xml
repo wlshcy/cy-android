@@ -4,38 +4,39 @@
     android:layout_height="wrap_content"
     android:background="@drawable/alert_dialog_shape_corner"
     android:orientation="vertical"
-    android:padding="6dp" >
+    android:layout_marginLeft="24dp"
+    android:layout_marginRight="24dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <!--<RelativeLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:layout_marginTop="@dimen/px100"-->
-            <!--android:gravity="center"-->
-            <!-->-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:layout_marginTop="@dimen/px100"-->
+        <!--android:gravity="center"-->
+        <!-->-->
 
-            <!--&lt;!&ndash;<ImageView&ndash;&gt;-->
-                <!--&lt;!&ndash;android:id="@+id/title_iv"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:layout_width="@dimen/px78"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:layout_height="@dimen/px78"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:layout_gravity="center_vertical"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:src="@drawable/cancel_image_normal" />&ndash;&gt;-->
+        <!--&lt;!&ndash;<ImageView&ndash;&gt;-->
+        <!--&lt;!&ndash;android:id="@+id/title_iv"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_width="@dimen/px78"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_height="@dimen/px78"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_gravity="center_vertical"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:src="@drawable/cancel_image_normal" />&ndash;&gt;-->
 
-            <!--&lt;!&ndash;<TextView&ndash;&gt;-->
-                <!--&lt;!&ndash;android:id="@+id/title_tv"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:layout_gravity="center_vertical"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:layout_toRightOf="@id/title_iv"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:text="@string/during_checking"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:textSize="22sp" >&ndash;&gt;-->
-            <!--</TextView>-->
+        <!--&lt;!&ndash;<TextView&ndash;&gt;-->
+        <!--&lt;!&ndash;android:id="@+id/title_tv"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_gravity="center_vertical"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_toRightOf="@id/title_iv"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:text="@string/during_checking"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:textSize="22sp" >&ndash;&gt;-->
+        <!--</TextView>-->
         <!--</RelativeLayout>-->
 
         <TextView

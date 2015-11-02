@@ -30,8 +30,10 @@ import com.shequcun.farm.data.LinkEntry;
 import com.shequcun.farm.data.RecommendEntry;
 import com.shequcun.farm.data.RecommentListEntry;
 import com.shequcun.farm.data.SlidesEntry;
+import com.shequcun.farm.data.UserLoginEntry;
 import com.shequcun.farm.datacenter.CacheManager;
 import com.shequcun.farm.dlg.ProgressDlg;
+import com.shequcun.farm.platform.UmengCountEvent;
 import com.shequcun.farm.ui.adapter.CarouselAdapter;
 import com.shequcun.farm.ui.adapter.FarmSpecialtyAdapter;
 import com.shequcun.farm.util.DeviceInfo;
@@ -83,6 +85,10 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
 
     @OnClick({R.id.no_combo_iv, R.id.has_combo_iv})
     void doClick() {
+//        if (!isLogin()) {
+//            gotoFragmentByAnimation(null, R.id.mainpage_ly, new LoginFragment(), LoginFragment.class.getName(), R.anim.scale_left_top_in, R.anim.scale_left_top_out);
+//            return;
+//        }
         gotoFragmentByAdd(null, R.id.mainpage_ly, new ComboFragment(), ComboFragment.class.getName());
     }
 
@@ -189,9 +195,14 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
 
     @Override
     public void onSliderClick(BaseSliderView slider) {
+        if (!isLogin()) {
+            FragmentUtils.login(this);
+            return;
+        }
         if (slider.getParamObj() == null) return;
         SlidesEntry entry = (SlidesEntry) slider.getParamObj();
         gotoAdFragment(entry);
+        UmengCountEvent.onClickHomeBanner(getActivity());
     }
 
     private void gotoAdFragment(SlidesEntry item) {

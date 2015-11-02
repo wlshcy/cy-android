@@ -95,6 +95,7 @@ public class ChooseDishesFragment extends BaseFragment {
     }
 
     boolean isMyCombo() {
+        /**! 这样判断是否是我的套餐是有问题的，如果从广告的套餐跳转过来，也会当成我的套餐来处理了*/
         UserLoginEntry uEntry = new CacheManager(getActivity()).getUserLoginEntry();
         if (uEntry != null) {
             if (uEntry.mycomboids != null) {
@@ -713,29 +714,28 @@ public class ChooseDishesFragment extends BaseFragment {
 
     boolean setChooseDishesContent(View v) {
         final TextView choose_dishes_tip = (TextView) v.findViewById(R.id.choose_dishes_tip);
-        if (!isChooseNextDishes()) {
-            int status = buildStatus();
-            choose_dishes_tip.setVisibility(View.VISIBLE);
-            if (status == 1) {
-                choose_dishes_tip.setText(R.string.has_choosen_dishes_tip);
-                choose_dishes_tip.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        gotoFragmentByAdd(buildBundle(buildOrderParams(entry)), R.id.mainpage_ly, new ModifyOrderFragment(), ModifyOrderFragment.class.getName());
-                    }
-                });
-                return false;
-            } else if (status == 3) {
-                choose_dishes_tip.setVisibility(View.GONE);
-                return false;
-            } else if (status == 2) {
-                choose_dishes_tip.setText(R.string.choose_dishes_tip);
-                Drawable left = getBaseAct().getResources().getDrawable(R.drawable.icon_sigh);
-                choose_dishes_tip.setCompoundDrawablesWithIntrinsicBounds(left, null, null, null);
-                return false;
-            } else {
-                choose_dishes_tip.setVisibility(View.GONE);
-            }
+        if (isChooseNextDishes()) return true;
+        int status = buildStatus();
+        choose_dishes_tip.setVisibility(View.VISIBLE);
+        if (status == 1) {
+            choose_dishes_tip.setText(R.string.has_choosen_dishes_tip);
+            choose_dishes_tip.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    gotoFragmentByAdd(buildBundle(buildOrderParams(entry)), R.id.mainpage_ly, new ModifyOrderFragment(), ModifyOrderFragment.class.getName());
+                }
+            });
+            return false;
+        } else if (status == 3) {
+            choose_dishes_tip.setVisibility(View.GONE);
+            return false;
+        } else if (status == 2) {
+            choose_dishes_tip.setText(R.string.choose_dishes_tip);
+            Drawable left = getBaseAct().getResources().getDrawable(R.drawable.icon_sigh);
+            choose_dishes_tip.setCompoundDrawablesWithIntrinsicBounds(left, null, null, null);
+            return false;
+        } else {
+            choose_dishes_tip.setVisibility(View.GONE);
         }
         return true;
     }
@@ -941,8 +941,6 @@ public class ChooseDishesFragment extends BaseFragment {
 
     /**
      * 来自我的套餐
-     *
-     * @param con
      */
     void requsetFixedDishesList(String con) {
         RequestParams params = new RequestParams();

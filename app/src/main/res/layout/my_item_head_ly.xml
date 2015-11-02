@@ -9,7 +9,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/px394"
-        android:background="@drawable/icon_my_bg">
+        android:background="@android:color/white">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -31,6 +31,7 @@
                         android:id="@+id/my_head"
                         android:layout_width="@dimen/px180"
                         android:layout_height="@dimen/px180"
+                        android:padding="1dp"
                         android:src="@android:color/white" />
 
                     <View
@@ -38,8 +39,8 @@
                         android:layout_width="@dimen/px20"
                         android:layout_height="@dimen/px20"
                         android:layout_gravity="top|right"
-                        android:layout_marginRight="12dp"
-                        android:layout_marginTop="12dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp"
                         android:background="@drawable/red_oval"
                         android:visibility="gone"></View>
                 </FrameLayout>
