@@ -450,7 +450,7 @@ public class ModifyOrderFragment extends BaseFragment {
             if (aList != null && aList.size() > 0) {
                 View view = LayoutInflater.from(getBaseAct()).inflate(R.layout.remark_footer_ly, null);
                 TextView textView = (TextView) view.findViewById(R.id.title_tv);
-                textView.setText("固定蔬菜");
+                textView.setText("套餐搭配");
                 mLv.addFooterView(view);
                 for (FixedComboEntry entry : hEntry.fList) {
                     if (entry == null)

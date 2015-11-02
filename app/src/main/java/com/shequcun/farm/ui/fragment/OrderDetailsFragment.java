@@ -223,7 +223,9 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
     @OnClick(R.id.buy_order_tv)
     void doBuy() {
         if (commitOrderTv.getText().toString().equals(getResources().getString(R.string.pay_immediately))) {
-            gotoFragmentByAdd(getArguments(), R.id.mainpage_ly, new PayFragment(), PayFragment.class.getName());
+            Bundle bundle = getArguments();
+            bundle.putBoolean(PayFragment.PARAMS_CHANGE_ADDRESS_ENABLE, true);
+            gotoFragmentByAdd(bundle, R.id.mainpage_ly, new PayFragment(), PayFragment.class.getName());
             return;
         }
         if (!checkAddress()) {
@@ -322,7 +324,7 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
                     ImageLoader.getInstance().displayImage(entry.imgs[0] + "?imageview2/2/w/180", goodImg);
                 ((TextView) headerView.findViewById(R.id.goods_name)).setText(entry.title);
                 ((TextView) headerView.findViewById(R.id.goods_price)).setText(entry.quantity + entry.unit + "/份");
-                ((TextView) headerView.findViewById(R.id.goods_count)).setText("x"+entry.count);
+                ((TextView) headerView.findViewById(R.id.goods_count)).setText("x" + entry.count);
                 mLv.addFooterView(headerView);
             }
         }

@@ -73,7 +73,12 @@ public class PayFragment extends BaseFragment {
         requestUserAddress();
         ((TextView) v.findViewById(R.id.title_center_text)).setText(R.string.pay);
         pay_money.setText(Utils.unitPeneyToYuan(getOrderMoney()));
-        ((ImageView) v.findViewById(R.id.right_arrow_iv)).setImageResource(R.drawable.icon_more);
+        if (getChangeAddressEnable()) {
+            addressLy.setEnabled(true);
+            ((ImageView) v.findViewById(R.id.right_arrow_iv)).setImageResource(R.drawable.icon_more);
+        } else {
+            addressLy.setEnabled(false);
+        }
     }
 
     @Override
@@ -108,6 +113,12 @@ public class PayFragment extends BaseFragment {
         if (!TextUtils.isEmpty(entry.combo_idx))
             return entry.combo_idx;
         return entry.getPosition() + "";
+    }
+
+    boolean getChangeAddressEnable() {
+        Bundle bundle = getArguments();
+        if (bundle == null) return false;
+        return bundle.getBoolean(PARAMS_CHANGE_ADDRESS_ENABLE);
     }
 
     boolean isMyCombo() {
@@ -699,4 +710,5 @@ public class PayFragment extends BaseFragment {
     AlipayUtils aUtils;
     boolean mIsBind = false;
     String addressStr;
+    public static final String PARAMS_CHANGE_ADDRESS_ENABLE = "params_change_address_enable";
 }
