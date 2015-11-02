@@ -726,6 +726,7 @@ public class ChooseDishesFragment extends BaseFragment {
         if (isChooseNextDishes()) return true;
         int status = buildStatus();
         choose_dishes_tip.setVisibility(View.VISIBLE);
+        mBuyOrderTv.setText(entry.reason);
         if (status == 1) {
             choose_dishes_tip.setText(R.string.has_choosen_dishes_tip);
             choose_dishes_tip.setOnClickListener(new View.OnClickListener() {
@@ -746,7 +747,6 @@ public class ChooseDishesFragment extends BaseFragment {
         } else {
             choose_dishes_tip.setVisibility(View.GONE);
         }
-        mBuyOrderTv.setText(entry.reason);
         return true;
     }
 
