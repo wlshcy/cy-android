@@ -6,11 +6,16 @@ import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+
+import com.common.widget.BadgeView;
+import com.shequcun.farm.R;
 
 import java.text.DecimalFormat;
 import java.util.Date;
@@ -179,5 +184,14 @@ public class Utils {
                 "MM月dd日");
         String sb = format.format(gc.getTime());
         return sb;
+    }
+
+    public static BadgeView buildBadgeView(Context mContext, ImageView mIv) {
+        BadgeView mBadgeViewShopCart = new BadgeView(mContext, mIv);
+        mBadgeViewShopCart.setWidth(ResUtil.dip2px(mContext, 20));
+        mBadgeViewShopCart.setHeight(ResUtil.dip2px(mContext, 20));
+        mBadgeViewShopCart.setBackgroundResource(R.drawable.red_oval);
+        mBadgeViewShopCart.setTextSize(TypedValue.COMPLEX_UNIT_PX, ResUtil.dip2px(mContext, 10));
+        return mBadgeViewShopCart;
     }
 }

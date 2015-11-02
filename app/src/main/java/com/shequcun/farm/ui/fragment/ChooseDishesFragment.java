@@ -81,11 +81,7 @@ public class ChooseDishesFragment extends BaseFragment {
         ((TextView) v.findViewById(R.id.title_right_text)).setText(R.string.combo_introduce);
         v.findViewById(R.id.title_right_text).setVisibility(isShowComboIntroduce() ? View.VISIBLE : View.GONE);
         mOrderController = DisheDataCenter.getInstance();
-        mBadgeViewShopCart = new BadgeView(getBaseAct(), mShopCartIv);
-        mBadgeViewShopCart.setWidth(ResUtil.dip2px(getBaseAct(), 20));
-        mBadgeViewShopCart.setHeight(ResUtil.dip2px(getBaseAct(), 20));
-        mBadgeViewShopCart.setBackgroundResource(R.drawable.red_oval);
-        mBadgeViewShopCart.setTextSize(TypedValue.COMPLEX_UNIT_PX, ResUtil.dip2px(getBaseAct(), 10));
+        mBadgeViewShopCart = Utils.buildBadgeView(getBaseAct(), mShopCartIv);
         option_dishes_tip.setText(Utils.getSpanableSpan(getResources().getString(R.string.option_dishes_tip), getResources().getString(R.string.option_dishes_tip_1), ResUtil.dipToPixel(getBaseAct(), 14), ResUtil.dipToPixel(getBaseAct(), 14), 0xFF7b7b7b, 0xFFf36043));
         enabled = setChooseDishesContent(v);
         buildAdapter(enabled);
@@ -968,8 +964,7 @@ public class ChooseDishesFragment extends BaseFragment {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] data) {
                 if (data != null && data.length > 0) {
-                    String result = new String(data);
-                    FixedListComboEntry entry = JsonUtilsParser.fromJson(result, FixedListComboEntry.class);
+                    FixedListComboEntry entry = JsonUtilsParser.fromJson(new String(data), FixedListComboEntry.class);
                     if (entry != null) {
                         if (TextUtils.isEmpty(entry.errmsg)) {
                             if (entry.items == null || entry.items.isEmpty()) {
