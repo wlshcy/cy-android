@@ -114,17 +114,18 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
     }
 
     boolean isMyCombo() {
-        if (uEntry != null) {
-            if (uEntry.mycomboids != null) {
-                int curComboId = getComboId();
-                int length = uEntry.mycomboids.length;
-                for (int i = 0; i < length; i++) {
-                    if (curComboId == uEntry.mycomboids[i]) {
-                        return true;
-                    }
-                }
-            }
-        }
+        /**! 这样判断是否是我的套餐是有问题的，如果从广告的套餐跳转过来的套餐id也在我的套餐里，也会当成我的套餐来处理了*/
+//        if (uEntry != null) {
+//            if (uEntry.mycomboids != null) {
+//                int curComboId = getComboId();
+//                int length = uEntry.mycomboids.length;
+//                for (int i = 0; i < length; i++) {
+//                    if (curComboId == uEntry.mycomboids[i]) {
+//                        return true;
+//                    }
+//                }
+//            }
+//        }
         return (entry != null) ? entry.isMine() : false;
     }
 

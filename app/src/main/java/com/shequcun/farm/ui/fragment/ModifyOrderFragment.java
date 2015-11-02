@@ -363,6 +363,7 @@ public class ModifyOrderFragment extends BaseFragment {
 //                    }
 //                }
                 entry.shipday = hEntry.shipday;
+                entry.setMine(hEntry.isMine);
                 entry.con = TextUtils.isEmpty(hEntry.con) ? entry.orderno : hEntry.con;
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("ComboEntry", entry);

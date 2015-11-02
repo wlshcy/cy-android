@@ -99,20 +99,21 @@ public class ChooseDishesFragment extends BaseFragment {
     }
 
     boolean isMyCombo() {
-        /**! 这样判断是否是我的套餐是有问题的，如果从广告的套餐跳转过来，也会当成我的套餐来处理了*/
-        UserLoginEntry uEntry = new CacheManager(getActivity()).getUserLoginEntry();
-        if (uEntry != null) {
-            if (uEntry.mycomboids != null) {
-                int curComboId = entry.id;
-                int length = uEntry.mycomboids.length;
-                for (int i = 0; i < length; i++) {
-                    if (curComboId == uEntry.mycomboids[i]) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return (entry != null) ? entry.isMine() : false;
+        return entry.isMine();
+//        /**! 这样判断是否是我的套餐是有问题的，如果从广告的套餐跳转过来，也会当成我的套餐来处理了*/
+//        UserLoginEntry uEntry = new CacheManager(getActivity()).getUserLoginEntry();
+//        if (uEntry != null) {
+//            if (uEntry.mycomboids != null) {
+//                int curComboId = entry.id;
+//                int length = uEntry.mycomboids.length;
+//                for (int i = 0; i < length; i++) {
+//                    if (curComboId == uEntry.mycomboids[i]) {
+//                        return true;
+//                    }
+//                }
+//            }
+//        }
+//        return false;
     }
 
     boolean isShowComboIntroduce() {
@@ -761,6 +762,7 @@ public class ChooseDishesFragment extends BaseFragment {
         int price = entry.prices[entry.getPosition()];
         String time = "下单日期:" + Utils.getTime(entry.chgtime.get(entry.status + ""));
         params.setParams(entry.id, entry.orderno, 1, entry.id, price, entry.combo_idx, entry.status, null, null, null, null, 1, time, null, entry.shipday, entry.times, entry.con, entry.duration);
+        params.isMine = entry.isMine();
         return params;
     }
 
