@@ -114,17 +114,18 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
     }
 
     boolean isMyCombo() {
-        if (uEntry != null) {
-            if (uEntry.mycomboids != null) {
-                int curComboId = getComboId();
-                int length = uEntry.mycomboids.length;
-                for (int i = 0; i < length; i++) {
-                    if (curComboId == uEntry.mycomboids[i]) {
-                        return true;
-                    }
-                }
-            }
-        }
+        /**! 这样判断是否是我的套餐是有问题的，如果从广告的套餐跳转过来的套餐id也在我的套餐里，也会当成我的套餐来处理了*/
+//        if (uEntry != null) {
+//            if (uEntry.mycomboids != null) {
+//                int curComboId = getComboId();
+//                int length = uEntry.mycomboids.length;
+//                for (int i = 0; i < length; i++) {
+//                    if (curComboId == uEntry.mycomboids[i]) {
+//                        return true;
+//                    }
+//                }
+//            }
+//        }
         return (entry != null) ? entry.isMine() : false;
     }
 
@@ -147,42 +148,46 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
      * 显示底部对应的控件
      */
     void showBottomWidget() {
-        if (uEntry != null) {
-            if (uEntry.mycomboids != null) {
-                int curComboId = getComboId();
-                int length = uEntry.mycomboids.length;
-                for (int i = 0; i < length; i++) {
-                    if (curComboId == uEntry.mycomboids[i]) {
-                        shop_cart_total_price_tv.setVisibility(View.GONE);
-                        commitOrderTv.setText(R.string.submit_immediately);
-                        shop_cart_surpport_now_pay_tv.setText("您已选好菜品了!");
-                        return;
-                    }
+        /**! 这样判断是否是我的套餐是有问题的，如果从广告的套餐跳转过来，也会当成我的套餐来处理了*/
+//        if (uEntry != null) {
+//            if (uEntry.mycomboids != null) {
+//                int curComboId = getComboId();
+//                int length = uEntry.mycomboids.length;
+//                for (int i = 0; i < length; i++) {
+//                    if (curComboId == uEntry.mycomboids[i]) {
+//                        return;
+//                    }
+//                }
+        if (isMyCombo()) {
+            shop_cart_total_price_tv.setVisibility(View.GONE);
+            commitOrderTv.setText(R.string.submit_immediately);
+            shop_cart_surpport_now_pay_tv.setText("您已选好菜品了!");
+        } else {
+            if (entry != null) {
+                if (entry.prices != null && entry.prices.length > entry.getPosition()) {
+                    shop_cart_total_price_tv.setText("共:" + Utils.unitPeneyToYuanEx(entry.prices[entry.getPosition()]));
                 }
 
-                if (entry != null) {
-                    if (entry.prices != null && entry.prices.length > entry.getPosition()) {
-                        shop_cart_total_price_tv.setText("共:" + Utils.unitPeneyToYuanEx(entry.prices[entry.getPosition()]));
-                    }
-
-                    if (entry.duration >= 52) {
-                        shop_cart_surpport_now_pay_tv.setText("本套餐只支持年付!");
-                    } else if (entry.duration >= 12) {
-                        shop_cart_surpport_now_pay_tv.setText("本套餐只支持季付!");
-                    } else if (entry.duration >= 8) {
-                        shop_cart_surpport_now_pay_tv.setVisibility(View.GONE);
-                    } else if (entry.duration >= 4) {
-                        shop_cart_surpport_now_pay_tv.setText("本套餐只支持月付!");
-                    } else {
-                        shop_cart_surpport_now_pay_tv.setText(R.string.has_choosen_dishes);
-                    }
+                if (entry.duration >= 52) {
+                    shop_cart_surpport_now_pay_tv.setText("本套餐只支持年付!");
+                } else if (entry.duration >= 12) {
+                    shop_cart_surpport_now_pay_tv.setText("本套餐只支持季付!");
+                } else if (entry.duration >= 8) {
+                    shop_cart_surpport_now_pay_tv.setVisibility(View.GONE);
+                } else if (entry.duration >= 4) {
+                    shop_cart_surpport_now_pay_tv.setText("本套餐只支持月付!");
+                } else {
+                    shop_cart_surpport_now_pay_tv.setText(R.string.has_choosen_dishes);
                 }
-
-                commitOrderTv.setText(R.string.pay_immediately);
-            } else {
-                shop_cart_surpport_now_pay_tv.setText(R.string.has_choosen_dishes);
             }
+
+            commitOrderTv.setText(R.string.pay_immediately);
         }
+
+//            } else {
+//                shop_cart_surpport_now_pay_tv.setText(R.string.has_choosen_dishes);
+//            }
+//        }
     }
 
 
@@ -218,7 +223,9 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
     @OnClick(R.id.buy_order_tv)
     void doBuy() {
         if (commitOrderTv.getText().toString().equals(getResources().getString(R.string.pay_immediately))) {
-            gotoFragmentByAdd(getArguments(), R.id.mainpage_ly, new PayFragment(), PayFragment.class.getName());
+            Bundle bundle = getArguments();
+            bundle.putBoolean(PayFragment.PARAMS_CHANGE_ADDRESS_ENABLE, true);
+            gotoFragmentByAdd(bundle, R.id.mainpage_ly, new PayFragment(), PayFragment.class.getName());
             return;
         }
         if (!checkAddress()) {
@@ -267,9 +274,9 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
         View footerView = LayoutInflater.from(getBaseAct()).inflate(R.layout.order_details_footer_ly, null);
         String delievery = buildComboDeliveryDate();
         if (TextUtils.isEmpty(delievery)) {
-            ((TextView) footerView.findViewById(R.id.distribution_date)).setText("配送日期:  本周五配送");
+            ((TextView) footerView.findViewById(R.id.distribution_date)).setText("配送日期:  每周五配送");
         } else {
-            ((TextView) footerView.findViewById(R.id.distribution_date)).setText("配送日期:  本周" + delievery + "配送");
+            ((TextView) footerView.findViewById(R.id.distribution_date)).setText("配送日期:  每周" + delievery + "配送");
         }
         int part = mOrderController.getItemsCount();
         ((TextView) footerView.findViewById(R.id.number_copies)).setText("共" + part + "份");
@@ -317,7 +324,7 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
                     ImageLoader.getInstance().displayImage(entry.imgs[0] + "?imageview2/2/w/180", goodImg);
                 ((TextView) headerView.findViewById(R.id.goods_name)).setText(entry.title);
                 ((TextView) headerView.findViewById(R.id.goods_price)).setText(entry.quantity + entry.unit + "/份");
-                headerView.findViewById(R.id.goods_count).setVisibility(View.GONE);
+                ((TextView) headerView.findViewById(R.id.goods_count)).setText("x" + entry.count);
                 mLv.addFooterView(headerView);
             }
         }

@@ -95,20 +95,21 @@ public class ChooseDishesFragment extends BaseFragment {
     }
 
     boolean isMyCombo() {
+        return entry.isMine();
         /**! 这样判断是否是我的套餐是有问题的，如果从广告的套餐跳转过来，也会当成我的套餐来处理了*/
-        UserLoginEntry uEntry = new CacheManager(getActivity()).getUserLoginEntry();
-        if (uEntry != null) {
-            if (uEntry.mycomboids != null) {
-                int curComboId = entry.id;
-                int length = uEntry.mycomboids.length;
-                for (int i = 0; i < length; i++) {
-                    if (curComboId == uEntry.mycomboids[i]) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return (entry != null) ? entry.isMine() : false;
+//        UserLoginEntry uEntry = new CacheManager(getActivity()).getUserLoginEntry();
+//        if (uEntry != null) {
+//            if (uEntry.mycomboids != null) {
+//                int curComboId = entry.id;
+//                int length = uEntry.mycomboids.length;
+//                for (int i = 0; i < length; i++) {
+//                    if (curComboId == uEntry.mycomboids[i]) {
+//                        return true;
+//                    }
+//                }
+//            }
+//        }
+//        return false;
     }
 
     boolean isShowComboIntroduce() {
@@ -712,32 +713,66 @@ public class ChooseDishesFragment extends BaseFragment {
         }
     }
 
+    /**
+     * 不能进行新一次选菜(choose=false)提示信息汇总：
+     * 1. reason = 1, status = 1，您已选过第{times}次菜品，如需更改请点击。
+     * 2. reason = 1, status = 2，您的第{times}次菜品正在配送中，请耐心等待。
+     * 3. reason = 2，当前已过选菜日，请您周{shipday[0]+1}至周{shipday[0]-2}进行选菜。
+     * 4. reason = 3，您已延期第{times+1}次选菜，请您下次选菜日进行选菜。
+     */
     boolean setChooseDishesContent(View v) {
         final TextView choose_dishes_tip = (TextView) v.findViewById(R.id.choose_dishes_tip);
         if (isChooseNextDishes()) return true;
-        int status = buildStatus();
         choose_dishes_tip.setVisibility(View.VISIBLE);
-        if (status == 1) {
-            choose_dishes_tip.setText(R.string.has_choosen_dishes_tip);
-            choose_dishes_tip.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    gotoFragmentByAdd(buildBundle(buildOrderParams(entry)), R.id.mainpage_ly, new ModifyOrderFragment(), ModifyOrderFragment.class.getName());
+        mBuyOrderTv.setVisibility(View.GONE);
+        switch (entry.status) {
+            //1.待配送
+            case 1:
+                if (entry.reason == 1) {
+                    choose_dishes_tip.setText("您已选过第" + entry.times + "次菜品，如需更改请点击。");
+                    choose_dishes_tip.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            gotoFragmentByAdd(buildBundle(buildOrderParams(entry)), R.id.mainpage_ly, new ModifyOrderFragment(), ModifyOrderFragment.class.getName());
+                        }
+                    });
                 }
-            });
-            return false;
-        } else if (status == 3) {
-            choose_dishes_tip.setVisibility(View.GONE);
-            return false;
-        } else if (status == 2) {
-            choose_dishes_tip.setText(R.string.choose_dishes_tip);
-            Drawable left = getBaseAct().getResources().getDrawable(R.drawable.icon_sigh);
-            choose_dishes_tip.setCompoundDrawablesWithIntrinsicBounds(left, null, null, null);
-            return false;
-        } else {
-            choose_dishes_tip.setVisibility(View.GONE);
+                break;
+            //2.配送中
+            case 2:
+                if (entry.reason == 1) {
+                    choose_dishes_tip.setText("您的第" + entry.times + "次菜品正在配送中，请耐心等待。");
+                    Drawable left = getBaseAct().getResources().getDrawable(R.drawable.icon_sigh);
+                    choose_dishes_tip.setCompoundDrawablesWithIntrinsicBounds(left, null, null, null);
+                }
+                break;
+            default:
+                break;
         }
-        return true;
+        //不能选菜原因：1.本周已选菜（status=1时，可以变更菜品/cai/altorder），2.已过选菜日，3.已延期配送
+        switch (entry.reason) {
+            case 2:
+                String tip1 = "";
+                if (entry.shipday != null && entry.shipday.length > 0) {
+                    int s = entry.shipday[0] - 2;
+                    if (s < 1) {
+                        s = s + 7;
+                    }
+                    int e = entry.shipday[0] + 1;
+                    if (e + 1 > 7) {
+                        e = e - 7;
+                    }
+                    tip1 = "当前已过选菜日，请您周" + (s == 7 ? "日" : s) + "至周" + e + "开始下期选菜。";
+                }
+                choose_dishes_tip.setText(tip1);
+                break;
+            case 3:
+                choose_dishes_tip.setText("您已延期第" + (entry.times + 1) + "次选菜，请您下次选菜日进行选菜。");
+                break;
+            default:
+                break;
+        }
+        return false;
     }
 
     boolean isChooseNextDishes() {
@@ -754,6 +789,7 @@ public class ChooseDishesFragment extends BaseFragment {
         int price = entry.prices[entry.getPosition()];
         String time = "下单日期:" + Utils.getTime(entry.chgtime.get(entry.status + ""));
         params.setParams(entry.id, entry.orderno, 1, entry.id, price, entry.combo_idx, entry.status, null, null, null, null, 1, time, null, entry.shipday, entry.times, entry.con, entry.duration);
+        params.isMine = entry.isMine();
         return params;
     }
 
@@ -767,7 +803,6 @@ public class ChooseDishesFragment extends BaseFragment {
         mShopCartIv.setEnabled(false);
         mShopCartPriceTv.setText(null);
         mBuyOrderTv.setTextColor(getBaseAct().getResources().getColorStateList(R.color.gray_d8d8d8));
-        mBuyOrderTv.setText((entry.status == 2 && !entry.choose) ? entry.reason : "本期菜品已选");
         mBuyOrderTv.setEnabled(false);
     }
 

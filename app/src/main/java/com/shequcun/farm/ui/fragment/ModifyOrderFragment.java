@@ -224,8 +224,8 @@ public class ModifyOrderFragment extends BaseFragment {
             @Override
             public void onSuccess(int statusCode, Header[] h, byte[] data) {
                 if (data != null && data.length > 0) {
-
-                    MyOrderDetailListEntry entry = JsonUtilsParser.fromJson(new String(data), MyOrderDetailListEntry.class);
+                    String result = new String(data);
+                    MyOrderDetailListEntry entry = JsonUtilsParser.fromJson(result, MyOrderDetailListEntry.class);
 
                     if (entry != null) {
                         if (TextUtils.isEmpty(entry.errmsg)) {
@@ -356,6 +356,7 @@ public class ModifyOrderFragment extends BaseFragment {
                 entry.times = hEntry.times;
                 entry.duration = hEntry.duration;
                 entry.shipday = hEntry.shipday;
+                entry.setMine(hEntry.isMine);
                 entry.con = TextUtils.isEmpty(hEntry.con) ? entry.orderno : hEntry.con;
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("ComboEntry", entry);
@@ -442,7 +443,7 @@ public class ModifyOrderFragment extends BaseFragment {
             if (aList != null && aList.size() > 0) {
                 View view = LayoutInflater.from(getBaseAct()).inflate(R.layout.remark_footer_ly, null);
                 TextView textView = (TextView) view.findViewById(R.id.title_tv);
-                textView.setText("固定蔬菜");
+                textView.setText("套餐搭配");
                 mLv.addFooterView(view);
                 for (FixedComboEntry entry : hEntry.fList) {
                     if (entry == null)
@@ -453,7 +454,7 @@ public class ModifyOrderFragment extends BaseFragment {
                         ImageLoader.getInstance().displayImage(entry.imgs[0] + "?imageview2/2/w/180", goodImg);
                     ((TextView) headerView.findViewById(R.id.goods_name)).setText(entry.title);
                     ((TextView) headerView.findViewById(R.id.goods_price)).setText(entry.quantity + entry.unit + "/份");
-                    headerView.findViewById(R.id.goods_count).setVisibility(View.GONE);
+                    ((TextView) headerView.findViewById(R.id.goods_count)).setText("x" + entry.amount);
                     mLv.addFooterView(headerView);
                 }
             }

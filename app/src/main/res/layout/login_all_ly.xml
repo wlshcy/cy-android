@@ -107,7 +107,9 @@
                 android:layout_marginTop="@dimen/px60"
                 android:layout_gravity="center_horizontal"
                 android:padding="10dp"
+                android:drawablePadding="6dp"
                 android:gravity="center"
+                android:drawableRight="@drawable/icon_arrows_right"
                 android:text="密码登录"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/px30" />
