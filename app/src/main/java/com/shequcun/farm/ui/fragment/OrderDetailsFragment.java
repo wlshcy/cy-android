@@ -268,9 +268,9 @@ public class OrderDetailsFragment extends BaseFragment implements RemarkFragment
         View footerView = LayoutInflater.from(getBaseAct()).inflate(R.layout.order_details_footer_ly, null);
         String delievery = buildComboDeliveryDate();
         if (TextUtils.isEmpty(delievery)) {
-            ((TextView) footerView.findViewById(R.id.distribution_date)).setText("配送日期:  本周五配送");
+            ((TextView) footerView.findViewById(R.id.distribution_date)).setText("配送日期:  每周五配送");
         } else {
-            ((TextView) footerView.findViewById(R.id.distribution_date)).setText("配送日期:  本周" + delievery + "配送");
+            ((TextView) footerView.findViewById(R.id.distribution_date)).setText("配送日期:  每周" + delievery + "配送");
         }
         int part = mOrderController.getItemsCount();
         ((TextView) footerView.findViewById(R.id.number_copies)).setText("共" + part + "份");

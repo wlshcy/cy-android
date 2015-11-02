@@ -756,7 +756,7 @@ public class ChooseDishesFragment extends BaseFragment {
                 break;
             //3.配送完成（choose就为true了，不会出现的情况）
             case 3:
-                choose_dishes_tip.setText("本期菜品已经配送完成");
+                choose_dishes_tip.setText("您的第" + entry.times + "次菜品已经配送完成");
                 Drawable left1 = getBaseAct().getResources().getDrawable(R.drawable.icon_sigh);
                 choose_dishes_tip.setCompoundDrawablesWithIntrinsicBounds(left1, null, null, null);
                 break;
