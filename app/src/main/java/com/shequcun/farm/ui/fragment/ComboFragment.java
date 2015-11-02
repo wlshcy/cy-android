@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.common.widget.ExpandableHeightListView;
 import com.common.widget.PullToRefreshBase;
 import com.common.widget.PullToRefreshScrollView;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -201,7 +202,7 @@ public class ComboFragment extends BaseFragment {
     }
 
     void doAddDataToAdapter(List<ComboEntry> aList) {
-        if (aList != null && aList.size() > 0) {
+        if (aList != null && aList.size() > 0 && mListView != null) {
             adapter.setIsMyCombo(false);
             adapter.addAll(aList);
             adapter.notifyDataSetChanged();
@@ -273,6 +274,7 @@ public class ComboFragment extends BaseFragment {
         super.onDestroyView();
         doUnRegisterReceiver();
     }
+
     boolean mIsBind = false;
     ComboAdapter adapter;
     @Bind(R.id.mListView)
