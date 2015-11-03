@@ -608,6 +608,8 @@ public class PayFragment extends BaseFragment {
 
     void doPay(String alipay, WxPayResEntry payRes) {
         if (isAlipayPay) {
+            if (aUtils == null)
+                initAlipay();
             aUtils.doAlipay(alipay);
         } else {
             if (payRes == null) {
