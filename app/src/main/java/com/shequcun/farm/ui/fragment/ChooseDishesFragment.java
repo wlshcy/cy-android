@@ -81,11 +81,7 @@ public class ChooseDishesFragment extends BaseFragment {
         ((TextView) v.findViewById(R.id.title_right_text)).setText(R.string.combo_introduce);
         v.findViewById(R.id.title_right_text).setVisibility(isShowComboIntroduce() ? View.VISIBLE : View.GONE);
         mOrderController = DisheDataCenter.getInstance();
-        mBadgeViewShopCart = new BadgeView(getBaseAct(), mShopCartIv);
-        mBadgeViewShopCart.setWidth(ResUtil.dip2px(getBaseAct(), 20));
-        mBadgeViewShopCart.setHeight(ResUtil.dip2px(getBaseAct(), 20));
-        mBadgeViewShopCart.setBackgroundResource(R.drawable.red_oval);
-        mBadgeViewShopCart.setTextSize(TypedValue.COMPLEX_UNIT_PX, ResUtil.dip2px(getBaseAct(), 10));
+        mBadgeViewShopCart = Utils.buildBadgeView(getBaseAct(), mShopCartIv);
         option_dishes_tip.setText(Utils.getSpanableSpan(getResources().getString(R.string.option_dishes_tip), getResources().getString(R.string.option_dishes_tip_1), ResUtil.dipToPixel(getBaseAct(), 14), ResUtil.dipToPixel(getBaseAct(), 14), 0xFF7b7b7b, 0xFFf36043));
         enabled = setChooseDishesContent(v);
         buildAdapter(enabled);
@@ -129,12 +125,32 @@ public class ChooseDishesFragment extends BaseFragment {
 
     @Override
     protected void setWidgetLsn() {
-        mShopCartIv.setOnClickListener(onClick);
-        emptyView.setOnClickListener(onClick);
-        option_dishes_tv.setOnClickListener(onClick);
         pView.setMode(PullToRefreshBase.Mode.DISABLED);
         requsetDishesList();
     }
+
+    @OnClick(R.id.empty_view)
+    void doHandleEmptyEvent() {
+        doPopUpStack();
+    }
+
+    @OnClick(R.id.shop_cart_iv)
+    void doHandleShopCartEvent() {
+        if (mShopCartClearTv.getVisibility() == View.GONE) {
+            hideOptionWidget();
+            popupShoppingCart();
+        } else
+            hideShopCart();
+    }
+
+    @OnClick(R.id.option_dishes_tv)
+    void doHandleOptionDishesEvent() {
+        if (option_dishes_tip.getVisibility() == View.GONE)
+            popUpOptionsWidget();
+        else
+            hideOptionWidget();
+    }
+
 
     @OnClick(R.id.back)
     void back() {
@@ -155,27 +171,6 @@ public class ChooseDishesFragment extends BaseFragment {
         }
         return false;
     }
-
-    View.OnClickListener onClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if (v == mShopCartIv) {
-                if (mShopCartClearTv.getVisibility() == View.GONE) {
-                    hideOptionWidget();
-                    popupShoppingCart();
-                } else
-                    hideShopCart();
-            } else if (v == emptyView) {
-                doPopUpStack();
-            } else if (v == option_dishes_tv) {
-                if (option_dishes_tip.getVisibility() == View.GONE)
-                    popUpOptionsWidget();
-                else
-                    hideOptionWidget();
-            }
-        }
-
-    };
 
     int buildRequestID() {
         if (entry == null)
@@ -443,10 +438,8 @@ public class ChooseDishesFragment extends BaseFragment {
     private void hideShopCart() {
         mShopCartClearTv.setVisibility(View.GONE);
         emptyView.setVisibility(View.GONE);
-        LinearLayout popupShopCartLl = (LinearLayout) rootView
-                .findViewById(R.id.shop_cart_container_ll);
-        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) popupShopCartLl
-                .getLayoutParams();
+        LinearLayout popupShopCartLl = (LinearLayout) rootView.findViewById(R.id.shop_cart_container_ll);
+        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) popupShopCartLl.getLayoutParams();
         lp.bottomMargin = 0;
         popupShopCartLl.setLayoutParams(lp);
         popupShopCartLl.removeAllViews();
@@ -720,61 +713,63 @@ public class ChooseDishesFragment extends BaseFragment {
         }
     }
 
+    /**
+     * 不能进行新一次选菜(choose=false)提示信息汇总：
+     * 1. reason = 1, status = 1，您已选过第{times}次菜品，如需更改请点击。
+     * 2. reason = 1, status = 2，您的第{times}次菜品正在配送中，请耐心等待。
+     * 3. reason = 2，当前已过选菜日，请您周{shipday[0]+1}至周{shipday[0]-2}进行选菜。
+     * 4. reason = 3，您已延期第{times+1}次选菜，请您下次选菜日进行选菜。
+     */
     boolean setChooseDishesContent(View v) {
         final TextView choose_dishes_tip = (TextView) v.findViewById(R.id.choose_dishes_tip);
         if (isChooseNextDishes()) return true;
         choose_dishes_tip.setVisibility(View.VISIBLE);
-        mBuyOrderTv.setText(R.string.has_chosen_dishes);
+        mBuyOrderTv.setVisibility(View.GONE);
         switch (entry.status) {
             //1.待配送
             case 1:
-                choose_dishes_tip.setText("您已选过本期菜品,如需更改请点击.");
-                choose_dishes_tip.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        gotoFragmentByAdd(buildBundle(buildOrderParams(entry)), R.id.mainpage_ly, new ModifyOrderFragment(), ModifyOrderFragment.class.getName());
-                    }
-                });
+                if (entry.reason == 1) {
+                    choose_dishes_tip.setText("您已选过第" + entry.times + "次菜品，如需更改请点击。");
+                    choose_dishes_tip.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            gotoFragmentByAdd(buildBundle(buildOrderParams(entry)), R.id.mainpage_ly, new ModifyOrderFragment(), ModifyOrderFragment.class.getName());
+                        }
+                    });
+                }
                 break;
             //2.配送中
             case 2:
+                if (entry.reason == 1) {
+                    choose_dishes_tip.setText("您的第" + entry.times + "次菜品正在配送中，请耐心等待。");
+                    Drawable left = getBaseAct().getResources().getDrawable(R.drawable.icon_sigh);
+                    choose_dishes_tip.setCompoundDrawablesWithIntrinsicBounds(left, null, null, null);
+                }
+                break;
+            default:
+                break;
+        }
+        //不能选菜原因：1.本周已选菜（status=1时，可以变更菜品/cai/altorder），2.已过选菜日，3.已延期配送
+        switch (entry.reason) {
+            case 2:
                 String tip1 = "";
                 if (entry.shipday != null && entry.shipday.length > 0) {
-                    String day = "";
-                    for (int i = 0; i < entry.shipday.length; i++) {
-                        if (i == 0) {
-                            day += entry.shipday[i];
-                        } else {
-                            day += "," + entry.shipday[i];
-                        }
+                    int s = entry.shipday[0] - 2;
+                    if (s < 1) {
+                        s = s + 7;
                     }
-                    tip1 = "本期选菜时间已过,请于下周" + day + "开始下期选菜";
+                    int e = entry.shipday[0] + 1;
+                    if (e + 1 > 7) {
+                        e = e - 7;
+                    }
+                    tip1 = "已过选菜日，请周" + (s == 7 ? "日" : s) + "至周" + e + "开始下期选菜。";
                 }
                 choose_dishes_tip.setText(tip1);
                 Drawable left = getBaseAct().getResources().getDrawable(R.drawable.icon_sigh);
                 choose_dishes_tip.setCompoundDrawablesWithIntrinsicBounds(left, null, null, null);
                 break;
-            //3.配送完成（choose就为true了，不会出现的情况）
             case 3:
-                choose_dishes_tip.setText("您的第" + entry.times + "次菜品已经配送完成");
-                Drawable left1 = getBaseAct().getResources().getDrawable(R.drawable.icon_sigh);
-                choose_dishes_tip.setCompoundDrawablesWithIntrinsicBounds(left1, null, null, null);
-                break;
-            default:
-                choose_dishes_tip.setVisibility(View.GONE);
-                return true;
-        }
-        //不能选菜原因：1.本周已选菜（status=1时，可以变更菜品/cai/altorder），2.已过选菜日，3.已延期配送
-        switch (entry.reason) {
-            case 1:
-                if (entry.status == 1)
-                    mBuyOrderTv.setText("本周已选菜");
-                break;
-            case 2:
-                mBuyOrderTv.setText("已过选菜日");
-                break;
-            case 3:
-                mBuyOrderTv.setText("已延期配送");
+                choose_dishes_tip.setText("您已延期第" + (entry.times + 1) + "次选菜，请您下次选菜日进行选菜。");
                 break;
             default:
                 break;
@@ -810,12 +805,6 @@ public class ChooseDishesFragment extends BaseFragment {
         mShopCartIv.setEnabled(false);
         mShopCartPriceTv.setText(null);
         mBuyOrderTv.setTextColor(getBaseAct().getResources().getColorStateList(R.color.gray_d8d8d8));
-//        //过了选菜日了,上期配送的也完成了,这期的没选
-//        if (entry.status == 2 && entry.choose == false) {
-//            mBuyOrderTv.setText(entry.reason);
-//        } else {
-//            mBuyOrderTv.setText(R.string.has_chosen_dishes);
-//        }
         mBuyOrderTv.setEnabled(false);
     }
 
@@ -924,11 +913,9 @@ public class ChooseDishesFragment extends BaseFragment {
             ImageView goods_img = (ImageView) headView.findViewById(R.id.goods_img);
 
             if (entry != null && entry.imgs != null && entry.imgs.length > 0) {
-                String url = entry.imgs[0] + "?imageview2/2/w/180";
-                ImageLoader.getInstance().displayImage(url, goods_img);
+                ImageLoader.getInstance().displayImage(entry.imgs[0] + "?imageview2/2/w/180", goods_img);
             }
-            TextView goodsName = (TextView) headView.findViewById(R.id.goods_name);
-            goodsName.setText(entry.title);
+            ((TextView) headView.findViewById(R.id.goods_name)).setText(entry.title);
             TextView goodsPrice = (TextView) headView.findViewById(R.id.goods_price);
             goodsPrice.setText(entry.quantity + entry.unit + "/份");
             final ImageView goods_add = (ImageView) headView.findViewById(R.id.goods_add);
@@ -1001,8 +988,7 @@ public class ChooseDishesFragment extends BaseFragment {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] data) {
                 if (data != null && data.length > 0) {
-                    String result = new String(data);
-                    FixedListComboEntry entry = JsonUtilsParser.fromJson(result, FixedListComboEntry.class);
+                    FixedListComboEntry entry = JsonUtilsParser.fromJson(new String(data), FixedListComboEntry.class);
                     if (entry != null) {
                         if (TextUtils.isEmpty(entry.errmsg)) {
                             if (entry.items == null || entry.items.isEmpty()) {

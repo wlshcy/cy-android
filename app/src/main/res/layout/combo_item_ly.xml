@@ -2,7 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/px250"
-    android:background="@drawable/list_item_selector">
+    android:background="@android:color/white">
 
     <ImageView
         android:id="@+id/combo_img"
@@ -13,11 +13,12 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
         android:layout_marginBottom="@dimen/px20"
         android:layout_marginTop="@dimen/px20"
         android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -28,20 +29,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/px40"
+                android:drawableLeft="@drawable/green_rectangle_11c258_bg"
                 android:gravity="center"
-                android:textColor="@color/white_f4f4f4"
-                android:drawableLeft="@drawable/green_rectangle_11c258_bg"/>
+                android:textColor="@color/white_f4f4f4" />
 
             <TextView
                 android:id="@+id/combo_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/px20"
                 android:drawablePadding="@dimen/px20"
+                android:paddingLeft="@dimen/px20"
                 android:textColor="@color/black_303030"
                 android:visibility="visible" />
         </LinearLayout>
-        <!--</FrameLayout>-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -97,9 +97,9 @@
             android:id="@+id/farm_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="来自:"
             android:layout_marginLeft="@dimen/px40"
             android:layout_marginTop="@dimen/px20"
+            android:text="来自:"
             android:textColor="@color/gray_9a9a9a"
             android:textSize="@dimen/font26" />
 

@@ -3,7 +3,6 @@ package com.shequcun.farm.ui.adapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
-import android.os.Build;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,10 +16,8 @@ import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.ComboEntry;
-import com.shequcun.farm.util.Constrants;
 import com.shequcun.farm.util.ResUtil;
 import com.shequcun.farm.util.Utils;
-import com.tencent.mm.sdk.constants.ConstantsAPI;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
