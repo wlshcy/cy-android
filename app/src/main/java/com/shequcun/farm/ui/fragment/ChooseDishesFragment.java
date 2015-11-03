@@ -762,9 +762,11 @@ public class ChooseDishesFragment extends BaseFragment {
                     if (e + 1 > 7) {
                         e = e - 7;
                     }
-                    tip1 = "当前已过选菜日，请您周" + (s == 7 ? "日" : s) + "至周" + e + "开始下期选菜。";
+                    tip1 = "已过选菜日，请周" + (s == 7 ? "日" : s) + "至周" + e + "开始下期选菜。";
                 }
                 choose_dishes_tip.setText(tip1);
+                Drawable left = getBaseAct().getResources().getDrawable(R.drawable.icon_sigh);
+                choose_dishes_tip.setCompoundDrawablesWithIntrinsicBounds(left, null, null, null);
                 break;
             case 3:
                 choose_dishes_tip.setText("您已延期第" + (entry.times + 1) + "次选菜，请您下次选菜日进行选菜。");
