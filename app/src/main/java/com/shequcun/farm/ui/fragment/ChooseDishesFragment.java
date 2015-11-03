@@ -416,7 +416,8 @@ public class ChooseDishesFragment extends BaseFragment {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                rootView.removeView(flyTv);
+                if (rootView != null)
+                    rootView.removeView(flyTv);
             }
         });
         flyTv.startAnimation(arcAnim);
@@ -710,36 +711,25 @@ public class ChooseDishesFragment extends BaseFragment {
      */
     boolean setChooseDishesContent(View v) {
         final TextView choose_dishes_tip = (TextView) v.findViewById(R.id.choose_dishes_tip);
-        if (isChooseNextDishes()) return true;
-        choose_dishes_tip.setVisibility(View.VISIBLE);
-        mBuyOrderTv.setVisibility(View.GONE);
-        switch (entry.status) {
-            //1.待配送
-            case 1:
-                if (entry.reason == 1) {
-                    choose_dishes_tip.setText("您已选过第" + entry.times + "次菜品，如需更改请点击。");
-                    choose_dishes_tip.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            gotoFragmentByAdd(buildBundle(buildOrderParams(entry)), R.id.mainpage_ly, new ModifyOrderFragment(), ModifyOrderFragment.class.getName());
-                        }
-                    });
-                }
-                break;
-            //2.配送中
-            case 2:
-                if (entry.reason == 1) {
-                    choose_dishes_tip.setText("您的第" + entry.times + "次菜品正在配送中，请耐心等待。");
-                    Drawable left = getBaseAct().getResources().getDrawable(R.drawable.icon_sigh);
-                    choose_dishes_tip.setCompoundDrawablesWithIntrinsicBounds(left, null, null, null);
-                }
-                break;
-            default:
-                break;
-        }
-        //不能选菜原因：1.本周已选菜（status=1时，可以变更菜品/cai/altorder），2.已过选菜日，3.已延期配送
-        switch (entry.reason) {
-            case 2:
+        if (!isChooseNextDishes()) {
+            int status = buildStatus();
+            if (entry != null && status == 1 && entry.reason == 1) {
+                choose_dishes_tip.setVisibility(View.VISIBLE);
+                choose_dishes_tip.setText("您已选过第" + entry.times + "次菜品,如需更改请点击.");
+                choose_dishes_tip.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        gotoFragmentByAdd(buildBundle(buildOrderParams(entry)), R.id.mainpage_ly, new ModifyOrderFragment(), ModifyOrderFragment.class.getName());
+                    }
+                });
+                return false;
+            } else if (entry != null && status == 2 && entry.reason == 1) {
+                choose_dishes_tip.setVisibility(View.VISIBLE);
+                choose_dishes_tip.setText("您的第" + entry.times + "次菜品正在配送中,请耐心等待.");
+                Drawable left = getBaseAct().getResources().getDrawable(R.drawable.icon_sigh);
+                choose_dishes_tip.setCompoundDrawablesWithIntrinsicBounds(left, null, null, null);
+                return false;
+            } else if (entry != null && entry.reason == 2) {
                 String tip1 = "";
                 if (entry.shipday != null && entry.shipday.length > 0) {
                     int s = entry.shipday[0] - 2;
@@ -750,19 +740,21 @@ public class ChooseDishesFragment extends BaseFragment {
                     if (e + 1 > 7) {
                         e = e - 7;
                     }
-                    tip1 = "已过选菜日，请周" + (s == 7 ? "日" : s) + "至周" + e + "开始下期选菜。";
+                    tip1 = "已过选菜日,请周" + (s == 7 ? "日" : s) + "至周" + e + "开始下期选菜。";
                 }
+                choose_dishes_tip.setVisibility(View.VISIBLE);
                 choose_dishes_tip.setText(tip1);
                 Drawable left = getBaseAct().getResources().getDrawable(R.drawable.icon_sigh);
                 choose_dishes_tip.setCompoundDrawablesWithIntrinsicBounds(left, null, null, null);
-                break;
-            case 3:
+
+                return false;
+            } else if (entry != null && entry.reason == 3) {
+                choose_dishes_tip.setVisibility(View.VISIBLE);
                 choose_dishes_tip.setText("您已延期第" + (entry.times + 1) + "次选菜，请您下次选菜日进行选菜。");
-                break;
-            default:
-                break;
+                return false;
+            }
         }
-        return false;
+        return true;
     }
 
     boolean isChooseNextDishes() {
@@ -791,7 +783,7 @@ public class ChooseDishesFragment extends BaseFragment {
 
     private void setWidgetEnableStatus() {
         mShopCartIv.setEnabled(false);
-        mShopCartPriceTv.setText(null);
+        mBuyOrderTv.setText(R.string.has_chosen_dishes);
         mBuyOrderTv.setTextColor(getBaseAct().getResources().getColorStateList(R.color.gray_d8d8d8));
         mBuyOrderTv.setEnabled(false);
     }

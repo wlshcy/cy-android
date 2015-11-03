@@ -364,7 +364,7 @@ public class ModifyOrderFragment extends BaseFragment {
                 entry.reason = hEntry.reason;
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("ComboEntry", entry);
-                popBackStack();
+//                popBackStack();
                 gotoFragmentByAdd(bundle, R.id.mainpage_ly, new ChooseDishesFragment(), ChooseDishesFragment.class.getName());
             }
         });
