@@ -60,7 +60,11 @@ public class SettingUpdatePasswordFragment extends BaseFragment {
     private String password;
     private String smscode;
     private TimeCount tCount;
+<<<<<<< Updated upstream
     private int maxLength = 6;
+=======
+    private int length = 6;
+>>>>>>> Stashed changes
 
     @Nullable
     @Override
@@ -137,11 +141,17 @@ public class SettingUpdatePasswordFragment extends BaseFragment {
 
     private String checkInputPwd() {
         password = passwordEt.getText().toString().trim();
+<<<<<<< Updated upstream
         if (TextUtils.isEmpty(password) || password.length() < maxLength)
             return "请输入不少于" + maxLength + "位新密码";
         String newPassword = newPasswordEt.getText().toString().trim();
         if (TextUtils.isEmpty(newPassword) || newPassword.length() < maxLength)
             return "请输入不少于" + maxLength + "位确认密码";
+=======
+        if (TextUtils.isEmpty(password)) return "请输入" + length + "位新密码";
+        String newPassword = newPasswordEt.getText().toString().trim();
+        if (TextUtils.isEmpty(newPassword)) return "请输入" + length + "位确认密码";
+>>>>>>> Stashed changes
         if (password.equals(newPassword) == false) return "确认密码与新密码不相同";
         return null;
     }
