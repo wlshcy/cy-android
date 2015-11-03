@@ -2,11 +2,9 @@ package com.shequcun.farm.ui.fragment;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -15,12 +13,9 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.Indicators.PagerIndicator;
@@ -35,26 +30,18 @@ import com.shequcun.farm.data.OtherInfo;
 import com.shequcun.farm.data.RecommendEntry;
 import com.shequcun.farm.datacenter.CacheManager;
 import com.shequcun.farm.db.RecommendItemKey;
-import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.platform.ShareContent;
 import com.shequcun.farm.platform.ShareManager;
-import com.shequcun.farm.task.BitmapAsyncTask;
 import com.shequcun.farm.ui.SqcFarmActivity;
-import com.shequcun.farm.ui.adapter.CarouselAdapter;
 import com.shequcun.farm.util.Constrants;
 import com.shequcun.farm.util.DeviceInfo;
 import com.shequcun.farm.util.IntentUtil;
 import com.shequcun.farm.util.ToastHelper;
 import com.shequcun.farm.util.Utils;
 
-import java.net.HttpURLConnection;
-import java.net.URL;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
-//import com.shequcun.farm.util.ShareUtil;
 
 /**
  * 农庄特产详情
@@ -63,8 +50,6 @@ import butterknife.OnClick;
 public class FarmSpecialtyDetailFragment extends BaseFragment {
     @Bind(R.id.slider)
     SliderLayout slider;
-    @Bind(R.id.custom_indicator2)
-    PagerIndicator customIndicator2;
 
     @Nullable
     @Override
@@ -140,24 +125,6 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
     }
 
     void buildCarouselAdapter() {
-//        if (entry == null || entry.imgs == null || entry.imgs.length <= 0) {
-//            carousel_img.setVisibility(View.GONE);
-//            dismissImgProgress();
-//            return;
-//        }
-//        final List<SlidesEntry> aList = new ArrayList<>();
-//        int size = entry.imgs.length;
-//        for (int i = 0; i < size; i++) {
-//            SlidesEntry sEntry = new SlidesEntry();
-//            sEntry.img = entry.imgs[i];
-//            aList.add(sEntry);
-//        }
-//        cAdapter = new CarouselAdapter(getBaseAct(), aList);
-//        cAdapter.setWidth(DeviceInfo.getDeviceWidth(getBaseAct()));
-//        carousel_img.setOnViewSwitchListener(viewSwitchListener);
-//        cAdapter.setImageLoaderListener(imageLoaderListener);
-//        carousel_img.setAdapter(cAdapter, 0);
-//        carousel_img.setFlowIndicator(carousel_point);
         if (entry == null || entry.imgs == null || entry.imgs.length < 1) return;
         if (entry.imgs.length == 1) {
             addSliderUrl(entry.imgs[0]);
@@ -304,8 +271,12 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
             goods_add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    if (entry.count >= entry.maxpacks) {
+                        alertOutOfMaxpacks(entry.count);
+                        return;
+                    }
 
-                    if (entry.count > entry.remains) {
+                    if (entry.count >= entry.remains) {
                         alertOutOfRemains();
                         return;
                     }
@@ -359,15 +330,16 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
         return result;
     }
 
-    private void alertOutOfMaxpacks() {
-        String content = getResources().getString(R.string.out_of_maxpacks);
-        alertDialog(content);
+    private void alertOutOfMaxpacks(int maxPacks) {
+
+        alertDialog("亲,该商品您最多只能选择" + maxPacks + "份哟!");
     }
 
     private void alertOutOfRemains() {
         String content = "亲,该菜品库存不足,请选其他菜品吧";
         alertDialog(content);
     }
+
 
     private void alertDialog(String content) {
         final AlertDialog alert = new AlertDialog.Builder(getBaseAct()).create();
@@ -404,80 +376,6 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
         return new CacheManager(getBaseAct()).getUserLoginEntry() != null;
     }
 
-    private CarouselAdapter.ImageLoaderListener imageLoaderListener = new CarouselAdapter.ImageLoaderListener() {
-        @Override
-        public void loadFinish() {
-//            dismissImgProgress();
-        }
-
-        @Override
-        public void loadStart() {
-//            popImgProgress();
-        }
-    };
-
-//    private ViewFlow.ViewSwitchListener viewSwitchListener = new ViewFlow.ViewSwitchListener() {
-//        @Override
-//        public void onSwitched(View view, int position) {
-//            if (cAdapter != null)
-//                cAdapter.setCurVisibleIndex(position);
-//            ViewFlow viewFlow = (ViewFlow) view.getParent();
-//            View view1 = viewFlow.getChildAt(position);
-//            if (view1 == null) return;
-//            View img = view1.findViewById(R.id.imgView);
-//            if (img == null) return;
-//            if (img.getTag() == null) {
-//                popImgProgress();
-//            } else {
-//                if (img.getTag() instanceof String) {
-//                    String s = (String) img.getTag();
-//                }
-//                dismissImgProgress();
-//            }
-//        }
-//    };
-
-//    private void dismissImgProgress() {
-//        if (imgProgress == null) return;
-//        if (imgProgress.getVisibility() == View.VISIBLE)
-//            imgProgress.setVisibility(View.GONE);
-//    }
-//
-//    private void popImgProgress() {
-//        if (imgProgress == null) return;
-//        if (imgProgress.getVisibility() == View.GONE)
-//            imgProgress.setVisibility(View.VISIBLE);
-//    }
-
-    void startAnimation() {
-        Animation anim = AnimationUtils.loadAnimation(getBaseAct(), R.anim.slide_out_from_left);
-
-        anim.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-                popBackStack();
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
-        });
-        pView.setAnimation(anim);
-    }
-
-    /**
-     * 轮播的图片
-     */
-//    @Bind(R.id.carousel_img)
-//    ViewFlow carousel_img;
-//    @Bind(R.id.carousel_point)
-//    CircleFlowIndicator carousel_point;
-//    CarouselAdapter cAdapter;
     RecommendEntry entry;
     @Bind(R.id.pView)
     FrameLayout pView;
