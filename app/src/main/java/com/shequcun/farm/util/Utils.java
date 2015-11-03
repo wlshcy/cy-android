@@ -76,6 +76,8 @@ public class Utils {
         View view = null;
         for (int i = 0; i < listAdapter.getCount(); i++) {
             view = listAdapter.getView(i, view, listView);
+            if (view == null)
+                continue;
             if (i == 0)
                 view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, ViewGroup.LayoutParams.WRAP_CONTENT));
 
@@ -83,9 +85,12 @@ public class Utils {
             totalHeight += view.getMeasuredHeight();
         }
         ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
-        listView.setLayoutParams(params);
-        listView.requestLayout();
+        if (params != null) {
+            params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+            listView.setLayoutParams(params);
+            listView.requestLayout();
+        }
+
     }
 
     /**
@@ -103,8 +108,21 @@ public class Utils {
         } else {
             restDistanceStr = fdis + "斤";
         }
-//        restDistanceStr = fdis + "斤";
         return restDistanceStr;
+//        String tmpStr = "";
+//        if (g >= 1000) {
+//            float fdis = ((float) g) / 1000;
+//            fdis = (float) (Math.round(fdis * 10)) / 10;
+//            if (fdis * 10 % 10 == 0) {
+//                tmpStr = (int) fdis + "千克";
+//            } else {
+//                tmpStr = fdis + "千克";
+//            }
+//        } else {
+//            tmpStr = g + "克";
+//        }
+//
+//        return tmpStr;
     }
 
     public static SpannableString getSpanableSpan(String strFrom1,
