@@ -25,6 +25,8 @@ import com.shequcun.farm.data.ModifyOrderParams;
 import com.shequcun.farm.data.MyOrderDetailListEntry;
 import com.shequcun.farm.data.OtherInfo;
 import com.shequcun.farm.data.PayParams;
+import com.shequcun.farm.data.UserLoginEntry;
+import com.shequcun.farm.datacenter.CacheManager;
 import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.platform.ShareContent;
@@ -356,7 +358,7 @@ public class ModifyOrderFragment extends BaseFragment {
                 entry.times = hEntry.times;
                 entry.duration = hEntry.duration;
                 entry.shipday = hEntry.shipday;
-                entry.setMine(hEntry.isMine);
+                entry.setMine(isMyCombo());
                 entry.con = TextUtils.isEmpty(hEntry.con) ? entry.orderno : hEntry.con;
                 entry.status = hEntry.status;
                 entry.reason = hEntry.reason;
@@ -474,6 +476,20 @@ public class ModifyOrderFragment extends BaseFragment {
                 mLv.addFooterView(footerView, null, false);
             }
         }
+    }
+
+//    UserLoginEntry entry = new CacheManager(getBaseAct()).getUserLoginEntry();
+//    if (entry != null) {
+//        entry.isMyCombo = isShow;
+//        new CacheManager(getBaseAct()).saveUserLoginToDisk(JsonUtilsParser.toJson(entry).getBytes());
+//    }
+
+    private boolean isMyCombo(){
+        UserLoginEntry entry = new CacheManager(getBaseAct()).getUserLoginEntry();
+        if(entry!=null){
+            return entry.isMyCombo;
+        }
+        return false;
     }
 
     //    private ShareUtil shareController;

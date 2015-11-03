@@ -10,8 +10,6 @@ import java.io.Serializable;
  * @author apple
  */
 public class UserLoginEntry extends BaseEntry implements Serializable {
-    @SerializedName("nickname")
-    public String nickname;
     @SerializedName("headimg")
     public String headimg;
     @SerializedName("name")
@@ -24,12 +22,14 @@ public class UserLoginEntry extends BaseEntry implements Serializable {
     public String address;
     @SerializedName("id")
     public int id;
-    @SerializedName("zname")
-    public String zname;
+    //    @SerializedName("zname")
+//    public String zname;
     @SerializedName("mycomboids")
     public int mycomboids[];
     @SerializedName("orderno")
     public String orderno;
     @SerializedName("haspwd")
     public boolean haspwd;
+    @SerializedName("ismycombo")
+    public boolean isMyCombo;
 }

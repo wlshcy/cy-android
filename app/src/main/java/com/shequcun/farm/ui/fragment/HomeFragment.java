@@ -368,6 +368,11 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
             no_combo_iv.setVisibility(View.VISIBLE);
             has_combo_iv.setVisibility(View.GONE);
         }
+        UserLoginEntry entry = new CacheManager(getBaseAct()).getUserLoginEntry();
+        if (entry != null) {
+            entry.isMyCombo = isShow;
+            new CacheManager(getBaseAct()).saveUserLoginToDisk(JsonUtilsParser.toJson(entry).getBytes());
+        }
     }
 
 
@@ -435,7 +440,6 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
                     ComboDetailEntry entry = JsonUtilsParser.fromJson(new String(data), ComboDetailEntry.class);
                     if (entry != null) {
                         if (TextUtils.isEmpty(entry.errmsg)) {
-                            //gotoFragmentByAnimation(buildBundle_(entry.combo), R.id.mainpage_ly, new ComboSecondFragment(), ComboSecondFragment.class.getName(), R.anim.puff_in, R.anim.puff_out);
                             gotoFragmentByAdd(buildBundle_(entry.combo), R.id.mainpage_ly, new ComboSecondFragment(), ComboSecondFragment.class.getName());
                             return;
                         }
@@ -458,8 +462,17 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
     Bundle buildBundle_(ComboEntry entry) {
         Bundle bundle = new Bundle();
         entry.setPosition(entry.index);
+        entry.setMine(isMyCombo());
         bundle.putSerializable("ComboEntry", entry);
         return bundle;
+    }
+
+    private boolean isMyCombo() {
+        UserLoginEntry entry = new CacheManager(getBaseAct()).getUserLoginEntry();
+        if (entry != null) {
+            return entry.isMyCombo;
+        }
+        return false;
     }
 
     /**
@@ -471,18 +484,6 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
         return new CacheManager(getBaseAct()).getUserLoginEntry() != null;
     }
 
-    private CarouselAdapter.ImageLoaderListener imageLoaderListener = new CarouselAdapter.ImageLoaderListener() {
-        @Override
-        public void loadFinish() {
-//            dismissImgProgress();
-        }
-
-        @Override
-        public void loadStart() {
-//            popImgProgress();
-        }
-    };
-
     @Bind(R.id.pView)
     PullToRefreshScrollView pView;
     @Bind(R.id.gv)
@@ -491,11 +492,7 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
     View no_combo_iv;
     @Bind(R.id.has_combo_iv)
     View has_combo_iv;
-//    @Bind(R.id.imgProgress)
-//    View imgProgress;
-
     ComboEntry comboEntry;
-    //    CarouselAdapter cAdapter;
     boolean mIsBind = false;
     private FarmSpecialtyAdapter adapter;
 }

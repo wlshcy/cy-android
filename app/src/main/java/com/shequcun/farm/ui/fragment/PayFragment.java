@@ -133,6 +133,9 @@ public class PayFragment extends BaseFragment {
                 }
             }
         }
+
+
+
         return (entry != null) ? entry.isMine() : false;
     }
 

@@ -93,7 +93,7 @@ public class ComboEntry extends BaseEntry {
 //    public JsonObject json;
 
     @SerializedName("chgtime")
-    public Map<String,Long> chgtime;
+    public Map<String, Long> chgtime;
 
     @SerializedName("con")
     public String con;//套餐订单号
