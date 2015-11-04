@@ -57,14 +57,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/px16"
-                android:text="name+mobile" />
+                android:text="name+mobile"
+                android:textColor="@color/black_131313"/>
 
             <TextView
                 android:id="@+id/address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/px16"
-                android:layout_marginTop="@dimen/px10" />
+                android:layout_marginTop="@dimen/px10"
+                android:textColor="@color/black_131313"/>
         </LinearLayout>
 
 

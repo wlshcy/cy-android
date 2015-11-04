@@ -1,5 +1,6 @@
 package com.shequcun.farm.ui.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
@@ -73,6 +74,7 @@ public class SettingUpdatePasswordFragment extends BaseFragment {
         darkSmscode();
         passwordEt.addTextChangedListener(textWatcher);
         newPasswordEt.addTextChangedListener(textWatcher1);
+        smscodeEt.addTextChangedListener(textWatcher2);
     }
 
     private TextWatcher textWatcher = new TextWatcher() {
@@ -114,15 +116,34 @@ public class SettingUpdatePasswordFragment extends BaseFragment {
                 darkSmscode();
         }
     };
+    private TextWatcher textWatcher2 = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            if (s.length() > 0 && passwordEt.getText().length() > 0 && newPasswordEt.getText().length() > 0)
+                enableUpdateBtn();
+            else
+                disableUpdateBtn();
+        }
+    };
 
     private void darkSmscode() {
-        getSmscodeBtn.setTextColor(getResources().getColor(R.color.gray_3d3d3d));
-//        getSmscodeBtn.setEnabled(false);
+        getSmscodeBtn.setTextColor(getResources().getColor(R.color.gray_cecece));
+        getSmscodeBtn.setEnabled(false);
     }
 
     private void lightSmscode() {
         getSmscodeBtn.setTextColor(getResources().getColor(R.color.green_11C258));
-//        getSmscodeBtn.setEnabled(true);
+        getSmscodeBtn.setEnabled(true);
 
     }
 
@@ -231,7 +252,7 @@ public class SettingUpdatePasswordFragment extends BaseFragment {
 
     void startTime() {
         if (tCount == null) {
-            getSmscodeBtn.setTextColor(getResources().getColor(R.color.gray_3d3d3d));
+            getSmscodeBtn.setTextColor(getResources().getColor(R.color.gray_cecece));
             tCount = new TimeCount(60000, 1000, getSmscodeBtn);
         }
         tCount.start();
@@ -278,6 +299,18 @@ public class SettingUpdatePasswordFragment extends BaseFragment {
 
             }
         });
+    }
+
+    private void disableUpdateBtn() {
+        loginTv.setBackgroundResource(R.drawable.edit_bg);
+        loginTv.setTextColor(getResources().getColor(R.color.gray_cecece));
+        loginTv.setEnabled(false);
+    }
+
+    private void enableUpdateBtn() {
+        loginTv.setEnabled(true);
+        loginTv.setBackgroundColor(getResources().getColor(R.color.green_11C258));
+        loginTv.setTextColor(Color.WHITE);
     }
 
     private void saveUserLogin() {

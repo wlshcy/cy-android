@@ -39,7 +39,6 @@
                         android:hint="输入不少于6位新密码"
                         android:inputType="textPassword"
                         android:paddingLeft="13dp"
-                        android:maxLength="6"
                         android:singleLine="true"
                         android:textColor="@android:color/black"
                         android:textColorHint="@color/gray_cecece"
@@ -63,7 +62,6 @@
                     android:imeOptions="actionDone"
                     android:inputType="textPassword"
                     android:paddingLeft="13dp"
-                    android:maxLength="6"
                     android:singleLine="true"
                     android:textColor="@android:color/black"
                     android:textColorHint="@color/gray_cecece"
@@ -99,7 +97,7 @@
                     android:layout_marginRight="@dimen/px36"
                     android:background="@android:color/transparent"
                     android:text="@string/get_sms_code"
-                    android:textColor="@color/green_11C258"
+                    android:textColor="@color/gray_cecece"
                     android:textSize="@dimen/font28" />
             </LinearLayout>
 
@@ -108,10 +106,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/px100"
                 android:layout_margin="10dp"
-                android:background="@color/green_11C258"
+                android:background="@drawable/edit_bg"
                 android:gravity="center"
                 android:text="确认修改密码"
-                android:textColor="@android:color/white"
+                android:textColor="@color/gray_cecece"
                 android:textSize="@dimen/px30" />
 
         </LinearLayout>
