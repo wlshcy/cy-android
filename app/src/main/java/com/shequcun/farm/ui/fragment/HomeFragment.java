@@ -108,7 +108,6 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
     public void onDestroyView() {
         super.onDestroyView();
         doUnRegisterReceiver();
-        ButterKnife.unbind(this);
     }
 
     void doRegisterRefreshBrodcast() {
@@ -462,17 +461,9 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
     Bundle buildBundle_(ComboEntry entry) {
         Bundle bundle = new Bundle();
         entry.setPosition(entry.index);
-        entry.setMine(isMyCombo());
+        entry.setMine(false);
         bundle.putSerializable("ComboEntry", entry);
         return bundle;
-    }
-
-    private boolean isMyCombo() {
-        UserLoginEntry entry = new CacheManager(getBaseAct()).getUserLoginEntry();
-        if (entry != null) {
-            return entry.isMyCombo;
-        }
-        return false;
     }
 
     /**
