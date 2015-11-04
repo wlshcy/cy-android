@@ -963,7 +963,10 @@ public class ChooseDishesFragment extends BaseFragment {
         RequestParams params = new RequestParams();
 //      套餐固定菜品使用，套餐订单号
         params.add("orderno", con);
-        params.add("mode", "2");
+        if (enabled)
+            params.add("mode", "1");
+        else
+            params.add("mode", "2");
         HttpRequestUtil.getHttpClient(getBaseAct()).get(LocalParams.getBaseUrl() + "cai/itemlist", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] data) {

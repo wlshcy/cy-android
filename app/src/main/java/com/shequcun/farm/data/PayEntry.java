@@ -12,7 +12,7 @@ public class PayEntry extends BaseEntry {
 //            "orderno":1586456929303190
     @SerializedName("fee")
     public int fee;
-//    @SerializedName("alipay")
+    @SerializedName("alipay")
     public String alipay;
     @SerializedName("freight")
     public int freight;
