@@ -113,7 +113,17 @@ public class ChooseDishesFragment extends BaseFragment {
 
     @Override
     protected void setWidgetLsn() {
-        pView.setMode(PullToRefreshBase.Mode.DISABLED);
+        pView.setMode(PullToRefreshBase.Mode.PULL_FROM_END);
+        pView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ScrollView>() {
+            @Override
+            public void onPullDownToRefresh(PullToRefreshBase<ScrollView> refreshView) {
+            }
+
+            @Override
+            public void onPullUpToRefresh(PullToRefreshBase<ScrollView> refreshView) {
+                requsetDishesList();
+            }
+        });
         requsetDishesList();
     }
 
@@ -201,7 +211,9 @@ public class ChooseDishesFragment extends BaseFragment {
     }
 
     private void doAddDataToAdapter(List<DishesItemEntry> aList) {
+        pView.onRefreshComplete();
         if (aList != null && aList.size() > 0) {
+            adapter.clear();
             adapter.addAll(aList);
             adapter.notifyDataSetChanged();
         }
