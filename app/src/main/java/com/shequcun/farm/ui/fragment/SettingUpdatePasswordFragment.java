@@ -262,6 +262,7 @@ public class SettingUpdatePasswordFragment extends BaseFragment {
                 BaseEntry entry = JsonUtilsParser.fromJson(result, BaseEntry.class);
                 if (entry != null) {
                     if (TextUtils.isEmpty(entry.errcode)) {
+                        Utils.hideVirtualKeyboard(getBaseAct(), back);
                         Toast.makeText(getActivity(), "修改密码成功", Toast.LENGTH_SHORT).show();
                         popBackStack();
                         saveUserLogin();
