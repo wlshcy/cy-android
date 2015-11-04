@@ -113,7 +113,11 @@ public class ChooseDishesFragment extends BaseFragment {
 
     @Override
     protected void setWidgetLsn() {
-        pView.setMode(PullToRefreshBase.Mode.PULL_FROM_END);
+        requsetDishesList();
+    }
+
+    void doAddRefreshLsn(boolean isEnableRefrsh) {
+        pView.setMode(isEnableRefrsh ? PullToRefreshBase.Mode.DISABLED : PullToRefreshBase.Mode.PULL_FROM_END);
         pView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ScrollView>() {
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<ScrollView> refreshView) {
@@ -124,7 +128,6 @@ public class ChooseDishesFragment extends BaseFragment {
                 requsetDishesList();
             }
         });
-        requsetDishesList();
     }
 
     @OnClick(R.id.empty_view)
@@ -191,9 +194,11 @@ public class ChooseDishesFragment extends BaseFragment {
                     DishesListItemEntry entry = JsonUtilsParser.fromJson(new String(data), DishesListItemEntry.class);
                     if (entry != null) {
                         if (TextUtils.isEmpty(entry.errmsg)) {
+                            doAddRefreshLsn(true);
                             doAddDataToAdapter(entry.aList);
                             return;
                         }
+                        doAddRefreshLsn(false);
                         ToastHelper.showShort(getBaseAct(), entry.errmsg);
                     }
                 }
@@ -201,6 +206,7 @@ public class ChooseDishesFragment extends BaseFragment {
 
             @Override
             public void onFailure(int sCode, Header[] headers, byte[] responseBody, Throwable error) {
+                doAddRefreshLsn(false);
                 if (sCode == 0) {
                     ToastHelper.showShort(getBaseAct(), R.string.network_error_tip);
                     return;
