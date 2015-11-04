@@ -631,7 +631,7 @@ public class PayFragment extends BaseFragment {
         alert.setCancelable(false);
         alert.getWindow().setContentView(R.layout.prompt_dialog);
         ((TextView) alert.getWindow().findViewById(R.id.content_tv))
-                .setText("商品价格变更微信不支持支付，请使用支付宝付款，给您带来不便敬请谅解。");
+                .setText("价格变更微信支付失败，请使用支付宝付款，给您带来不便敬请谅解。");
         alert.getWindow().findViewById(R.id.no)
                 .setOnClickListener(new View.OnClickListener() {
 

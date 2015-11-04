@@ -34,7 +34,6 @@ import com.shequcun.farm.util.Utils;
 import java.util.ArrayList;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -116,9 +115,13 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment implements R
             mLv.removeHeaderView(headView);
             headView = null;
         }
-        if (sChilidView != null) {
-            pView.removeView(sChilidView);
-            sChilidView = null;
+        if (footerViewRemark != null) {
+            mLv.removeFooterView(footerViewRemark);
+            footerViewRemark = null;
+        }
+        if (payWidgetView != null) {
+            pView.removeView(payWidgetView);
+            payWidgetView = null;
         }
         memo = null;
     }
@@ -128,10 +131,28 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment implements R
             footerView = LayoutInflater.from(getBaseAct()).inflate(R.layout.order_details_footer_ly, null);
             number_copies = (TextView) footerView.findViewById(R.id.number_copies);
             mLv.addFooterView(footerView, null, false);
-            addSchildView();
         }
+
+        if (footerViewRemark == null) {
+            footerViewRemark = LayoutInflater.from(getBaseAct()).inflate(R.layout.farm_shopping_cart_footer_ly, null);
+            footerViewRemark.findViewById(R.id.remark_ly).setOnClickListener(new View.OnClickListener() {//添加备注
+                @Override
+                public void onClick(View v) {
+                    RemarkFragment fragment = new RemarkFragment();
+                    fragment.setCallBackLsn(FarmSpecialtyShoppingCartFragment.this);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("RemarkTip", remark_tv != null ? remark_tv.getText().toString() : "");
+                    gotoFragmentByAdd(bundle, R.id.mainpage_ly, fragment, RemarkFragment.class.getName());
+                }
+            });
+            remark_tv = (TextView) footerViewRemark.findViewById(R.id.remark_tv);
+            freight_money_tv = (TextView) footerViewRemark.findViewById(R.id.freight_money_tv);
+            mLv.addFooterView(footerViewRemark, null, false);
+        }
+        addPayWidgetToBottom();
         updateWidget(part, allMoney);
     }
+
 
     void removeWidgetFromView() {
         if (shopCartView != null) {
@@ -328,13 +349,57 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment implements R
     /**
      * 添加备注优惠红包至界面
      */
-    void addSchildView() {
-        if (sChilidView == null) {
-            sChilidView = LayoutInflater.from(getBaseAct()).inflate(R.layout.farm_shopping_cart_footer_ly, null);
-            shop_cart_total_price_tv = (TextView) sChilidView.findViewById(R.id.shop_cart_total_price_tv);
-            (sChilidView.findViewById(R.id.shop_cart_surpport_now_pay_tv)).setVisibility(View.GONE);
+//    void addSchildView() {
+//        if (sChilidView == null) {
+//            sChilidView = LayoutInflater.from(getBaseAct()).inflate(R.layout.farm_shopping_cart_footer_ly, null);
+//            shop_cart_total_price_tv = (TextView) sChilidView.findViewById(R.id.shop_cart_total_price_tv);
+//            sChilidView.findViewById(R.id.shop_cart_surpport_now_pay_tv).setVisibility(View.GONE);
+//
+//            sChilidView.findViewById(R.id.buy_order_tv).setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    ComboEntry entry = new ComboEntry();
+//                    entry.setPosition(0);
+//                    entry.prices = new int[1];
+//                    entry.prices[0] = allMoney / 100 >= 99 ? allMoney : allMoney + 10 * 10 * 10;
+//                    entry.info = new OtherInfo();
+//                    entry.info.extras = getExtras();
+//                    entry.info.memo = memo;
+//                    entry.info.type = 3;
+//                    Bundle bundle = new Bundle();
+//                    bundle.putSerializable("ComboEntry", entry);
+//                    gotoFragmentByAdd(bundle, R.id.mainpage_ly, new PayFragment(), PayFragment.class.getName());
+//                }
+//            });
+//
+//            sChilidView.findViewById(R.id.remark_ly).setOnClickListener(new View.OnClickListener() {//添加备注
+//                @Override
+//                public void onClick(View v) {
+//                    RemarkFragment fragment = new RemarkFragment();
+//                    fragment.setCallBackLsn(FarmSpecialtyShoppingCartFragment.this);
+//                    Bundle bundle = new Bundle();
+//                    bundle.putString("RemarkTip", remark_tv != null ? remark_tv.getText().toString() : "");
+//                    gotoFragmentByAdd(bundle, R.id.mainpage_ly, fragment, RemarkFragment.class.getName());
+//                }
+//            });
+//
+//
+//            remark_tv = (TextView) sChilidView.findViewById(R.id.remark_tv);
+//            freight_money_tv = (TextView) sChilidView.findViewById(R.id.freight_money_tv);
+//
+//            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//            params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+//            params.bottomMargin = ResUtil.dipToPixel(getBaseAct(), 5);
+//            pView.addView(sChilidView, params);
+//        }
+//    }
 
-            sChilidView.findViewById(R.id.buy_order_tv).setOnClickListener(new View.OnClickListener() {
+    void addPayWidgetToBottom() {
+        if (payWidgetView == null) {
+            payWidgetView = LayoutInflater.from(getBaseAct()).inflate(R.layout.pay_widget_ly, null);
+            shop_cart_total_price_tv = (TextView) payWidgetView.findViewById(R.id.shop_cart_total_price_tv);
+            payWidgetView.findViewById(R.id.shop_cart_surpport_now_pay_tv).setVisibility(View.GONE);
+            payWidgetView.findViewById(R.id.buy_order_tv).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     ComboEntry entry = new ComboEntry();
@@ -351,25 +416,10 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment implements R
                 }
             });
 
-            sChilidView.findViewById(R.id.remark_ly).setOnClickListener(new View.OnClickListener() {//添加备注
-                @Override
-                public void onClick(View v) {
-                    RemarkFragment fragment = new RemarkFragment();
-                    fragment.setCallBackLsn(FarmSpecialtyShoppingCartFragment.this);
-                    Bundle bundle = new Bundle();
-                    bundle.putString("RemarkTip", remark_tv != null ? remark_tv.getText().toString() : "");
-                    gotoFragmentByAdd(bundle, R.id.mainpage_ly, fragment, RemarkFragment.class.getName());
-                }
-            });
-
-
-            remark_tv = (TextView) sChilidView.findViewById(R.id.remark_tv);
-            freight_money_tv = (TextView) sChilidView.findViewById(R.id.freight_money_tv);
-
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
             params.bottomMargin = ResUtil.dipToPixel(getBaseAct(), 5);
-            pView.addView(sChilidView, params);
+            pView.addView(payWidgetView, params);
         }
     }
 
@@ -419,18 +469,19 @@ public class FarmSpecialtyShoppingCartFragment extends BaseFragment implements R
     TextView number_copies;
     TextView remark_tv;
     TextView freight_money_tv;
-    //    View addressLy;
     View footerView;
+
+    View footerViewRemark;
     //总份数
     private int allPart = 0;
     //总价格
     private int allMoney = 0;
-    View sChilidView;
+
     @Bind(R.id.pScrollView)
     ScrollView pScrollView;
     String memo;
     CouponEntry cEntry;
     View noLoginView;
-
     View headView;
+    View payWidgetView;
 }

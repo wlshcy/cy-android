@@ -117,6 +117,8 @@ public class ChooseDishesFragment extends BaseFragment {
     }
 
     void doAddRefreshLsn(boolean isEnableRefrsh) {
+        if (pView == null)
+            return;
         pView.setMode(isEnableRefrsh ? PullToRefreshBase.Mode.DISABLED : PullToRefreshBase.Mode.PULL_FROM_END);
         pView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ScrollView>() {
             @Override
@@ -125,6 +127,11 @@ public class ChooseDishesFragment extends BaseFragment {
 
             @Override
             public void onPullUpToRefresh(PullToRefreshBase<ScrollView> refreshView) {
+                if (isMyCombo()) {
+                    requsetFixedDishesList(entry.con);
+                } else {
+                    requestFixedCombo(entry.id);
+                }
                 requsetDishesList();
             }
         });
@@ -188,6 +195,13 @@ public class ChooseDishesFragment extends BaseFragment {
         RequestParams params = new RequestParams();
         params.add("combo_id", id + "");
         HttpRequestUtil.getHttpClient(getBaseAct()).get(LocalParams.getBaseUrl() + "cai/itemlist", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                if (pView != null)
+                    pView.onRefreshComplete();
+            }
+
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] data) {
                 if (data != null && data.length > 0) {
@@ -909,7 +923,6 @@ public class ChooseDishesFragment extends BaseFragment {
         for (FixedComboEntry entry : aList) {
             View headView = LayoutInflater.from(getBaseAct()).inflate(R.layout.combo_match_ly, null);
             ImageView goods_img = (ImageView) headView.findViewById(R.id.goods_img);
-
             if (entry != null && entry.imgs != null && entry.imgs.length > 0) {
                 ImageLoader.getInstance().displayImage(entry.imgs[0] + "?imageview2/2/w/180", goods_img);
             }
@@ -921,7 +934,6 @@ public class ChooseDishesFragment extends BaseFragment {
             if (!enabled) {
                 goods_add.setEnabled(false);
             } else if (isLastChoose()) {
-//                goods_add.setImageResource(R.drawable.icon_add_gray);
                 goods_add.setEnabled(false);
                 goods_count.setText(entry.remains + "");
                 goods_count.setVisibility(View.VISIBLE);
@@ -950,6 +962,7 @@ public class ChooseDishesFragment extends BaseFragment {
                         mOrderController.removeComboMatchItem(tmpEntry);
                         mOrderController.addComboMatchItem(tmpEntry);
                     }
+                    PlaySoundUtils.doPlay(getBaseAct(), R.raw.psst2);
                 }
             });
             goods_add.setTag(entry);
@@ -965,13 +978,16 @@ public class ChooseDishesFragment extends BaseFragment {
                     goods_count.setVisibility(View.VISIBLE);
                     goods_count.setText(tmpEntry.count + "");
                     goods_sub.setVisibility(View.VISIBLE);
-
                     mOrderController.removeComboMatchItem(tmpEntry);
                     mOrderController.addComboMatchItem(tmpEntry);
+                    PlaySoundUtils.doPlay(getBaseAct(), R.raw.pop);
                 }
             });
             mLv.addHeaderView(headView, null, false);
         }
+
+        mLv.addHeaderView(LayoutInflater.from(getBaseAct()).inflate(R.layout.view_10dp_ly,null), null, false);
+
     }
 
     /**

@@ -236,7 +236,6 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
                             public void onClick(DialogInterface dialog, int which) {
                                 gotoHomePageDependPos(2);
                                 Bundle bundle = new Bundle();
-
                                 gotoFragmentByAdd(bundle, R.id.mainpage_ly, new MyOrderViewPagerFragment(), MyOrderViewPagerFragment.class.getName());
                             }
                         });
@@ -302,6 +301,11 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
                 @Override
                 public void onClick(View v) {
                     if (entry.count > 0) {
+                        if (!isLogin()) {
+                            FragmentUtils.login(FarmSpecialtyDetailFragment.this);
+                            return;
+                        }
+
                         RecommendItemKey itemKey = new RecommendItemKey();
                         itemKey.object = entry;
                         new CacheManager(getBaseAct()).saveRecommendToDisk(itemKey);
@@ -314,6 +318,10 @@ public class FarmSpecialtyDetailFragment extends BaseFragment {
             go_to_shop_cart_tv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    if (!isLogin()) {
+                        FragmentUtils.login(FarmSpecialtyDetailFragment.this);
+                        return;
+                    }
                     gotoHomePageDependPos(1);
                 }
             });

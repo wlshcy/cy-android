@@ -3,8 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/gray_ececec"
-
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingTop="@dimen/px30">
 
     <LinearLayout
         android:id="@+id/remark_ly"
@@ -73,13 +73,6 @@
             android:text="@string/no_freight"
             android:textColor="@color/red_fe5647" />
     </LinearLayout>
-
-
-    <include
-        layout="@layout/pay_widget_ly"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/px20" />
 
 
 </LinearLayout>
