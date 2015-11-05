@@ -773,7 +773,7 @@ public class ChooseDishesFragment extends BaseFragment {
 //                        e = e - 7;
 //                    }
 //                    当前已过选菜日，请您周{shipday[0]+1}至周{shipday[0]-2}进行选菜。
-                    tip1 = "已过选菜日,请本周" + e + "至下周" + (s == 7 ? "日" : s) + "开始下期选菜。";
+                    tip1 = "已过选菜日,请本周" + (e == 7 ? "日" : e) + "至下周" + (s == 7 ? "日" : s) + "开始下期选菜。";
                 }
                 choose_dishes_tip.setVisibility(View.VISIBLE);
                 choose_dishes_tip.setText(tip1);
