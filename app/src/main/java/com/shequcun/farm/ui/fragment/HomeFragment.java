@@ -198,10 +198,6 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
         if (ClickUtil.isFastDoubleClick()) {
             return;
         }
-        if (!isLogin()) {
-            FragmentUtils.login(this);
-            return;
-        }
         if (slider.getParamObj() == null) return;
         SlidesEntry entry = (SlidesEntry) slider.getParamObj();
         gotoAdFragment(entry);
@@ -210,6 +206,10 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
 
     private void gotoAdFragment(SlidesEntry item) {
         if (TextUtils.isEmpty(item.url)) {
+            if (!isLogin()) {
+            FragmentUtils.login(this);
+                return;
+            }
             LinkEntry link = item.link;
             if (link == null || link.type == 0)
                 return;
