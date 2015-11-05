@@ -19,6 +19,6 @@
         android:divider="#e4e4e4"
         android:dividerHeight="0.5dp" />
 
-    <include layout="@layout/farm_shopping_cart_footer_ly" />
+  <include layout="@layout/order_dtl_footer_ly"/>
 
 </LinearLayout>
