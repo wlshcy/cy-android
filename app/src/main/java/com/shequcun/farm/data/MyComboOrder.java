@@ -38,5 +38,7 @@ public class MyComboOrder extends BaseEntry {
 
     @SerializedName("duration")
     public int duration;
+    @SerializedName("chooseday")
+    public boolean chooseday;// 当前是不是选菜日
 
 }

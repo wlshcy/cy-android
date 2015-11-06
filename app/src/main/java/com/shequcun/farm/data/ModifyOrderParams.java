@@ -67,4 +67,6 @@ public class ModifyOrderParams implements Serializable {
      * 套餐搭配菜品
      */
     public java.util.ArrayList<FixedComboEntry> fList;
+
+    public boolean chooseday;// 当前是不是选菜日
 }

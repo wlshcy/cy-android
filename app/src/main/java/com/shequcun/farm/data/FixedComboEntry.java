@@ -2,11 +2,13 @@ package com.shequcun.farm.data;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * 固定套餐
  * Created by apple on 15/8/17.
  */
-public class FixedComboEntry {
+public class FixedComboEntry implements Serializable{
     @SerializedName("quantity")
     public int quantity;//表示每次配送的菜品数量
     @SerializedName("id")
