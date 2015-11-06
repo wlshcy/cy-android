@@ -149,27 +149,6 @@ public class RedPacketsInvalidListFragment extends BaseFragment {
     private AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            if (adapter == null)
-                return;
-            CouponEntry entry = (CouponEntry) adapter.getItem(position);
-            if (entry == null)
-                return;
-            if (entry.used)
-                return;
-            FragmentManager manager = getBaseAct().getSupportFragmentManager();
-            if (manager != null) {
-                List<Fragment> aList = manager.getFragments();
-                if (aList != null && aList.size() > 0) {
-                    int length = aList.size();
-                    for (int i = 1; i < length; i++) {
-                        Fragment fragment = aList.get(i);
-                        if (fragment != null && fragment instanceof PayFragment) {
-                            ((PayFragment) fragment).updateRedPackets(entry);
-                            break;
-                        }
-                    }
-                }
-            }
         }
     };
 
