@@ -170,7 +170,6 @@ public class RedPacketsInvalidListFragment extends BaseFragment {
                     }
                 }
             }
-            popBackStack();
         }
     };
 
@@ -233,6 +232,9 @@ public class RedPacketsInvalidListFragment extends BaseFragment {
         adapter.setServeTime(entry.time);
         adapter.addAll(entry.list);
         curSize = adapter.getCount();
+        if (curSize % length > 0) {
+            pView.setMode(PullToRefreshBase.Mode.DISABLED);
+        }
     }
 
     private int getTypeFromParams() {

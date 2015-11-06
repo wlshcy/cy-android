@@ -267,6 +267,9 @@ public class RedPacketsListFragment extends BaseFragment {
         redPacketsLv.addFooterView(getFooterView());
         adapter.addAll(aList != null && aList.size() > 0 ? aList : list);
         curSize = adapter.getCount();
+        if (curSize % length > 0) {
+            pView.setMode(PullToRefreshBase.Mode.DISABLED);
+        }
     }
 
     private View getFooterView() {
@@ -281,7 +284,7 @@ public class RedPacketsListFragment extends BaseFragment {
         public void onViewClick(View v) {
             Bundle bundle = new Bundle();
             bundle.putInt(KEY_TYPE, type);
-            FragmentUtils.invalidRedPacketsList(RedPacketsListFragment.this,bundle);
+            FragmentUtils.invalidRedPacketsList(RedPacketsListFragment.this, bundle);
         }
     };
 

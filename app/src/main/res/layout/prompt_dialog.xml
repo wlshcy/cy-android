@@ -41,7 +41,8 @@
             android:gravity="center"
             android:paddingBottom="@dimen/px20"
             android:paddingTop="@dimen/px20"
-            android:text="取消" />
+            android:text="取消"
+            android:textColor="@android:color/black"/>
 
         <View
             android:layout_width="1px"
@@ -58,7 +59,8 @@
             android:gravity="center"
             android:paddingBottom="@dimen/px20"
             android:paddingTop="@dimen/px20"
-            android:text="确定" />
+            android:text="确定"
+            android:textColor="@android:color/black"/>
     </LinearLayout>
 
 </LinearLayout>

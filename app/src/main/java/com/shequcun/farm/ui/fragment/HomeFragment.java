@@ -81,7 +81,7 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
         pView.setMode(PullToRefreshBase.Mode.BOTH);
         pView.setOnRefreshListener(onRefrshLsn);
         buildGridViewAdapter();
-        requestHome(1);
+        requestHome();
     }
 
     @OnClick({R.id.no_combo_iv, R.id.has_combo_iv})
@@ -127,7 +127,7 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
                 return;
             }
             if (action.equals(IntentUtil.UPDATE_COMBO_PAGE)) {
-                requestHome(2);
+                requestHome();
             }
         }
     };
@@ -207,7 +207,7 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
     private void gotoAdFragment(SlidesEntry item) {
         if (TextUtils.isEmpty(item.url)) {
             if (!isLogin()) {
-            FragmentUtils.login(this);
+                FragmentUtils.login(this);
                 return;
             }
             LinkEntry link = item.link;
@@ -235,7 +235,7 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
     PullToRefreshScrollView.OnRefreshListener2 onRefrshLsn = new PullToRefreshBase.OnRefreshListener2() {
         @Override
         public void onPullDownToRefresh(PullToRefreshBase refreshView) {
-            requestHome(2);
+            requestHome();
         }
 
         @Override
@@ -244,10 +244,9 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
         }
     };
 
-    void requestHome(final int mode) {
+    void requestHome() {
         RequestParams params = new RequestParams();
-        params.add("mode", mode + "");
-        params.add("length", "10");
+        params.add("length", length + "");
         HttpRequestUtil.getHttpClient(getBaseAct()).get(LocalParams.getBaseUrl() + "cai/home", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int sCode, Header[] h, byte[] data) {
@@ -256,10 +255,8 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
                     HomeEntry hEntry = JsonUtilsParser.fromJson(result, HomeEntry.class);
                     if (hEntry != null) {
                         if (TextUtils.isEmpty(hEntry.errmsg)) {
-                            if (mode != 2) {
-                                buildCarouselAdapter(hEntry.sList);
-                                addDataToAdapter(hEntry.items);
-                            }
+                            buildCarouselAdapter(hEntry.sList);
+                            addDataToAdapter(hEntry.items);
                             updateMyComboStatus(hEntry.has_combo);
                             return;
                         }
@@ -293,7 +290,7 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
      */
     void requestRecomendDishes() {
         RequestParams params = new RequestParams();
-        params.add("length", 15 + "");
+        params.add("length", length2 + "");
         if (adapter != null && adapter.getCount() >= 1) {
             params.add("start", adapter.getCount() + "");
         } else {
@@ -317,7 +314,7 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
                                 ToastHelper.showShort(getBaseAct(), R.string.no_more_goods);
                                 return;
                             }
-                            addDataToAdapter(entry.aList);
+                            addDataToAdapter2(entry.aList);
                         }
                     }
                 }
@@ -342,12 +339,27 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
     }
 
     void addDataToAdapter(List<RecommendEntry> aList) {
-//        if (adapter != null) {
-//            adapter.clear();
-//        }
+        if (adapter != null) {
+            adapter.clear();
+        }
         if (aList != null && aList.size() > 0) {
             adapter.addAll(aList);
             adapter.notifyDataSetChanged();
+        }
+        if (aList.size() % length > 0) {
+            pView.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
+        }else {
+            pView.setMode(PullToRefreshBase.Mode.BOTH);
+        }
+    }
+
+    void addDataToAdapter2(List<RecommendEntry> aList) {
+        if (aList != null && aList.size() > 0) {
+            adapter.addAll(aList);
+            adapter.notifyDataSetChanged();
+        }
+        if (aList.size() % length2 > 0) {
+            pView.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
         }
     }
 
@@ -486,4 +498,6 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
     ComboEntry comboEntry;
     boolean mIsBind = false;
     private FarmSpecialtyAdapter adapter;
+    private int length = 10;
+    private int length2 = 15;
 }
