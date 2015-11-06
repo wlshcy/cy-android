@@ -765,14 +765,15 @@ public class ChooseDishesFragment extends BaseFragment {
                 String tip1 = "";
                 if (entry.shipday != null && entry.shipday.length > 0) {
                     int s = entry.shipday[0] - 2;
-                    if (s < 1) {
-                        s = s + 7;
-                    }
+//                    if (s < 1) {
+//                        s = s + 7;
+//                    }
                     int e = entry.shipday[0] + 1;
-                    if (e + 1 > 7) {
-                        e = e - 7;
-                    }
-                    tip1 = "已过选菜日,请周" + (s == 7 ? "日" : s) + "至周" + e + "开始下期选菜。";
+//                    if (e + 1 > 7) {
+//                        e = e - 7;
+//                    }
+//                    当前已过选菜日，请您周{shipday[0]+1}至周{shipday[0]-2}进行选菜。
+                    tip1 = "已过选菜日,请本周" + (e == 7 ? "日" : e) + "至下周" + (s == 7 ? "日" : s) + "开始下期选菜。";
                 }
                 choose_dishes_tip.setVisibility(View.VISIBLE);
                 choose_dishes_tip.setText(tip1);
@@ -986,7 +987,7 @@ public class ChooseDishesFragment extends BaseFragment {
             mLv.addHeaderView(headView, null, false);
         }
 
-        mLv.addHeaderView(LayoutInflater.from(getBaseAct()).inflate(R.layout.view_10dp_ly,null), null, false);
+        mLv.addHeaderView(LayoutInflater.from(getBaseAct()).inflate(R.layout.view_10dp_ly, null), null, false);
 
     }
 
