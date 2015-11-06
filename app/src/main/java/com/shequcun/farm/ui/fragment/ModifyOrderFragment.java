@@ -72,7 +72,7 @@ public class ModifyOrderFragment extends BaseFragment {
             order_btn.setText(R.string.pay_immediately);
         } else if (getOrderStatus() == 1) {//待配送
             int orderType = getOrderType();
-            if (orderType == 2 && hEntry != null && !hEntry.chooseday) {
+            if (orderType == 2 || hEntry != null && !hEntry.chooseday) {
                 order_btn.setVisibility(View.GONE);
             }
             order_btn.setText(orderType == 1 ? R.string.re_choose_dishes : R.string.cancel_order);

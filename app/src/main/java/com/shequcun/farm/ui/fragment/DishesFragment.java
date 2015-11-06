@@ -130,7 +130,7 @@ public class DishesFragment extends BaseFragment {
                 , entry.address, entry.type, entry.placeAnOrderDate, entry.fList, mEntry != null ? mEntry.shipday : null, entry.times,
                 buildOrderNo(), mEntry != null ? mEntry.duration : 0
         );
-        params.chooseday = mEntry.chooseday;
+        params.chooseday = mEntry != null ? mEntry.chooseday : false;
         return params;
     }
 
