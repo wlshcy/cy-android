@@ -439,15 +439,12 @@ public class ModifyOrderFragment extends BaseFragment {
 //    };
 
 
-    /**
-     * 添加备选菜
-     */
     void addSparesFooter(List<AlreadyPurchasedEntry> aList) {
         if (hEntry != null && hEntry.fList != null && hEntry.fList.size() > 0) {
             if (aList != null && aList.size() > 0) {
                 View view = LayoutInflater.from(getBaseAct()).inflate(R.layout.remark_footer_ly, null);
                 TextView textView = (TextView) view.findViewById(R.id.title_tv);
-                textView.setText("套餐搭配");
+                textView.setText(R.string.match_dishes);
                 mLv.addFooterView(view);
                 for (FixedComboEntry entry : hEntry.fList) {
                     if (entry == null)
@@ -484,9 +481,9 @@ public class ModifyOrderFragment extends BaseFragment {
 //        new CacheManager(getBaseAct()).saveUserLoginToDisk(JsonUtilsParser.toJson(entry).getBytes());
 //    }
 
-    private boolean isMyCombo(){
+    private boolean isMyCombo() {
         UserLoginEntry entry = new CacheManager(getBaseAct()).getUserLoginEntry();
-        if(entry!=null){
+        if (entry != null) {
             return entry.isMyCombo;
         }
         return false;

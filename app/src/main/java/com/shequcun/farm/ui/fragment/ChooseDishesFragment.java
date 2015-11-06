@@ -987,7 +987,7 @@ public class ChooseDishesFragment extends BaseFragment {
             mLv.addHeaderView(headView, null, false);
         }
 
-        mLv.addHeaderView(LayoutInflater.from(getBaseAct()).inflate(R.layout.view_10dp_ly, null), null, false);
+       // mLv.addHeaderView(LayoutInflater.from(getBaseAct()).inflate(R.layout.view_10dp_ly, null), null, false);
 
     }
 
