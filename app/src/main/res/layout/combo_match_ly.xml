@@ -45,7 +45,7 @@
                 android:paddingBottom="1dp"
                 android:paddingLeft="3dp"
                 android:paddingRight="3dp"
-                android:text="套餐搭配"
+                android:text="@string/match_dishes"
                 android:textColor="@android:color/white"
                 android:textSize="10sp" />
         </LinearLayout>
