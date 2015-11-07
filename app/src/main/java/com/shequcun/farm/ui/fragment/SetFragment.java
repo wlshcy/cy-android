@@ -256,7 +256,7 @@ public class SetFragment extends BaseFragment {
 
         switch (pos - mLv.getHeaderViewsCount()) {
             case 0://關於有菜
-                gotoFragmentByAdd(buildBundle("https://store.shequcun.com/about/ycabout", R.string.about), R.id.mainpage_ly, new SetWebViewFragment(), SetWebViewFragment.class.getName());
+                gotoFragmentByAdd(buildBundle("https://youcai.shequcun.com/about", R.string.about), R.id.mainpage_ly, new SetWebViewFragment(), SetWebViewFragment.class.getName());
                 break;
             case 1://檢查更新
                 checkVersion();
