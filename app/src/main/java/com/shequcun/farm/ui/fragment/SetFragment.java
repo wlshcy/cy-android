@@ -262,7 +262,7 @@ public class SetFragment extends BaseFragment {
                 checkVersion();
                 break;
             case 2://幫助
-                gotoFragmentByAdd(buildBundle("https://store.shequcun.com/help/ychelp", R.string.help), R.id.mainpage_ly, new SetWebViewFragment(), SetWebViewFragment.class.getName());
+                gotoFragmentByAdd(buildBundle("https://youcai.shequcun.com/help", R.string.help), R.id.mainpage_ly, new SetWebViewFragment(), SetWebViewFragment.class.getName());
 //                    ToastHelper.showShort(getBaseAct(), "坐等关于有菜帮助的内容");
                 break;
             case 3://問題反饋

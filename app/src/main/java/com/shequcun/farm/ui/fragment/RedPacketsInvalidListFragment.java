@@ -123,7 +123,7 @@ public class RedPacketsInvalidListFragment extends BaseFragment {
 
     private void gotoRuleFragment() {
         Bundle bundle = new Bundle();
-        bundle.putString("Url", "https://store.shequcun.com/coupon/yc_info");
+        bundle.putString("Url", "https://youcai.shequcun.com/coupon/info");
         bundle.putInt("TitleId", R.string.red_packets_rule);
         gotoFragmentByAdd(bundle, R.id.mainpage_ly, new SetWebViewFragment(), SetWebViewFragment.class.getName());
     }
