@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/pView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_ebebeb">
+
+    <include
+        android:id="@+id/tmpId"
+        layout="@layout/common_title_ly" />
+
+    <ScrollView
+        android:id="@+id/pScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tmpId"
+        android:layout_marginBottom="0dp"
+        android:background="#f3f4f5"
+        android:descendantFocusability="beforeDescendants"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:id="@+id/choose_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/list_item_selector"
+                android:padding="@dimen/px30">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/px10"
+                    android:text="@string/choose_address"
+                    android:textColor="@color/black_444444"
+                    android:gravity="center_vertical|left"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|center_vertical"
+                    android:layout_marginRight="@dimen/px40"
+                    android:drawablePadding="@dimen/px40"
+                    android:drawableRight="@drawable/icon_more"
+                    android:gravity="center"
+                    android:textColor="@color/gray_676767"
+                    android:textSize="@dimen/font28" />
+            </FrameLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:background="@color/common_bg_color" />
+            <FrameLayout
+                android:id="@+id/freight_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/list_item_selector"
+                android:padding="@dimen/px30">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/px10"
+                    android:text="@string/freight"
+                    android:textColor="@color/black_444444"
+                    android:gravity="center_vertical|left"/>
+
+                <TextView
+                    android:id="@+id/freight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|center_vertical"
+                    android:gravity="center"
+                    android:textColor="@color/red_fe5647"
+                    android:text="00"
+                    android:layout_marginRight="@dimen/px10"/>
+            </FrameLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:background="@color/common_bg_color" />
+
+            <com.common.widget.ExpandableHeightListView
+                android:id="@+id/eLv"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1.0"
+                android:background="@null"
+                android:divider="#e4e4e4"
+                android:dividerHeight="0.5dp"></com.common.widget.ExpandableHeightListView>
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px100"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.0"
+            android:background="@android:color/white"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/total_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:textColor="@color/common_text"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/commit"
+            android:layout_width="@dimen/px180"
+            android:layout_height="@dimen/px100"
+            android:background="@color/red_f36043"
+            android:gravity="center"
+            android:text="@string/commit"
+            android:textColor="@color/white_f4f4f4"
+            android:textSize="14sp" />
+
+        <!--android:background="@drawable/shopping_cart_widget_selector_4"-->
+
+    </LinearLayout>
+
+</RelativeLayout>

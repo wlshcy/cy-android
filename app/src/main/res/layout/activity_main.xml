@@ -4,8 +4,9 @@
     android:layout_height="match_parent"
     android:background="@android:color/white">
 
-    <com.shequcun.farm.ui.HomeViewPager
-        android:id="@+id/hVpager"
+    <!--<com.shequcun.farm.ui.HomeViewPager-->
+    <com.lynp.ui.HomeViewPager
+        android:id="@+id/MainPage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="50dp" />
@@ -32,7 +33,7 @@
             android:paddingTop="5dp">
 
             <RadioButton
-                android:id="@+id/home_rb"
+                android:id="@+id/home"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -40,8 +41,18 @@
                 android:button="@null"
                 android:drawableTop="@drawable/home_selector" />
 
+            <!--<RadioButton-->
+                <!--android:id="@+id/frt_rb"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1"-->
+                <!--android:background="@null"-->
+                <!--android:button="@null"-->
+                <!--android:drawableTop="@drawable/frt_selector" />-->
+
+
             <RadioButton
-                android:id="@+id/shopping_cart_rb"
+                android:id="@+id/shopping_cart"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -50,20 +61,21 @@
                 android:drawableTop="@drawable/shopping_cart_selector" />
 
             <RadioButton
-                android:id="@+id/mine_rb"
+                android:id="@+id/mine"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"
                 android:background="@null"
                 android:button="@null"
                 android:drawableTop="@drawable/mine_selector" />
+
         </RadioGroup>
     </LinearLayout>
 
-    <ViewStub
-        android:id="@+id/tip_choose_combo_vb"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout="@layout/tip_choose_combo_viewstub"/>
+    <!--<ViewStub-->
+        <!--android:id="@+id/tip_choose_combo_vb"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout="@layout/tip_choose_combo_viewstub"/>-->
 
 </FrameLayout>

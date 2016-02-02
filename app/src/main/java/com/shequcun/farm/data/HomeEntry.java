@@ -1,6 +1,7 @@
 package com.shequcun.farm.data;
 
 import com.google.gson.annotations.SerializedName;
+import com.lynp.ui.data.RecommendEntry;
 
 import java.util.List;
 

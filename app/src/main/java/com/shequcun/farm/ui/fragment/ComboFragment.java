@@ -11,10 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.common.widget.ExpandableHeightListView;
 import com.common.widget.PullToRefreshBase;
 import com.common.widget.PullToRefreshScrollView;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -26,12 +24,12 @@ import com.shequcun.farm.datacenter.CacheManager;
 import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.ui.adapter.ComboAdapter;
 import com.shequcun.farm.util.HttpRequestUtil;
-import com.shequcun.farm.util.IntentUtil;
+import com.lynp.ui.util.IntentUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.ToastHelper;
 import com.shequcun.farm.util.Utils;
-import com.umeng.analytics.MobclickAgent;
+//import com.umeng.analytics.MobclickAgent;
 
 
 import java.util.List;

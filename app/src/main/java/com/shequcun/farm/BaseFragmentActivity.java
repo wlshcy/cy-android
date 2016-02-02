@@ -17,7 +17,7 @@ import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 import com.shequcun.farm.ui.fragment.BaseFragment;
 import com.shequcun.farm.ui.fragment.FragmentMgrInterface;
 import com.shequcun.farm.util.HttpRequestUtil;
-import com.umeng.analytics.MobclickAgent;
+//import com.umeng.analytics.MobclickAgent;
 
 
 public abstract class BaseFragmentActivity extends FragmentActivity implements
@@ -100,14 +100,14 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements
     protected void onResume() {
         super.onResume();
         //umeng统计时长
-        MobclickAgent.onResume(this);
+//        MobclickAgent.onResume(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         //umeng统计时长
-        MobclickAgent.onPause(this);
+//        MobclickAgent.onPause(this);
     }
 
     protected BaseFragment fragement;

@@ -4,7 +4,8 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.shequcun.farm.data.AddressEntry;
-import com.shequcun.farm.data.RecommendEntry;
+import com.lynp.ui.data.RecommendEntry;
+import com.lynp.ui.data.ItemDetailEntry;
 import com.shequcun.farm.data.UserLoginEntry;
 import com.shequcun.farm.db.DBLite;
 import com.shequcun.farm.db.DBRecordItem;

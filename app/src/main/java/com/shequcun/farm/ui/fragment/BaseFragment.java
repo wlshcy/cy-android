@@ -14,7 +14,7 @@ import com.shequcun.farm.R;
 import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.ToastHelper;
-import com.umeng.analytics.MobclickAgent;
+//import com.umeng.analytics.MobclickAgent;
 
 import butterknife.ButterKnife;
 import cz.msebera.android.httpclient.Header;
@@ -185,14 +185,14 @@ public abstract class BaseFragment extends Fragment {
     public void onResume() {
         super.onResume();
 //umeng统计页面
-        MobclickAgent.onPageStart(this.getClass().getSimpleName());
+//        MobclickAgent.onPageStart(this.getClass().getSimpleName());
     }
 
     @Override
     public void onPause() {
         super.onPause();
 //umeng统计页面
-        MobclickAgent.onPageEnd(this.getClass().getSimpleName());
+//        MobclickAgent.onPageEnd(this.getClass().getSimpleName());
     }
 
     public FragmentActivity getBaseAct() {

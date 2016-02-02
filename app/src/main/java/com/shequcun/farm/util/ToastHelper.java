@@ -2,6 +2,7 @@ package com.shequcun.farm.util;
 
 import android.content.Context;
 import android.widget.Toast;
+import android.view.Gravity;
 
 public class ToastHelper {
 
@@ -13,7 +14,7 @@ public class ToastHelper {
             return;
         if (null == toast) {
             toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
-            // toast.setGravity(Gravity.CENTER, 0, 0);
+             toast.setGravity(Gravity.CENTER, 0, 0);
         } else {
             toast.setText(message);
         }

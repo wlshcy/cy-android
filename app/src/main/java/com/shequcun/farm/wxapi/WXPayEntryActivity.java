@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
-import com.shequcun.farm.util.IntentUtil;
+import com.lynp.ui.util.IntentUtil;
 import com.shequcun.farm.util.LocalParams;
 import com.tencent.mm.sdk.modelbase.BaseReq;
 import com.tencent.mm.sdk.modelbase.BaseResp;

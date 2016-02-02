@@ -1,7 +1,7 @@
 package com.shequcun.farm;
 
 import android.app.Application;
-import com.umeng.analytics.MobclickAgent;
+//import com.umeng.analytics.MobclickAgent;
 
 /**
  * Created by cong on 15/10/14.
@@ -12,6 +12,6 @@ public class MyApplication extends Application {
         super.onCreate();
 //        MobclickAgent.setDebugMode(true);
         //umeng统计禁止默认的页面统计方式
-        MobclickAgent.openActivityDurationTrack(false);
+//        MobclickAgent.openActivityDurationTrack(false);
     }
 }

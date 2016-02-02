@@ -49,7 +49,10 @@
     <string name="small_market_buy_not_enough">还差A</string>
     <string name="small_market_shop_cart_null">购物车是空的</string>
     <string name="go_choose_dishes">去选菜</string>
-    <string name="now_pay">立即支付</string>
+    <string name="checkout">立即结算</string>
+    <string name="ensure">订单确认</string>
+    <string name="commit">提交订单</string>
+    <string name="choose_address">请选择收获地址</string>
     <string name="out_of_required_weight">亲,您已选满A啦!^^</string>
     <string name="out_of_maxpacks">亲,该菜品库存不足,请选其他菜品吧</string>
     <string name="out_of_remains">亲,该菜品剩余不足,请选其他菜品吧</string>
@@ -95,11 +98,12 @@
     <string name="choose_dishes_successful">您已选好菜品啦!</string>
     <string name="choose_dishes_tip">本期选菜时间已过,请于周五开始下期选菜!</string>
     <string name="has_chosen_dishes">本期菜品已选</string>
-    <string name="specialty">农庄优选</string>
+    <string name="specialty">蔬菜优选</string>
     <string name="farm_info">农庄详情</string>
     <string name="spike">秒杀</string>
     <string name="spike_error_tip">您已购买过该商品,请到“我的订单”中查看购买详情!</string>
-    <string name="organic_farm_combo">有机农庄宅配套餐</string>
+    <!--<string name="organic_farm_combo">有机农庄宅配套餐</string>-->
+    <string name="organic_farm_combo">有机农庄套餐</string>
     <!--红包-->
     <string name="use_favorable_red_packets">使用优惠红包</string>
     <string name="pay_red_packets">支付红包</string>
@@ -144,7 +148,7 @@
     <string name="no_login_tip">亲,您还未登录哦~登录后才可查看购物车哦~</string>
     <string name="go_login">去登录</string>
 
-    <string name="add_shop_cart_success">加入购物车成功.</string>
+    <string name="add_shop_cart_success">成功加入购物车</string>
 
     <string name="freight">运费</string>
     <string name="freight_tip">(订单满99元包邮)</string>

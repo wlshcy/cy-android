@@ -6,15 +6,11 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 
-import com.daimajia.slider.library.Tricks.ViewPagerEx;
 import com.shequcun.farm.R;
-import com.shequcun.farm.ui.adapter.FarmSpecialtyDetailViewPagerAdapter;
+import com.lynp.ui.adapter.FarmSpecialtyDetailViewPagerAdapter;
 
 import butterknife.Bind;
-import butterknife.OnClick;
 
 /**
  * Created by mac on 15/10/20.

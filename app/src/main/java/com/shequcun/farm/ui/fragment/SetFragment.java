@@ -1,7 +1,6 @@
 package com.shequcun.farm.ui.fragment;
 
 import android.app.AlertDialog;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -27,7 +26,7 @@ import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.ui.adapter.MyAdapter;
 import com.shequcun.farm.util.DeviceInfo;
 import com.shequcun.farm.util.HttpRequestUtil;
-import com.shequcun.farm.util.IntentUtil;
+import com.lynp.ui.util.IntentUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.ToastHelper;
@@ -217,7 +216,7 @@ public class SetFragment extends BaseFragment {
                                 new CacheManager(getBaseAct()).delUserLoginToDisk();
                                 IntentUtil.sendUpdateMyInfoMsg(getBaseAct());
                                 IntentUtil.sendUpdateComboMsg(getBaseAct());
-                                IntentUtil.sendUpdateFarmShoppingCartMsg(getBaseAct());
+                                IntentUtil.sendUpdateShoppingCartMsg(getBaseAct());
                                 popBackStack();
                             } else {
                                 ToastHelper.showShort(getBaseAct(), R.string.logout_fail);

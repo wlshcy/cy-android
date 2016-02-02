@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.lynp.ui.fragment.PayFragment;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.AlreadyPurchasedEntry;
@@ -40,7 +41,6 @@ import com.shequcun.farm.util.ToastHelper;
 
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -287,7 +287,7 @@ public class ModifyOrderFragment extends BaseFragment {
 
     void addHeaderView() {
         if (hEntry != null && !TextUtils.isEmpty(hEntry.date) && mLv != null) {
-            View headView = LayoutInflater.from(getBaseAct()).inflate(R.layout.order_details_footer_ly, null);
+            View headView = LayoutInflater.from(getBaseAct()).inflate(R.layout.order_details_footer_ui, null);
             ((TextView) headView.findViewById(R.id.distribution_date)).setText(hEntry.date);
             mLv.addHeaderView(headView, null, false);
         }
@@ -295,7 +295,7 @@ public class ModifyOrderFragment extends BaseFragment {
 
     void addFooter(int part) {
         if (getBaseAct() != null && mLv != null) {
-            View footerView = LayoutInflater.from(getBaseAct()).inflate(R.layout.order_details_footer_ly, null);
+            View footerView = LayoutInflater.from(getBaseAct()).inflate(R.layout.order_details_footer_ui, null);
             ((TextView) footerView.findViewById(R.id.distribution_date)).setText(hEntry.placeAnOrderDate);
             ((TextView) footerView.findViewById(R.id.number_copies)).setText("共" + part + "份");
             mLv.addFooterView(footerView, null, false);

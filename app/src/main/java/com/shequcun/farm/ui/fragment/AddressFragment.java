@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.lynp.ui.fragment.PayFragment;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.AddressEntry;
 import com.shequcun.farm.data.BaseEntry;
@@ -29,7 +30,7 @@ import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
 import com.shequcun.farm.util.HttpRequestUtil;
-import com.shequcun.farm.util.IntentUtil;
+import com.lynp.ui.util.IntentUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.PhoneUtil;
@@ -42,7 +43,6 @@ import org.json.JSONObject;
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import cz.msebera.android.httpclient.Header;
 
 /**

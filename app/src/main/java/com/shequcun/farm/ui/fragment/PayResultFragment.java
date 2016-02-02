@@ -15,7 +15,6 @@ import com.loopj.android.http.RequestParams;
 import com.shequcun.farm.R;
 import com.shequcun.farm.data.CouponShareEntry;
 import com.shequcun.farm.data.PayParams;
-import com.shequcun.farm.data.RecommendEntry;
 import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.platform.ShareContent;
 import com.shequcun.farm.platform.ShareManager;
@@ -23,6 +22,8 @@ import com.shequcun.farm.ui.adapter.RecommendAdapter;
 import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
+
+import com.lynp.ui.data.ItemEntry;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -140,11 +141,11 @@ public class PayResultFragment extends BaseFragment {
                 });
     }
 
-    Bundle buildBundle(RecommendEntry entry) {
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("RecommendEntry", entry);
-        return bundle;
-    }
+//    Bundle buildBundle(ItemEntry entry) {
+//        Bundle bundle = new Bundle();
+//        bundle.putSerializable("RecommendEntry", entry);
+//        return bundle;
+//    }
 
     private int getTitleId() {
         Bundle bundle = getArguments();

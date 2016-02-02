@@ -22,18 +22,16 @@ import com.shequcun.farm.data.UserLoginEntry;
 import com.shequcun.farm.datacenter.CacheManager;
 import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.dlg.ProgressDlg;
-import com.shequcun.farm.util.DeviceInfo;
 import com.shequcun.farm.util.HttpRequestUtil;
-import com.shequcun.farm.util.IntentUtil;
+import com.lynp.ui.util.IntentUtil;
 import com.shequcun.farm.util.JsonUtilsParser;
 import com.shequcun.farm.util.LocalParams;
 import com.shequcun.farm.util.TimeCount;
 import com.shequcun.farm.util.ToastHelper;
 import com.shequcun.farm.util.Utils;
-import com.umeng.analytics.MobclickAgent;
+//import com.umeng.analytics.MobclickAgent;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cz.msebera.android.httpclient.Header;
 
@@ -202,10 +200,10 @@ public class LoginFragment extends BaseFragment {
                                 new CacheManager(getBaseAct()).saveUserLoginToDisk(body);
                                 IntentUtil.sendUpdateMyInfoMsg(getBaseAct());
                                 IntentUtil.sendUpdateComboMsg(getBaseAct());
-                                IntentUtil.sendUpdateFarmShoppingCartMsg(getBaseAct());
+                                IntentUtil.sendUpdateShoppingCartMsg(getBaseAct());
                                 popBackStack();
                                 //umeng统计当用户使用自有账号登录时
-                                MobclickAgent.onProfileSignIn(lEntry.id + "");
+//                                MobclickAgent.onProfileSignIn(lEntry.id + "");
                                 return;
                             } else {
                                 ToastHelper.showShort(getBaseAct(), lEntry.errmsg);

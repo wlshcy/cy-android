@@ -1,6 +1,6 @@
 package com.shequcun.farm.db;
 
-import com.shequcun.farm.data.RecommendEntry;
+import com.lynp.ui.data.RecommendEntry;
 
 /**
  * Created by apple check_turn_on 15/7/21.

@@ -50,7 +50,7 @@
             android:layout_width="@dimen/px80"
             android:layout_height="@dimen/px80"
             android:scaleType="centerInside"
-            android:src="@drawable/icon_sub"
+            android:src="@drawable/icon_minus_rectangle"
             android:visibility="gone" />
 
         <TextView
@@ -68,7 +68,7 @@
             android:layout_width="@dimen/px80"
             android:layout_height="@dimen/px80"
             android:scaleType="centerInside"
-            android:src="@drawable/add_dishes_selector" />
+            android:src="@drawable/add_dishes_selector1" />
 
     </LinearLayout>
 

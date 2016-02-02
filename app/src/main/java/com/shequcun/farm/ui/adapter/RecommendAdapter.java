@@ -8,11 +8,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
 import com.shequcun.farm.R;
-import com.shequcun.farm.data.RecommendEntry;
+import com.lynp.ui.data.RecommendEntry;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
-import com.shequcun.farm.util.Utils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -42,25 +40,25 @@ public class RecommendAdapter extends ArrayAdapter<RecommendEntry> {
             vh = (ViewHolder) v.getTag();
         }
         RecommendEntry entry = getItem(position);
-        if (entry != null) {
-            vh.goods_img.setTag(position);
-            vh.goods_img.setOnClickListener(onGoodsImgLsn);
-            vh.buy_tv.setTag(position);
-            vh.buy_tv.setOnClickListener(onBuyLsn);
-            ImageLoader.getInstance().displayImage(entry.imgs[0]+"?imageview2/2/w/180",vh.goods_img);
-            vh.goods_name.setText(entry.title);
-            vh.goods_price.setText(Utils.unitConversion(entry.packw) + "/份");
-        }
+//        if (entry != null) {
+//            vh.goods_img.setTag(position);
+//            vh.goods_img.setOnClickListener(onGoodsImgLsn);
+//            vh.buy_tv.setTag(position);
+//            vh.buy_tv.setOnClickListener(onBuyLsn);
+//            ImageLoader.getInstance().displayImage(entry.imgs[0]+"?imageview2/2/w/180",vh.goods_img);
+//            vh.goods_name.setText(entry.title);
+//            vh.goods_price.setText(Utils.unitConversion(entry.packw) + "/份");
+//        }
         return v;
     }
 
     class ViewHolder {
-        @Bind(R.id.goods_img)
-        ImageView goods_img;
-        @Bind(R.id.goods_name)
-        TextView goods_name;
-        @Bind(R.id.goods_price)
-        TextView goods_price;
+        @Bind(R.id.photo)
+        ImageView photo;
+        @Bind(R.id.name)
+        TextView name;
+        @Bind(R.id.price)
+        TextView price;
         @Bind(R.id.buy_tv)
         View buy_tv;
 

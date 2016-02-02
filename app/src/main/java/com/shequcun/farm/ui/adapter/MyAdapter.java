@@ -14,7 +14,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * Created by apple on 15/8/6.
+ * Created by nmg on 16/1/29.
  */
 public class MyAdapter extends BaseAdapter {
     private Context mContext;
@@ -51,30 +51,30 @@ public class MyAdapter extends BaseAdapter {
 //        data = getItem(position);
         ViewHolder vh;
         if (v == null) {
-            v = LayoutInflater.from(mContext).inflate(R.layout.my_item_ly, null);
+            v = LayoutInflater.from(mContext).inflate(R.layout.mine_item_ui, null);
             vh = new ViewHolder(v);
             v.setTag(vh);
         } else {
             vh = (ViewHolder) v.getTag();
         }
         String tip = getItem(position);
-        vh.my_title.setText(tip);
-        if (tip.equals("检查更新")) {
-            vh.tel_tv.setText(verName);
-        } else {
-            if ("客服电话".equals(tip))
-                vh.tel_tv.setText(Constrants.Customer_Service_Phone);
-            else if ("我的优惠红包".equals(tip))
-                vh.tel_tv.setText("下单抵用");
-        }
+        vh.title.setText(tip);
+//        if (tip.equals("检查更新")) {
+//            vh.arrow.setText(verName);
+//        } else {
+//            if ("客服电话".equals(tip))
+//                vh.arrow.setText(Constrants.Customer_Service_Phone);
+//            else if ("我的优惠红包".equals(tip))
+//                vh.arrow.setText("下单抵用");
+//        }
         return v;
     }
 
     class ViewHolder {
-        @Bind(R.id.my_title)
-        TextView my_title;
-        @Bind(R.id.tel_tv)
-        TextView tel_tv;
+        @Bind(R.id.title)
+        TextView title;
+        @Bind(R.id.tips)
+        TextView tips;
 
         public ViewHolder(View v) {
             ButterKnife.bind(this, v);

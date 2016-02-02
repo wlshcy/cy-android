@@ -50,14 +50,22 @@ public class Utils {
      * @param peney
      * @return
      */
-    public static String unitPeneyToYuan(int peney) {
+    public static String unitPeneyToYuan(float peney) {
         if (peney <= 0)
             return "";
-        double yuan = (double) peney / 100;
+//        double yuan = (double) peney / 100;
+        double yuan = (double) peney;
         DecimalFormat df = new DecimalFormat("###.00");
-        return "￥" + (peney / 100 == 0 ? "0" + df.format(yuan) : df.format(yuan));
+//        return "￥" + (peney / 100 == 0 ? "0" + df.format(yuan) : df.format(yuan));
+        return "￥" +  df.format(yuan);
     }
 
+    public static String humanSize(float size) {
+//        double yuan = (double) size;
+        DecimalFormat df = new DecimalFormat();
+//        return "￥" + (peney / 100 == 0 ? "0" + df.format(yuan) : df.format(yuan));
+        return df.format(size) + "g/份";
+    }
     public static String unitPeneyToYuanEx(int peney) {
         double yuan = (double) peney / 100;
         DecimalFormat df = new DecimalFormat("###.00");
@@ -99,7 +107,7 @@ public class Utils {
      * @param g
      * @return
      */
-    public static String unitConversion(int g) {
+    public static String unitConversion(float g) {
         String restDistanceStr;
         float fdis = ((float) g) / 500;
         fdis = (float) (Math.round(fdis * 10)) / 10;

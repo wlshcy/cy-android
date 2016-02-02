@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/DetailView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_fefefe">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:descendantFocusability="beforeDescendants"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include layout="@layout/carousel_ly1"></include>
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/px38"
+                android:paddingLeft="@dimen/px38"
+                android:text="有菜安心直采蜂蜜"
+                android:textColor="@color/black_131313"
+                android:textSize="@dimen/font36" />
+
+            <TextView
+                android:id="@+id/desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/px34"
+                android:paddingRight="@dimen/px34"
+                android:paddingTop="@dimen/px16"
+                android:text=""
+                android:textColor="@color/black_8e8e8e"
+                android:textSize="@dimen/font32" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/px34"
+                android:paddingTop="@dimen/px16">
+
+                <TextView
+                    android:id="@+id/price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/px24"
+                    android:paddingLeft="@dimen/px38"
+                    android:text="¥35.00"
+                    android:textColor="@color/black_32bd6f"
+                    android:textSize="@dimen/font40" />
+
+                <TextView
+                    android:id="@+id/mprice"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="¥69.00"
+                    android:textColor="@color/black_8e8e8e"
+                    android:textSize="@dimen/font24" />
+
+            </LinearLayout>
+
+            <include layout="@layout/common_line"></include>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/px14"
+                android:background="@color/gray_ececec"></View>
+
+            <include layout="@layout/common_line"></include>
+
+            <TextView
+                android:id="@+id/size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/px34"
+                android:paddingLeft="@dimen/px38"
+                android:paddingTop="@dimen/px34"
+                android:text="商品规格："
+                android:textColor="@color/black_131313"
+                android:textSize="@dimen/font30" />
+
+            <include layout="@layout/common_line"></include>
+
+            <TextView
+                android:id="@+id/origin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/list_bg"
+                android:paddingBottom="@dimen/px34"
+                android:paddingLeft="@dimen/px38"
+                android:paddingRight="@dimen/px38"
+                android:paddingTop="@dimen/px34"
+                android:text="产地：甘肃.民乐"
+                android:textColor="@color/black_131313"
+                android:textSize="@dimen/font30" />
+
+            <include layout="@layout/common_line"></include>
+        </LinearLayout>
+    </ScrollView>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:minHeight="@dimen/px100"
+        android:layout_gravity="bottom">
+
+        <ImageView
+            android:id="@+id/goods_sub"
+            android:layout_width="@dimen/px80"
+            android:layout_height="@dimen/px80"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/px30"
+            android:scaleType="centerInside"
+            android:src="@drawable/icon_minus_rectangle"
+            android:nestedScrollingEnabled="false"
+            android:onClick="sub_goods"/>
+
+        <TextView
+            android:id="@+id/goods_count"
+            android:layout_width="@dimen/px48"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/goods_sub"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/font28" />
+
+        <ImageView
+            android:id="@+id/goods_add"
+            android:layout_width="@dimen/px80"
+            android:layout_height="@dimen/px80"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/goods_count"
+            android:scaleType="centerInside"
+            android:src="@drawable/add_dishes_selector1" />
+
+
+        <TextView
+            android:id="@+id/shop_cart"
+            android:layout_width="@dimen/px180"
+            android:layout_height="@dimen/px70"
+            android:background="@color/red_f36043"
+            android:gravity="center"
+            android:text="@string/add_shop_cart"
+            android:textColor="@color/white_f4f4f4"
+            android:textSize="14sp"
+            android:layout_alignBottom="@+id/goods_add"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="@dimen/px30" />
+
+
+    </RelativeLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px102">
+
+        <com.common.widget.CircleImageView
+            android:id="@+id/close"
+            android:layout_width="@dimen/px66"
+            android:layout_height="@dimen/px66"
+            android:layout_gravity="left|center_vertical"
+            android:layout_marginLeft="@dimen/px40"
+            android:src="@drawable/icon_close_white" />
+
+        <com.common.widget.CircleImageView
+            android:id="@+id/share_iv"
+            android:layout_width="@dimen/px66"
+            android:layout_height="@dimen/px66"
+            android:layout_gravity="right|center_vertical"
+            android:layout_marginRight="@dimen/px40"
+            android:src="@drawable/icon_share_white" />
+
+    </FrameLayout>
+
+</FrameLayout>
