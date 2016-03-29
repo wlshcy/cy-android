@@ -67,7 +67,7 @@ public class LocalParams {
 //        return "https://api.shequcun.com/";
 //        return "http://192.168.1.222:8002/";
 //        return "http://192.168.1.100:9100/";
-        return "http://192.168.1.101:8282";
+        return "http://api.freshtaste.me:8080";
     }
 
     public static String getWxAppId() {

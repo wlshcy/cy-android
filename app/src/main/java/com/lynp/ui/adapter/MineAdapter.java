@@ -7,7 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.shequcun.farm.R;
+//import com.shequcun.farm.R;
+import com.lynp.R;
 import com.shequcun.farm.util.Constrants;
 import com.shequcun.farm.util.ResUtil;
 

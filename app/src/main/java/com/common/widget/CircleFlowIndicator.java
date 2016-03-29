@@ -14,7 +14,8 @@ import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 
-import com.shequcun.farm.R;
+//import com.shequcun.farm.R;
+import com.lynp.R;
 
 public class CircleFlowIndicator extends View implements FlowIndicator,
         AnimationListener {

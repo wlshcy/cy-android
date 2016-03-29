@@ -10,7 +10,9 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.shequcun.farm.R;
+//import com.shequcun.farm.R;
+import com.lynp.R;
+
 import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.util.HttpRequestUtil;
 import com.shequcun.farm.util.ToastHelper;

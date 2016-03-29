@@ -23,7 +23,9 @@ import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView.ScaleType;
 
-import com.shequcun.farm.R;
+//import com.shequcun.farm.R;
+import com.lynp.R;
+
 import com.common.widget.PullToRefreshBase.Mode;
 import com.common.widget.PullToRefreshBase.Orientation;
 

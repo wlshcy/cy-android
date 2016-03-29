@@ -11,7 +11,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.shequcun.farm.R;
+//import com.shequcun.farm.R;
+import com.lynp.R;
 import com.shequcun.farm.util.Utils;
 
 import butterknife.Bind;

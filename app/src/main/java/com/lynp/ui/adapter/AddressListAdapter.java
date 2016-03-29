@@ -9,7 +9,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.shequcun.farm.R;
+//import com.shequcun.farm.R;
+import com.lynp.R;
+
 import com.shequcun.farm.data.AddressEntry;
 import com.shequcun.farm.data.RedPacketsEntry;
 

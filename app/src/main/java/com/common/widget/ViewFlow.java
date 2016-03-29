@@ -17,7 +17,8 @@ import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.Scroller;
 
-import com.shequcun.farm.R;
+//import com.shequcun.farm.R;
+import com.lynp.R;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

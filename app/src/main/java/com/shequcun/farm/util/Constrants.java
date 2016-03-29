@@ -10,8 +10,8 @@ import com.nostra13.universalimageloader.core.display.BitmapDisplayer;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.imageaware.ImageAware;
 import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
-import com.shequcun.farm.R;
-
+//import com.shequcun.farm.R;
+import com.lynp.R;
 /**
  * Created by apple on 15/8/10.
  */

@@ -18,8 +18,8 @@ import android.net.Uri;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
-import com.shequcun.farm.R;
-
+//import com.shequcun.farm.R;
+import com.lynp.R;
 
 public class CircleImageView extends ImageView {
 

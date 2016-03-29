@@ -22,7 +22,8 @@ import android.webkit.WebViewClient;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.shequcun.farm.R;
+//import com.shequcun.farm.R;
+import com.lynp.R;
 
 import butterknife.Bind;
 import butterknife.OnClick;

@@ -9,8 +9,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.shequcun.farm.R;
-
+//import com.shequcun.farm.R;
+import com.lynp.R;
 /**
  * Created by mac on 15/10/14.
  */

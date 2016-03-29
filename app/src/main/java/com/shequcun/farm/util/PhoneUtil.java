@@ -8,8 +8,8 @@ import android.os.Environment;
 import android.telephony.TelephonyManager;
 import android.widget.Toast;
 
-import com.shequcun.farm.R;
-
+//import com.shequcun.farm.R;
+import com.lynp.R;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

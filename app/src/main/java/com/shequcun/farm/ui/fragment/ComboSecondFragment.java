@@ -9,7 +9,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.shequcun.farm.R;
+//import com.shequcun.farm.R;
+import com.lynp.R;
 import com.shequcun.farm.data.ComboEntry;
 import com.shequcun.farm.ui.adapter.ComboSubAdapter;
 import com.shequcun.farm.util.AvoidDoubleClickListener;

@@ -17,7 +17,8 @@ import android.widget.TextView;
 
 import com.common.widget.CircleImageView;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.shequcun.farm.R;
+//import com.shequcun.farm.R;
+import com.lynp.R;
 import com.shequcun.farm.data.UserLoginEntry;
 import com.shequcun.farm.datacenter.CacheManager;
 import com.shequcun.farm.dlg.ConsultationDlg;

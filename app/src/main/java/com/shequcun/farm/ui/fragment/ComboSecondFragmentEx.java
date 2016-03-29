@@ -15,7 +15,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.shequcun.farm.R;
+//import com.shequcun.farm.R;
+import com.lynp.R;
 import com.shequcun.farm.data.ComboEntry;
 import com.shequcun.farm.ui.adapter.ComboSecondDlgPagerAdapter;
 import com.shequcun.farm.util.DeviceInfo;

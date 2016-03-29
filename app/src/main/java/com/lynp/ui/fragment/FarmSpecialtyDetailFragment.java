@@ -23,8 +23,8 @@ import com.daimajia.slider.library.Transformers.BaseTransformer;
 
 import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.shequcun.farm.R;
-
+//import com.shequcun.farm.R;
+import com.lynp.R;
 import com.lynp.ui.data.ItemDetailEntry;
 
 import com.lynp.ui.db.DataBase;

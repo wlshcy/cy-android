@@ -18,7 +18,7 @@ import com.shequcun.farm.ui.fragment.BaseFragment;
 import com.shequcun.farm.ui.fragment.FragmentMgrInterface;
 import com.shequcun.farm.util.HttpRequestUtil;
 //import com.umeng.analytics.MobclickAgent;
-
+import com.lynp.R;
 
 public abstract class BaseFragmentActivity extends FragmentActivity implements
         FragmentMgrInterface {

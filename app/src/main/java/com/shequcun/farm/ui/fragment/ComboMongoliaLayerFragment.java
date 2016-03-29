@@ -6,7 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.shequcun.farm.R;
+//import com.shequcun.farm.R;
+import com.lynp.R;
 import com.shequcun.farm.data.ComboEntry;
 import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.util.AvoidDoubleClickListener;

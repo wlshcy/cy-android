@@ -8,7 +8,8 @@ import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.shequcun.farm.R;
+//import com.shequcun.farm.R;
+import com.lynp.R;
 
 public class ProgressDlg extends Dialog {
 	private ProgressBar bar;

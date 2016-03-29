@@ -8,7 +8,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.shequcun.farm.R;
+//import com.shequcun.farm.R;
+import com.lynp.R;
 import com.shequcun.farm.data.DelayItemEntry;
 import com.shequcun.farm.util.AvoidDoubleClickListener;
 import com.shequcun.farm.util.Util;

@@ -34,7 +34,8 @@ import android.view.animation.Interpolator;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
-import com.shequcun.farm.R;
+//import com.shequcun.farm.R;
+import com.lynp.R;
 
 public abstract class PullToRefreshBase<T extends View> extends LinearLayout
         implements IPullToRefresh<T> {

@@ -23,7 +23,7 @@ import com.common.widget.PinnedHeaderExpandableListView;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.shequcun.farm.R;
+import com.lynp.R;
 import com.shequcun.farm.data.ComboEntry;
 import com.shequcun.farm.data.DishesItemEntry;
 import com.shequcun.farm.data.FixedComboEntry;

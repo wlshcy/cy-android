@@ -10,7 +10,9 @@ import android.widget.TextView;
 
 import android.util.Log;
 
-import com.shequcun.farm.R;
+//import com.shequcun.farm.R;
+import com.lynp.R;
+
 import com.lynp.ui.data.RecommendEntry;
 import com.lynp.ui.data.ItemDetailEntry;
 import com.shequcun.farm.util.Utils;

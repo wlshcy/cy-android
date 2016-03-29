@@ -19,7 +19,9 @@ import android.widget.TextView;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-import com.shequcun.farm.R;
+//import com.shequcun.farm.R;
+import com.lynp.R;
+
 import com.shequcun.farm.compare.AddressComparator;
 import com.shequcun.farm.data.AddressEntry;
 import com.shequcun.farm.data.AddressListEntry;

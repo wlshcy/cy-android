@@ -2,8 +2,8 @@ package com.shequcun.farm.ui.fragment;
 
 import android.os.Bundle;
 
-import com.shequcun.farm.R;
-
+//import com.shequcun.farm.R;
+import com.lynp.R;
 /**
  * Created by cong on 15/10/26.
  */

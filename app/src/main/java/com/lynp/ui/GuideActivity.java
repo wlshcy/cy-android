@@ -6,7 +6,9 @@ import android.os.Handler;
 import android.os.Message;
 
 import com.shequcun.farm.BaseFragmentActivity;
-import com.shequcun.farm.R;
+//import com.shequcun.farm.R;
+import com.lynp.R;
+
 import com.shequcun.farm.datacenter.PersistanceManager;
 import com.shequcun.farm.dlg.UserGuideDialog;
 

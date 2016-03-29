@@ -9,7 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.shequcun.farm.R;
+//import com.shequcun.farm.R;
+import com.lynp.R;
 import com.shequcun.farm.data.AlreadyPurchasedEntry;
 import com.shequcun.farm.util.Constrants;
 import com.shequcun.farm.util.Utils;

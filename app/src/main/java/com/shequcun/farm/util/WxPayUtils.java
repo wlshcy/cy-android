@@ -9,7 +9,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.google.gson.annotations.SerializedName;
-import com.shequcun.farm.R;
+//import com.shequcun.farm.R;
+import com.lynp.R;
 import com.shequcun.farm.data.WxPayResEntry;
 import com.shequcun.farm.dlg.ProgressDlg;
 import com.shequcun.farm.ui.fragment.LoginFragment;

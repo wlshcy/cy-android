@@ -17,7 +17,8 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.common.widget.ExpandableHeightListView;
-import com.shequcun.farm.R;
+//import com.shequcun.farm.R;
+import com.lynp.R;
 import com.shequcun.farm.data.ComboEntry;
 import com.shequcun.farm.data.CouponEntry;
 import com.shequcun.farm.data.OtherInfo;

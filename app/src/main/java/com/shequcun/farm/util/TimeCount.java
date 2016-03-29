@@ -3,8 +3,8 @@ package com.shequcun.farm.util;
 import android.os.CountDownTimer;
 import android.widget.Button;
 
-import com.shequcun.farm.R;
-
+//import com.shequcun.farm.R;
+import com.lynp.R;
 /**
  * 计时器
  */

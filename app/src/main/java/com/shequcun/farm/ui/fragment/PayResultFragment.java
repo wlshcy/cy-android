@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-import com.shequcun.farm.R;
+import com.lynp.R;
 import com.shequcun.farm.data.CouponShareEntry;
 import com.shequcun.farm.data.PayParams;
 import com.shequcun.farm.datacenter.PersistanceManager;

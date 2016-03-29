@@ -14,8 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.common.widget.PagerSlidingTabStrip;
-import com.shequcun.farm.R;
-
+//import com.shequcun.farm.R;
+import com.lynp.R;
 import butterknife.Bind;
 import butterknife.OnClick;
 

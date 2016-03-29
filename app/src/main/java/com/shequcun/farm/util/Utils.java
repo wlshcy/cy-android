@@ -15,8 +15,8 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.common.widget.BadgeView;
-import com.shequcun.farm.R;
-
+//import com.shequcun.farm.R;
+import com.lynp.R;
 import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;

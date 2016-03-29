@@ -21,7 +21,8 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-import com.shequcun.farm.R;
+//import com.shequcun.farm.R;
+import com.lynp.R;
 import com.shequcun.farm.data.ComboDetailEntry;
 import com.shequcun.farm.data.ComboEntry;
 import com.shequcun.farm.data.LinkEntry;
@@ -271,7 +272,7 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
 
             @Override
             public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
-                buildCarouselAdapter(null);
+//                buildCarouselAdapter(null);
                 if (sCode == 0) {
                     ToastHelper.showShort(getBaseAct(), R.string.network_error_tip);
                     return;

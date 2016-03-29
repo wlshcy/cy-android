@@ -1,4 +1,4 @@
-package com.shequcun.farm;
+package com.lynp.ui;
 
 import android.app.Application;
 //import com.umeng.analytics.MobclickAgent;
