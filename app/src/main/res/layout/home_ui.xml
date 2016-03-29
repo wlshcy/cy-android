@@ -24,7 +24,7 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <!--<include layout="@layout/carousel_ly" />-->
+                <include layout="@layout/carousel_ly" />
 
                 <!--<include layout="@layout/combo_title_ly" />-->
 
