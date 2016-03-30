@@ -65,8 +65,8 @@ public class ItemDetailFragment extends BaseFragment {
     TextView size;
     @Bind(R.id.origin)
     TextView origin;
-    @Bind(R.id.share_iv)
-    ImageView shareIv;
+//    @Bind(R.id.share_iv)
+//    ImageView shareIv;
 
     @Bind(R.id.goods_sub)
     ImageView goods_sub;
@@ -270,10 +270,10 @@ public class ItemDetailFragment extends BaseFragment {
 
                 if (data != null && data.length > 0) {
                     String result = new String(data);
-                    Log.i("====", result);
+//                    Log.i("====", result);
                     Gson gson = new Gson();
                     ItemDetailEntry itemEntry = gson.fromJson(result, ItemDetailEntry.class);
-                    Log.i("======", itemEntry.toString());
+//                    Log.i("======", itemEntry.toString());
                     entry = itemEntry;
                     setDataToView();
                     buildCarouselAdapter();
