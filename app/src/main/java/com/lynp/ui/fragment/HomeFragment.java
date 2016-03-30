@@ -160,12 +160,13 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
     PullToRefreshScrollView.OnRefreshListener2 onRefrshLsn = new PullToRefreshBase.OnRefreshListener2() {
         @Override
         public void onPullDownToRefresh(PullToRefreshBase refreshView) {
+            getSlides();
             getVegs();
         }
 
         @Override
         public void onPullUpToRefresh(PullToRefreshBase refreshView) {
-//            requestRecomendDishes();
+            getMoreVegs();
         }
     };
 
@@ -203,9 +204,45 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
         });
     }
 
+    void getMoreVegs(){
+        RequestParams params = new RequestParams();
+        params.add("length", String.valueOf(length));
+        params.add("lastid", adapter.getItem(adapter.getCount()-1).id);
+        HttpRequestUtil.getHttpClient(getBaseAct()).get(LocalParams.getBaseUrl() + "/v1/vegetables", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int sCode, Header[] h, byte[] data) {
+                if (data != null && data.length > 0) {
+                    String result = new String(data);
+                    Gson gson = new Gson();
+                    List<ItemEntry> vegEntry = gson.fromJson(result, new TypeToken<List<ItemEntry>>() {
+                    }.getType());
+
+                    if (vegEntry != null) {
+                        addMoreDataToAdapter(vegEntry);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(int sCode, Header[] h, byte[] data, Throwable error) {
+                if (sCode == 0) {
+                    ToastHelper.showShort(getBaseAct(), R.string.network_error_tip);
+                    return;
+                }
+                ToastHelper.showShort(getBaseAct(), "请求失败.错误码" + sCode);
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                if (pView != null)
+                    pView.onRefreshComplete();
+            }
+        });
+    }
     void getVegs() {
         RequestParams params = new RequestParams();
-        params.add("length", length + "");
+        params.add("length", String.valueOf(length));
         HttpRequestUtil.getHttpClient(getBaseAct()).get(LocalParams.getBaseUrl() + "/v1/vegetables", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int sCode, Header[] h, byte[] data) {
@@ -261,6 +298,19 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
         }
     }
 
+    void addMoreDataToAdapter(List<ItemEntry> aList) {
+
+        if (aList != null && aList.size() > 0) {
+            adapter.addAll(aList);
+            adapter.notifyDataSetChanged();
+        }
+        if (aList.size() % length > 0) {
+            pView.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
+        }else {
+            pView.setMode(PullToRefreshBase.Mode.BOTH);
+        }
+    }
+
 
     @Bind(R.id.ItemBoard)
     PullToRefreshScrollView pView;
@@ -269,5 +319,6 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
 //    boolean mIsBind = false;
     private ItemAdapter adapter;
     private int length = 10;
+    private int id = 0;
     private int length2 = 15;
 }
