@@ -18,8 +18,8 @@ import butterknife.ButterKnife;
  * Created by nmg on 16/1/29.
  */
 public class MineAdapter extends ArrayAdapter<MineAdapter.MyItem> {
-    public String items[] = {"我的订单","地址管理","客服电话","设置"};
-    public String tips[] = {"", "",Constrants.Customer_Service_Phone, ""};
+    public String items[] = {"我的订单","地址管理","客服电话"};
+    public String tips[] = {"", "",Constrants.Customer_Service_Phone};
 
     public MineAdapter(Context context) {
         super(context, R.layout.mine_item_ui);

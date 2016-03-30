@@ -9,9 +9,9 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <include layout="@layout/mine_listview" />
-
         <!--<include layout="@layout/common_line"></include>-->
+        <include layout="@layout/mine_listview" />
+        <include layout="@layout/common_line"></include>
 
     </LinearLayout>
 

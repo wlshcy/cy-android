@@ -65,8 +65,8 @@ public class OrderEnsureFragment extends BaseFragment {
         }
         Spannable spannable = Utils.getSpanableSpan("共计:",
                 Utils.unitPeneyToYuan(entry.price),
-                ResUtil.dip2px(getBaseAct(), 14),
-                ResUtil.dip2px(getBaseAct(), 14),
+                ResUtil.dip2px(getBaseAct(), 18),
+                ResUtil.dip2px(getBaseAct(), 18),
                 getResources().getColor(R.color.gray_a9a9a9),
                 getResources().getColor(R.color.red_f36043));
         total_price.setText(spannable);
