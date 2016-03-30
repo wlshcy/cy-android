@@ -60,7 +60,7 @@ public class ShoppingCartFragment extends BaseFragment implements RemarkFragment
     protected void initWidget(View v) {
         v.findViewById(R.id.back).setVisibility(View.GONE);
         title_center_text.setText(R.string.shop_cart);
-        Log.i("init", "init widget");
+//        Log.i("init", "init widget");
     }
 
     @Override
@@ -155,7 +155,7 @@ public class ShoppingCartFragment extends BaseFragment implements RemarkFragment
 
     void addDataToAdapter(List<ItemDetailEntry> items) {
 
-        Log.i("******", items.toString());
+//        Log.i("******", items.toString());
 
         for (int i = 0; i < items.size(); ++i) {
             totalPrice += items.get(i).count * items.get(i).price;
@@ -268,7 +268,7 @@ public class ShoppingCartFragment extends BaseFragment implements RemarkFragment
     }
 
     void updateWidget(float totalPrice) {
-        Spannable spannable = Utils.getSpanableSpan("商品总价:", Utils.unitPeneyToYuan(totalPrice), ResUtil.dip2px(getBaseAct(), 14), ResUtil.dip2px(getBaseAct(), 14), getResources().getColor(R.color.gray_a9a9a9), getResources().getColor(R.color.red_f36043));
+        Spannable spannable = Utils.getSpanableSpan("商品总价:", Utils.unitPeneyToYuan(totalPrice), ResUtil.dip2px(getBaseAct(), 18), ResUtil.dip2px(getBaseAct(), 18), getResources().getColor(R.color.gray_a9a9a9), getResources().getColor(R.color.red_f36043));
         total_price.setText(spannable);
     }
 

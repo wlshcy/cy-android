@@ -23,12 +23,11 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * Created by mac on 15/9/6.
+ * Created by nmg on 15/10/26.
  */
 public class ItemAdapter extends ArrayAdapter<ItemEntry> {
 
     public ItemAdapter(Context context) {
-//        super(context, R.layout.farm_specialty_item_ly);
         super(context, R.layout.item_cell);
     }
 
@@ -47,11 +46,11 @@ public class ItemAdapter extends ArrayAdapter<ItemEntry> {
         if (entry != null && vh != null) {
             if (entry.photo != null ) {
                 String url = entry.photo;
-                    InnerImageLoadingListener innerImageLoadingListener = new InnerImageLoadingListener(vh);
-                    ImageLoader.getInstance().displayImage(url, vh.photo, innerImageLoadingListener);
-                } else {
+                InnerImageLoadingListener innerImageLoadingListener = new InnerImageLoadingListener(vh);
+                ImageLoader.getInstance().displayImage(url, vh.photo, innerImageLoadingListener);
+            } else {
                     /*不需要重新加载图片*/
-                }
+            }
             vh.name.setText(entry.name);
             vh.size.setText(Utils.humanSize(entry.size));
             vh.price.setText(Utils.unitPeneyToYuan(entry.price));
