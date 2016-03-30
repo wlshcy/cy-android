@@ -90,8 +90,8 @@ public class ItemDetailFragment extends BaseFragment {
             desc.setText(entry.desc);
             price.setText(Utils.unitPeneyToYuan(entry.price));
             mprice.setText(Utils.unitPeneyToYuan(entry.mprice));
-            size.setText("规格：" + Utils.unitConversion(entry.size) + "/份");
-            origin.setText("产地:" + entry.origin);
+            size.setText(Utils.unitConversion(entry.size) + "/份");
+            origin.setText(entry.origin);
         }
     }
 

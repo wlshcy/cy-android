@@ -80,31 +80,93 @@
 
             <include layout="@layout/common_line"></include>
 
-            <TextView
-                android:id="@+id/size"
-                android:layout_width="wrap_content"
+            <!--<TextView-->
+                <!--android:id="@+id/size"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:paddingBottom="@dimen/px34"-->
+                <!--android:paddingLeft="@dimen/px38"-->
+                <!--android:paddingTop="@dimen/px34"-->
+                <!--android:text="商品规格："-->
+                <!--android:textColor="@color/black_131313"-->
+                <!--android:textSize="@dimen/font30" />-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:paddingBottom="@dimen/px34"
-                android:paddingLeft="@dimen/px38"
-                android:paddingTop="@dimen/px34"
-                android:text="商品规格："
-                android:textColor="@color/black_131313"
-                android:textSize="@dimen/font30" />
+                android:paddingTop="@dimen/px16">
+
+                <TextView
+                    android:id="@+id/size_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/px24"
+                    android:paddingLeft="@dimen/px38"
+                    android:text="规格"
+                    android:textColor="@color/black_131313"
+                    android:textSize="@dimen/font30" />
+
+                <TextView
+                    android:id="@+id/size"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="500g/份"
+                    android:textColor="@color/black_8e8e8e"
+                    android:textSize="@dimen/font30"
+                    android:gravity="right"
+                    android:layout_marginRight="@dimen/px38"/>
+
+            </LinearLayout>
+
 
             <include layout="@layout/common_line"></include>
 
-            <TextView
-                android:id="@+id/origin"
+            <!--<TextView-->
+                <!--android:id="@+id/origin"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:background="@drawable/list_bg"-->
+                <!--android:paddingBottom="@dimen/px34"-->
+                <!--android:paddingLeft="@dimen/px38"-->
+                <!--android:paddingRight="@dimen/px38"-->
+                <!--android:paddingTop="@dimen/px34"-->
+                <!--android:text="产地：甘肃.民乐"-->
+                <!--android:textColor="@color/black_131313"-->
+                <!--android:textSize="@dimen/font30" />-->
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/list_bg"
+                android:orientation="horizontal"
                 android:paddingBottom="@dimen/px34"
-                android:paddingLeft="@dimen/px38"
-                android:paddingRight="@dimen/px38"
-                android:paddingTop="@dimen/px34"
-                android:text="产地：甘肃.民乐"
-                android:textColor="@color/black_131313"
-                android:textSize="@dimen/font30" />
+                android:paddingTop="@dimen/px16">
+
+                <TextView
+                    android:id="@+id/origin_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/px24"
+                    android:paddingLeft="@dimen/px38"
+                    android:text="产地"
+                    android:textColor="@color/black_131313"
+                    android:textSize="@dimen/font30" />
+
+                <TextView
+                    android:id="@+id/origin"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="甘肃"
+                    android:textColor="@color/black_8e8e8e"
+                    android:textSize="@dimen/font30"
+                    android:gravity="right"
+                    android:layout_marginRight="@dimen/px38"/>
+
+
+            </LinearLayout>
 
             <include layout="@layout/common_line"></include>
         </LinearLayout>
@@ -150,8 +212,8 @@
 
         <TextView
             android:id="@+id/shop_cart"
-            android:layout_width="@dimen/px180"
-            android:layout_height="@dimen/px70"
+            android:layout_width="@dimen/px210"
+            android:layout_height="@dimen/px80"
             android:background="@color/red_f36043"
             android:gravity="center"
             android:text="@string/add_shop_cart"
