@@ -28,9 +28,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/px38"
                 android:paddingLeft="@dimen/px38"
-                android:text="有菜安心直采蜂蜜"
+                android:text="菜丫自种直采西红柿"
                 android:textColor="@color/black_131313"
-                android:textSize="@dimen/font36" />
+                android:textSize="@dimen/font30" />
 
             <TextView
                 android:id="@+id/desc"
@@ -41,7 +41,7 @@
                 android:paddingTop="@dimen/px16"
                 android:text=""
                 android:textColor="@color/black_8e8e8e"
-                android:textSize="@dimen/font32" />
+                android:textSize="@dimen/font28" />
 
             <LinearLayout
                 android:layout_width="match_parent"
