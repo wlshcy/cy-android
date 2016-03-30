@@ -17,20 +17,16 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.common.widget.ExpandableHeightListView;
-//import com.shequcun.farm.R;
+
 import com.lynp.R;
-import com.shequcun.farm.data.ComboEntry;
-import com.shequcun.farm.data.CouponEntry;
-import com.shequcun.farm.data.OtherInfo;
-import com.shequcun.farm.datacenter.CacheManager;
-import com.shequcun.farm.model.PhotoModel;
+import com.lynp.ui.util.CacheManager;
+import com.lynp.ui.util.PhotoModel;
 import com.lynp.ui.adapter.ShoppingCartAdapter;
-import com.shequcun.farm.ui.fragment.BaseFragment;
-import com.shequcun.farm.ui.fragment.BrowseImageFragment;
-import com.shequcun.farm.ui.fragment.RemarkFragment;
+//import com.shequcun.farm.ui.fragment.BrowseImageFragment;
+//import com.shequcun.farm.ui.fragment.RemarkFragment;
 import com.lynp.ui.util.IntentUtil;
-import com.shequcun.farm.util.ResUtil;
-import com.shequcun.farm.util.Utils;
+import com.lynp.ui.util.ResUtil;
+import com.lynp.ui.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +43,7 @@ import butterknife.Bind;
  * Created by nmg on 16/1/28.
  */
 public class ShoppingCartFragment extends BaseFragment implements RemarkFragment.CallBackLsn {
+//public class ShoppingCartFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -146,10 +143,7 @@ public class ShoppingCartFragment extends BaseFragment implements RemarkFragment
             if (adapter == null || position >= adapter.getCount() || adapter.getItem(position) == null)
                 return;
             ItemDetailEntry entry = adapter.getItem(position);
-//            entry.isShowDtlFooter = true;
-//            gotoFragmentByAnimation(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailFragment(), FarmSpecialtyDetailFragment.class.getName(), R.anim.slide_in_from_bottom, R.anim.slide_out_to_bottom);
-//            gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailViewPagerFragment(), FarmSpecialtyDetailViewPagerFragment.class.getName());
-//            gotoFragmentByAdd(buildBundle(entry), R.id.mainpage_ly, new FarmSpecialtyDetailFragment(), FarmSpecialtyDetailFragment.class.getName());
+//
         }
     };
 
@@ -182,9 +176,9 @@ public class ShoppingCartFragment extends BaseFragment implements RemarkFragment
             int position = (int) v.getTag();
             ArrayList<PhotoModel> photos = new ArrayList<PhotoModel>();
             Bundle bundle = new Bundle();
-            bundle.putSerializable(BrowseImageFragment.KEY_PHOTOS, photos);
-            bundle.putInt(BrowseImageFragment.KEY_INDEX, position);
-            gotoFragmentByAnimation(bundle, R.id.mainpage_ly, new BrowseImageFragment(), BrowseImageFragment.class.getName(), R.anim.puff_in, R.anim.puff_out);
+//            bundle.putSerializable(BrowseImageFragment.KEY_PHOTOS, photos);
+//            bundle.putInt(BrowseImageFragment.KEY_INDEX, position);
+//            gotoFragmentByAnimation(bundle, R.id.mainpage_ly, new BrowseImageFragment(), BrowseImageFragment.class.getName(), R.anim.puff_in, R.anim.puff_out);
         }
     };
 
@@ -370,7 +364,7 @@ public class ShoppingCartFragment extends BaseFragment implements RemarkFragment
     @Bind(R.id.pScrollView)
     ScrollView pScrollView;
     String memo;
-    CouponEntry cEntry;
+//    CouponEntry cEntry;
     View noLoginView;
     View headView;
     View bottomView;

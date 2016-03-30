@@ -12,18 +12,17 @@ import android.widget.RadioGroup;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-import com.shequcun.farm.BaseFragmentActivity;
-//import com.shequcun.farm.R;
+import com.lynp.BaseFragmentActivity;
 import com.lynp.R;
-import com.shequcun.farm.data.VersionEntry;
-import com.shequcun.farm.datacenter.PersistanceManager;
-import com.shequcun.farm.dlg.UserGuideDialog;
+import com.lynp.ui.data.VersionEntry;
+import com.lynp.ui.util.PersistanceManager;
+import com.lynp.ui.util.UserGuideDialog;
 import com.lynp.ui.adapter.HomeViewPagerAdapter;
-import com.shequcun.farm.util.DeviceInfo;
-import com.shequcun.farm.util.HttpRequestUtil;
-import com.shequcun.farm.util.JsonUtilsParser;
-import com.shequcun.farm.util.LocalParams;
-import com.shequcun.farm.util.ToastHelper;
+import com.lynp.ui.util.DeviceInfo;
+import com.lynp.ui.util.HttpRequestUtil;
+import com.lynp.ui.util.JsonUtilsParser;
+import com.lynp.ui.util.LocalParams;
+import com.lynp.ui.util.ToastHelper;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

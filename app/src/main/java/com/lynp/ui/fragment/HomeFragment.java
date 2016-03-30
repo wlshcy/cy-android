@@ -2,8 +2,6 @@ package com.lynp.ui.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,29 +19,16 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-//import com.shequcun.farm.R;
 import com.lynp.R;
-import com.shequcun.farm.data.ComboDetailEntry;
-import com.shequcun.farm.data.ComboEntry;
-import com.shequcun.farm.data.LinkEntry;
 
 import com.lynp.ui.data.ItemEntry;
 import com.lynp.ui.data.SlideEntry;
 
-import com.shequcun.farm.data.RecommentListEntry;
-import com.shequcun.farm.data.SlidesEntry;
-import com.shequcun.farm.datacenter.CacheManager;
-import com.shequcun.farm.dlg.ProgressDlg;
 import com.lynp.ui.adapter.ItemAdapter;
-import com.shequcun.farm.ui.fragment.BaseFragment;
-import com.shequcun.farm.ui.fragment.ComboSecondFragment;
-import com.shequcun.farm.ui.fragment.FragmentUtils;
-import com.shequcun.farm.util.ClickUtil;
-import com.shequcun.farm.util.DeviceInfo;
-import com.shequcun.farm.util.HttpRequestUtil;
-import com.shequcun.farm.util.JsonUtilsParser;
-import com.shequcun.farm.util.LocalParams;
-import com.shequcun.farm.util.ToastHelper;
+import com.lynp.ui.util.ClickUtil;
+import com.lynp.ui.util.HttpRequestUtil;
+import com.lynp.ui.util.LocalParams;
+import com.lynp.ui.util.ToastHelper;
 
 import java.util.List;
 
@@ -62,7 +47,7 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.home_ui, container, false);
+        return inflater.inflate(R.layout.home, container, false);
     }
 
     @Override
@@ -75,7 +60,6 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
 
     @Override
     protected void setWidgetLsn() {
-//        doRegisterRefreshBrodcast();
         pView.setMode(PullToRefreshBase.Mode.BOTH);
         pView.setOnRefreshListener(onRefrshLsn);
         buildGridViewAdapter();
@@ -91,44 +75,14 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
 
         if (entry == null)
             return;
-        gotoFragmentByAdd(buildBundle(entry.id), R.id.mainpage_ly, new FarmSpecialtyDetailFragment(), FarmSpecialtyDetailFragment.class.getName());
+        gotoFragmentByAdd(buildBundle(entry.id), R.id.mainpage_ly, new ItemDetailFragment(), ItemDetailFragment.class.getName());
     }
 
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-//        doUnRegisterReceiver();
     }
-
-//    void doRegisterRefreshBrodcast() {
-//        if (!mIsBind) {
-//            IntentFilter intentFilter = new IntentFilter();
-//            intentFilter.addAction(IntentUtil.UPDATE_COMBO_PAGE);
-//            getBaseAct().registerReceiver(mUpdateReceiver, intentFilter);
-//            mIsBind = true;
-//        }
-//    }
-
-//    private BroadcastReceiver mUpdateReceiver = new BroadcastReceiver() {
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-//            String action = intent.getAction();
-//            if (TextUtils.isEmpty(action)) {
-//                return;
-//            }
-//            if (action.equals(IntentUtil.UPDATE_COMBO_PAGE)) {
-//                getVegs();
-//            }
-//        }
-//    };
-
-//    private void doUnRegisterReceiver() {
-//        if (mIsBind) {
-//            getBaseAct().unregisterReceiver(mUpdateReceiver);
-//            mIsBind = false;
-//        }
-//    }
 
     void buildCarouselAdapter(List<SlideEntry> aList) {
         slider.removeAllSliders();
@@ -187,41 +141,15 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
 
     @Override
     public void onSliderClick(BaseSliderView slider) {
+
         if (ClickUtil.isFastDoubleClick()) {
             return;
         }
         if (slider.getParamObj() == null) return;
-        SlidesEntry entry = (SlidesEntry) slider.getParamObj();
-        gotoAdFragment(entry);
-//        UmengCountEvent.onClickHomeBanner(getActivity());
+        SlideEntry entry = (SlideEntry) slider.getParamObj();
+        gotoFragmentByAdd(buildBundle(entry.id), R.id.mainpage_ly, new ItemDetailFragment(), ItemDetailFragment.class.getName());
     }
 
-    private void gotoAdFragment(SlidesEntry item) {
-        if (TextUtils.isEmpty(item.url)) {
-            if (!isLogin()) {
-                FragmentUtils.login(this);
-                return;
-            }
-            LinkEntry link = item.link;
-            if (link == null || link.type == 0)
-                return;
-            if (link.type == 1) {//1.套餐详情,
-//                requestComboDetail(link.id);
-            } else if (link.type == 2) {//2.菜品详情
-//                requestSingleDishDetail(link.id);
-            }
-            return;
-        }
-
-//        gotoFragmentByAdd(buildBundle(item.url), R.id.mainpage_ly, new AdFragment(), AdFragment.class.getName());
-    }
-
-
-//    Bundle buildBundle(final String adUrl) {
-//        Bundle bundle = new Bundle();
-//        bundle.putString("AdUrl", adUrl);
-//        return bundle;
-//    }
 
     Bundle buildBundle(final String id){
         Bundle bundle = new Bundle();
@@ -240,6 +168,7 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
 //            requestRecomendDishes();
         }
     };
+
     void getSlides() {
         HttpRequestUtil.getHttpClient(getBaseAct()).get(LocalParams.getBaseUrl() + "/v1/vegetables/slides", null, new AsyncHttpResponseHandler() {
             @Override
@@ -247,9 +176,10 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
                 if (data != null && data.length > 0) {
                     String result = new String(data);
                     Gson gson = new Gson();
-                    List<SlideEntry> SlidesEntry = gson.fromJson(result, new TypeToken<List<SlideEntry>>(){}.getType());
+                    List<SlideEntry> SlidesEntry = gson.fromJson(result, new TypeToken<List<SlideEntry>>() {
+                    }.getType());
 
-                    if(SlidesEntry != null){
+                    if (SlidesEntry != null) {
                         buildCarouselAdapter(SlidesEntry);
                     }
                 }
@@ -272,6 +202,7 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
             }
         });
     }
+
     void getVegs() {
         RequestParams params = new RequestParams();
         params.add("length", length + "");
@@ -281,9 +212,10 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
                 if (data != null && data.length > 0) {
                     String result = new String(data);
                     Gson gson = new Gson();
-                    List<ItemEntry> vegEntry = gson.fromJson(result, new TypeToken<List<ItemEntry>>(){}.getType());
+                    List<ItemEntry> vegEntry = gson.fromJson(result, new TypeToken<List<ItemEntry>>() {
+                    }.getType());
 
-                    if(vegEntry != null) {
+                    if (vegEntry != null) {
                         addDataToAdapter(vegEntry);
                     }
                 }
@@ -329,37 +261,6 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
         }
     }
 
-    void addDataToAdapter2(List<ItemEntry> aList) {
-        if (aList != null && aList.size() > 0) {
-            adapter.addAll(aList);
-            adapter.notifyDataSetChanged();
-        }
-        if (aList.size() % length2 > 0) {
-            pView.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
-        }
-    }
-
-//    Bundle buildBundle(ItemEntry entry) {
-//        Bundle bundle = new Bundle();
-//        bundle.putSerializable("RecommentEntry", entry);
-//        return bundle;
-//    }
-    Bundle buildBundle_(ComboEntry entry) {
-        Bundle bundle = new Bundle();
-        entry.setPosition(entry.index);
-        entry.setMine(false);
-        bundle.putSerializable("ComboEntry", entry);
-        return bundle;
-    }
-
-    /**
-     * 是否登录成功
-     *
-     * @return
-     */
-    boolean isLogin() {
-        return new CacheManager(getBaseAct()).getUserLoginEntry() != null;
-    }
 
     @Bind(R.id.ItemBoard)
     PullToRefreshScrollView pView;

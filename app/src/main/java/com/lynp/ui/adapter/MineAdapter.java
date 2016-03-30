@@ -7,10 +7,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-//import com.shequcun.farm.R;
 import com.lynp.R;
-import com.shequcun.farm.util.Constrants;
-import com.shequcun.farm.util.ResUtil;
+import com.lynp.ui.util.Constrants;
+import com.lynp.ui.util.ResUtil;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

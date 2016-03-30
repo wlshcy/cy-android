@@ -1,65 +1,24 @@
 package com.lynp.ui.fragment;
 
-import android.app.AlertDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.text.Spannable;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.common.widget.ExpandableHeightListView;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 import com.lynp.ui.adapter.OrderEnsureAdapter;
 import com.lynp.ui.data.OrderEnsureEntry;
-import com.lynp.ui.util.IntentUtil;
-//import com.shequcun.farm.R;
-import com.lynp.R;
-import com.shequcun.farm.data.AddressEntry;
-import com.shequcun.farm.data.AddressListEntry;
-import com.shequcun.farm.data.ComboEntry;
-import com.shequcun.farm.data.CouponEntry;
-import com.shequcun.farm.data.OrderEntry;
-import com.shequcun.farm.data.OtherInfo;
-import com.shequcun.farm.data.PayEntry;
-import com.shequcun.farm.data.PayParams;
-import com.shequcun.farm.data.UserLoginEntry;
-import com.shequcun.farm.data.WxPayResEntry;
-import com.shequcun.farm.datacenter.CacheManager;
-import com.shequcun.farm.datacenter.DisheDataCenter;
-import com.shequcun.farm.datacenter.PersistanceManager;
-import com.shequcun.farm.dlg.ProgressDlg;
-import com.shequcun.farm.ui.fragment.AddressFragment;
-import com.shequcun.farm.ui.fragment.BaseFragment;
-import com.shequcun.farm.ui.fragment.PayResultFragment;
-import com.shequcun.farm.ui.fragment.RedPacketsListFragment;
-import com.shequcun.farm.util.AlipayUtils;
-import com.shequcun.farm.util.Constrants;
-import com.shequcun.farm.util.HttpRequestUtil;
-import com.shequcun.farm.util.JsonUtilsParser;
-import com.shequcun.farm.util.LocalParams;
-import com.shequcun.farm.util.ResUtil;
-import com.shequcun.farm.util.ToastHelper;
-import com.shequcun.farm.util.Utils;
-import com.shequcun.farm.util.WxPayUtils;
 
-import java.util.List;
+import com.lynp.R;
+import com.lynp.ui.util.ResUtil;
+import com.lynp.ui.util.Utils;
 
 import butterknife.Bind;
 import butterknife.OnClick;
-import cz.msebera.android.httpclient.Header;
 
 /**
  * 订单确认页面
@@ -137,8 +96,8 @@ public class OrderEnsureFragment extends BaseFragment {
     @OnClick(R.id.choose_address)
     void doModifyAddress() {
         Bundle bundle = new Bundle();
-        bundle.putInt(AddressListFragment.Action.KEY, AddressListFragment.Action.SELECT);
-        gotoFragmentByAdd(bundle, R.id.mainpage_ly, new AddressListFragment(), AddressListFragment.class.getName());
+//        bundle.putInt(AddressListFragment.Action.KEY, AddressListFragment.Action.SELECT);
+//        gotoFragmentByAdd(bundle, R.id.mainpage_ly, new AddressListFragment(), AddressListFragment.class.getName());
     }
     OrderEnsureAdapter adapter;
 

@@ -15,7 +15,7 @@ import com.lynp.R;
 
 import com.lynp.ui.data.RecommendEntry;
 import com.lynp.ui.data.ItemDetailEntry;
-import com.shequcun.farm.util.Utils;
+import com.lynp.ui.util.Utils;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 

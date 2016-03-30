@@ -19,19 +19,16 @@ import com.common.widget.CircleImageView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 //import com.shequcun.farm.R;
 import com.lynp.R;
-import com.shequcun.farm.data.UserLoginEntry;
-import com.shequcun.farm.datacenter.CacheManager;
-import com.shequcun.farm.dlg.ConsultationDlg;
+import com.lynp.ui.data.UserLoginEntry;
+import com.lynp.ui.util.CacheManager;
+import com.lynp.ui.util.ConsultationDlg;
 import com.lynp.ui.adapter.MineAdapter;
-import com.shequcun.farm.ui.fragment.BaseFragment;
-import com.shequcun.farm.ui.fragment.FragmentUtils;
-import com.shequcun.farm.ui.fragment.MyOrderViewPagerFragment;
-import com.shequcun.farm.ui.fragment.SetFragment;
-import com.shequcun.farm.util.AvoidDoubleClickListener;
+import com.lynp.ui.fragment.FragmentUtils;
+//import com.shequcun.farm.ui.fragment.MyOrderViewPagerFragment;
+//import com.shequcun.farm.ui.fragment.SetFragment;
+import com.lynp.ui.util.AvoidDoubleClickListener;
 import com.lynp.ui.util.IntentUtil;
-import com.shequcun.farm.util.N7Utils;
-
-import android.util.Log;
+import com.lynp.ui.util.N7Utils;
 
 import butterknife.Bind;
 import butterknife.OnItemClick;
@@ -87,13 +84,13 @@ public class MineFragment extends BaseFragment {
 //        }
         switch (position - mine_lv.getHeaderViewsCount()) {
             case 0://我的订单
-                gotoFragmentByAdd(R.id.mainpage_ly, new MyOrderViewPagerFragment(), MyOrderViewPagerFragment.class.getName());
+//                gotoFragmentByAdd(R.id.mainpage_ly, new MyOrderViewPagerFragment(), MyOrderViewPagerFragment.class.getName());
                 break;
 
             case 1://地址管理
                 Bundle bundle = new Bundle();
-                bundle.putInt(AddressListFragment.Action.KEY, AddressListFragment.Action.SETTING);
-                gotoFragmentByAdd(bundle, R.id.mainpage_ly, new AddressListFragment(), AddressListFragment.class.getName());
+//                bundle.putInt(AddressListFragment.Action.KEY, AddressListFragment.Action.SETTING);
+//                gotoFragmentByAdd(bundle, R.id.mainpage_ly, new AddressListFragment(), AddressListFragment.class.getName());
                 break;
 
             case 2://拨打客服电话
@@ -101,7 +98,7 @@ public class MineFragment extends BaseFragment {
                 break;
 
             case 3://设置
-                gotoFragmentByAdd(R.id.mainpage_ly, new SetFragment(), SetFragment.class.getName());
+//                gotoFragmentByAdd(R.id.mainpage_ly, new SetFragment(), SetFragment.class.getName());
                 break;
         }
     }

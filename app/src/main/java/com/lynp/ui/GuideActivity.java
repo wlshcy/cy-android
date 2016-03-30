@@ -5,12 +5,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 
-import com.shequcun.farm.BaseFragmentActivity;
-//import com.shequcun.farm.R;
+import com.lynp.BaseFragmentActivity;
 import com.lynp.R;
 
-import com.shequcun.farm.datacenter.PersistanceManager;
-import com.shequcun.farm.dlg.UserGuideDialog;
+//import com.shequcun.farm.datacenter.PersistanceManager;
+//import com.shequcun.farm.dlg.UserGuideDialog;
 
 /**
  * 向导
@@ -29,12 +28,12 @@ public class GuideActivity extends BaseFragmentActivity {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if (!PersistanceManager.getOnce(GuideActivity.this)) {
-                UserGuideDialog userGuideDialog =  new UserGuideDialog(GuideActivity.this);
-                userGuideDialog.show();
-//                userGuideDialog.setDismissDialog(dismissDialog);
-                return;
-            }
+//            if (!PersistanceManager.getOnce(GuideActivity.this)) {
+//                UserGuideDialog userGuideDialog =  new UserGuideDialog(GuideActivity.this);
+//                userGuideDialog.show();
+////                userGuideDialog.setDismissDialog(dismissDialog);
+//                return;
+//            }
             showMainPage();
         }
     };
