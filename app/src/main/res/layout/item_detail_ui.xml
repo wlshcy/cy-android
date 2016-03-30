@@ -58,7 +58,7 @@
                     android:paddingLeft="@dimen/px38"
                     android:text="¥35.00"
                     android:textColor="@color/black_32bd6f"
-                    android:textSize="@dimen/font40" />
+                    android:textSize="@dimen/font36" />
 
                 <TextView
                     android:id="@+id/mprice"
@@ -67,7 +67,7 @@
                     android:layout_weight="1"
                     android:text="¥69.00"
                     android:textColor="@color/black_8e8e8e"
-                    android:textSize="@dimen/font24" />
+                    android:textSize="@dimen/font34" />
 
             </LinearLayout>
 
