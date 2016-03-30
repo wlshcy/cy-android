@@ -47,7 +47,7 @@
 
             android:text="Title"
             android:textColor="@android:color/black"
-            android:textSize="@dimen/font30" />
+            android:textSize="@dimen/font28" />
 
 
         <TextView
