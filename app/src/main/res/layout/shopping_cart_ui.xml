@@ -9,11 +9,23 @@
         android:id="@+id/tmpId"
         layout="@layout/common_title_ly" />
 
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/freight_tip"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@color/green_32bd6f"
+        android:text="订单满50元免运费，不满50元加5元运费"
+        android:textColor="#fff"
+        android:gravity="left|center"
+        android:textSize="@dimen/font23"
+        android:layout_below="@+id/tmpId"
+        android:paddingLeft="10dp"/>
+
     <ScrollView
         android:id="@+id/pScrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tmpId"
+        android:layout_below="@+id/freight_tip"
         android:layout_marginBottom="1dp"
         android:background="#f3f4f5"
         android:descendantFocusability="beforeDescendants"
@@ -28,7 +40,7 @@
             <com.common.widget.ExpandableHeightListView
                 android:id="@+id/mLv"
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
+                android:layout_height="0dp"
                 android:layout_weight="1.0"
                 android:background="@null"
                 android:divider="#e4e4e4"

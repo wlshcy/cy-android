@@ -163,6 +163,7 @@ public class ShoppingCartFragment extends BaseFragment implements RemarkFragment
 
         adapter.addAll(items);
         adapter.notifyDataSetChanged();
+//        addFreightTip();
         addBottomView();
         updateWidget(totalPrice);
         pScrollView.fullScroll(View.FOCUS_UP);
@@ -332,6 +333,17 @@ public class ShoppingCartFragment extends BaseFragment implements RemarkFragment
         }
     }
 
+    void addFreightTip() {
+        if (FreightTip == null) {
+            FreightTip = LayoutInflater.from(getBaseAct()).inflate(R.layout.freight_tip, null);
+
+
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+            params.topMargin = ResUtil.dipToPixel(getBaseAct(), 51);
+            pView.addView(FreightTip, params);
+        }
+    }
     @Override
     public void updateRemarkWidget(String remark) {
         memo = remark;
@@ -368,4 +380,5 @@ public class ShoppingCartFragment extends BaseFragment implements RemarkFragment
     View noLoginView;
     View headView;
     View bottomView;
+    View FreightTip;
 }
