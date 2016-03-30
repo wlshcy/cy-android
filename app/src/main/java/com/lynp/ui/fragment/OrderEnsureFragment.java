@@ -58,12 +58,14 @@ public class OrderEnsureFragment extends BaseFragment {
         adapter.notifyDataSetChanged();
         pScrollView.fullScroll(View.FOCUS_UP);
 
+        item_price.setText(Utils.unitPeneyToYuan(entry.price));
         if (entry.freight == 0){
             freight.setText("免运费");
         }else {
             freight.setText(Utils.unitPeneyToYuan(entry.freight));
         }
-        Spannable spannable = Utils.getSpanableSpan("共计:",
+        all_price.setText(Utils.unitPeneyToYuan(entry.price + entry.freight));
+        Spannable spannable = Utils.getSpanableSpan("合计:",
                 Utils.unitPeneyToYuan(entry.price),
                 ResUtil.dip2px(getBaseAct(), 18),
                 ResUtil.dip2px(getBaseAct(), 18),
@@ -111,6 +113,12 @@ public class OrderEnsureFragment extends BaseFragment {
 
     @Bind(R.id.freight)
     TextView freight;
+
+    @Bind(R.id.item_price)
+    TextView item_price;
+
+    @Bind(R.id.all_price)
+    TextView all_price;
 
     @Bind(R.id.total_price)
     TextView total_price;
