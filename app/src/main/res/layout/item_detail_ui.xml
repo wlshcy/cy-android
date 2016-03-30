@@ -3,12 +3,12 @@
     android:id="@+id/DetailView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white_fefefe">
+    android:background="@color/gray_ececec">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-
+        android:layout_height="wrap_content"
+        android:background="#fff"
         android:descendantFocusability="beforeDescendants"
         android:focusable="true"
         android:focusableInTouchMode="true"
@@ -17,7 +17,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <include layout="@layout/carousel_ly1"></include>
@@ -75,21 +75,10 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/px14"
+                android:layout_height="5dp"
                 android:background="@color/gray_ececec"></View>
 
             <include layout="@layout/common_line"></include>
-
-            <!--<TextView-->
-                <!--android:id="@+id/size"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:paddingBottom="@dimen/px34"-->
-                <!--android:paddingLeft="@dimen/px38"-->
-                <!--android:paddingTop="@dimen/px34"-->
-                <!--android:text="商品规格："-->
-                <!--android:textColor="@color/black_131313"-->
-                <!--android:textSize="@dimen/font30" />-->
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -124,19 +113,6 @@
 
             <include layout="@layout/common_line"></include>
 
-            <!--<TextView-->
-                <!--android:id="@+id/origin"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:background="@drawable/list_bg"-->
-                <!--android:paddingBottom="@dimen/px34"-->
-                <!--android:paddingLeft="@dimen/px38"-->
-                <!--android:paddingRight="@dimen/px38"-->
-                <!--android:paddingTop="@dimen/px34"-->
-                <!--android:text="产地：甘肃.民乐"-->
-                <!--android:textColor="@color/black_131313"-->
-                <!--android:textSize="@dimen/font30" />-->
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -164,8 +140,6 @@
                     android:textSize="@dimen/font30"
                     android:gravity="right"
                     android:layout_marginRight="@dimen/px38"/>
-
-
             </LinearLayout>
 
             <include layout="@layout/common_line"></include>
@@ -174,10 +148,11 @@
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/border"
+        android:background="@android:color/white"
         android:minHeight="@dimen/px120"
         android:layout_gravity="bottom">
-        <!--android:background="@android:color/white"-->
+
+        <!--android:background="@drawable/border"-->
         <ImageView
             android:id="@+id/goods_sub"
             android:layout_width="@dimen/px80"
@@ -191,8 +166,8 @@
 
         <TextView
             android:id="@+id/goods_count"
-            android:layout_width="@dimen/px48"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/goods_sub"
             android:gravity="center"
@@ -215,8 +190,9 @@
             android:layout_width="@dimen/px210"
             android:layout_height="@dimen/px80"
             android:layout_centerVertical="true"
-            android:background="@color/red_f36043"
+
             android:gravity="center"
+            android:background="@drawable/round_corner"
             android:text="@string/add_shop_cart"
             android:textColor="@color/white_f4f4f4"
             android:textSize="14sp"
@@ -224,7 +200,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:layout_marginRight="@dimen/px30" />
-
+        <!--android:background="@color/red_f36043"-->
 
     </RelativeLayout>
 
