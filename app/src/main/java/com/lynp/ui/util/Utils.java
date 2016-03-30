@@ -47,8 +47,8 @@ public class Utils {
         }
     }
 
-    public static String humanSize(float money){
-        return money + "g";
+    public static String humanSize(float weight){
+        return weight + "g";
     }
     /**
      * 分转换为圆（保留两位小数）
@@ -59,9 +59,9 @@ public class Utils {
     public static String unitPeneyToYuan(float peney) {
         if (peney <= 0)
             return "";
-        double yuan = (double) peney / 100;
+        double yuan = (double) peney;
         DecimalFormat df = new DecimalFormat("###.00");
-        return "￥" + (peney / 100 == 0 ? "0" + df.format(yuan) : df.format(yuan));
+        return "￥" + (df.format(yuan));
     }
 
     public static String unitPeneyToYuanEx(int peney) {
