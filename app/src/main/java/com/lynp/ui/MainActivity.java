@@ -45,7 +45,7 @@ public class MainActivity extends BaseFragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        initGuide();
+//        initGuide();
         initWidget();
 //        doAuthInit();
 //        checkVersion();
