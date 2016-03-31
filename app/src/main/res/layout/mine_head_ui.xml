@@ -2,8 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
+    android:background="#000"
     android:orientation="vertical">
+    <!--android:background="@android:color/white"-->
 
 
     <FrameLayout
@@ -50,7 +51,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:text="点击登录"
+                    android:text="微信登录"
                     android:textColor="@color/black_131313"
                     android:textSize="@dimen/font30" />
 
@@ -62,31 +63,14 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|bottom"
                 android:layout_marginTop="@dimen/px20"
+                android:text="渐行渐远"
                 android:textColor="@color/green_446628"
                 android:textSize="@dimen/font30" />
 
-            <!--<TextView-->
-            <!--android:id="@+id/address_tv"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center|bottom"-->
-            <!--android:paddingBottom="@dimen/px24"-->
-            <!--android:paddingTop="@dimen/px24"-->
-            <!--android:gravity="center"-->
-            <!--android:textColor="@color/green_446628"-->
-            <!--android:textSize="@dimen/font28" />-->
-
+            <!--<View-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="5dp"-->
+                <!--android:background="@color/gray_ececec"></View>-->
         </LinearLayout>
-
-
     </FrameLayout>
-
-    <!--<View-->
-        <!--android:id="@+id/common_line_view"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="0.5dp"-->
-        <!--android:background="@color/divider_color">-->
-
-    <!--</View>-->
-
 </LinearLayout>
