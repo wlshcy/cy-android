@@ -21,7 +21,7 @@ public class GuideActivity extends BaseFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_ly);
-        MessageHandler.sendEmptyMessageDelayed(0, 1000);
+        MessageHandler.sendEmptyMessageDelayed(0, 0);
     }
 
     private Handler MessageHandler = new Handler() {
